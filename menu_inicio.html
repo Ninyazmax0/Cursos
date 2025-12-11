@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Code 418 - Aprende Programación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Firebase Modules -->
+    <script type="module" src="assets/js/firebase-config.js"></script>
+    <script type="module" src="assets/js/firebase-storage.js"></script>
+    <script type="module" src="assets/js/data-cleanup.js"></script>
+    <script type="module" src="assets/js/predefined-profiles.js"></script>
+    <script type="module">
+        import { initAchievementListeners } from './assets/js/achievements.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            initAchievementListeners();
+        });
+    </script>
+    <style>
+        /* Tokyo Night Theme */
+        :root {
+            --background: #1a1b26;
+            --foreground: #a9b1d6;
+            --card-background: #24283b;
+            --border: #414868;
+            --accent: #7aa2f7;
+            --accent-dark: #3d59a1;
+            --green: #9ece6a;
+            --yellow: #e0af68;
+            --red: #f7768e;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            color: var(--foreground);
+            font-family: var(--font-sans);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: var(--background);
+        }
+
+        /* --- FONDO ANIMADO --- */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .background-day, .background-night {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .background-day {
+            background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
+        }
+
+        .background-night {
+            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+        }
+
+        .dark .background-night { opacity: 1; }
+        :not(.dark) .background-day { opacity: 1; }
+
+        /* Typography */
+        .main-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #7aa2f7, #bb9af7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(122, 162, 247, 0.3);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Unified Content Box Style */
+        .content-box {
+            background-color: rgba(36, 40, 59, 0.85);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            margin: 2rem auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Legacy Panel support */
+        .panel {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative; 
+            z-index: 10;
+        }
+
+        /* Glassmorphism Input */
+        .glass-input {
+            background: rgba(26, 27, 38, 0.6);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(122, 162, 247, 0.2);
+            background: rgba(26, 27, 38, 0.9);
+        }
+
+        .btn-action {
+            background-color: var(--accent);
+            width: 100%;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .rank-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        /* Hover effects para elementos clickeables */
+        .classmate-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .classmate-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            background: rgba(122, 162, 247, 0.05);
+        }
+        
+        .classmate-card:hover img {
+            /* ring-color no es estándar, usamos box-shadow para el glow */
+            box-shadow: 0 0 0 2px var(--accent), 0 0 15px rgba(122, 162, 247, 0.3);
+        }
+        .btn-action:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(122, 162, 247, 0.3);
+        }
+
+        /* Dashboard specific */
+        .dashboard-view {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-bottom: 4rem;
+        }
+
+        .course-card {
+            background: var(--card-background);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--foreground);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-secondary:hover {
+            border-color: var(--foreground);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--background); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <!-- FONDO ANIMADO (Igual a web_course.html) -->
+    <div class="background-container">
+        <div class="background-day"></div>
+        <div class="background-night"></div>
+    </div>
+
+    <!-- TOGGLE TEMA (Fixed Top Right) -->
+    <button id="theme-toggle" class="fixed top-4 right-4 p-2 rounded-full bg-card-background border border-border z-50 text-foreground hover:text-white transition-colors">
+        <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+    </button>
+
+    <!-- 1. LOGIN PANEL -->
+    <!-- 1. LOGIN PANEL REMOVED -->
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-90 z-50 hidden items-center justify-center flex-col transition-opacity duration-300">
+        <div class="relative w-24 h-24 mb-4">
+            <div class="absolute inset-0 border-4 border-t-blue-500 border-r-transparent border-b-purple-500 border-l-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-2 border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-purple-400 rounded-full animate-spin-reverse"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="loader-2" class="w-8 h-8 text-white animate-pulse"></i>
+            </div>
+        </div>
+        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">SINTONIZANDO...</p>
+    </div>
+
+    <!-- 2. DASHBOARD VIEW -->
+    <div id="dashboard-view" class="content-box hidden">
+        
+        <!-- Header Dashboard -->
+        <div class="flex justify-between items-center mb-12">
+            <div class="flex items-center gap-4">
+                <!-- Logo Trigger for Achievement -->
+                <div class="logo-trigger">
+                    <div class="w-16 h-16 rounded-full bg-gray-700 overflow-hidden relative group cursor-pointer" id="dashboard-avatar-container" title="Cambiar Avatar">
+                            <img id="user-avatar-display" src="" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i data-lucide="camera" class="text-white w-6 h-6"></i>
+                            </div>
+                    </div>
+                </div>
+                <input type="file" id="dashboard-avatar-input" class="hidden" accept="image/*">
+                <div>
+                    <h2 class="text-3xl font-bold flex items-center gap-3">
+                        ¡Hola, <span id="user-name-display" class="text-accent"></span>! 👋
+                        <span id="user-rank-badge" class="text-xs px-3 py-1 rounded-full bg-accent/20 text-accent border border-accent/30"></span>
+                    </h2>
+                    <p class="text-gray-400">¿Qué aprenderemos hoy?</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="window.location.href='perfil_usuario.html'" class="btn-secondary">
+                    <i data-lucide="user"></i> Mi Perfil
+                </button>
+                <button onclick="window.location.href='logros.html'" class="btn-secondary text-yellow-500 border-yellow-500/30 hover:bg-yellow-500/10">
+                    <i data-lucide="trophy"></i> Trofeos
+                </button>
+                <button id="logout-btn" class="btn-secondary">
+                    <i data-lucide="log-out"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+
+        <!-- Acciones Rápidas (Leaderboard & Historia) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <!-- LEADERBOARD CARD -->
+            <a href="leaderboard.html" class="group relative bg-card-background border border-yellow-500/30 rounded-xl p-6 hover:border-yellow-500 transition-all flex items-center justify-between hover:shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="trophy" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-yellow-400 transition-colors">Tabla de Clasificación</h3>
+                        <p class="text-sm text-gray-400">Compite contra otros estudiantes</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right" class="text-gray-500 group-hover:text-white transition-colors"></i>
+            </a>
+
+            <!-- STORY CARD -->
+            <a href="story.html" class="group relative bg-card-background border border-purple-500/30 rounded-xl p-6 hover:border-purple-500 transition-all flex items-center justify-between hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="book-open" class="text-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">Bitácora Secreta</h3>
+                        <p class="text-sm text-gray-400">Nuestra historia (Desbloqueable)</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right" class="text-gray-500 group-hover:text-white transition-colors"></i>
+            </a>
+        </div>
+
+        <h3 class="text-xl font-bold mb-6 text-white"><i data-lucide="grid" class="inline mr-2 text-accent"></i>Cursos Disponibles</h3>
+
+        <!-- Cursos Grid -->
+        <div id="courses-container" class="course-grid"></div>
+
+        <!-- Classmates Panel -->
+        <div class="mt-12 bg-card-background border border-border rounded-xl p-6">
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                <i data-lucide="users" class="text-green-400"></i> Compañeros Online
+            </h3>
+            <div id="classmates-grid" class="flex flex-wrap gap-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JS LOGIC -->
+    <script type="module">
+        lucide.createIcons();
+        import { 
+            listenToUsers, 
+            getAllUsersFromFirestore, 
+            syncUserToFirestore,
+            getUserFromFirestore,
+            showLoading,
+            hideLoading,
+            checkConnection
+        } from './assets/js/firebase-config.js';
+        
+        // --- DATA ---
+        const courses = {
+            web: { title: "Desarrollo Web", icon: "globe", desc: "HTML, CSS y JS desde cero.", url: "web_course.html", color: "text-blue-400" },
+            python: { title: "Python Master", icon: "terminal", desc: "Lógica y Scripts potentes.", url: "python_course.html", color: "text-yellow-400" },
+            ruby: { title: "Ruby Gems", icon: "gem", desc: "Elegancia y rapidez.", url: "ruby_course.html", color: "text-red-500" },
+            db: { title: "Bases de Datos", icon: "database", desc: "SQL y Estructura de Datos.", url: "database_course.html", color: "text-green-400" }
+        };
+
+        // --- DASHBOARD INIT ---
+        const dashboardView = document.getElementById('dashboard-view');
+        
+        // STRICT SESSION LOGIC
+        async function initDashboard() {
+            if (!checkConnection()) return;
+            
+            showLoading('Conectando con la Matrix...');
+            
+            // 1. Get Session User (from local storage strictly as a session identifier, verified against DB)
+            const localSession = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!localSession || !localSession.id) {
+                console.warn('No session found, redirecting to login.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                // 2. Refresh User Data from Firestore (SSOT)
+                const freshUser = await getUserFromFirestore(localSession.id);
+                
+                if (!freshUser) {
+                    alert('Sesión inválida o expirada. Por favor ingresa nuevamente.');
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Update Local Session Cache just to keep it in sync for other synchronous instant-reads if necessary
+                localStorage.setItem('currentUser', JSON.stringify(freshUser));
+                
+                // 3. Render Dashboard
+                renderUserProfile(freshUser);
+                renderCourses();
+                
+                hideLoading();
+                dashboardView.classList.remove('hidden');
+                
+                // 4. Start Listeners
+                startRealTimeUpdates();
+                
+                // 5. Update Masterminds (Async background)
+                updateMasterminds();
+
+                // 6. Logout Listener (Strict Cleanup)
+                const logoutBtn = document.getElementById('logout-btn');
+                if(logoutBtn) {
+                     logoutBtn.onclick = () => {
+                        if(confirm('¿Cerrar sesión y sincronizar?')) {
+                            showLoading('Cerrando sesión safe...');
+                            setTimeout(() => {
+                                if(window.purgeLocalStorage) window.purgeLocalStorage();
+                                else localStorage.clear();
+                                window.location.href = 'index.html';
+                            }, 500); // Small delay to show loading
+                        }
+                     };
+                }
+
+            } catch (err) {
+                console.error('Dashboard Init Error:', err);
+                alert('Error cargando el perfil. Revisa tu conexión.');
+                // Optional: window.location.href = 'index.html';
+            }
+        }
+
+        function renderUserProfile(user) {
+            document.getElementById('user-name-display').textContent = user.name;
+            const avatarImg = document.getElementById('user-avatar-display');
+            if (avatarImg) avatarImg.src = user.avatar || 'assets/default_avatar.png';
+            
+            // Show rank badge
+            const rankBadge = document.getElementById('user-rank-badge');
+            if (rankBadge && user.rank) {
+                rankBadge.textContent = user.rank;
+            }
+        }
+
+        function renderCourses() {
+            const container = document.getElementById('courses-container');
+            if (!container) return;
+            
+            const courses = [
+                { name: 'Desarrollo Web', icon: 'code', color: 'blue', url: 'web_course.html' },
+                { name: 'Python', icon: 'terminal', color: 'yellow', url: 'python_course.html' },
+                { name: 'Ruby', icon: 'gem', color: 'red', url: 'ruby_course.html' },
+                { name: 'Bases de Datos', icon: 'database', color: 'green', url: 'database_course.html' }
+            ];
+            
+            container.innerHTML = courses.map(course => `
+                <a href="${course.url}" class="course-card group">
+                    <div class="text-4xl mb-4">
+                        <i data-lucide="${course.icon}" class="text-${course.color}-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white">${course.name}</h3>
+                    <p class="text-sm text-gray-400">Explora y aprende</p>
+                    <div class="mt-4 flex items-center gap-2 text-${course.color}-400 text-sm">
+                        <span>Comenzar</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        function renderClassmates(users) {
+            const grid = document.getElementById('classmates-grid');
+            if (!grid) return;
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const otherUsers = users.filter(u => u.id !== currentUser?.id);
+            
+            if (otherUsers.length === 0) {
+                grid.innerHTML = '<p class="text-gray-500 text-sm">No hay compañeros online en este momento.</p>';
+                return;
+            }
+            
+            grid.innerHTML = otherUsers.map(user => `
+                <div onclick="window.location.href='perfil_usuario.html?user=${encodeURIComponent(user.id)}'" 
+                     class="flex items-center gap-3 bg-background/50 border border-border rounded-lg p-3 hover:border-accent transition-colors cursor-pointer">
+                    <img src="${user.avatar || 'https://ui-avatars.com/api/?name=' + user.name}" 
+                         class="w-10 h-10 rounded-full object-cover border-2 ${user.isOnline ? 'border-green-400' : 'border-gray-600'}">
+                    <div class="flex-1">
+                        <p class="font-semibold text-sm text-white">${user.name}</p>
+                        <p class="text-xs text-gray-400">${user.rank || 'Estudiante'}</p>
+                    </div>
+                    ${user.isOnline ? '<div class="w-2 h-2 bg-green-400 rounded-full"></div>' : ''}
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        // --- REAL-TIME UPDATES ---
+        function startRealTimeUpdates() {
+            console.log('📡 Conectando listener en tiempo real en Dashboard...');
+            listenToUsers((realTimeUsers) => {
+                console.log('✨ Actualización recibida:', realTimeUsers.length);
+                renderClassmates(realTimeUsers);
+                
+                // Also update local cache for robustness (read-only for listing)
+                try {
+                    localStorage.setItem('allUsers', JSON.stringify(realTimeUsers));
+                } catch(e){}
+            });
+        }
+
+        window.addEventListener('load', initDashboard);
+
+        async function updateGlobalUsers(user) {
+            // Actualizar localStorage (caché)
+            let allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+            const idx = allUsers.findIndex(u => u.name === user.name);
+            if(idx >= 0) allUsers[idx] = user;
+            else allUsers.push(user);
+            localStorage.setItem('allUsers', JSON.stringify(allUsers));
+            
+            // Sincronizar con Firebase
+            try {
+                await syncUserToFirestore(user);
+            } catch(err) {
+                console.error('Error updating Firebase:', err);
+            }
+        }
+
+        // Auto-update Masterminds Avatars (Helper)
+        async function updateMasterminds() {
+            try {
+                // Fetch fresh users if possible
+                let users = [];
+                try {
+                    users = await getAllUsersFromFirestore();
+                } catch(e) { users = JSON.parse(localStorage.getItem('allUsers') || '[]'); }
+                
+                const steven = users.find(u => u.name && u.name.toLowerCase() === 'steven');
+                const amelia = users.find(u => u.name && u.name.toLowerCase() === 'amelia');
+                
+                // Actualizar Steven
+                if (steven && steven.avatar) {
+                    const img = document.getElementById('steven-founder-img');
+                    if (img) img.src = steven.avatar;
+                }
+                
+                // Actualizar Amelia
+                if (amelia && amelia.avatar) {
+                    const imgs = document.querySelectorAll('img');
+                    for (let img of imgs) {
+                        if (img.src.includes('239523.jpg') || (img.parentElement && img.parentElement.innerHTML.includes('Amelia'))) {
+                            img.src = amelia.avatar;
+                            img.id = 'amelia-founder-img'; 
+                            break;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not sync mastermind avatars', e);
+            }
+        }
+
+        // --- DASHBOARD AVATAR UPDATE ---
+        const dashAvatarContainer = document.getElementById('dashboard-avatar-container');
+        const dashAvatarInput = document.getElementById('dashboard-avatar-input');
+        
+        if (dashAvatarContainer && dashAvatarInput) {
+            dashAvatarContainer.addEventListener('click', () => dashAvatarInput.click());
+            
+            dashAvatarInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('La imagen es muy grande (Máx 5MB)');
+                    return;
+                }
+
+                // Obtener usuario actual
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (!currentUser) return;
+
+                // Importar dinámico si es necesario o usar global
+                // Asumimos que uploadWithProgress está disponible o importado arriba
+                // En module script:
+                const { uploadWithProgress } = await import('./assets/js/firebase-storage.js');
+                
+                try {
+                    // Update UI immediately for feedback
+                    const avatarDisplay = document.getElementById('user-avatar-display');
+                    const preSrc = avatarDisplay.src;
+                    
+                    const newUrl = await uploadWithProgress(file, (status) => {
+                         console.log("Avatar Update:", status);
+                         // Podríamos mostrar un toast o algo
+                    });
+                    
+                    currentUser.avatar = newUrl;
+                    avatarDisplay.src = newUrl;
+                    
+                    // Save
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    await updateGlobalUsers(currentUser);
+                    alert('Avatar actualizado correctamente ✨');
+                    
+                } catch (err) {
+                    console.error(err);
+                    alert('Error actualizando avatar.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

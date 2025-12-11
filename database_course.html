@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bases de Datos - Status Code 418</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.css">
+    <script type="module" src="assets/js/firebase-config.js"></script>
+    <script type="module" src="assets/js/firebase-storage.js"></script>
+    <link rel="stylesheet" href="assets/prism-tokyo.css">
+    <script src="assets/js/course_system.js"></script>
+    <style>
+     :root {
+         --background: #1a1b26;
+         --foreground: #a9b1d6;
+         --card-background: #24283b;
+         --border: #414868;
+         --accent: #7aa2f7;
+         --accent-dark: #5a7edb;
+         --green: #9ece6a;
+         --yellow: #e0af68;
+         --red: #f7768e;
+         --font-sans: 'Inter', sans-serif;
+         --font-mono: 'JetBrains Mono', monospace;
+     }
+
+     body {
+         color: var(--foreground);
+         font-family: var(--font-sans);
+         margin: 0;
+         padding: 0;
+         position: relative;
+         overflow-x: hidden;
+     }
+
+     /* Fondo animado */
+     .background-container {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: -1;
+         transition: opacity 0.5s ease;
+     }
+
+     .background-day, .background-night {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background-size: cover;
+         background-position: center;
+         opacity: 0;
+         transition: opacity 1s ease;
+     }
+
+     .background-day {
+         background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
+     }
+
+     .background-night {
+         background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+     }
+
+     .dark .background-night {
+         opacity: 1;
+     }
+
+     .background-day {
+         opacity: 1;
+     }
+
+     /* --- CONTENEDOR PRINCIPAL MEJORADO --- */
+     .content-box {
+         background-color: rgba(36, 40, 59, 0.85);
+         border: 1px solid var(--border);
+         border-radius: 20px;
+         padding: 2rem;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+         backdrop-filter: blur(10px);
+         margin: 2rem auto;
+         max-width: 90%;
+         min-height: calc(100vh - 4rem);
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: flex-start;
+         position: relative;
+     }
+
+     @media (min-width: 768px) {
+         .content-box {
+             max-width: 1100px;
+             min-height: 90vh;
+         }
+     }
+
+     /* Index Page Styles */
+     .main-container {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         min-height: calc(100vh - 4rem);
+         text-align: center;
+     }
+
+     .main-title {
+         font-size: 5rem;
+         font-weight: bold;
+         color: var(--accent);
+         text-shadow: 0 0 15px var(--accent);
+         margin-bottom: 1rem;
+     }
+
+     .main-subtitle {
+         font-size: 1.5rem;
+         margin-bottom: 3rem;
+         max-width: 600px;
+     }
+
+     .course-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+         gap: 2.5rem;
+         width: 100%;
+         max-width: 1400px;
+         padding: 2rem 0;
+         justify-items: center;
+     }
+
+     .course-card-link {
+         text-decoration: none;
+     }
+
+     .course-card {
+         background: linear-gradient(135deg, var(--card-background) 0%, rgba(65, 72, 104, 0.5) 100%);
+         border: 1px solid var(--border);
+         border-radius: 20px;
+         padding: 2.5rem;
+         transition: all 0.4s ease;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 1.5rem;
+         position: relative;
+         overflow: hidden;
+     }
+
+     .course-card::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: linear-gradient(135deg, rgba(122, 162, 247, 0.1) 0%, rgba(158, 206, 106, 0.1) 100%);
+         opacity: 0;
+         transition: opacity 0.4s ease;
+         border-radius: 20px;
+     }
+
+     .course-card:hover {
+         transform: translateY(-15px) scale(1.05);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(122, 162, 247, 0.3);
+         border-color: var(--accent);
+     }
+
+     .course-card:hover::before {
+         opacity: 1;
+     }
+
+     .course-icon {
+         font-size: 4rem;
+         color: var(--accent);
+         transition: transform 0.3s ease, color 0.3s ease;
+         z-index: 1;
+     }
+
+     .course-card:hover .course-icon {
+         transform: scale(1.1);
+         color: var(--yellow);
+     }
+
+     .course-title {
+         font-size: 1.5rem;
+         font-weight: 600;
+         color: var(--foreground);
+         z-index: 1;
+         transition: color 0.3s ease;
+     }
+
+     .course-card:hover .course-title {
+         color: var(--yellow);
+     }
+
+     .course-description {
+         color: var(--foreground);
+         opacity: 0.7;
+         z-index: 1;
+         transition: opacity 0.3s ease;
+     }
+
+     .course-card:hover .course-description {
+         opacity: 1;
+     }
+
+     /* --- ESTILOS DE PANELES Y TARJETAS --- */
+     .panel {
+         display: none;
+         width: 100%;
+         padding: 1rem 0;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         text-align: center;
+         flex-grow: 1;
+     }
+     .panel.active {
+         display: flex;
+     }
+
+     .level-selection-title {
+         font-size: 3rem;
+         font-weight: 800;
+         color: var(--accent);
+         text-shadow: 0 0 10px var(--accent);
+         margin-bottom: 0.5rem;
+     }
+
+     .level-selection-subtitle {
+         font-size: 1.25rem;
+         color: var(--foreground);
+         max-width: 600px;
+         margin-bottom: 2rem;
+     }
+
+     @media (min-width: 768px) {
+         .level-selection-title { font-size: 4rem; }
+     }
+
+     /* Estilos para la cuadrícula de niveles */
+     .level-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+         gap: 1rem;
+         width: 100%;
+         max-width: 1000px;
+         margin-top: 2rem;
+     }
+
+     .code-block {
+        background-color: #1a1b26; /* Tokyo Night background */
+        border: 1px solid #414868; /* Tokyo Night border */
+        color: #a9b1d6; /* Tokyo Night foreground */
+        font-family: var(--font-mono);
+        border-radius: 8px;
+        margin-top: 1rem;
+        overflow: hidden; /* Ensures the inner content respects the border radius */
+     }
+
+     .code-block-header {
+         background-color: var(--border);
+         padding: 0.5rem 1rem;
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+     }
+
+     .code-block-header span {
+         width: 12px;
+         height: 12px;
+         border-radius: 50%;
+     }
+
+     .code-block-header .bg-red-500 { background-color: var(--red); }
+     .code-block-header .bg-yellow-500 { background-color: var(--yellow); }
+     .code-block-header .bg-green-500 { background-color: var(--green); }
+
+     pre {
+         margin: 0;
+         padding: 1rem;
+         white-space: pre-wrap;
+         word-wrap: break-word;
+     }
+
+     .code-block .language-html .tag,
+     .code-block .language-css .at-rule,
+     .code-block .language-javascript .keyword {
+         color: var(--accent);
+     }
+
+     .code-block .language-html .string,
+     .code-block .language-css .string,
+     .code-block .language-javascript .string {
+         color: var(--green);
+     }
+
+     .code-block .language-css .property,
+     .code-block .language-javascript .property {
+         color: var(--yellow);
+     }
+
+     .code-block .language-html .comment,
+     .code-block .language-css .comment,
+     .code-block .language-javascript .comment {
+         color: #5c6370;
+     }
+
+     .btn-primary {
+         background-color: var(--accent);
+         color: white;
+         padding: 0.75rem 1.5rem;
+         border-radius: 8px;
+         font-weight: 600;
+         border: none;
+         cursor: pointer;
+         transition: background-color 0.2s;
+     }
+
+     .btn-primary:hover {
+         background-color: var(--accent-dark);
+     }
+
+     .btn-primary:disabled {
+         opacity: 0.5;
+         cursor: not-allowed;
+     }
+
+     .quiz-option {
+         border: 2px solid var(--border);
+         background-color: transparent;
+         color: var(--foreground);
+         padding: 1rem;
+         border-radius: 8px;
+         cursor: pointer;
+         transition: all 0.2s;
+         text-align: left;
+         width: 100%;
+         user-select: none;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+     }
+
+     .quiz-option:hover:not(.disabled) {
+         border-color: var(--accent);
+         background-color: rgba(122, 162, 247, 0.1);
+     }
+
+     .quiz-option.correct {
+         border-color: var(--green);
+         background-color: rgba(158, 206, 106, 0.1);
+         color: var(--green);
+     }
+
+     .quiz-option.incorrect {
+         border-color: var(--red);
+         background-color: rgba(247, 118, 142, 0.1);
+         color: var(--red);
+     }
+
+     .quiz-option.disabled {
+         pointer-events: none;
+         opacity: 0.7;
+     }
+
+     .level-node {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         position: relative;
+         cursor: pointer;
+     }
+
+     .level-icon-wrapper {
+         width: 64px;
+         height: 64px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         border: 3px solid;
+         transition: all 0.3s ease;
+     }
+
+     .level-number {
+         margin-top: 8px;
+         font-weight: 600;
+         font-size: 0.9rem;
+     }
+
+     .level-node.locked .level-icon-wrapper {
+         border-color: var(--border);
+         color: var(--border);
+         background-color: transparent;
+     }
+
+     .level-node.unlocked .level-icon-wrapper {
+         border-color: var(--accent);
+         color: var(--accent);
+     }
+
+     .level-node.unlocked:hover .level-icon-wrapper {
+         background-color: var(--accent);
+         color: var(--card-background);
+         transform: scale(1.1);
+     }
+
+     .level-node.completed .level-icon-wrapper {
+         border-color: var(--green);
+         background-color: var(--green);
+         color: var(--card-background);
+     }
+
+
+     .progress-bar-bg {
+         background-color: var(--border);
+         border-radius: 9999px;
+         height: 0.625rem;
+     }
+
+     .progress-bar-fill {
+         background-color: var(--accent);
+         height: 0.625rem;
+         border-radius: 9999px;
+     }
+
+     .hidden {
+         display: none;
+     }
+
+     /* Estilos para el contenido de la lección */
+     .lesson-content h3 {
+         color: var(--accent);
+         margin-top: 1.5rem;
+         margin-bottom: 0.5rem;
+     }
+
+     .lesson-content ul, .lesson-content ol {
+         margin-left: 1.5rem;
+         margin-bottom: 1rem;
+     }
+
+     .lesson-content li {
+         margin-bottom: 0.5rem;
+     }
+
+     .lesson-content code {
+         background-color: rgba(122, 162, 247, 0.1);
+         color: var(--accent);
+         padding: 0.2rem 0.4rem;
+         border-radius: 4px;
+         font-family: var(--font-mono);
+         font-size: 0.9em;
+     }
+
+     .lesson-content strong {
+         color: var(--yellow);
+     }
+
+     .lesson-content {
+         max-width: none;
+         width: 100%;
+         text-align: left;
+     }
+
+     .lesson-content p, .lesson-content ul, .lesson-content ol {
+         margin-bottom: 1rem;
+     }
+
+     .lesson-content ul, .lesson-content ol {
+         padding-left: 1.5rem;
+     }
+
+     .lesson-content li {
+         margin-bottom: 0.5rem;
+     }
+
+     .lesson-content code:not([class*="language-"]) {
+         background-color: #2d3046;
+         padding: 0.2rem 0.4rem;
+         border-radius: 4px;
+         font-family: 'JetBrains Mono', monospace;
+         font-size: 0.9em;
+     }
+
+     .lesson-content p {
+         margin-bottom: 1rem;
+         line-height: 1.6;
+     }
+
+     /* Chat Styles */
+     #chat-toggle-btn {
+         background-color: var(--yellow) !important;
+         color: var(--card-background) !important;
+         border: none !important;
+         box-shadow: 0 4px 12px rgba(224, 175, 104, 0.3) !important;
+     }
+
+     #chat-toggle-btn:hover {
+         background-color: var(--accent) !important;
+         transform: scale(1.1) !important;
+         box-shadow: 0 6px 16px rgba(224, 175, 104, 0.4) !important;
+     }
+
+     #chat-modal {
+         background-color: var(--card-background) !important;
+         border: 1px solid var(--border) !important;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+     }
+
+     #chat-messages {
+         scrollbar-width: thin;
+         scrollbar-color: var(--border) transparent;
+     }
+
+     #chat-messages::-webkit-scrollbar {
+         width: 6px;
+     }
+
+     #chat-messages::-webkit-scrollbar-track {
+         background: transparent;
+     }
+
+     #chat-messages::-webkit-scrollbar-thumb {
+         background-color: var(--border);
+         border-radius: 3px;
+     }
+
+     #chat-messages::-webkit-scrollbar-thumb:hover {
+         background-color: var(--accent);
+     }
+
+     #chat-input {
+         background-color: var(--background) !important;
+         border: 1px solid var(--border) !important;
+         color: var(--foreground) !important;
+     }
+
+     #chat-input:focus {
+         outline: none !important;
+         border-color: var(--accent) !important;
+         box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.2) !important;
+     }
+
+     #chat-send-btn {
+         background-color: var(--accent) !important;
+         border: none !important;
+     }
+
+     #chat-send-btn:hover:not(:disabled) {
+         background-color: var(--accent-dark) !important;
+     }
+
+     #chat-loading {
+         color: var(--yellow) !important;
+     }
+
+     .chat-message-bubble {
+         max-width: 85% !important;
+         padding: 0.75rem !important;
+         border-radius: 12px !important;
+         font-size: 0.875rem !important;
+         line-height: 1.4 !important;
+         word-wrap: break-word !important;
+     }
+
+     .user-message {
+         background-color: var(--accent) !important;
+         color: white !important;
+         margin-left: auto !important;
+     }
+
+     .ai-message {
+         background-color: var(--border) !important;
+         color: var(--foreground) !important;
+         margin-right: auto !important;
+     }
+
+     /* Responsive Chat */
+     @media (max-width: 640px) {
+         #chat-modal {
+             width: 95% !important;
+             height: 400px !important;
+             bottom: 80px !important;
+             right: 2.5% !important;
+             left: 2.5% !important;
+         }
+
+         .chat-message-bubble {
+             max-width: 90% !important;
+             font-size: 0.8rem !important;
+         }
+     }
+
+     @media (min-width: 641px) {
+         #chat-modal {
+             width: 320px !important;
+             height: 450px !important;
+             bottom: 80px !important;
+             right: 24px !important;
+         }
+     }
+
+     /* Asegurar que el modal se oculte correctamente */
+     #chat-modal.hidden {
+         display: none !important;
+     }
+
+     /* Mejorar la funcionalidad del botón de cierre */
+     #chat-close-btn {
+         cursor: pointer !important;
+         padding: 8px !important;
+         border-radius: 6px !important;
+         transition: all 0.2s ease !important;
+         color: var(--foreground) !important;
+     }
+
+     #chat-close-btn:hover {
+         background-color: rgba(255, 255, 255, 0.1) !important;
+         transform: scale(1.1) !important;
+     }
+
+     /* Header del chat mejorado */
+     #chat-modal header {
+         background-color: rgba(26, 27, 38, 0.9) !important;
+         backdrop-filter: blur(10px) !important;
+     }
+
+    /* Prism.js Tokyo Night inspired theme */
+    /* Base from Prism default, colors adapted to Tokyo Night */
+    code[class*="language-"], pre[class*="language-"] {
+        color: #c0caf5;
+        background: #1a1b26;
+        text-shadow: none;
+        font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        direction: ltr;
+        text-align: left;
+        white-space: pre;
+        word-spacing: normal;
+        word-break: normal;
+        tab-size: 2;
+        hyphens: none;
+    }
+
+    pre[class*="language-"] {
+        padding: 1rem;
+        margin: 0;
+        overflow: auto;
+        border-radius: 10px;
+        border: 1px solid #414868;
+        background: #1e1e2e;
+    }
+
+    :not(pre) > code[class*="language-"] {
+        padding: .15rem .35rem;
+        border-radius: .35rem;
+        background: rgba(122,162,247,.12);
+        color: #7aa2f7;
+        border: 1px solid #414868;
+    }
+
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+        color: #565f89;
+    }
+
+    .token.punctuation { color: #c0caf5; }
+
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted {
+        color: #ff9e64;
+    }
+
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+        color: #9ece6a;
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string {
+        color: #c0caf5;
+    }
+
+    .token.atrule,
+    .token.attr-value,
+    .token.keyword { color: #bb9af7; }
+
+    .token.function,
+    .token.class-name { color: #7aa2f7; }
+
+    .token.regex,
+    .token.important,
+    .token.variable { color: #e0af68; }
+
+    .token.bold { font-weight: bold; }
+    .token.italic { font-style: italic; }
+
+    .token.entity { cursor: help; }
+
+    /***** Line numbers plugin *****/
+    pre.line-numbers {
+        position: relative;
+        padding-left: 3.2em;
+        counter-reset: linenumber;
+    }
+    pre.line-numbers > code { position: relative; }
+
+    .line-numbers .line-numbers-rows {
+        position: absolute;
+        pointer-events: none;
+        top: 0; left: 0;
+        width: 3em;
+        border-right: 1px solid #2b3050;
+        background: #1a1b26;
+        user-select: none;
+    }
+
+    .line-numbers-rows > span {
+        display: block;
+        counter-increment: linenumber;
+    }
+
+    .line-numbers-rows > span:before {
+        content: counter(linenumber);
+        display: block;
+        padding: 0 .8em 0 .6em;
+        color: #565f89;
+        text-align: right;
+    }
+
+    /***** Toolbar plugin *****/
+    .prism-toolbar {
+        position: absolute;
+        top: .4rem;
+        right: .4rem;
+    }
+    .prism-toolbar button, .prism-toolbar span {
+        background: #24283b;
+        color: #a9b1d6;
+        border: 1px solid #414868;
+        border-radius: 6px;
+        padding: .25rem .5rem;
+        font-size: .75rem;
+    }
+    .prism-toolbar button:hover { background: #2b3050; }
+    </style>
+</head>
+<body>
+        <div class="background-container">
+        <div class="background-day"></div>
+        <div class="background-night"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-90 z-50 hidden items-center justify-center flex-col transition-opacity duration-300">
+        <div class="relative w-24 h-24 mb-4">
+            <div class="absolute inset-0 border-4 border-t-blue-500 border-r-transparent border-b-purple-500 border-l-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-2 border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-purple-400 rounded-full animate-spin-reverse"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="loader-2" class="w-8 h-8 text-white animate-pulse"></i>
+            </div>
+        </div>
+        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">CARGANDO BASE DE DATOS...</p>
+    </div>
+
+    <div class="content-box">
+
+        <!-- Botón de Tema (Sol/Luna) -->
+        <button id="theme-toggle" class="absolute top-5 right-5 p-2 rounded-full transition-colors z-10"
+                style="background-color: var(--card-background); border: 1px solid var(--border); color: var(--foreground);"
+                onmouseover="this.style.backgroundColor='var(--border)'"
+                onmouseout="this.style.backgroundColor='var(--card-background)'">
+            <i id="theme-icon" data-lucide="sun" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Panel de Selección de Nivel -->
+        <div id="level-selection-panel" class="panel active">
+            <div class="level-selection-container">
+                <h1 class="level-selection-title">Curso de Bases de Datos</h1>
+                <p class="level-selection-subtitle">Aprende a almacenar, organizar y consultar datos de manera eficiente.</p>
+                <div id="level-grid" class="level-grid"></div>
+                <a href="menu_inicio.html" class="mt-8 text-sm hover:underline" style="color: var(--accent);">Volver al Menú Principal</a>
+            </div>
+        </div>
+            
+                <!-- Paneles de Lección, Quiz y Resultados -->
+                <div id="lesson-panel" class="panel flex-col p-4 md:p-8">
+                    <div class="flex-grow w-full max-w-4xl mx-auto flex flex-col">
+                        <header class="flex items-center justify-between mb-4">
+                            <h2 id="lesson-title" class="text-2xl md:text-3xl font-bold"></h2>
+                            <button id="close-lesson-btn" class="p-2 rounded-full hover:bg-gray-700">
+                                <i data-lucide="x" class="w-6 h-6"></i>
+                            </button>
+                        </header>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6">
+                            <div id="lesson-progress" class="h-2.5 rounded-full" style="width: 10%; background-color: var(--accent);"></div>
+                        </div>
+                        <div id="lesson-content" class="flex-grow lesson-content max-w-none w-full"></div>
+                        <script>
+                          // Re-highlight when lesson content changes
+                          const observer = new MutationObserver(() => {
+                            requestAnimationFrame(() => Prism.highlightAll());
+                          });
+                          observer.observe(document, { subtree: true, childList: true });
+                        </script>
+                        <footer class="flex justify-between items-center mt-6 w-full">
+                            <button id="prev-btn" class="btn-primary px-6 py-2 rounded-lg font-semibold">Anterior</button>
+                            <span id="lesson-step" class="font-mono">1 / 10</span>
+                            <button id="next-btn" class="btn-primary px-6 py-2 rounded-lg font-semibold">Siguiente</button>
+                        </footer>
+                    </div>
+                </div>
+                <div id="quiz-panel" class="panel">
+                    <div class="w-full max-w-2xl mx-auto p-4">
+                        <header class="flex justify-between items-center mb-6 w-full">
+                            <h2 id="quiz-level-title" class="text-2xl font-bold">Quiz - Nivel 1</h2>
+                            <span id="quiz-progress" class="font-mono text-lg">1/10</span>
+                        </header>
+                        <p id="quiz-question" class="text-xl md:text-2xl text-center mb-8 w-full"></p>
+                        <div id="quiz-options" class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full"></div>
+                    </div>
+                </div>
+                <div id="results-panel" class="panel">
+                    <div class="w-full max-w-2xl mx-auto text-center p-4">
+                        <i id="results-icon" class="w-16 h-16 mx-auto mb-4"></i>
+                        <h2 id="results-title" class="text-4xl font-bold mb-4 w-full"></h2>
+                        <p id="results-score" class="text-2xl mb-2 w-full"></p>
+                        <p id="results-message" class="mb-8 w-full"></p>
+                        <div class="flex gap-4 justify-center w-full">
+                            <button id="retry-lesson-btn" class="btn-primary px-6 py-3 rounded-lg font-semibold">Repetir Lección</button>
+                            <button id="next-level-btn" class="btn-primary px-6 py-3 rounded-lg font-semibold hidden">Siguiente Nivel</button>
+                        </div>
+                    </div>
+                </div>
+    <!-- Floating Chat Button -->
+    <button id="chat-toggle-btn" class="fixed bottom-6 right-6 p-4 rounded-full shadow-xl z-50 transition-all duration-300 transform hover:scale-110" style="background-color: var(--yellow); color: var(--card-background);">
+        <i data-lucide="message-square" class="w-7 h-7"></i>
+    </button>
+
+    <!-- Chat Modal -->
+    <div id="chat-modal" class="fixed bottom-20 right-6 w-80 h-[450px] rounded-xl shadow-2xl z-50 flex flex-col hidden" style="background-color: var(--card-background); border: 1px solid var(--border);">
+        <!-- Chat Header -->
+        <header class="p-3 border-b flex items-center justify-between" style="border-color: var(--border);">
+            <div class="flex items-center">
+                <i data-lucide="sparkles" class="w-5 h-5 mr-2" style="color: var(--yellow);"></i>
+                <h3 class="font-semibold text-lg" style="color: var(--accent);">Asistente de Código</h3>
+            </div>
+            <button id="chat-close-btn" class="p-1 rounded-full hover:bg-gray-700">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </header>
+
+        <!-- Chat Messages Container -->
+        <div id="chat-messages" class="flex-grow p-3 overflow-y-auto space-y-3">
+            <!-- Mensaje de Bienvenida de la IA -->
+            <div class="flex justify-start">
+                <div class="ai-message chat-message-bubble">
+                    Hola. Soy tu Asistente de Código. Pregunta sobre el contenido, la estructura o las consultas de bases de datos que hemos visto en el curso.
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input Area -->
+        <div class="p-3 border-t" style="border-color: var(--border);">
+            <div class="flex gap-2">
+                <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." class="flex-grow p-2 rounded-lg text-sm focus:ring-0" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);" onkeydown="if(event.key === 'Enter') document.getElementById('chat-send-btn').click()">
+                <button id="chat-send-btn" class="p-2 rounded-lg transition-colors disabled:opacity-50" style="background-color: var(--accent); color: white;">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p id="chat-loading" class="text-xs text-center mt-1 hidden" style="color: var(--yellow);">Analizando la estructura...</p>
+        </div>
+    </div>
+
+    <!-- Prism.js core and languages -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+    // --- DATOS DEL CURSO ---
+    const courseData = [
+        { // Nivel 1
+            title: "Introducción a las Bases de Datos",
+            lesson: [
+                { title: "¿Qué es una Base de Datos?", content: `<p>Una base de datos es una colección organizada de información estructurada. Es como un armario archivador digital donde guardas y recuperas datos de manera eficiente.</p>`},
+                { title: "Tipos de Bases de Datos", content: `<p>Existen diferentes tipos: <strong>relacionales</strong> (tablas con filas y columnas), <strong>NoSQL</strong> (documentos, clave-valor, grafos) y <strong>jerárquicas</strong> (estructura de árbol).</p>`},
+                { title: "SQL vs NoSQL", content: `<p>SQL es para datos estructurados con relaciones complejas. NoSQL es más flexible y escalable para datos no estructurados o semi-estructurados.</p>`},
+                { title: "Sistemas de Gestión de Bases de Datos", content: `<p>Programas como MySQL, PostgreSQL, MongoDB, SQLite que permiten crear, leer, actualizar y eliminar datos.</p>`},
+                { title: "Tablas y Registros", content: `<p>Una tabla es como una hoja de cálculo. Cada fila es un registro (ej: un usuario) y cada columna es un campo (ej: nombre, email).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE TABLE usuarios (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(50),
+    email VARCHAR(100)
+);</code></pre></div>`},
+                { title: "Claves Primarias", content: `<p>Campo único que identifica cada registro. Generalmente es un número auto-incrementable (AUTO_INCREMENT).</p>`},
+                { title: "Claves Foráneas", content: `<p>Campo que referencia la clave primaria de otra tabla, creando relaciones entre tablas.</p>`},
+                { title: "Tipos de Datos", content: `<p>INT (números enteros), VARCHAR (texto), DATE (fechas), BOOLEAN (verdadero/falso), TEXT (texto largo).</p>`},
+                { title: "NULL vs NOT NULL", content: `<p>NULL significa "sin valor". NOT NULL obliga a que el campo tenga un valor.</p>`},
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido los conceptos básicos de las bases de datos. ¡Demuestra tus conocimientos!</p>"}
+            ],
+            quiz: [
+                { question: "¿Qué es una base de datos?", options: ["Un programa", "Una colección organizada de información", "Un lenguaje de programación", "Un servidor web"], answer: "Una colección organizada de información" },
+                { question: "¿Qué tipo de base de datos usa tablas?", options: ["NoSQL", "Relacional", "Jerárquica", "Todas las anteriores"], answer: "Relacional" },
+                { question: "¿Qué significa SQL?", options: ["Structured Query Language", "Simple Query Language", "Standard Query Language", "System Query Language"], answer: "Structured Query Language" },
+                { question: "¿Qué es un registro en una tabla?", options: ["Una columna", "Una fila", "Una tabla completa", "Una base de datos"], answer: "Una fila" },
+                { question: "¿Qué identifica de forma única cada registro?", options: ["Clave foránea", "Clave primaria", "Índice", "Campo"], answer: "Clave primaria" },
+                { question: "¿Qué tipo de dato almacena texto corto?", options: ["INT", "VARCHAR", "TEXT", "BOOLEAN"], answer: "VARCHAR" },
+                { question: "¿Qué tipo de dato almacena fechas?", options: ["DATE", "VARCHAR", "INT", "TEXT"], answer: "DATE" },
+                { question: "¿Qué significa NULL?", options: ["Valor cero", "Sin valor", "Valor por defecto", "Error"], answer: "Sin valor" },
+                { question: "¿Qué obliga a que un campo tenga valor?", options: ["NULL", "NOT NULL", "DEFAULT", "AUTO_INCREMENT"], answer: "NOT NULL" },
+                { question: "¿Qué conecta tablas relacionadas?", options: ["Clave primaria", "Clave foránea", "Índice", "Vista"], answer: "Clave foránea" }
+            ]
+        },
+        { // Nivel 2
+            title: "SQL Básico - SELECT",
+            lesson: [
+                { title: "Sintaxis Básica de SELECT", content: `<p>SELECT recupera datos de una tabla. Sintaxis: SELECT columnas FROM tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT nombre, email FROM usuarios;</code></pre></div>`},
+                { title: "Seleccionar Todas las Columnas", content: `<p>Usa * para seleccionar todas las columnas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos;</code></pre></div>`},
+                { title: "Cláusula WHERE", content: `<p>Filtra resultados basados en condiciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM usuarios WHERE edad > 18;</code></pre></div>`},
+                { title: "Operadores de Comparación", content: `<p>=, !=, <, >, <=, >=, LIKE (para patrones), IN (para listas).</p>`},
+                { title: "Operadores Lógicos", content: `<p>AND, OR, NOT para combinar condiciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos WHERE precio > 100 AND categoria = 'electronica';</code></pre></div>`},
+                { title: "Ordenando Resultados", content: `<p>ORDER BY ordena los resultados ASC (ascendente) o DESC (descendente).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos ORDER BY precio DESC;</code></pre></div>`},
+                { title: "Limitando Resultados", content: `<p>LIMIT especifica cuántos registros devolver.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos LIMIT 10;</code></pre></div>`},
+                { title: "Funciones de Agregación", content: `<p>COUNT(), SUM(), AVG(), MAX(), MIN().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT COUNT(*) FROM usuarios;
+SELECT AVG(precio) FROM productos;</code></pre></div>`},
+                { title: "DISTINCT", content: `<p>Elimina valores duplicados de los resultados.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT DISTINCT categoria FROM productos;</code></pre></div>`},
+                { title: "¡Listo para el Quiz!", content: "<p>SELECT es el corazón de SQL. ¡Muestra que sabes consultar datos!</p>"}
+            ],
+            quiz: [
+                { question: "¿Qué hace SELECT * FROM tabla?", options: ["Selecciona todas las columnas", "Selecciona todas las filas", "Crea una tabla", "Borra una tabla"], answer: "Selecciona todas las columnas" },
+                { question: "¿Qué cláusula filtra resultados?", options: ["FROM", "WHERE", "SELECT", "ORDER BY"], answer: "WHERE" },
+                { question: "¿Qué operador lógico significa 'Y'?", options: ["OR", "AND", "NOT", "LIKE"], answer: "AND" },
+                { question: "¿Qué cláusula ordena resultados?", options: ["SORT BY", "ORDER BY", "GROUP BY", "ARRANGE BY"], answer: "ORDER BY" },
+                { question: "¿Qué función cuenta registros?", options: ["SUM()", "COUNT()", "TOTAL()", "SIZE()"], answer: "COUNT()" },
+                { question: "¿Qué palabra elimina duplicados?", options: ["UNIQUE", "DISTINCT", "DIFFERENT", "REMOVE"], answer: "DISTINCT" },
+                { question: "¿Qué cláusula limita número de resultados?", options: ["TOP", "LIMIT", "MAX", "RESTRICT"], answer: "LIMIT" },
+                { question: "¿Qué función calcula promedio?", options: ["MEAN()", "AVERAGE()", "AVG()", "PROM()"], answer: "AVG()" },
+                { question: "¿Qué ordena de menor a mayor?", options: ["ASC", "DESC", "UP", "DOWN"], answer: "ASC" },
+                { question: "¿Qué operador busca patrones?", options: ["=", "LIKE", "MATCH", "SEARCH"], answer: "LIKE" }
+            ]
+        },
+        { // Nivel 3
+            title: "SQL - INSERT, UPDATE, DELETE",
+            lesson: [
+                { title: "INSERT INTO", content: `<p>Añade nuevos registros a una tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">INSERT INTO usuarios (nombre, email, edad)
+VALUES ('Ana García', 'ana@email.com', 25);</code></pre></div>`},
+                { title: "INSERT Múltiple", content: `<p>Añade múltiples registros en una sola consulta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">INSERT INTO productos (nombre, precio)
+VALUES ('Laptop', 999.99), ('Mouse', 25.50);</code></pre></div>`},
+                { title: "UPDATE", content: `<p>Modifica registros existentes.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">UPDATE usuarios SET email = 'nuevo@email.com' WHERE id = 1;</code></pre></div>`},
+                { title: "UPDATE Múltiple", content: `<p>Modifica múltiples columnas a la vez.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">UPDATE productos SET precio = precio * 1.1, stock = stock - 1 WHERE id = 5;</code></pre></div>`},
+                { title: "DELETE", content: `<p>Elimina registros de una tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DELETE FROM usuarios WHERE id = 1;</code></pre></div>`},
+                { title: "TRUNCATE", content: `<p>Elimina todos los registros de una tabla (más rápido que DELETE).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">TRUNCATE TABLE productos;</code></pre></div>`},
+                { title: "DROP TABLE", content: `<p>Elimina completamente una tabla y su estructura.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DROP TABLE usuarios;</code></pre></div>`},
+                { title: "Transacciones", content: `<p>BEGIN, COMMIT, ROLLBACK para operaciones seguras.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">BEGIN;
+UPDATE cuentas SET saldo = saldo - 100 WHERE id = 1;
+UPDATE cuentas SET saldo = saldo + 100 WHERE id = 2;
+COMMIT;</code></pre></div>`},
+                { title: "¡Listo para el Quiz!", content: "<p>INSERT, UPDATE y DELETE modifican datos. ¡Muestra que sabes manipularlos!</p>"}
+            ],
+            quiz: [
+                { question: "¿Qué comando añade nuevos registros?", options: ["ADD", "INSERT", "CREATE", "NEW"], answer: "INSERT" },
+                { question: "¿Qué comando modifica registros existentes?", options: ["MODIFY", "CHANGE", "UPDATE", "EDIT"], answer: "UPDATE" },
+                { question: "¿Qué comando elimina registros?", options: ["REMOVE", "DELETE", "ERASE", "CLEAR"], answer: "DELETE" },
+                { question: "¿Qué cláusula especifica qué registros modificar/eliminar?", options: ["WHEN", "IF", "WHERE", "CONDITION"], answer: "WHERE" },
+                { question: "¿Qué comando elimina todos los registros?", options: ["DELETE ALL", "TRUNCATE", "CLEAR", "EMPTY"], answer: "TRUNCATE" },
+                { question: "¿Qué comando elimina la tabla completa?", options: ["DELETE TABLE", "DROP TABLE", "REMOVE TABLE", "CLEAR TABLE"], answer: "DROP TABLE" },
+                { question: "¿Qué inicia una transacción?", options: ["START", "BEGIN", "OPEN", "INIT"], answer: "BEGIN" },
+                { question: "¿Qué confirma una transacción?", options: ["CONFIRM", "COMMIT", "SAVE", "END"], answer: "COMMIT" },
+                { question: "¿Qué cancela una transacción?", options: ["CANCEL", "ROLLBACK", "UNDO", "REVERT"], answer: "ROLLBACK" },
+                { question: "¿Por qué usar transacciones?", options: ["Para hacer consultas más rápidas", "Para asegurar integridad de datos", "Para crear tablas", "Para hacer backups"], answer: "Para asegurar integridad de datos" }
+            ]
+        },
+        { // Nivel 4
+            title: "Relaciones y JOINs",
+            lesson: [
+                { title: "Tipos de Relaciones", content: `<p>Uno a Uno, Uno a Muchos, Muchos a Muchos.</p>`},
+                { title: "Claves Foráneas", content: `<p>Campo que referencia la clave primaria de otra tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">ALTER TABLE pedidos ADD COLUMN usuario_id INT;
+ALTER TABLE pedidos ADD FOREIGN KEY (usuario_id) REFERENCES usuarios(id);</code></pre></div>`},
+                { title: "INNER JOIN", content: `<p>Devuelve solo registros que tienen coincidencias en ambas tablas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT usuarios.nombre, pedidos.fecha
+FROM usuarios
+INNER JOIN pedidos ON usuarios.id = pedidos.usuario_id;</code></pre></div>`},
+                { title: "LEFT JOIN", content: `<p>Devuelve todos los registros de la tabla izquierda y coincidencias de la derecha.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT usuarios.nombre, pedidos.fecha
+FROM usuarios
+LEFT JOIN pedidos ON usuarios.id = pedidos.usuario_id;</code></pre></div>`},
+                { title: "RIGHT JOIN", content: `<p>Devuelve todos los registros de la tabla derecha y coincidencias de la izquierda.</p>`},
+                { title: "FULL OUTER JOIN", content: `<p>Devuelve todos los registros de ambas tablas.</p>`},
+                { title: "JOIN Múltiple", content: `<p>Unir más de dos tablas en una consulta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT u.nombre, p.fecha, pr.nombre as producto
+FROM usuarios u
+JOIN pedidos p ON u.id = p.usuario_id
+JOIN productos pr ON p.producto_id = pr.id;</code></pre></div>`},
+                { title: "Alias de Tablas", content: `<p>Acorta nombres de tablas con AS.</p>`},
+                { title: "¡Listo para el Quiz!", content: "<p>Las relaciones conectan datos entre tablas. ¡Muestra que sabes unirlas!</p>"}
+            ],
+            quiz: [
+                { question: "¿Qué tipo de relación es usuario -> múltiples pedidos?", options: ["Uno a Uno", "Uno a Muchos", "Muchos a Muchos", "Ninguna"], answer: "Uno a Muchos" },
+                { question: "¿Qué conecta tablas relacionadas?", options: ["Clave primaria", "Clave foránea", "Índice", "Vista"], answer: "Clave foránea" },
+                { question: "¿Qué JOIN devuelve solo coincidencias?", options: ["LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "FULL JOIN"], answer: "INNER JOIN" },
+                { question: "¿Qué JOIN devuelve todo de la izquierda?", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN"], answer: "LEFT JOIN" },
+                { question: "¿Qué JOIN devuelve todo de la derecha?", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN"], answer: "RIGHT JOIN" },
+                { question: "¿Qué JOIN devuelve todo de ambas tablas?", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"], answer: "FULL OUTER JOIN" },
+                { question: "¿Qué palabra clave acorta nombres de tablas?", options: ["AS", "LIKE", "ALIAS", "SHORT"], answer: "AS" },
+                { question: "¿Cuántas tablas puedes unir en una consulta?", options: ["Solo 2", "Hasta 3", "Sin límite", "Depende del DBMS"], answer: "Sin límite" },
+                { question: "¿Qué es una relación Muchos a Muchos?", options: ["Un usuario múltiples pedidos", "Estudiante múltiples cursos", "Empleado múltiples proyectos", "Todas las anteriores"], answer: "Todas las anteriores" },
+                { question: "¿Para qué sirven las relaciones?", options: ["Solo para diseño", "Evitar datos duplicados", "Hacer consultas más rápidas", "Crear índices"], answer: "Evitar datos duplicados" }
+            ]
+        },
+        { // Nivel 5
+            title: "Funciones y Procedimientos",
+            lesson: [
+                { title: "Funciones de Texto", content: `<p>UPPER(), LOWER(), LENGTH(), CONCAT(), SUBSTRING().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT UPPER(nombre), LENGTH(email) FROM usuarios;
+SELECT CONCAT(nombre, ' - ', email) FROM usuarios;</code></pre></div>`},
+                { title: "Funciones de Fecha", content: `<p>NOW(), CURDATE(), DATE_ADD(), DATEDIFF().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT NOW();
+SELECT DATEDIFF(fecha_fin, fecha_inicio) FROM proyectos;</code></pre></div>`},
+                { title: "Funciones Matemáticas", content: `<p>ROUND(), CEIL(), FLOOR(), ABS(), POWER().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT ROUND(precio, 2), ABS(-5) FROM productos;</code></pre></div>`},
+                { title: "Funciones de Agregación Avanzadas", content: `<p>GROUP_CONCAT(), STDDEV(), VARIANCE().</p>`},
+                { title: "GROUP BY", content: `<p>Agrupa filas con valores iguales.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT categoria, COUNT(*) FROM productos GROUP BY categoria;</code></pre></div>`},
+                { title: "HAVING", content: `<p>Filtra grupos después de GROUP BY.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT categoria, COUNT(*) FROM productos
+GROUP BY categoria HAVING COUNT(*) > 5;</code></pre></div>`},
+                { title: "Procedimientos Almacenados", content: `<p>Conjunto de consultas SQL guardadas para reutilizar.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DELIMITER //
+CREATE PROCEDURE obtener_usuarios_activos()
+BEGIN
+    SELECT * FROM usuarios WHERE activo = 1;
+END //
+DELIMITER ;</code></pre></div>`},
+                { title: "Parámetros en Procedimientos", content: `<p>Procedimientos que aceptan parámetros.</p>`},
+                { title: "¡Listo para el Quiz!", content: "<p>Las funciones y procedimientos hacen SQL más poderoso. ¡Muestra que sabes usarlos!</p>"}
+            ],
+            quiz: [
+                { question: "¿Qué función convierte a mayúsculas?", options: ["UPPER()", "UP()", "TOUPPER()", "CAPS()"], answer: "UPPER()" },
+                { question: "¿Qué función concatena textos?", options: ["JOIN()", "CONCAT()", "MERGE()", "COMBINE()"], answer: "CONCAT()" },
+                { question: "¿Qué función devuelve la fecha actual?", options: ["TODAY()", "NOW()", "CURRENT_DATE()", "DATE()"], answer: "NOW()" },
+                { question: "¿Qué función redondea números?", options: ["ROUND()", "CEIL()", "FLOOR()", "Todas las anteriores"], answer: "Todas las anteriores" },
+                { question: "¿Qué cláusula agrupa filas?", options: ["GROUP BY", "ORDER BY", "SORT BY", "CLUSTER BY"], answer: "GROUP BY" },
+                { question: "¿Qué cláusula filtra grupos?", options: ["WHERE", "HAVING", "FILTER", "GROUP WHERE"], answer: "HAVING" },
+                { question: "¿Cómo se llaman las funciones guardadas?", options: ["Stored Functions", "Procedimientos Almacenados", "Funciones Guardadas", "Todas las anteriores"], answer: "Todas las anteriores" },
+                { question: "¿Qué delimitador cambia para procedimientos?", options: ["DELIMITER", "SEPARATOR", "DIVIDER", "SPLITTER"], answer: "DELIMITER" },
+                { question: "¿Qué función calcula desviación estándar?", options: ["STD()", "STDDEV()", "STANDARD()", "DEVIATION()"], answer: "STDDEV()" },
+                { question: "¿Para qué sirven las funciones de agregación?", options: ["Solo contar", "Resumir datos", "Crear tablas", "Eliminar datos"], answer: "Resumir datos" }
+            ]
+        },
+        { // Nivel 6
+            title: "Índices y Optimización",
+            lesson: [
+                { title: "Qué son los Índices", content: `<p>Los índices aceleran las consultas creando estructuras de búsqueda rápida.</p>` },
+                { title: "CREATE INDEX", content: `<p>Crea índices en columnas específicas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE INDEX idx_email ON usuarios(email);</code></pre></div>` },
+                { title: "Índices Compuestos", content: `<p>Índices en múltiples columnas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE INDEX idx_nombre_email ON usuarios(nombre, email);</code></pre></div>` },
+                { title: "Índices Únicos", content: `<p>Aseguran que los valores sean únicos.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE UNIQUE INDEX idx_email_unique ON usuarios(email);</code></pre></div>` },
+                { title: "DROP INDEX", content: `<p>Elimina índices cuando no son necesarios.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DROP INDEX idx_email;</code></pre></div>` },
+                { title: "EXPLAIN", content: `<p>Analiza cómo se ejecuta una consulta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">EXPLAIN SELECT * FROM usuarios WHERE email = 'test@test.com';</code></pre></div>` },
+                { title: "Optimización de Consultas", content: `<p>Usar índices apropiados, evitar SELECT *, optimizar JOINs.</p>` },
+                { title: "Vistas", content: `<p>Tablas virtuales basadas en consultas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE VIEW usuarios_activos AS
+SELECT * FROM usuarios WHERE activo = 1;</code></pre></div>` },
+                { title: "¡Listo para el Quiz!", content: "<p>Los índices y la optimización hacen las bases de datos más rápidas. ¡Muestra que sabes optimizar!</p>" }
+            ],
+            quiz: [
+                { question: "¿Para qué sirven los índices?", options: ["Almacenar datos", "Acelerar consultas", "Crear tablas", "Hacer backups"], answer: "Acelerar consultas" },
+                { question: "¿Qué comando crea índices?", options: ["CREATE INDEX", "ADD INDEX", "NEW INDEX", "MAKE INDEX"], answer: "CREATE INDEX" },
+                { question: "¿Qué comando elimina índices?", options: ["DELETE INDEX", "DROP INDEX", "REMOVE INDEX", "CLEAR INDEX"], answer: "DROP INDEX" },
+                { question: "¿Qué comando analiza consultas?", options: ["ANALYZE", "EXPLAIN", "DESCRIBE", "SHOW"], answer: "EXPLAIN" },
+                { question: "¿Qué son las vistas?", options: ["Tablas físicas", "Tablas virtuales", "Índices", "Procedimientos"], answer: "Tablas virtuales" },
+                { question: "¿Qué aceleran los índices?", options: ["Solo SELECT", "Solo INSERT", "Consultas de búsqueda", "Solo DELETE"], answer: "Consultas de búsqueda" },
+                { question: "¿Qué tipo de índice asegura unicidad?", options: ["PRIMARY", "UNIQUE", "NORMAL", "SIMPLE"], answer: "UNIQUE" },
+                { question: "¿Qué comando crea vistas?", options: ["CREATE VIEW", "NEW VIEW", "MAKE VIEW", "ADD VIEW"], answer: "CREATE VIEW" },
+                { question: "¿Por qué optimizar consultas?", options: ["Para usar más memoria", "Para hacerlas más rápidas", "Para usar más CPU", "Para hacer backups"], answer: "Para hacerlas más rápidas" },
+                { question: "¿Qué evita SELECT * en optimización?", options: ["Traer datos innecesarios", "Traer más datos", "Hacer consultas más lentas", "Todas las anteriores"], answer: "Todas las anteriores" }
+            ]
+        },
+        { // Nivel 7
+            title: "Bases de Datos NoSQL",
+            lesson: [
+                { title: "Qué es NoSQL", content: `<p>Bases de datos no relacionales para datos no estructurados.</p>` },
+                { title: "Tipos de NoSQL", content: `<p>Documentales (MongoDB), Clave-Valor (Redis), Columnares (Cassandra), Grafos (Neo4j).</p>` },
+                { title: "MongoDB", content: `<p>Base de datos documental que almacena datos en formato BSON/JSON.</p>` },
+                { title: "Colecciones y Documentos", content: `<p>Equivalentes a tablas y registros en MongoDB.</p>` },
+                { title: "Consultas en MongoDB", content: `<p>Usa find(), insert(), update(), delete().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-javascript">db.usuarios.find({edad: {$gte: 18}})</code></pre></div>` },
+                { title: "Agregaciones", content: `<p>Procesamiento de datos similar a GROUP BY en MongoDB.</p>` },
+                { title: "Ventajas de NoSQL", content: `<p>Escalabilidad horizontal, esquema flexible, alto rendimiento.</p>` },
+                { title: "Cuándo usar NoSQL", content: `<p>Datos no estructurados, aplicaciones web grandes, necesidad de escalabilidad.</p>` },
+                { title: "¡Listo para el Quiz!", content: "<p>NoSQL es ideal para datos modernos. ¡Muestra que sabes cuándo usarlo!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué significa NoSQL?", options: ["No Structured Query Language", "Not Only SQL", "New Object Storage Language", "Non-Standard Query Language"], answer: "Not Only SQL" },
+                { question: "¿Qué tipo de NoSQL almacena documentos?", options: ["Clave-Valor", "Documental", "Columnares", "Grafos"], answer: "Documental" },
+                { question: "¿Qué base de datos es documental?", options: ["MySQL", "MongoDB", "PostgreSQL", "SQLite"], answer: "MongoDB" },
+                { question: "¿Qué tipo de NoSQL es Redis?", options: ["Documental", "Clave-Valor", "Columnares", "Grafos"], answer: "Clave-Valor" },
+                { question: "¿Qué tipo de NoSQL es ideal para redes sociales?", options: ["Documental", "Clave-Valor", "Columnares", "Grafos"], answer: "Grafos" },
+                { question: "¿Qué ventaja tiene NoSQL sobre SQL?", options: ["Esquema fijo", "Esquema flexible", "Menos escalable", "Más lento"], answer: "Esquema flexible" },
+                { question: "¿Cuándo es mejor NoSQL?", options: ["Datos estructurados", "Datos no estructurados", "Relaciones complejas", "Transacciones financieras"], answer: "Datos no estructurados" },
+                { question: "¿Qué método usa MongoDB para consultar?", options: ["SELECT", "find()", "query()", "search()"], answer: "find()" },
+                { question: "¿Qué permite la escalabilidad horizontal?", options: ["Añadir más CPU", "Añadir más servidores", "Añadir más memoria", "Añadir más disco"], answer: "Añadir más servidores" },
+                { question: "¿Qué formato usa MongoDB internamente?", options: ["JSON", "BSON", "XML", "YAML"], answer: "BSON" }
+            ]
+        },
+        { // Nivel 8
+            title: "Seguridad en Bases de Datos",
+            lesson: [
+                { title: "Autenticación", content: `<p>Verificar identidad de usuarios con contraseñas seguras.</p>` },
+                { title: "Autorización", content: `<p>Controlar qué acciones puede realizar cada usuario.</p>` },
+                { title: "Encriptación", content: `<p>Proteger datos sensibles en reposo y en tránsito.</p>` },
+                { title: "SQL Injection", content: `<p>Ataque que inyecta código malicioso en consultas.</p>` },
+                { title: "Prevención de Inyección", content: `<p>Usar prepared statements y validar entradas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-php">// Vulnerable
+$query = "SELECT * FROM users WHERE email = '$email'";
+
+// Seguro
+$stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+$stmt->execute([$email]);</code></pre></div>` },
+                { title: "Permisos de Usuario", content: `<p>GRANT y REVOKE para controlar acceso.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">GRANT SELECT ON usuarios TO usuario_lectura;
+REVOKE INSERT ON productos FROM usuario_escritura;</code></pre></div>` },
+                { title: "Auditoría", content: `<p>Registrar todas las acciones en la base de datos.</p>` },
+                { title: "Backups Seguros", content: `<p>Respaldos encriptados y almacenados en múltiples ubicaciones.</p>` },
+                { title: "¡Listo para el Quiz!", content: "<p>La seguridad protege los datos valiosos. ¡Muestra que sabes protegerlos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué verifica la identidad del usuario?", options: ["Autorización", "Autenticación", "Encriptación", "Auditoría"], answer: "Autenticación" },
+                { question: "¿Qué controla las acciones del usuario?", options: ["Autenticación", "Autorización", "Encriptación", "Auditoría"], answer: "Autorización" },
+                { question: "¿Qué protege datos sensibles?", options: ["Autenticación", "Autorización", "Encriptación", "Auditoría"], answer: "Encriptación" },
+                { question: "¿Qué registra las acciones en la BD?", options: ["Autenticación", "Autorización", "Encriptación", "Auditoría"], answer: "Auditoría" },
+                { question: "¿Qué es SQL Injection?", options: ["Ataque que inyecta código malicioso", "Método de encriptación", "Tipo de índice", "Función de búsqueda"], answer: "Ataque que inyecta código malicioso" },
+                { question: "¿Qué previene SQL Injection?", options: ["Prepared statements", "SELECT *", "ORDER BY", "GROUP BY"], answer: "Prepared statements" },
+                { question: "¿Qué comando da permisos?", options: ["GIVE", "GRANT", "ALLOW", "PERMIT"], answer: "GRANT" },
+                { question: "¿Qué comando quita permisos?", options: ["TAKE", "REVOKE", "DENY", "REMOVE"], answer: "REVOKE" },
+                { question: "¿Por qué son importantes los backups?", options: ["Para ahorrar espacio", "Para recuperar datos perdidos", "Para hacer consultas más rápidas", "Para crear índices"], answer: "Para recuperar datos perdidos" },
+                { question: "¿Qué debe tener una contraseña segura?", options: ["Solo números", "Longitud mínima, mayúsculas, números, símbolos", "Solo letras", "Máximo 6 caracteres"], answer: "Longitud mínima, mayúsculas, números, símbolos" }
+            ]
+        },
+        { // Nivel 9
+            title: "Normalización",
+            lesson: [
+                { title: "Primera Forma Normal (1NF)", content: `<p>Eliminar grupos repetidos, cada campo atómico.</p>` },
+                { title: "Segunda Forma Normal (2NF)", content: `<p>Eliminar dependencias parciales, todo depende de la clave completa.</p>` },
+                { title: "Tercera Forma Normal (3NF)", content: `<p>Eliminar dependencias transitivas, no dependencias entre campos no clave.</p>` },
+                { title: "Forma Normal de Boyce-Codd (BCNF)", content: `<p>Versión estricta de 3NF.</p>` },
+                { title: "Cuarta Forma Normal (4NF)", content: `<p>Eliminar dependencias multivalor.</p>` },
+                { title: "Quinta Forma Normal (5NF)", content: `<p>Eliminar dependencias de unión.</p>` },
+                { title: "Desnormalización", content: `<p>Romper reglas de normalización para mejorar rendimiento.</p>` },
+                { title: "¡Listo para el Quiz!", content: "<p>La normalización elimina redundancia. ¡Muestra que sabes normalizar!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué elimina la 1NF?", options: ["Dependencias parciales", "Grupos repetidos", "Dependencias transitivas", "Dependencias multivalor"], answer: "Grupos repetidos" },
+                { question: "¿Qué elimina la 2NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias multivalor"], answer: "Dependencias parciales" },
+                { question: "¿Qué elimina la 3NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias multivalor"], answer: "Dependencias transitivas" },
+                { question: "¿Qué es más estricta que 3NF?", options: ["1NF", "2NF", "BCNF", "4NF"], answer: "BCNF" },
+                { question: "¿Qué elimina la 4NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias multivalor"], answer: "Dependencias multivalor" },
+                { question: "¿Qué elimina la 5NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias de unión"], answer: "Dependencias de unión" },
+                { question: "¿Qué es la desnormalización?", options: ["Seguir estrictamente las reglas", "Romper reglas para rendimiento", "Crear más tablas", "Eliminar índices"], answer: "Romper reglas para rendimiento" },
+                { question: "¿Cuál es la forma normal más básica?", options: ["1NF", "2NF", "3NF", "BCNF"], answer: "1NF" },
+                { question: "¿Cuál es la forma normal más estricta?", options: ["1NF", "2NF", "3NF", "5NF"], answer: "5NF" },
+                { question: "¿Por qué normalizar?", options: ["Para hacer más lento", "Para eliminar redundancia", "Para usar más espacio", "Para complicar"], answer: "Para eliminar redundancia" }
+            ]
+        },
+        { // Nivel 10
+            title: "Transacciones y Concurrencia",
+            lesson: [
+                { title: "Propiedades ACID", content: `<p>Atomicidad, Consistencia, Aislamiento, Durabilidad.</p>` },
+                { title: "Niveles de Aislamiento", content: `<p>READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE.</p>` },
+                { title: "Bloqueos", content: `<p>SELECT ... FOR UPDATE para bloquear filas.</p>` },
+                { title: "Deadlocks", content: `<p>Situaciones donde dos transacciones se bloquean mutuamente.</p>` },
+                { title: "Control de Concurrencia", content: `<p>Manejar múltiples usuarios accediendo simultáneamente.</p>` },
+                { title: "¡Listo para el Quiz!", content: "<p>Las transacciones aseguran integridad. ¡Muestra que sabes manejar concurrencia!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué significa Atomicidad?", options: ["Todo o nada", "Consistencia", "Aislamiento", "Durabilidad"], answer: "Todo o nada" },
+                { question: "¿Qué significa Consistencia?", options: ["Todo o nada", "Estado válido", "Aislamiento", "Persistencia"], answer: "Estado válido" },
+                { question: "¿Qué significa Aislamiento?", options: ["Todo o nada", "Consistencia", "Transacciones no interfieren", "Durabilidad"], answer: "Transacciones no interfieren" },
+                { question: "¿Qué significa Durabilidad?", options: ["Todo o nada", "Consistencia", "Aislamiento", "Cambios persisten"], answer: "Cambios persisten" },
+                { question: "¿Cuál es el nivel de aislamiento más estricto?", options: ["READ UNCOMMITTED", "READ COMMITTED", "REPEATABLE READ", "SERIALIZABLE"], answer: "SERIALIZABLE" },
+                { question: "¿Cuál es el nivel de aislamiento más permisivo?", options: ["READ UNCOMMITTED", "READ COMMITTED", "REPEATABLE READ", "SERIALIZABLE"], answer: "READ UNCOMMITTED" },
+                { question: "¿Qué evita deadlocks?", options: ["Bloquear todo", "Bloquear en orden consistente", "No usar transacciones", "Usar solo SELECT"], answer: "Bloquear en orden consistente" },
+                { question: "¿Qué propiedad ACID es 'todo o nada'?", options: ["Atomicidad", "Consistencia", "Aislamiento", "Durabilidad"], answer: "Atomicidad" },
+                { question: "¿Qué propiedad ACID asegura que cambios persisten?", options: ["Atomicidad", "Consistencia", "Aislamiento", "Durabilidad"], answer: "Durabilidad" },
+                { question: "¿Por qué son importantes las transacciones?", options: ["Para hacer consultas más rápidas", "Para mantener integridad", "Para usar menos memoria", "Para crear índices"], answer: "Para mantener integridad" }
+            ]
+        },
+];
+    const moreLevels = [
+        { // Nivel 11
+            title: "Almacenamiento Local (LocalStorage)",
+            lesson: [
+                { title: "¿Qué es LocalStorage?", content: "<p>Es una forma de almacenar datos en el navegador de forma persistente. Los datos no se borran al cerrar el navegador.</p>" },
+                { title: "Guardar Datos", content: "<p>Se utiliza <code>localStorage.setItem('clave', 'valor')</code> para guardar datos. La clave y el valor deben ser strings.</p>" },
+                { title: "Leer Datos", content: "<p>Se utiliza <code>localStorage.getItem('clave')</code> para leer datos.</p>" },
+                { title: "Eliminar Datos", content: "<p>Se utiliza <code>localStorage.removeItem('clave')</code> para eliminar un dato específico.</p>" },
+                { title: "Limpiar Todo", content: "<p>Se utiliza <code>localStorage.clear()</code> para eliminar todos los datos.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido a usar LocalStorage. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es LocalStorage?", options: ["Una base de datos en la nube", "Una forma de almacenar datos en el navegador", "Un lenguaje de programación"], answer: "Una forma de almacenar datos en el navegador" },
+                { question: "¿Cómo se guardan datos en LocalStorage?", options: ["localStorage.setItem()", "localStorage.getItem()", "localStorage.removeItem()"], answer: "localStorage.setItem()" },
+                { question: "¿Cómo se leen datos de LocalStorage?", options: ["localStorage.setItem()", "localStorage.getItem()", "localStorage.removeItem()"], answer: "localStorage.getItem()" },
+                { question: "¿Cómo se elimina un dato de LocalStorage?", options: ["localStorage.setItem()", "localStorage.getItem()", "localStorage.removeItem()"], answer: "localStorage.removeItem()" },
+                { question: "¿Cómo se eliminan todos los datos de LocalStorage?", options: ["localStorage.clear()", "localStorage.deleteAll()", "localStorage.removeAll()"], answer: "localStorage.clear()" }
+            ]
+        },
+        { // Nivel 12
+            title: "Firebase - Realtime Database (Introducción)",
+            lesson: [
+                { title: "¿Qué es Firebase?", content: "<p>Firebase es una plataforma de desarrollo de aplicaciones web y móviles de Google. Ofrece una gran variedad de herramientas, incluyendo una base de datos en tiempo real.</p>" },
+                { title: "¿Qué es Realtime Database?", content: "<p>Es una base de datos NoSQL en la nube que te permite almacenar y sincronizar datos entre tus usuarios en tiempo real.</p>" },
+                { title: "Configuración del Proyecto", content: "<p>Para usar Firebase, necesitas crear un proyecto en la consola de Firebase y añadir el SDK a tu aplicación.</p>" },
+                { title: "Estructura de Datos", content: "<p>Los datos en Realtime Database se almacenan como un gran árbol JSON. No hay tablas ni filas.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido los conceptos básicos de Firebase Realtime Database. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es Firebase?", options: ["Una base de datos SQL", "Una plataforma de desarrollo de aplicaciones", "Un lenguaje de programación"], answer: "Una plataforma de desarrollo de aplicaciones" },
+                { question: "¿Qué tipo de base de datos es Realtime Database?", options: ["SQL", "NoSQL", "Relacional"], answer: "NoSQL" },
+                { question: "¿Cómo se almacenan los datos en Realtime Database?", options: ["En tablas", "Como un árbol JSON", "En archivos"], answer: "Como un árbol JSON" },
+                { question: "¿Qué necesitas para usar Firebase?", options: ["Un servidor propio", "Un proyecto en la consola de Firebase", "Una base de datos SQL"], answer: "Un proyecto en la consola de Firebase" },
+                { question: "¿Qué significa 'en tiempo real'?", options: ["Que los datos se actualizan automáticamente", "Que la base de datos es muy rápida", "Que los datos se guardan en el navegador"], answer: "Que los datos se actualizan automáticamente" }
+            ]
+        },
+        { // Nivel 13
+            title: "Firebase - Realtime Database (Lectura y Escritura)",
+            lesson: [
+                { title: "Escribir Datos", content: "<p>Puedes usar <code>set()</code> para guardar datos en una referencia específica. Esto sobreescribe los datos en esa ruta.</p>" },
+                { title: "Actualizar Datos", content: "<p>Puedes usar <code>update()</code> para actualizar algunos de los campos de un nodo sin sobreescribir otros.</p>" },
+                { title: "Leer Datos", content: "<p>Puedes leer datos una vez con <code>get()</code> o escuchar cambios en tiempo real con <code>onValue()</code>.</p>" },
+                { title: "Eliminar Datos", content: "<p>Puedes eliminar datos usando <code>remove()</code> en una referencia a la ubicación de los datos que quieres eliminar.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido a leer y escribir datos en Firebase. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué método se usa para sobreescribir datos?", options: ["set()", "update()", "push()"], answer: "set()" },
+                { question: "¿Qué método se usa para actualizar campos específicos?", options: ["set()", "update()", "push()"], answer: "update()" },
+                { question: "¿Qué método se usa para leer datos en tiempo real?", options: ["get()", "onValue()", "read()"], answer: "onValue()" },
+                { question: "¿Qué método se usa para eliminar datos?", options: ["delete()", "remove()", "erase()"], answer: "remove()" },
+                { question: "¿Qué método se usa para leer datos una sola vez?", options: ["get()", "onValue()", "read()"], answer: "get()" }
+            ]
+        },
+        { // Nivel 14
+            title: "Firebase - Autenticación de Usuarios",
+            lesson: [
+                { title: "¿Qué es Firebase Authentication?", content: "<p>Es un servicio que te permite autenticar usuarios de forma segura, usando proveedores como email/contraseña, Google, Facebook, etc.</p>" },
+                { title: "Autenticación con Email y Contraseña", content: "<p>Puedes crear usuarios con email y contraseña usando <code>createUserWithEmailAndPassword()</code>.</p>" },
+                { title: "Iniciar Sesión", content: "<p>Puedes iniciar sesión con <code>signInWithEmailAndPassword()</code>.</p>" },
+                { title: "Cerrar Sesión", content: "<p>Puedes cerrar sesión con <code>signOut()</code>.</p>" },
+                { title: "Observar el Estado de Autenticación", content: "<p>Puedes usar <code>onAuthStateChanged()</code> para saber si un usuario ha iniciado o cerrado sesión.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido a autenticar usuarios con Firebase. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es Firebase Authentication?", options: ["Una base de datos", "Un servicio de autenticación", "Un servicio de almacenamiento"], answer: "Un servicio de autenticación" },
+                { question: "¿Qué método crea un usuario con email y contraseña?", options: ["createUserWithEmailAndPassword()", "signInWithEmailAndPassword()", "signOut()"], answer: "createUserWithEmailAndPassword()" },
+                { question: "¿Qué método inicia sesión?", options: ["createUserWithEmailAndPassword()", "signInWithEmailAndPassword()", "signOut()"], answer: "signInWithEmailAndPassword()" },
+                { question: "¿Qué método cierra sesión?", options: ["createUserWithEmailAndPassword()", "signInWithEmailAndPassword()", "signOut()"], answer: "signOut()" },
+                { question: "¿Qué método observa el estado de autenticación?", options: ["onAuthStateChanged()", "onUserChanged()", "onLoginStateChanged()"], answer: "onAuthStateChanged()" }
+            ]
+        },
+        { // Nivel 15
+            title: "JSON - Formato de Intercambio de Datos",
+            lesson: [
+                { title: "¿Qué es JSON?", content: "<p>JSON (JavaScript Object Notation) es un formato de texto ligero para el intercambio de datos. Es fácil de leer y escribir para los humanos, y fácil de interpretar y generar para las máquinas.</p>" },
+                { title: "Sintaxis de JSON", content: "<p>JSON se basa en dos estructuras: una colección de pares nombre/valor (un objeto) y una lista ordenada de valores (un array).</p>" },
+                { title: "JSON.stringify()", content: "<p>Convierte un objeto de JavaScript en una cadena JSON.</p>" },
+                { title: "JSON.parse()", content: "<p>Convierte una cadena JSON en un objeto de JavaScript.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido a usar JSON. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es JSON?", options: ["Un lenguaje de programación", "Un formato de intercambio de datos", "Una base de datos"], answer: "Un formato de intercambio de datos" },
+                { question: "¿En qué se basa JSON?", options: ["En objetos y arrays de JavaScript", "En tablas de SQL", "En documentos de XML"], answer: "En objetos y arrays de JavaScript" },
+                { question: "¿Qué hace JSON.stringify()?", options: ["Convierte JSON a objeto", "Convierte objeto a JSON", "Crea un objeto JSON"], answer: "Convierte objeto a JSON" },
+                { question: "¿Qué hace JSON.parse()?", options: ["Convierte JSON a objeto", "Convierte objeto a JSON", "Crea un objeto JSON"], answer: "Convierte JSON a objeto" },
+                { question: "¿Qué significa JSON?", options: ["JavaScript Object Notation", "Java Standard Object Notation", "JavaScript Oriented Notation"], answer: "JavaScript Object Notation" }
+            ]
+        },
+        { // Nivel 16
+            title: "APIs REST - Conceptos Básicos",
+            lesson: [
+                { title: "¿Qué es una API?", content: "<p>Una API (Application Programming Interface) es un conjunto de reglas que permite que diferentes aplicaciones se comuniquen entre sí.</p>" },
+                { title: "¿Qué es una API REST?", content: "<p>REST (Representational State Transfer) es un estilo de arquitectura para diseñar APIs. Las APIs REST se basan en el protocolo HTTP.</p>" },
+                { title: "Recursos", content: "<p>En REST, todo es un recurso. Un recurso es un objeto con un tipo, datos asociados, relaciones con otros recursos y un conjunto de métodos que operan sobre él.</p>" },
+                { title: "Verbos HTTP", content: "<p>Las APIs REST usan verbos HTTP para operar sobre los recursos: GET (leer), POST (crear), PUT/PATCH (actualizar) y DELETE (eliminar).</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido los conceptos básicos de las APIs REST. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es una API?", options: ["Una base de datos", "Un conjunto de reglas para la comunicación entre aplicaciones", "Un lenguaje de programación"], answer: "Un conjunto de reglas para la comunicación entre aplicaciones" },
+                { question: "¿Qué es REST?", options: ["Un protocolo", "Un estilo de arquitectura de APIs", "Una base de datos"], answer: "Un estilo de arquitectura de APIs" },
+                { question: "¿Qué es un recurso en REST?", options: ["Un objeto con datos y métodos", "Una tabla de una base de datos", "Un archivo en el servidor"], answer: "Un objeto con datos y métodos" },
+                { question: "¿Qué verbo HTTP se usa para leer datos?", options: ["GET", "POST", "PUT"], answer: "GET" },
+                { question: "¿Qué verbo HTTP se usa para crear datos?", options: ["GET", "POST", "PUT"], answer: "POST" }
+            ]
+        },
+        { // Nivel 17
+            title: "APIs REST - Peticiones GET y POST",
+            lesson: [
+                { title: "Fetch API", content: "<p>La Fetch API es una interfaz moderna de JavaScript para realizar peticiones de red (HTTP).</p>" },
+                { title: "Peticiones GET", content: "<p>Se usan para solicitar datos de un recurso específico. Son el tipo de petición más común.</p>" },
+                { title: "Peticiones POST", content: "<p>Se usan para enviar datos a un servidor para crear un nuevo recurso.</p>" },
+                { title: "Encabezados (Headers)", content: "<p>Los encabezados HTTP permiten al cliente y al servidor pasar información adicional con una petición o respuesta HTTP.</p>" },
+                { title: "Cuerpo (Body)", content: "<p>El cuerpo de una petición HTTP contiene los datos que se envían al servidor. Se usa principalmente con POST, PUT y PATCH.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido a hacer peticiones GET y POST. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es la Fetch API?", options: ["Una API para bases de datos", "Una interfaz de JavaScript para peticiones de red", "Una API de Firebase"], answer: "Una interfaz de JavaScript para peticiones de red" },
+                { question: "¿Para qué se usan las peticiones GET?", options: ["Para enviar datos", "Para solicitar datos", "Para eliminar datos"], answer: "Para solicitar datos" },
+                { question: "¿Para qué se usan las peticiones POST?", options: ["Para enviar datos", "Para solicitar datos", "Para eliminar datos"], answer: "Para enviar datos" },
+                { question: "¿Qué son los encabezados HTTP?", options: ["Los datos principales de la petición", "Información adicional de la petición", "La URL de la petición"], answer: "Información adicional de la petición" },
+                { question: "¿Qué peticiones suelen tener cuerpo?", options: ["GET", "POST", "DELETE"], answer: "POST" }
+            ]
+        },
+        { // Nivel 18
+            title: "GraphQL - Una alternativa a REST",
+            lesson: [
+                { title: "¿Qué es GraphQL?", content: "<p>GraphQL es un lenguaje de consulta para APIs y un runtime para ejecutar esas consultas con tus datos existentes.</p>" },
+                { title: "Diferencias con REST", content: "<p>En REST, la forma y el tamaño de los recursos están determinados por el servidor. En GraphQL, el cliente solicita exactamente los datos que necesita.</p>" },
+                { title: "Queries", content: "<p>Las queries de GraphQL se usan para solicitar datos. Son como las peticiones GET en REST.</p>" },
+                { title: "Mutations", content: "<p>Las mutations de GraphQL se usan para modificar datos. Son como las peticiones POST, PUT y DELETE en REST.</p>" },
+                { title: "Subscriptions", content: "<p>Las subscriptions de GraphQL permiten a los clientes escuchar cambios en los datos en tiempo real.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido los conceptos básicos de GraphQL. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es GraphQL?", options: ["Una base de datos", "Un lenguaje de consulta para APIs", "Un protocolo de red"], answer: "Un lenguaje de consulta para APIs" },
+                { question: "¿Cuál es la principal diferencia con REST?", options: ["GraphQL es más rápido", "El cliente solicita los datos que necesita en GraphQL", "REST es más moderno"], answer: "El cliente solicita los datos que necesita en GraphQL" },
+                { question: "¿Qué son las queries en GraphQL?", options: ["Peticiones para modificar datos", "Peticiones para solicitar datos", "Peticiones en tiempo real"], answer: "Peticiones para solicitar datos" },
+                { question: "¿Qué son las mutations en GraphQL?", options: ["Peticiones para modificar datos", "Peticiones para solicitar datos", "Peticiones en tiempo real"], answer: "Peticiones para modificar datos" },
+                { question: "¿Qué son las subscriptions en GraphQL?", options: ["Peticiones para modificar datos", "Peticiones para solicitar datos", "Peticiones en tiempo real"], answer: "Peticiones en tiempo real" }
+            ]
+        },
+        { // Nivel 19
+            title: "SQLite - Bases de Datos en el Navegador",
+            lesson: [
+                { title: "¿Qué es SQLite?", content: "<p>SQLite es una biblioteca de software que implementa un motor de base de datos SQL autónomo, sin servidor, sin configuración y transaccional.</p>" },
+                { title: "Web SQL (Obsoleto)", content: "<p>Web SQL fue una API que permitía almacenar datos en una base de datos que podía ser consultada usando SQL. Ha sido obsoleta en favor de IndexedDB.</p>" },
+                { title: "SQL.js", content: "<p>SQL.js es una librería de JavaScript que compila SQLite a WebAssembly, permitiendo usar una base de datos SQL completa en el navegador.</p>" },
+                { title: "Casos de Uso", content: "<p>SQL.js es útil para aplicaciones web que necesitan realizar consultas complejas en el lado del cliente, o para prototipar aplicaciones que usarán SQLite en el backend.</p>" },
+                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido sobre SQLite en el navegador. ¡Demuestra tus conocimientos!</p>" }
+            ],
+            quiz: [
+                { question: "¿Qué es SQLite?", options: ["Una base de datos en la nube", "Un motor de base de datos SQL embebido", "Un lenguaje de programación"], answer: "Un motor de base de datos SQL embebido" },
+                { question: "¿Qué API obsoleta permitía usar SQL en el navegador?", options: ["Web SQL", "IndexedDB", "LocalStorage"], answer: "Web SQL" },
+                { question: "¿Qué es SQL.js?", options: ["Una versión de SQL para JavaScript", "Una librería que compila SQLite a WebAssembly", "Una API de Firebase"], answer: "Una librería que compila SQLite a WebAssembly" },
+                { question: "¿Para qué es útil SQL.js?", options: ["Para hacer peticiones HTTP", "Para realizar consultas complejas en el cliente", "Para autenticar usuarios"], answer: "Para realizar consultas complejas en el cliente" },
+                { question: "¿Qué tecnología usa SQL.js para correr en el navegador?", options: ["WebAssembly", "Java Applets", "Flash"], answer: "WebAssembly" }
+            ]
+        },
+        { // Nivel 20
+            title: "Proyecto Final - Mini Aplicación con Base de Datos",
+            lesson: [
+                { title: "Elige tu Aventura", content: "<p>Es hora de poner en práctica todo lo que has aprendido. Elige una de las tecnologías que hemos visto (LocalStorage, Firebase, etc.) y crea una pequeña aplicación.</p>" },
+                { title: "Ideas de Proyecto", content: "<p>Una lista de tareas (To-Do list), una pequeña agenda de contactos, un bloc de notas, un sistema de votación simple.</p>" },
+                { title: "Planificación", content: "<p>Define las funcionalidades de tu aplicación, la estructura de tus datos y la interfaz de usuario.</p>" },
+                { title: "Desarrollo", content: "<p>¡Manos a la obra! Escribe el código HTML, CSS y JavaScript para tu aplicación.</p>" },
+                { title: "¡Felicidades!", content: "<p>¡Has completado el curso de Bases de Datos! Ahora tienes las herramientas para crear aplicaciones increíbles. ¡Sigue aprendiendo y creando!</p>" }
+            ],
+            quiz: [
+                { question: "¿Cuál es el objetivo del proyecto final?", options: ["Poner en práctica lo aprendido", "Copiar un código existente", "Hacer un examen teórico"], answer: "Poner en práctica lo aprendido" },
+                { question: "¿Qué es lo primero que debes hacer?", options: ["Escribir el código", "Definir las funcionalidades y la estructura de datos", "Publicar la aplicación"], answer: "Definir las funcionalidades y la estructura de datos" },
+                { question: "¿Qué tecnologías puedes usar?", options: ["Solo SQL", "Cualquiera de las vistas en el curso", "Solo Firebase"], answer: "Cualquiera de las vistas en el curso" },
+                { question: "¿Qué es una buena idea de proyecto?", options: ["Un clon de Facebook", "Una lista de tareas", "Un sistema operativo"], answer: "Una lista de tareas" },
+                { question: "¡Has completado el curso!", options: ["¡Sí!", "No", "Casi"], answer: "¡Sí!" }
+            ]
+        }
+    ];
+courseData.push(...moreLevels);
+
+// --- LÓGICA DE LA APLICACIÓN ---
+let currentLevel = 0, unlockedLevel = 1, completedLevels = [], quizScores = {}, currentLessonStep = 0, currentQuizQuestion = 0, score = 0;
+const COURSE_ID = 'database';
+
+const challengeMap = {
+    5: 'db_challenge1',
+    10: 'db_challenge2',
+    15: 'db_challenge3',
+    20: 'db_challenge4'
+};
+
+// Inicializar tema
+const savedTheme = localStorage.getItem('theme') || 'dark';
+if (savedTheme === 'light') {
+    document.documentElement.classList.remove('dark');
+} else {
+    document.documentElement.classList.add('dark');
+}
+
+function showPanel(panelId) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(panelId).classList.add('active');
+}
+
+function saveProgress() { 
+    localStorage.setItem(`${COURSE_ID}_levelUnlocked`, unlockedLevel); 
+    localStorage.setItem(`${COURSE_ID}_completedLevels`, JSON.stringify(completedLevels)); 
+    localStorage.setItem(`${COURSE_ID}_quizScores`, JSON.stringify(quizScores));
+
+    // Sincronizar con Firebase
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.id && window.updateCourseProgress) {
+        const databaseProgress = {
+            completedLevels: completedLevels,
+            unlockedLevel: unlockedLevel,
+            quizScores: quizScores
+        };
+
+        // Update local user instantly
+        currentUser.databaseProgress = databaseProgress;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        updateCourseProgress(currentUser.id, 'databaseProgress', databaseProgress)
+            .catch(err => console.error('Error syncing database progress:', err));
+    }
+}
+
+function loadProgress() { 
+    const savedUnlocked = localStorage.getItem(`${COURSE_ID}_levelUnlocked`); 
+    if (savedUnlocked) unlockedLevel = parseInt(savedUnlocked, 10); 
+    const savedCompleted = localStorage.getItem(`${COURSE_ID}_completedLevels`); 
+    if (savedCompleted) completedLevels = JSON.parse(savedCompleted); 
+    const savedScores = localStorage.getItem(`${COURSE_ID}_quizScores`);
+    if (savedScores) quizScores = JSON.parse(savedScores);
+}
+
+function renderLevelSelection() {
+    const levelGrid = document.getElementById('level-grid');
+    levelGrid.innerHTML = '';
+    
+    courseData.forEach((level, index) => {
+        const node = document.createElement('div');
+        const isCompleted = completedLevels.includes(index);
+        const isUnlocked = index === 0 || completedLevels.includes(index - 1);
+        
+        node.className = `level-node ${isCompleted ? 'completed' : isUnlocked ? 'unlocked' : 'locked'}`;
+        node.innerHTML = `
+            <div class="level-icon-wrapper">
+                <i data-lucide="${isCompleted ? 'check' : 'code'}" class="w-8 h-8"></i>
+            </div>
+            <span class="level-number">Nivel ${index + 1}</span>
+        `;
+        
+        if (isUnlocked) {
+            node.addEventListener('click', () => startLevel(index));
+        }
+        
+        levelGrid.appendChild(node);
+    });
+    lucide.createIcons();
+}
+
+function startLevel(levelIndex) {
+    currentLevel = levelIndex;
+    currentLessonStep = 0;
+    renderLesson();
+    showPanel('lesson-panel');
+}
+
+function renderLesson() { 
+    const levelData = courseData[currentLevel]; 
+    const stepData = levelData.lesson[currentLessonStep]; 
+    
+    document.getElementById('lesson-title').textContent = `Nivel ${currentLevel + 1}: ${stepData.title}`; 
+    document.getElementById('lesson-content').innerHTML = stepData.content; 
+    document.getElementById('lesson-step').textContent = `${currentLessonStep + 1} / ${levelData.lesson.length}`; 
+    
+    const progress = ((currentLessonStep + 1) / levelData.lesson.length) * 100; 
+    document.getElementById('lesson-progress').style.width = `${progress}%`; 
+    
+    const prevBtn = document.getElementById('prev-btn'); 
+    prevBtn.disabled = currentLessonStep === 0; 
+    document.getElementById('next-btn').textContent = (currentLessonStep === levelData.lesson.length - 1) ? 'Iniciar Quiz' : 'Siguiente'; 
+}
+
+function startQuiz() {
+    currentQuizQuestion = 0;
+    score = 0;
+    renderQuizQuestion();
+    showPanel('quiz-panel');
+    
+    // Bloquear chat durante el quiz
+    document.getElementById('chat-modal').classList.add('hidden');
+    document.getElementById('chat-toggle-btn').style.display = 'none';
+}
+
+function renderQuizQuestion() {
+    const levelData = courseData[currentLevel];
+    const questionData = levelData.quiz[currentQuizQuestion];
+    
+    document.getElementById('quiz-level-title').textContent = `Quiz - Nivel ${currentLevel + 1}`;
+    document.getElementById('quiz-progress').textContent = `${currentQuizQuestion + 1}/${levelData.quiz.length}`;
+    document.getElementById('quiz-question').textContent = questionData.question;
+    
+    const optionsContainer = document.getElementById('quiz-options');
+    optionsContainer.innerHTML = '';
+
+    // Crear letras fijas en orden a, b, c, d
+    const letters = ['a', 'b', 'c', 'd'];
+
+    // Barajar las opciones antes de asignarlas a las letras
+    const shuffledOptions = [...questionData.options].sort(() => Math.random() - 0.5);
+
+    // Crear opciones con letras fijas pero contenido aleatorio
+    letters.forEach((letter, index) => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = `${letter}) ${shuffledOptions[index]}`;
+        optionButton.className = 'quiz-option p-4 rounded-lg text-left';
+        optionButton.dataset.answer = shuffledOptions[index];
+        optionButton.onclick = () => checkAnswer(optionButton, shuffledOptions[index], questionData.answer);
+        optionsContainer.appendChild(optionButton);
+    });
+}
+
+function checkAnswer(button, selectedAnswer, correctAnswer) {
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach(opt => {
+        opt.classList.add('disabled');
+        if (opt.textContent.includes(correctAnswer)) {
+            opt.classList.add('correct');
+        } else if (opt.textContent.includes(selectedAnswer)) {
+            opt.classList.add('incorrect');
+        }
+    });
+
+    if (selectedAnswer === correctAnswer) score++;
+
+    setTimeout(() => {
+        currentQuizQuestion++;
+        if (currentQuizQuestion < courseData[currentLevel].quiz.length) {
+            renderQuizQuestion();
+        } else {
+            showResults();
+        }
+    }, 1500);
+}
+
+function showResults() { 
+    const passed = score >= (courseData[currentLevel].quiz.length * 0.7); 
+    const resultsIcon = document.getElementById('results-icon'); 
+    
+    document.getElementById('results-title').textContent = passed ? '¡Felicidades!' : 'Sigue Intentando'; 
+    resultsIcon.setAttribute('data-lucide', passed ? 'award' : 'repeat'); 
+    resultsIcon.style.color = passed ? 'var(--green)' : 'var(--yellow)'; 
+    
+    document.getElementById('results-score').textContent = `Tu puntuación: ${score} / ${courseData[currentLevel].quiz.length}`; 
+    document.getElementById('results-message').textContent = passed ? '¡Has desbloqueado el siguiente nivel!' : `Necesitas al menos ${Math.ceil(courseData[currentLevel].quiz.length * 0.7)} respuestas correctas. ¡No te rindas!`; 
+    
+    const nextLevelBtn = document.getElementById('next-level-btn'); 
+    if (passed) { 
+        if (!completedLevels.includes(currentLevel)) { 
+            completedLevels.push(currentLevel); 
+        } 
+        if (unlockedLevel <= currentLevel + 1) { 
+            unlockedLevel = currentLevel + 2; 
+        } 
+        
+        quizScores[currentLevel] = score;
+        saveProgress(); 
+        // Guardar quizScores para leaderboard
+        saveQuizScore(score, courseData[currentLevel].quiz.length, COURSE_ID, currentLevel + 1);
+        // Mostrar challenge si corresponde
+        checkAndShowChallenge(currentLevel + 1, challengeMap);
+        nextLevelBtn.classList.remove('hidden'); 
+    } else { 
+        nextLevelBtn.classList.add('hidden'); 
+    } 
+    showPanel('results-panel');
+    
+    // Desbloquear chat después del quiz 
+    document.getElementById('chat-toggle-btn').style.display = 'block'; 
+}
+
+// Event Listeners
+document.getElementById('next-btn').addEventListener('click', () => { 
+    if (currentLessonStep < courseData[currentLevel].lesson.length - 1) { 
+        currentLessonStep++; 
+        renderLesson(); 
+    } else { 
+        startQuiz(); 
+    } 
+});
+
+document.getElementById('prev-btn').addEventListener('click', () => { 
+    if (currentLessonStep > 0) { 
+        currentLessonStep--; 
+        renderLesson(); 
+    } 
+});
+
+document.getElementById('close-lesson-btn').addEventListener('click', () => { 
+    renderLevelSelection(); 
+    showPanel('level-selection-panel');
+});
+
+document.getElementById('retry-lesson-btn').addEventListener('click', () => startLevel(currentLevel));
+
+document.getElementById('next-level-btn').addEventListener('click', () => { 
+    if (currentLevel + 1 < courseData.length) { 
+        startLevel(currentLevel + 1); 
+    } else { 
+        renderLevelSelection();
+        showPanel('level-selection-panel');
+    } 
+});
+
+    // Inicialización de la aplicación (STRICT FIREBASE)
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Import helpers from window (set by firebase-config module)
+        const { showLoading, hideLoading, checkConnection, getUserFromFirestore } = window;
+        
+        if (!checkConnection()) return;
+        if (showLoading) showLoading('Sincronizando Base de Datos...');
+
+        const localSession = JSON.parse(localStorage.getItem('currentUser'));
+        if (!localSession || !localSession.id) {
+            alert('Sesión no encontrada. Redirigiendo...');
+            window.location.href = 'index.html';
+            return;
+        }
+
+        try {
+            if (getUserFromFirestore) {
+                const firestoreUser = await getUserFromFirestore(localSession.id);
+                if (!firestoreUser) throw new Error('Usuario no encontrado en DB.');
+                
+                // Update Local State directly from Firestore (SSOT)
+                if (firestoreUser.databaseProgress) {
+                    const dbProg = firestoreUser.databaseProgress;
+                    
+                    unlockedLevel = dbProg.unlockedLevel || 1;
+                    completedLevels = dbProg.completedLevels || [];
+                    quizScores = dbProg.quizScores || {};
+                    
+                    // Update LocalStorage Cache for consistency
+                    localStorage.setItem('database_levelUnlocked', unlockedLevel);
+                    localStorage.setItem('database_completedLevels', JSON.stringify(completedLevels));
+                    localStorage.setItem('database_quizScores', JSON.stringify(quizScores));
+                    
+                    // Update current user cache
+                    localSession.databaseProgress = dbProg;
+                    localStorage.setItem('currentUser', JSON.stringify(localSession));
+                    
+                    console.log('✅ Base de Datos sincronizada desde Firestore');
+                } else {
+                     console.log('🆕 Inicializando progreso DB vacío');
+                     // Initialize vars if empty
+                     unlockedLevel = 1;
+                     completedLevels = [];
+                     quizScores = {};
+                }
+            }
+            
+            // Render UI
+            // We skip loadProgress() because we just loaded fresh data manually above
+            renderLevelSelection();
+            showPanel('level-selection-panel');
+
+            // Carga el tema guardado
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+
+            // Inicializar iconos
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            if (hideLoading) hideLoading();
+
+        } catch (error) {
+            console.error('❌ Error Init DB Course:', error);
+            alert('Error cargando curso: ' + error.message);
+            window.location.href = 'menu_inicio.html';
+        }
+    });
+
+    // Chat functionality (Basic placeholder if simple chat is needed or imported)
+    // Note: The HTML imports chat-system.js implicitly via copy-paste or similar if present?
+    // The previous file had explicit Chat logic in script, but this file ends here. 
+    // Assuming chat logic handles itself or is missing.
+    // The HTML has chat elements but no script in the view for chat.
+    // I will not add chat script unless asked, focusing on sync/nav.
+    </script>
+
+    <!-- Prism.js core and languages -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+</body>
+</html>

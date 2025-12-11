@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Status Code 418</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Firebase Modules -->
+    <script type="module" src="assets/js/firebase-config.js"></script>
+    <script type="module" src="assets/js/firebase-storage.js"></script>
+    <script type="module" src="assets/js/profile-editor.js"></script>
+    <style>
+        /* Tokyo Night Theme */
+        :root {
+            --background: #1a1b26;
+            --foreground: #a9b1d6;
+            --card-background: #24283b;
+            --border: #414868;
+            --accent: #7aa2f7;
+            --green: #9ece6a;
+            --yellow: #e0af68;
+            --red: #f7768e;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Fondo animado - Mismo que index.html */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .background-day, .background-night {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .background-day {
+            background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
+        }
+
+        .background-night {
+            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+        }
+
+        .dark .background-night {
+            opacity: 1;
+        }
+
+        :not(.dark) .background-day {
+            opacity: 1;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, var(--card-background) 0%, rgba(65, 72, 104, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card {
+            background-color: rgba(36, 40, 59, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(122, 162, 247, 0.2);
+        }
+
+        .course-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+
+        .badge-completed {
+            background-color: rgba(158, 206, 106, 0.2);
+            color: var(--green);
+            border: 1px solid var(--green);
+        }
+
+        .badge-in-progress {
+            background-color: rgba(224, 175, 104, 0.2);
+            color: var(--yellow);
+            border: 1px solid var(--yellow);
+        }
+
+        .rank-badge {
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke: var(--border);
+            fill: transparent;
+        }
+
+        .progress-ring-value {
+            stroke: var(--accent);
+            fill: transparent;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo Animado - Mismo que index.html -->
+    <div class="background-container">
+        <div class="background-day"></div>
+        <div class="background-night"></div>
+    </div>
+
+    <!-- Contenedor Principal -->
+    <div class="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+        <!-- Header con Botón Volver -->
+        <div class="flex items-center justify-between mb-6">
+            <a href="menu_inicio.html" class="flex items-center gap-2 text-accent hover:underline">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Volver al Hub
+            </a>
+            <a href="leaderboard.html" class="text-yellow hover:underline">Ver Leaderboard</a>
+        </div>
+
+        <!-- Perfil del Usuario -->
+        <div class="profile-card mb-8">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                <!-- Avatar -->
+                <div class="relative">
+                    <img id="user-avatar" src="" alt="Avatar" class="w-32 h-32 rounded-full border-4 border-accent object-cover">
+                    <div id="online-indicator" class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 border-4 border-card-background rounded-full"></div>
+                </div>
+
+                <!-- Información Básica -->
+                <div class="flex-1 text-center md:text-left">
+                    <h1 id="user-name" class="text-4xl font-bold text-accent mb-2"></h1>
+                    <div id="user-rank" class="rank-badge inline-block mb-2"></div>
+                    
+                    <!-- Bio -->
+                    <p id="user-bio" class="text-foreground opacity-80 mb-3 italic max-w-2xl">Sin biografía</p>
+                    
+                    <!-- Tags -->
+                    <div id="user-tags" class="flex flex-wrap gap-2 mb-4 justify-center md:justify-start"></div>
+                    
+                    <!-- Social Links -->
+                    <div id="user-social-links" class="flex gap-3 mb-4 justify-center md:justify-start"></div>
+                    
+                    <!-- Sección de Logros -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="trophy" class="w-6 h-6 text-yellow-400"></i>
+                        Logros Desbloqueados
+                    </h3>
+                    <div id="achievements-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Se llena dinámicamente -->
+                        <div class="col-span-full text-center py-8 text-gray-500 italic">
+                            Cargando medallas...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                    <div id="action-buttons" class="flex gap-2 justify-center md:justify-start mt-4"></div>
+                    
+                    <!-- Estadísticas Rápidas -->
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-4">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-green" id="total-xp">0</p>
+                            <p class="text-sm text-gray-400">XP Total</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-yellow" id="total-levels">0</p>
+                            <p class="text-sm text-gray-400">Niveles</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-accent" id="total-courses">0</p>
+                            <p class="text-sm text-gray-400">Cursos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progreso por Curso -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Web -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="code" class="w-8 h-8 text-accent"></i>
+                        <h3 class="text-xl font-bold">Desarrollo Web</h3>
+                    </div>
+                    <span id="web-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="web-progress-bar" class="h-3 rounded-full bg-accent transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Python -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="code-2" class="w-8 h-8 text-green"></i>
+                        <h3 class="text-xl font-bold">Python</h3>
+                    </div>
+                    <span id="python-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="python-progress-bar" class="h-3 rounded-full bg-green transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Ruby -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="gem" class="w-8 h-8 text-red"></i>
+                        <h3 class="text-xl font-bold">Ruby</h3>
+                    </div>
+                    <span id="ruby-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="ruby-progress-bar" class="h-3 rounded-full bg-red transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Database -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="database" class="w-8 h-8 text-yellow"></i>
+                        <h3 class="text-xl font-bold">Bases de Datos</h3>
+                    </div>
+                    <span id="database-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="database-progress-bar" class="h-3 rounded-full bg-yellow transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logros y Badges -->
+        <div class="profile-card">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <i data-lucide="trophy" class="w-6 h-6 text-yellow"></i>
+                Cursos Completados
+            </h2>
+            <div id="badges-container" class="flex flex-wrap gap-2">
+                <!-- Badges se generan dinámicamente -->
+            </div>
+            <p id="no-badges" class="text-gray-400 italic hidden">Aún no ha completado ningún curso.</p>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar Lucide Icons
+        lucide.createIcons();
+
+        // Cargar datos del usuario
+        async function loadUserProfile() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let userId = urlParams.get('user') || urlParams.get('id'); // Support both params
+
+            // If no userId in URL, show current user's own profile
+            if (!userId) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (!currentUser) {
+                    alert('Debes iniciar sesión primero');
+                    window.location.href = 'index.html';
+                    return;
+                }
+                userId = currentUser.id;
+            }
+
+            // Intentar obtener desde Firebase
+            let user = null;
+            if (window.getUserFromFirestore) {
+                try {
+                    user = await getUserFromFirestore(userId);
+                    console.log('🔥 Usuario obtenido desde Firebase');
+                } catch(err) {
+                    console.warn('Firebase no disponible');
+                }
+            }
+
+            // Fallback: buscar en localStorage
+            if (!user) {
+                const allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+                user = allUsers.find(u => u.id === userId || u.name === userId);
+            }
+
+            // FALLBACK PARA FUNDADORES (GOD MODE)
+            if (!user && (userId === 'steven-founder' || userId === 'amelia-founder')) {
+                const isAmelia = userId === 'amelia-founder';
+                user = {
+                    id: userId,
+                    name: isAmelia ? 'Amelia' : 'Steven',
+                    avatar: isAmelia ? 'https://cdn.myanimelist.net/images/characters/8/239523.jpg' : 'https://ui-avatars.com/api/?name=Steven&background=0D8ABC&color=fff',
+                    rank: '👑 Owner',
+                    bio: isAmelia ? 'Co-Founder & CTO. "El código es arte."' : 'Founder & CEO. "Hacemos lo imposible."',
+                    tags: ['Founder', 'Visionary', 'FullStack'],
+                    socialLinks: { github: isAmelia ? 'amelia-dev' : 'steven-ceo', twitter: isAmelia ? 'amelia_code' : 'steven_tech' },
+                    isAdmin: true,
+                    // Fake full progress
+                    webProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    pythonProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    rubyProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    databaseProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    achievements: ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'speed_demon']
+                };
+            }
+
+
+            if (!user) {
+                alert('Usuario no encontrado');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Renderizar perfil
+            renderProfile(user);
+        }
+
+        function renderProfile(user) {
+            // Información básica
+            document.getElementById('user-name').textContent = user.name;
+            document.getElementById('user-avatar').src = user.avatar || 'https://ui-avatars.com/api/?name=' + user.name;
+            document.getElementById('user-rank').textContent = user.rank || 'Novato';
+
+            // Bio
+            const bioEl = document.getElementById('user-bio');
+            bioEl.textContent = user.bio || 'Sin biografía';
+            
+            // Tags
+            const tagsEl = document.getElementById('user-tags');
+            if (user.tags && user.tags.length > 0) {
+                tagsEl.innerHTML = user.tags.map(tag => 
+                    `<span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm">${tag}</span>`
+                ).join('');
+            } else {
+                tagsEl.innerHTML = '';
+            }
+            
+            // Social Links
+            const socialEl = document.getElementById('user-social-links');
+            if (user.socialLinks) {
+                const links = [];
+                if (user.socialLinks.github) links.push(`<a href="https://github.com/${user.socialLinks.github}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="github" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.instagram) links.push(`<a href="https://instagram.com/${user.socialLinks.instagram}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.twitter) links.push(`<a href="https://twitter.com/${user.socialLinks.twitter}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.linkedin) links.push(`<a href="https://linkedin.com/in/${user.socialLinks.linkedin}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.website) links.push(`<a href="${user.socialLinks.website}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="link" class="w-5 h-5"></i></a>`);
+                socialEl.innerHTML = links.join('');
+            } else {
+                socialEl.innerHTML = '';
+            }
+            
+            // Botones de acción
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const actionButtonsEl = document.getElementById('action-buttons');
+            const buttons = [];
+            
+            // Si es tu propio perfil, mostrar "Editar Perfil"
+            if (currentUser && currentUser.id === user.id) {
+                buttons.push(`
+                    <button onclick="editProfile()" class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/80 transition flex items-center gap-2">
+                        <i data-lucide="edit" class="w-4 h-4"></i>
+                        Editar Perfil
+                    </button>
+                `);
+            }
+            
+            // Si es admin, mostrar botón Panel Admin
+            if (user.isAdmin) {
+                buttons.push(`
+                    <a href="admin.html" class="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:opacity-80 transition flex items-center gap-2">
+                        <i data-lucide="shield" class="w-4 h-4"></i>
+                        Panel Admin
+                    </a>
+                `);
+            }
+            
+           // Renderizar Logros
+    import('./assets/js/achievements.js').then(({ achievements }) => {
+        const grid = document.getElementById('achievements-grid');
+        const userAchievements = user.achievements || [];
+        
+        if (userAchievements.length === 0) {
+            grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">Aún no has desbloqueado logros. ¡Sigue explorando!</div>';
+            return;
+        }
+
+        grid.innerHTML = userAchievements.map(id => {
+            const ach = achievements.find(a => a.id === id);
+            if (!ach) return '';
+            
+            const colors = {
+                common: 'border-gray-500/30 bg-gray-500/10 text-gray-300',
+                rare: 'border-blue-400/30 bg-blue-400/10 text-blue-300',
+                epic: 'border-yellow-400/30 bg-yellow-400/10 text-yellow-300 shadow-[0_0_15px_rgba(250,204,21,0.2)]'
+            };
+
+            return `
+                <div class="p-4 rounded-xl border ${colors[ach.rarity]} flex flex-col items-center text-center gap-2 transition-transform hover:scale-105">
+                    <div class="p-2 rounded-full bg-background/50">
+                        <i data-lucide="${ach.icon}" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">${ach.name}</h4>
+                        <p class="text-[10px] opacity-70 leading-tight">${ach.desc}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        lucide.createIcons();
+    });
+
+    // Setup Edit Buttons
+            actionButtonsEl.innerHTML = buttons.join('');
+
+            // Calcular XP y niveles totales
+            const webLevels = (user.webProgress?.completedLevels || []).length;
+            const pythonLevels = (user.pythonProgress?.completedLevels || []).length;
+            const rubyLevels = (user.rubyProgress?.completedLevels || []).length;
+            const databaseLevels = (user.databaseProgress?.completedLevels || []).length;
+            
+            const totalLevels = webLevels + pythonLevels + rubyLevels + databaseLevels;
+            const totalXP = totalLevels * 10; // Asumiendo 10 XP por nivel
+            
+            // Calcular Rango
+            let rank = 'Novato';
+            let rankColor = 'bg-gray-500';
+
+            // Rango Especial para Admins
+            if (user.isAdmin || user.name === 'Steven' || user.name === 'Amelia') {
+                rank = '👑 Owner';
+                rankColor = 'bg-gradient-to-r from-yellow-400 to-orange-500';
+            } else {
+                // Rangos Normales
+                if (totalLevels >= 80) { rank = '🦄 Leyenda'; rankColor = 'bg-pink-500'; }
+                else if (totalLevels >= 60) { rank = '👽 Hacker'; rankColor = 'bg-green-500'; }
+                else if (totalLevels >= 40) { rank = '🧠 Ingeniero'; rankColor = 'bg-purple-500'; }
+                else if (totalLevels >= 20) { rank = '🚀 Desarrollador'; rankColor = 'bg-blue-500'; }
+                else if (totalLevels >= 5) { rank = '👩‍💻 Aprendiz'; rankColor = 'bg-cyan-500'; }
+            }
+            
+            let coursesStarted = 0;
+            if (webLevels > 0) coursesStarted++;
+            if (pythonLevels > 0) coursesStarted++;
+            if (rubyLevels > 0) coursesStarted++;
+            if (databaseLevels > 0) coursesStarted++;
+
+            document.getElementById('total-xp').textContent = totalXP;
+            document.getElementById('total-levels').textContent = totalLevels;
+            document.getElementById('total-courses').textContent = coursesStarted;
+
+            // Progreso por curso (corregido: 20 niveles)
+            updateCourseProgress('web', webLevels, 20);
+            updateCourseProgress('python', pythonLevels, 20);
+            updateCourseProgress('ruby', rubyLevels, 20);
+            updateCourseProgress('database', databaseLevels, 20);
+
+            // Badges
+            renderBadges(webLevels, pythonLevels, rubyLevels, databaseLevels);
+
+            // Re-inicializar Lucide Icons para los elementos dinámicos
+            lucide.createIcons();
+        }
+
+        function updateCourseProgress(courseId, completed, total) {
+            const percentage = (completed / total) * 100;
+            document.getElementById(`${courseId}-progress-text`).textContent = `${completed}/${total}`;
+            document.getElementById(`${courseId}-progress-bar`).style.width = `${percentage}%`;
+        }
+
+        // Función global para abrir modal de edición
+        window.editProfile = async function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Debes iniciar sesión para editar tu perfil');
+                return;
+            }
+            
+            const { openEditProfileModal, initializeModalTags } = await import('./assets/js/profile-editor.js');
+            initializeModalTags(currentUser.tags || []);
+            openEditProfileModal(currentUser);
+        };
+
+        function renderBadges(web, python, ruby, database) {
+            const container = document.getElementById('badges-container');
+            const noBadges = document.getElementById('no-badges');
+            const badges = [];
+
+            if (web >= 20) badges.push('<span class="course-badge badge-completed">🌐 Desarrollo Web Maestro</span>');
+            else if (web > 0) badges.push('<span class="course-badge badge-in-progress">🌐 Desarrollo Web en progreso</span>');
+
+            if (python >= 20) badges.push('<span class="course-badge badge-completed">🐍 Python Maestro</span>');
+            else if (python > 0) badges.push('<span class="course-badge badge-in-progress">🐍 Python en progreso</span>');
+
+            if (ruby >= 20) badges.push('<span class="course-badge badge-completed">💎 Ruby Maestro</span>');
+            else if (ruby > 0) badges.push('<span class="course-badge badge-in-progress">💎 Ruby en progreso</span>');
+
+            if (database >= 20) badges.push('<span class="course-badge badge-completed">🗄️ Database Maestro</span>');
+            else if (database > 0) badges.push('<span class="course-badge badge-in-progress">🗄️ Database en progreso</span>');
+
+            if (badges.length === 0) {
+                noBadges.classList.remove('hidden');
+            } else {
+                container.innerHTML = badges.join('');
+                noBadges.classList.add('hidden');
+            }
+        }
+
+        // Cargar perfil al iniciar
+        loadUserProfile();
+    </script>
+</body>
+</html>

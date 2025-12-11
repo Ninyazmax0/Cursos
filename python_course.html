@@ -1,0 +1,3693 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python - Status Code 418</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.css">
+    <!-- Firebase Modules -->
+    <script type="module" src="assets/js/firebase-config.js"></script>
+    <script type="module" src="assets/js/firebase-storage.js"></script>
+<link rel="stylesheet" href="assets/prism-tokyo.css">
+    <script src="assets/js/course_system.js"></script>
+    <style>
+     :root {
+         --background: #1a1b26;
+         --foreground: #a9b1d6;
+         --card-background: #24283b;
+         --border: #414868;
+         --accent: #7aa2f7;
+         --accent-dark: #5a7edb;
+         --green: #9ece6a;
+         --yellow: #e0af68;
+         --red: #f7768e;
+         --font-sans: 'Inter', sans-serif;
+         --font-mono: 'JetBrains Mono', monospace;
+     }
+
+     body {
+         color: var(--foreground);
+         font-family: var(--font-sans);
+         margin: 0;
+         padding: 0;
+         position: relative;
+         overflow-x: hidden;
+     }
+
+     /* Fondo animado */
+     .background-container {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: -1;
+         transition: opacity 0.5s ease;
+     }
+
+     .background-day, .background-night {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background-size: cover;
+         background-position: center;
+         opacity: 0;
+         transition: opacity 1s ease;
+     }
+
+     .background-day {
+         background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
+     }
+
+     .background-night {
+         background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+     }
+
+     .dark .background-night {
+         opacity: 1;
+     }
+
+     .background-day {
+         opacity: 1;
+     }
+
+     .content-box {
+         background-color: rgba(36, 40, 59, 0.85);
+         border: 1px solid var(--border);
+         border-radius: 15px;
+         padding: 2rem;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+         backdrop-filter: blur(10px);
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         min-height: calc(100vh - 4rem);
+         margin: 2rem;
+     }
+
+     /* Index Page Styles */
+     .main-container {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         min-height: calc(100vh - 4rem);
+         text-align: center;
+     }
+
+     .main-title {
+         font-size: 5rem;
+         font-weight: bold;
+         color: var(--accent);
+         text-shadow: 0 0 15px var(--accent);
+         margin-bottom: 1rem;
+     }
+
+     .main-subtitle {
+         font-size: 1.5rem;
+         margin-bottom: 3rem;
+         max-width: 600px;
+     }
+
+     .course-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+         gap: 2.5rem;
+         width: 100%;
+         max-width: 1400px;
+         padding: 2rem 0;
+         justify-items: center;
+     }
+
+     .course-card-link {
+         text-decoration: none;
+     }
+
+     .course-card {
+         background: linear-gradient(135deg, var(--card-background) 0%, rgba(65, 72, 104, 0.5) 100%);
+         border: 1px solid var(--border);
+         border-radius: 20px;
+         padding: 2.5rem;
+         transition: all 0.4s ease;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 1.5rem;
+         position: relative;
+         overflow: hidden;
+     }
+
+     .course-card::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: linear-gradient(135deg, rgba(122, 162, 247, 0.1) 0%, rgba(158, 206, 106, 0.1) 100%);
+         opacity: 0;
+         transition: opacity 0.4s ease;
+         border-radius: 20px;
+     }
+
+     .course-card:hover {
+         transform: translateY(-15px) scale(1.05);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(122, 162, 247, 0.3);
+         border-color: var(--accent);
+     }
+
+     .course-card:hover::before {
+         opacity: 1;
+     }
+
+     .course-icon {
+         font-size: 4rem;
+         color: var(--accent);
+         transition: transform 0.3s ease, color 0.3s ease;
+         z-index: 1;
+     }
+
+     .course-card:hover .course-icon {
+         transform: scale(1.1);
+         color: var(--yellow);
+     }
+
+     .course-title {
+         font-size: 1.5rem;
+         font-weight: 600;
+         color: var(--foreground);
+         z-index: 1;
+         transition: color 0.3s ease;
+     }
+
+     .course-card:hover .course-title {
+         color: var(--yellow);
+     }
+
+     .course-description {
+         color: var(--foreground);
+         opacity: 0.7;
+         z-index: 1;
+         transition: opacity 0.3s ease;
+     }
+
+     .course-card:hover .course-description {
+         opacity: 1;
+     }
+
+     /* Course Page Styles */
+     .panel {
+         display: none;
+         animation: fadeIn 0.5s ease;
+         width: 100%;
+     }
+
+     .panel.active {
+         display: flex;
+     }
+
+     @keyframes fadeIn {
+         from {
+             opacity: 0;
+             transform: scale(0.98);
+         }
+         to {
+             opacity: 1;
+             transform: scale(1);
+         }
+     }
+
+     .code-block {
+         background-color: #1e1e2e;
+         border: 1px solid var(--border);
+         color: #c0caf5;
+         font-family: var(--font-mono);
+         border-radius: 8px;
+         margin-top: 1rem;
+     }
+
+     .code-block-header {
+         background-color: var(--border);
+         padding: 0.5rem 1rem;
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+     }
+
+     .code-block-header span {
+         width: 12px;
+         height: 12px;
+         border-radius: 50%;
+     }
+
+     .code-block-header .bg-red-500 { background-color: var(--red); }
+     .code-block-header .bg-yellow-500 { background-color: var(--yellow); }
+     .code-block-header .bg-green-500 { background-color: var(--green); }
+
+     pre {
+         margin: 0;
+         padding: 1rem;
+         white-space: pre-wrap;
+         word-wrap: break-word;
+     }
+
+     .code-block .language-html .tag,
+     .code-block .language-css .at-rule,
+     .code-block .language-javascript .keyword {
+         color: var(--accent);
+     }
+
+     .code-block .language-html .string,
+     .code-block .language-css .string,
+     .code-block .language-javascript .string {
+         color: var(--green);
+     }
+
+     .code-block .language-css .property,
+     .code-block .language-javascript .property {
+         color: var(--yellow);
+     }
+
+     .code-block .language-html .comment,
+     .code-block .language-css .comment,
+     .code-block .language-javascript .comment {
+         color: #5c6370;
+     }
+
+     .btn-primary {
+         background-color: var(--accent);
+         color: white;
+         padding: 0.75rem 1.5rem;
+         border-radius: 8px;
+         font-weight: 600;
+         border: none;
+         cursor: pointer;
+         transition: background-color 0.2s;
+     }
+
+     .btn-primary:hover {
+         background-color: var(--accent-dark);
+     }
+
+     .btn-primary:disabled {
+         opacity: 0.5;
+         cursor: not-allowed;
+     }
+
+     .quiz-option {
+         border: 2px solid var(--border);
+         background-color: transparent;
+         color: var(--foreground);
+         padding: 1rem;
+         border-radius: 8px;
+         cursor: pointer;
+         transition: all 0.2s;
+         text-align: left;
+         width: 100%;
+         user-select: none;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+     }
+
+     .quiz-option:hover:not(.disabled) {
+         border-color: var(--accent);
+         background-color: rgba(122, 162, 247, 0.1);
+     }
+
+     .quiz-option.correct {
+         border-color: var(--green);
+         background-color: rgba(158, 206, 106, 0.1);
+         color: var(--green);
+     }
+
+     .quiz-option.incorrect {
+         border-color: var(--red);
+         background-color: rgba(247, 118, 142, 0.1);
+         color: var(--red);
+     }
+
+     .quiz-option.disabled {
+         pointer-events: none;
+         opacity: 0.7;
+     }
+
+     .level-node {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         position: relative;
+         cursor: pointer;
+     }
+
+     .level-icon-wrapper {
+         width: 64px;
+         height: 64px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         border: 3px solid;
+         transition: all 0.3s ease;
+     }
+
+     .level-number {
+         margin-top: 8px;
+         font-weight: 600;
+         font-size: 0.9rem;
+     }
+
+     .level-node.locked .level-icon-wrapper {
+         border-color: var(--border);
+         color: var(--border);
+         background-color: transparent;
+     }
+
+     .level-node.unlocked .level-icon-wrapper {
+         border-color: var(--accent);
+         color: var(--accent);
+     }
+
+     .level-node.unlocked:hover .level-icon-wrapper {
+         background-color: var(--accent);
+         color: var(--card-background);
+         transform: scale(1.1);
+     }
+
+     .level-node.completed .level-icon-wrapper {
+         border-color: var(--green);
+         background-color: var(--green);
+         color: var(--card-background);
+     }
+
+     #level-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+         gap: 32px 16px;
+         width: 100%;
+         max-width: 60rem;
+         margin: 0 auto;
+     }
+
+     .progress-bar-bg {
+         background-color: var(--border);
+         border-radius: 9999px;
+         height: 0.625rem;
+     }
+
+     .progress-bar-fill {
+         background-color: var(--accent);
+         height: 0.625rem;
+         border-radius: 9999px;
+     }
+
+     .hidden {
+         display: none;
+     }
+
+     /* Estilos para el contenido de la lección */
+     .lesson-content h3 {
+         color: var(--accent);
+         margin-top: 1.5rem;
+         margin-bottom: 0.5rem;
+     }
+
+     .lesson-content ul, .lesson-content ol {
+         margin-left: 1.5rem;
+         margin-bottom: 1rem;
+     }
+
+     .lesson-content li {
+         margin-bottom: 0.5rem;
+     }
+
+     .lesson-content code {
+         background-color: rgba(122, 162, 247, 0.1);
+         color: var(--accent);
+         padding: 0.2rem 0.4rem;
+         border-radius: 4px;
+         font-family: var(--font-mono);
+         font-size: 0.9em;
+     }
+
+     .lesson-content strong {
+         color: var(--yellow);
+     }
+
+     .lesson-content p {
+         margin-bottom: 1rem;
+         line-height: 1.6;
+     }
+
+     /* Nuevos estilos para tipos de preguntas */
+     .quiz-type-indicator {
+         background-color: var(--accent);
+         color: white;
+         padding: 0.5rem 1rem;
+         border-radius: 20px;
+         font-size: 0.875rem;
+         font-weight: 600;
+         margin-bottom: 1rem;
+         display: inline-block;
+     }
+
+     .code-completion-input {
+         background-color: rgba(122, 162, 247, 0.1);
+         border: 1px solid var(--accent);
+         color: var(--foreground);
+         padding: 0.5rem;
+         border-radius: 4px;
+         font-family: var(--font-mono);
+         width: 100px;
+         margin: 0 0.25rem;
+     }
+
+     .drag-drop-container {
+         display: flex;
+         flex-direction: column;
+         gap: 1rem;
+         margin: 1.5rem 0;
+     }
+
+     .drag-drop-options {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 0.5rem;
+         margin-bottom: 1rem;
+     }
+
+     .drag-option {
+         background-color: var(--accent);
+         color: white;
+         padding: 0.5rem 1rem;
+         border-radius: 6px;
+         cursor: grab;
+         user-select: none;
+     }
+
+     .drag-option:active {
+         cursor: grabbing;
+     }
+
+     .drag-drop-targets {
+         display: flex;
+         flex-direction: column;
+         gap: 0.5rem;
+     }
+
+     .drag-target {
+         background-color: rgba(122, 162, 247, 0.1);
+         border: 2px dashed var(--accent);
+         border-radius: 6px;
+         padding: 1rem;
+         min-height: 50px;
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+     }
+
+     .drag-target.occupied {
+         border-style: solid;
+         background-color: rgba(158, 206, 106, 0.1);
+     }
+
+     .matching-container {
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         gap: 1rem;
+         margin: 1.5rem 0;
+     }
+
+     .matching-item {
+         background-color: rgba(122, 162, 247, 0.1);
+         border: 1px solid var(--accent);
+         border-radius: 6px;
+         padding: 1rem;
+         cursor: pointer;
+         transition: all 0.2s;
+     }
+
+     .matching-item.selected {
+         background-color: var(--accent);
+         color: white;
+     }
+
+     .matching-item.matched {
+         background-color: rgba(158, 206, 106, 0.2);
+         border-color: var(--green);
+     }
+
+     .ordering-container {
+         display: flex;
+         flex-direction: column;
+         gap: 0.5rem;
+         margin: 1.5rem 0;
+     }
+
+     .ordering-item {
+         background-color: rgba(122, 162, 247, 0.1);
+         border: 1px solid var(--accent);
+         border-radius: 6px;
+         padding: 1rem;
+         cursor: grab;
+         user-select: none;
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+     }
+
+     .ordering-item:active {
+         cursor: grabbing;
+     }
+
+     .ordering-handle {
+         color: var(--accent);
+     }
+
+     .error-finding-container {
+         position: relative;
+         margin: 1.5rem 0;
+     }
+
+     .error-code {
+         position: relative;
+     }
+
+     .error-spot {
+         position: absolute;
+         background-color: rgba(247, 118, 142, 0.3);
+         border-radius: 3px;
+         cursor: pointer;
+         transition: background-color 0.2s;
+     }
+
+     .error-spot:hover {
+         background-color: rgba(247, 118, 142, 0.5);
+     }
+
+     .error-spot.found {
+         background-color: rgba(158, 206, 106, 0.3);
+     }
+
+     .quiz-feedback {
+         margin-top: 1rem;
+         padding: 1rem;
+         border-radius: 6px;
+         font-weight: 600;
+     }
+
+     .quiz-feedback.correct {
+         background-color: rgba(158, 206, 106, 0.1);
+         color: var(--green);
+         border: 1px solid var(--green);
+     }
+
+     .quiz-feedback.incorrect {
+         background-color: rgba(247, 118, 142, 0.1);
+         color: var(--red);
+         border: 1px solid var(--red);
+     }
+
+     /* Chat Styles */
+     #chat-toggle-btn {
+         background-color: var(--yellow) !important;
+         color: var(--card-background) !important;
+         border: none !important;
+         box-shadow: 0 4px 12px rgba(224, 175, 104, 0.3) !important;
+     }
+
+     #chat-toggle-btn:hover {
+         background-color: var(--accent) !important;
+         transform: scale(1.1) !important;
+         box-shadow: 0 6px 16px rgba(224, 175, 104, 0.4) !important;
+     }
+
+     #chat-modal {
+         background-color: var(--card-background) !important;
+         border: 1px solid var(--border) !important;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+     }
+
+     #chat-messages {
+         scrollbar-width: thin;
+         scrollbar-color: var(--border) transparent;
+     }
+
+     #chat-messages::-webkit-scrollbar {
+         width: 6px;
+     }
+
+     #chat-messages::-webkit-scrollbar-track {
+         background: transparent;
+     }
+
+     #chat-messages::-webkit-scrollbar-thumb {
+         background-color: var(--border);
+         border-radius: 3px;
+     }
+
+     #chat-messages::-webkit-scrollbar-thumb:hover {
+         background-color: var(--accent);
+     }
+
+     #chat-input {
+         background-color: var(--background) !important;
+         border: 1px solid var(--border) !important;
+         color: var(--foreground) !important;
+     }
+
+     #chat-input:focus {
+         outline: none !important;
+         border-color: var(--accent) !important;
+         box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.2) !important;
+     }
+
+     #chat-send-btn {
+         background-color: var(--accent) !important;
+         border: none !important;
+     }
+
+     #chat-send-btn:hover:not(:disabled) {
+         background-color: var(--accent-dark) !important;
+     }
+
+     #chat-loading {
+         color: var(--yellow) !important;
+     }
+
+     .chat-message-bubble {
+         max-width: 85% !important;
+         padding: 0.75rem !important;
+         border-radius: 12px !important;
+         font-size: 0.875rem !important;
+         line-height: 1.4 !important;
+         word-wrap: break-word !important;
+     }
+
+     .user-message {
+         background-color: var(--accent) !important;
+         color: white !important;
+         margin-left: auto !important;
+     }
+
+     .ai-message {
+         background-color: var(--border) !important;
+         color: var(--foreground) !important;
+         margin-right: auto !important;
+     }
+
+     /* Responsive Chat */
+     @media (max-width: 640px) {
+         #chat-modal {
+             width: 95% !important;
+             height: 400px !important;
+             bottom: 80px !important;
+             right: 2.5% !important;
+             left: 2.5% !important;
+         }
+
+         .chat-message-bubble {
+             max-width: 90% !important;
+             font-size: 0.8rem !important;
+         }
+     }
+
+     @media (min-width: 641px) {
+         #chat-modal {
+             width: 320px !important;
+             height: 450px !important;
+             bottom: 80px !important;
+             right: 24px !important;
+         }
+     }
+
+     /* Asegurar que el modal se oculte correctamente */
+     #chat-modal.hidden {
+         display: none !important;
+     }
+
+     /* Mejorar la funcionalidad del botón de cierre */
+     #chat-close-btn {
+         cursor: pointer !important;
+         padding: 8px !important;
+         border-radius: 6px !important;
+         transition: all 0.2s ease !important;
+         color: var(--foreground) !important;
+     }
+
+     #chat-close-btn:hover {
+         background-color: rgba(255, 255, 255, 0.1) !important;
+         transform: scale(1.1) !important;
+     }
+
+     /* Header del chat mejorado */
+     #chat-modal header {
+         background-color: rgba(26, 27, 38, 0.9) !important;
+         backdrop-filter: blur(10px) !important;
+     }
+
+         /* Prism.js Tokyo Night inspired theme */
+        /* Base from Prism default, colors adapted to Tokyo Night */
+        code[class*="language-"], pre[class*="language-"] {
+            color: #c0caf5;
+            background: #1a1b26;
+            text-shadow: none;
+            font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            direction: ltr;
+            text-align: left;
+            white-space: pre;
+            word-spacing: normal;
+            word-break: normal;
+            tab-size: 2;
+            hyphens: none;
+        }
+    
+        pre[class*="language-"] {
+            padding: 1rem;
+            margin: 0;
+            overflow: auto;
+            border-radius: 10px;
+            border: 1px solid #414868;
+            background: #1e1e2e;
+        }
+    
+        :not(pre) > code[class*="language-"] {
+            padding: .15rem .35rem;
+            border-radius: .35rem;
+            background: rgba(122,162,247,.12);
+            color: #7aa2f7;
+            border: 1px solid #414868;
+        }
+    
+        .token.comment,
+        .token.prolog,
+        .token.doctype,
+        .token.cdata {
+            color: #565f89;
+            font-style: italic;
+        }
+    
+        .token.punctuation { color: #c0caf5; }
+    
+        .token.property,
+        .token.tag,
+        .token.boolean,
+        .token.number,
+        .token.constant,
+        .token.symbol,
+        .token.deleted {
+            color: #ff9e64;
+            font-weight: bold;
+        }
+    
+        .token.selector,
+        .token.attr-name,
+        .token.string,
+        .token.char,
+        .token.builtin,
+        .token.inserted {
+            color: #9ece6a;
+        }
+    
+        .token.operator,
+        .token.entity,
+        .token.url,
+        .language-css .token.string,
+        .style .token.string {
+            color: #c0caf5;
+            font-weight: bold;
+        }
+    
+        .token.atrule,
+        .token.attr-value,
+        .token.keyword {
+            color: #bb9af7;
+            font-weight: bold;
+        }
+    
+        .token.function,
+        .token.class-name {
+            color: #7aa2f7;
+            font-weight: bold;
+        }
+    
+        .token.regex,
+        .token.important,
+        .token.variable {
+            color: #e0af68;
+            font-style: italic;
+        }
+    
+        /* Enhanced Python-specific highlighting */
+        .language-python .token.keyword {
+            color: #bb9af7;
+            font-weight: bold;
+        }
+    
+        .language-python .token.function {
+            color: #7aa2f7;
+        }
+    
+        .language-python .token.string {
+            color: #9ece6a;
+        }
+    
+        .language-python .token.number {
+            color: #ff9e64;
+        }
+    
+        .language-python .token.operator {
+            color: #c0caf5;
+            font-weight: bold;
+        }
+    
+        .language-python .token.punctuation {
+            color: #c0caf5;
+        }
+    
+        .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+    
+        .token.entity { cursor: help; }
+    
+        /***** Line numbers plugin *****/
+        pre.line-numbers {
+            position: relative;
+            padding-left: 3.2em;
+            counter-reset: linenumber;
+        }
+        pre.line-numbers > code { position: relative; }
+    
+        .line-numbers .line-numbers-rows {
+            position: absolute;
+            pointer-events: none;
+            top: 0; left: 0;
+            width: 3em;
+            border-right: 1px solid #2b3050;
+            background: #1a1b26;
+            user-select: none;
+        }
+    
+        .line-numbers-rows > span {
+            display: block;
+            counter-increment: linenumber;
+        }
+    
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            display: block;
+            padding: 0 .8em 0 .6em;
+            color: #565f89;
+            text-align: right;
+        }
+    
+        /***** Toolbar plugin *****/
+        .prism-toolbar {
+            position: absolute;
+            top: .4rem;
+            right: .4rem;
+        }
+        .prism-toolbar button, .prism-toolbar span {
+            background: #24283b;
+            color: #a9b1d6;
+            border: 1px solid #414868;
+            border-radius: 6px;
+            padding: .25rem .5rem;
+            font-size: .75rem;
+        }
+        .prism-toolbar button:hover { background: #2b3050; }
+            /* Nuevos estilos para tipos de preguntas */
+            .quiz-type-indicator {
+                background-color: var(--accent);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                font-size: 0.875rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                display: inline-block;
+            }
+            
+            .code-completion-input {
+                background-color: rgba(122, 162, 247, 0.1);
+                border: 1px solid var(--accent);
+                color: var(--foreground);
+                padding: 0.5rem;
+                border-radius: 4px;
+                font-family: var(--font-mono);
+                width: 100px;
+                margin: 0 0.25rem;
+            }
+            
+            .drag-drop-container {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin: 1.5rem 0;
+            }
+            
+            .drag-drop-options {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .drag-option {
+                background-color: var(--accent);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                cursor: grab;
+                user-select: none;
+            }
+            
+            .drag-option:active {
+                cursor: grabbing;
+            }
+            
+            .drag-drop-targets {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .drag-target {
+                background-color: rgba(122, 162, 247, 0.1);
+                border: 2px dashed var(--accent);
+                border-radius: 6px;
+                padding: 1rem;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .drag-target.occupied {
+                border-style: solid;
+                background-color: rgba(158, 206, 106, 0.1);
+            }
+            
+            .matching-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                margin: 1.5rem 0;
+            }
+            
+            .matching-item {
+                background-color: rgba(122, 162, 247, 0.1);
+                border: 1px solid var(--accent);
+                border-radius: 6px;
+                padding: 1rem;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .matching-item.selected {
+                background-color: var(--accent);
+                color: white;
+            }
+            
+            .matching-item.matched {
+                background-color: rgba(158, 206, 106, 0.2);
+                border-color: var(--green);
+            }
+            
+            .ordering-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin: 1.5rem 0;
+            }
+            
+            .ordering-item {
+                background-color: rgba(122, 162, 247, 0.1);
+                border: 1px solid var(--accent);
+                border-radius: 6px;
+                padding: 1rem;
+                cursor: grab;
+                user-select: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .ordering-item:active {
+                cursor: grabbing;
+            }
+            
+            .ordering-handle {
+                color: var(--accent);
+            }
+            
+            .error-finding-container {
+                position: relative;
+                margin: 1.5rem 0;
+            }
+            
+            .error-code {
+                position: relative;
+            }
+            
+            .error-spot {
+                position: absolute;
+                background-color: rgba(247, 118, 142, 0.3);
+                border-radius: 3px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+            
+            .error-spot:hover {
+                background-color: rgba(247, 118, 142, 0.5);
+            }
+            
+            .error-spot.found {
+                background-color: rgba(158, 206, 106, 0.3);
+            }
+            
+            .quiz-feedback {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 6px;
+                font-weight: 600;
+            }
+            
+            .quiz-feedback.correct {
+                background-color: rgba(158, 206, 106, 0.1);
+                color: var(--green);
+                border: 1px solid var(--green);
+            }
+            
+            .quiz-feedback.incorrect {
+                background-color: rgba(247, 118, 142, 0.1);
+                color: var(--red);
+                border: 1px solid var(--red);
+            }
+        </style></head>
+<body>
+    <div class="background-container">
+    <div class="background-day"></div>
+    <div class="background-night"></div>
+</div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-90 z-50 hidden items-center justify-center flex-col transition-opacity duration-300">
+        <div class="relative w-24 h-24 mb-4">
+            <div class="absolute inset-0 border-4 border-t-blue-500 border-r-transparent border-b-purple-500 border-l-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-2 border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-purple-400 rounded-full animate-spin-reverse"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="loader-2" class="w-8 h-8 text-white animate-pulse"></i>
+            </div>
+        </div>
+        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">CARGANDO PYTHON...</p>
+    </div>
+
+<div class="content-box">
+    <!-- Panel de Selección de Nivel -->
+    <div id="level-selection-panel" class="panel active flex-col items-center justify-center p-4 relative">
+        
+        <!-- HEADER / NAVBAR SIMPLIFICADO -->
+        <div class="w-full flex justify-between items-center mb-8">
+            <a href="menu_inicio.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity" title="Volver al Menú Principal">
+                <i data-lucide="terminal" class="w-8 h-8 text-blue-400"></i>
+                <span class="font-bold text-xl text-blue-100">Status Code 418</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="menu_inicio.html" class="hidden md:flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors border border-gray-700 rounded-lg px-3 py-1.5 hover:border-accent">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Volver al Hub
+                </a>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/10 transition-colors">
+                    <i id="theme-icon" data-lucide="sun" class="w-5 h-5 text-gray-300"></i>
+                </button>
+            </div>
+        </div>
+        <h1 class="text-4xl font-bold mb-2" style="color: var(--accent);">Curso de Python</h1>
+        <p class="mb-8">Aprende Python, uno de los lenguajes de programación más populares y versátiles.</p>
+        <div id="level-grid"></div>
+
+        <div class="mt-12 w-full max-w-6xl">
+            <h2 class="text-3xl font-bold mb-4 text-center" style="color: var(--accent);">Niveles de Práctica Opcionales</h2>
+            <p class="mb-8 text-center text-lg" style="color: var(--foreground-muted);">Ejercicios para practicar la resolución de problemas en un entorno de desarrollo.</p>
+            <div id="practice-level-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; width: 100%;">
+                <!-- Los niveles de práctica se generarán aquí -->
+            </div>
+        </div>
+
+
+        <div class="mt-4">
+            <button id="practice-btn" class="btn-primary hidden">Práctica</button>
+        </div>
+    </div>
+
+    <!-- Panel de Lección -->
+    <div id="lesson-panel" class="panel flex-col p-4 md:p-8">
+        <div class="flex-grow w-full max-w-4xl mx-auto flex flex-col">
+            <header class="flex items-center justify-between mb-4">
+                <h2 id="lesson-title" class="text-2xl md:text-3xl font-bold"></h2>
+                <button id="close-lesson-btn" class="p-2 rounded-full hover:bg-gray-700">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </header>
+            <div class="w-full progress-bar-bg rounded-full h-2.5 mb-6">
+                <div id="lesson-progress" class="progress-bar-fill h-2.5 rounded-full" style="width: 10%;"></div>
+            </div>
+            <div id="lesson-content" class="flex-grow prose prose-invert max-w-none prose-p:text-lg prose-headings:text-white prose-strong:text-white overflow-y-auto"></div>
+            <script>
+              // Re-highlight when lesson content changes
+              const observer = new MutationObserver(() => {
+                requestAnimationFrame(() => Prism.highlightAll());
+              });
+              observer.observe(document, { subtree: true, childList: true });
+            </script>
+            <footer class="flex justify-between items-center mt-6">
+                <button id="prev-btn" class="btn-primary" disabled>Anterior</button>
+                <span id="lesson-step" class="font-mono">1 / 10</span>
+                <button id="next-btn" class="btn-primary">Siguiente</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Panel de Quiz -->
+    <div id="quiz-panel" class="panel flex-col items-center justify-center p-4">
+        <div class="w-full max-w-4xl">
+            <header class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 id="quiz-level-title" class="text-2xl font-bold">Quiz - Nivel 1</h2>
+                    <div id="quiz-type-indicator" class="quiz-type-indicator hidden"></div>
+                </div>
+                <span id="quiz-progress" class="font-mono text-lg">1/10</span>
+            </header>
+            <p id="quiz-question" class="text-xl md:text-2xl mb-8"></p>
+
+            <!-- Contenedor para diferentes tipos de preguntas -->
+            <div id="quiz-content">
+                <!-- Selección múltiple (por defecto) -->
+                <div id="multiple-choice-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                <!-- Completar código -->
+                <div id="code-completion-container" class="hidden">
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                        <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                        </div>
+                        <pre id="code-completion-code" class="p-4"><code class="language-python"></code></pre>
+                    </div>
+                </div>
+
+                <!-- Arrastrar y soltar -->
+                <div id="drag-drop-container" class="hidden drag-drop-container"></div>
+
+                <!-- Emparejamiento -->
+                <div id="matching-container" class="hidden matching-container"></div>
+
+                <!-- Ordenar código -->
+                <div id="ordering-container" class="hidden ordering-container"></div>
+
+                <!-- Encontrar errores -->
+                <div id="error-finding-container" class="hidden error-finding-container"></div>
+            </div>
+
+            <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+
+            <div class="flex justify-between items-center mt-8">
+                <button id="quiz-hint-btn" class="btn-primary">Pista</button>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de Resultados -->
+    <div id="results-panel" class="panel flex-col items-center justify-center text-center p-4">
+        <i id="results-icon" class="w-24 h-24 mb-6"></i>
+        <h2 id="results-title" class="text-4xl font-bold mb-4"></h2>
+        <p id="results-score" class="text-2xl mb-2"></p>
+        <p id="results-message" class="mb-8"></p>
+        <div class="flex gap-4">
+            <button id="retry-lesson-btn" class="btn-primary">Repetir Lección</button>
+            <button id="next-level-btn" class="btn-primary hidden">Siguiente Nivel</button>
+            <a id="code-challenge-btn" href="#" class="btn-primary hidden" style="background-color: var(--accent); color: white; display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                <i data-lucide="code"></i> Ir al Desafío
+            </a>
+        </div>
+    </div>
+
+    <!-- Panel de Práctica -->
+    <div id="practice-panel" class="panel flex-col p-4">
+        <div class="flex-grow w-full max-w-4xl mx-auto flex flex-col">
+            <header class="flex items-center justify-between mb-4">
+                <h2 id="practice-title" class="text-2xl md:text-3xl font-bold"></h2>
+                <button id="close-practice-btn" class="p-2 rounded-full hover:bg-gray-700">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </header>
+            <div id="practice-content" class="flex-grow prose prose-invert max-w-none overflow-y-auto"></div>
+            <footer class="flex justify-between items-center mt-6">
+                <button id="prev-practice-btn" class="btn-primary" disabled>Anterior</button>
+                <span id="practice-step" class="font-mono">1 / 5</span>
+                <button id="next-practice-btn" class="btn-primary">Siguiente</button>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Chat Button -->
+<button id="chat-toggle-btn" class="fixed bottom-6 right-6 p-4 rounded-full shadow-xl z-50 transition-all duration-300 transform hover:scale-110" style="background-color: var(--yellow); color: var(--card-background);">
+    <i data-lucide="message-square" class="w-7 h-7"></i>
+</button>
+
+<!-- Chat Modal -->
+<div id="chat-modal" class="fixed bottom-20 right-6 w-80 h-[450px] rounded-xl shadow-2xl z-50 flex flex-col hidden" style="background-color: var(--card-background); border: 1px solid var(--border);">
+    <!-- Chat Header -->
+    <header class="p-3 border-b flex items-center justify-between" style="border-color: var(--border);">
+        <div class="flex items-center">
+            <i data-lucide="sparkles" class="w-5 h-5 mr-2" style="color: var(--yellow);"></i>
+            <h3 class="font-semibold text-lg" style="color: var(--accent);">Asistente de Código</h3>
+        </div>
+        <button id="chat-close-btn" class="p-1 rounded-full hover:bg-gray-700">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+    </header>
+
+    <!-- Chat Messages Container -->
+    <div id="chat-messages" class="flex-grow p-3 overflow-y-auto space-y-3">
+        <!-- Mensaje de Bienvenida de la IA -->
+        <div class="flex justify-start">
+            <div class="ai-message chat-message-bubble">
+                Hola. Soy tu Asistente de Código. Pregunta sobre el contenido, la estructura o los conceptos de Python que hemos visto en el curso.
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Input Area -->
+    <div class="p-3 border-t" style="border-color: var(--border);">
+        <div class="flex gap-2">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." class="flex-grow p-2 rounded-lg text-sm focus:ring-0" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);" onkeydown="if(event.key === 'Enter') document.getElementById('chat-send-btn').click()">
+            <button id="chat-send-btn" class="p-2 rounded-lg transition-colors disabled:opacity-50" style="background-color: var(--accent); color: white;">
+                <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <p id="chat-loading" class="text-xs text-center mt-1 hidden" style="color: var(--yellow);">Analizando la estructura...</p>
+    </div>
+</div>
+
+<script>
+// Datos de Práctica
+const practiceData = [
+    {
+        title: "Práctica 1: Variables y Tipos de Datos",
+        content: `<h3>Ejercicios Básicos</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Pida al usuario su nombre y edad usando input()</li>
+        <li>Convierta la edad a entero</li>
+        <li>Muestre un mensaje personalizado</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+nombre = input("Ingresa tu nombre: ")
+edad = int(input("Ingresa tu edad: "))
+print(f"Hola {nombre}, tienes {edad} años!")</code></pre></div>`
+    },
+    {
+        title: "Práctica 1.1: Encontrar Errores",
+        content: `<h3>Encuentra los Errores</h3>
+        <p>Haz clic en las partes del código que están incorrectas para corregirlas.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong> input, int, print, f-string
+            <div class="command-counter mt-1">
+                <span id="command-counter-1">Usados: 0/4</span>
+            </div>
+        </div>
+        <div id="error-code-1" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = input("Ingresa tu nombre: ")
+edad = input("Ingresa tu edad: ")
+print("Hola {nombre}, tienes {edad} años!")</code></pre></div>
+        <button id="give-up-1" class="btn-primary mt-4">Rendirme y Ver Solución</button>
+        <div id="solution-1" class="hidden mt-4">
+            <p><strong>Solución:</strong></p>
+            <pre><code class="language-python">nombre = input("Ingresa tu nombre: ")
+edad = int(input("Ingresa tu edad: "))
+print(f"Hola {nombre}, tienes {edad} años!")</code></pre>
+        </div>`
+    },
+    {
+        title: "Práctica 1.2: Completar Código",
+        content: `<h3>Completa el Código</h3>
+        <p>Arrastra los comandos disponibles a los huecos correctos.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong>
+            <div class="command-palette mt-2 flex flex-wrap gap-2" id="command-palette-1">
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="input">input</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="int">int</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="print">print</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="f">f</div>
+            </div>
+            <div class="command-counter mt-1">
+                <span id="command-counter-fill-1">Completados: 0/4</span>
+            </div>
+        </div>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+nombre = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="1"></span>("Ingresa tu nombre: ")
+edad = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="2"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="3"></span>("Ingresa tu edad: "))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="4"></span>("Hola {nombre}, tienes {edad} años!"))</code></pre></div>
+        <div class="mt-4">
+            
+            <button id="reset-fill-1" class="btn-primary ml-2">Reiniciar</button>
+        </div>
+        <div id="fill-feedback-1" class="mt-2"></div>`
+    },
+    {
+        title: "Práctica 2: Operadores y Condicionales",
+        content: `<h3>Ejercicios con Lógica</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Pida dos números al usuario</li>
+        <li>Realice operaciones básicas (+, -, *, /)</li>
+        <li>Determine cuál es mayor</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
+print(f"Suma: {num1 + num2}")
+print(f"Resta: {num1 - num2}")
+print(f"Multiplicación: {num1 * num2}")
+if num2 != 0:
+   print(f"División: {num1 / num2}")
+else:
+   print("No se puede dividir por cero")
+if num1 > num2:
+   print(f"{num1} es mayor")
+elif num2 > num1:
+   print(f"{num2} es mayor")
+else:
+   print("Son iguales")</code></pre></div>`
+    },
+    {
+        title: "Práctica 2.1: Encontrar Errores en Condicionales",
+        content: `<h3>Encuentra los Errores</h3>
+        <p>Haz clic en las partes del código que están incorrectas.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong> float, input, print, f-string, if, elif, else
+            <div class="command-counter mt-1">
+                <span id="command-counter-2">Usados: 0/7</span>
+            </div>
+        </div>
+        <div id="error-code-2" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">num1 = input("Primer número: ")
+num2 = input("Segundo número: ")
+print(f"Suma: {num1 + num2}")
+if num1 > num2
+   print(f"{num1} es mayor")
+else num2 > num1:
+   print(f"{num2} es mayor")
+else:
+   print("Son iguales")</code></pre></div>
+        <button id="give-up-2" class="btn-primary mt-4">Rendirme y Ver Solución</button>
+        <div id="solution-2" class="hidden mt-4">
+            <p><strong>Solución:</strong></p>
+            <pre><code class="language-python">num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
+print(f"Suma: {num1 + num2}")
+print(f"Resta: {num1 - num2}")
+print(f"Multiplicación: {num1 * num2}")
+if num2 != 0:
+   print(f"División: {num1 / num2}")
+else:
+   print("No se puede dividir por cero")
+if num1 > num2:
+   print(f"{num1} es mayor")
+elif num2 > num1:
+   print(f"{num2} es mayor")
+else:
+   print("Son iguales")</code></pre>
+        </div>`
+    },
+    {
+        title: "Práctica 2.2: Completar Código con Condicionales",
+        content: `<h3>Completa el Código</h3>
+        <p>Arrastra los comandos disponibles a los huecos correctos.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong>
+            <div class="command-palette mt-2 flex flex-wrap gap-2" id="command-palette-2">
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="float">float</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="input">input</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="print">print</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="f">f</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="if">if</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="elif">elif</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="else">else</div>
+            </div>
+            <div class="command-counter mt-1">
+                <span id="command-counter-fill-2">Completados: 0/14</span>
+            </div>
+        </div>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">num1 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="5"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="6"></span>("Primer número: "))
+num2 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="7"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="8"></span>("Segundo número: "))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="9"></span>("Suma: {num1 + num2}"))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="10"></span>("Resta: {num1 - num2}"))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="11"></span>("Multiplicación: {num1 * num2}"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="12"></span> num2 != 0:
+   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="13"></span>("División: {num1 / num2}"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="14"></span>:
+   print("No se puede dividir por cero")
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="15"></span> num1 > num2:
+   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="16"></span>("{num1} es mayor"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="17"></span> num2 > num1:
+   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="18"></span>("{num2} es mayor"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="19"></span>:
+   print("Son iguales")</code></pre></div>
+        <div class="mt-4">
+            
+            <button id="reset-fill-2" class="btn-primary ml-2">Reiniciar</button>
+        </div>
+        <div id="fill-feedback-2" class="mt-2"></div>`
+    },
+    {
+        title: "Práctica 3: Bucles",
+        content: `<h3>Ejercicios con Repetición</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Pida un número al usuario</li>
+        <li>Muestre la tabla de multiplicar de ese número (del 1 al 10)</li>
+        <li>Use un bucle for</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+numero = int(input("Ingresa un número: "))
+for i in range(1, 11):
+    print(f"{numero} x {i} = {numero * i}")</code></pre></div>`
+    },
+    {
+        title: "Práctica 4: Listas y Funciones",
+        content: `<h3>Ejercicios con Colecciones</h3>
+        <p>Crea funciones que:</p>
+        <ol>
+        <li>Reciba una lista de números</li>
+        <li>Devuelva el promedio</li>
+        <li>Encuentre el número mayor</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+def calcular_promedio(numeros):
+    return sum(numeros) / len(numeros)
+
+def encontrar_mayor(numeros):
+    return max(numeros)
+
+# Prueba las funciones
+lista = [10, 20, 30, 40, 50]
+print(f"Promedio: {calcular_promedio(lista)}")
+print(f"Mayor: {encontrar_mayor(lista)}")</code></pre></div>`
+    },
+    {
+        title: "Práctica 5: Proyecto Final",
+        content: `<h3>Aplicación Completa</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Sea un sistema de gestión de estudiantes</li>
+        <li>Permita agregar estudiantes con nombre y calificaciones</li>
+        <li>Muestre el promedio de cada estudiante</li>
+        <li>Liste todos los estudiantes ordenados por promedio</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+estudiantes = []
+
+def agregar_estudiante():
+    nombre = input("Nombre del estudiante: ")
+    calificaciones = []
+    for i in range(3):
+        calif = float(input(f"Calificación {i+1}: "))
+        calificaciones.append(calif)
+    estudiantes.append({"nombre": nombre, "calificaciones": calificaciones})
+
+def calcular_promedio(calificaciones):
+    return sum(calificaciones) / len(calificaciones)
+
+# Agregar algunos estudiantes
+for _ in range(2):
+    agregar_estudiante()
+
+# Mostrar resultados
+for estudiante in estudiantes:
+    prom = calcular_promedio(estudiante["calificaciones"])
+    print(f"{estudiante['nombre']}: {prom:.2f}")
+
+# Ordenar por promedio
+estudiantes.sort(key=lambda x: calcular_promedio(x["calificaciones"]), reverse=True)
+print("\\nOrdenados por promedio:")
+for estudiante in estudiantes:
+    prom = calcular_promedio(estudiante["calificaciones"])
+    print(f"{estudiante['nombre']}: {prom:.2f}")</code></pre></div>`
+    }
+];
+
+const courseData = [
+    { // Nivel 1
+        title: "Introducción a Python",
+        lesson: [
+            { title: "¿Qué es Python?", content: `<p>Python es un lenguaje de programación de alto nivel, interpretado y de propósito general. Fue creado por Guido van Rossum y lanzado por primera vez en 1991.</p><p>Python se destaca por su sintaxis clara y legible, lo que lo hace ideal para principiantes. Es ampliamente utilizado en desarrollo web, ciencia de datos, inteligencia artificial, automatización y más.</p>`},
+            { title: "¿Por qué Python?", content: `<p>Python es popular por varias razones:</p><ul><li><strong>Sintaxis simple:</strong> El código es fácil de leer y escribir</li><li><strong>Versátil:</strong> Se puede usar para muchos tipos de proyectos</li><li><strong>Gran comunidad:</strong> Mucha documentación y librerías disponibles</li><li><strong>Multiplataforma:</strong> Funciona en Windows, Mac y Linux</li></ul>`},
+            { title: "Instalando Python", content: `<p>Para instalar Python:</p><ol><li>Ve a <code>python.org</code></li><li>Descarga la versión más reciente</li><li>Ejecuta el instalador</li><li>Verifica la instalación con <code>python --version</code> en la terminal</li></ol><p>Alternativamente, puedes usar entornos online como Replit o Google Colab para practicar sin instalar nada.</p>`},
+            { title: "Tu primer programa", content: `<p>El programa "Hola Mundo" es tradicionalmente el primero que escribes en un nuevo lenguaje.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print("¡Hola Mundo!")</code></pre></div><p>Guarda este código en un archivo con extensión <code>.py</code> y ejecútalo con <code>python nombre_del_archivo.py</code></p>`},
+            { title: "Comentarios", content: `<p>Los comentarios explican qué hace el código. En Python, los comentarios de una línea empiezan con <code>#</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Este es un comentario
+print("¡Hola!")  # Este también es un comentario</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Has aprendido los fundamentos de Python. ¡Demuestra tus conocimientos!</p>"}
+        ],
+        quiz: [
+            {
+                type: "multiple-choice",
+                question: "¿Qué tipo de lenguaje es Python?",
+                options: ["Compilado", "Interpretado", "Binario", "Máquina"],
+                answer: "Interpretado",
+                explanation: "Python es un lenguaje interpretado, lo que significa que el código se ejecuta línea por línea."
+            },
+            {
+                type: "multiple-choice",
+                question: "¿Qué función se usa para obtener entrada del usuario en la consola?",
+                options: ["input()", "get()", "read()", "scan()"],
+                answer: "input()",
+                explanation: "La función input() lee una línea de la entrada, la convierte en una cadena y la devuelve."
+            },
+            {
+                type: "multiple-choice",
+                question: "¿Cuál es la extensión de archivo comúnmente utilizada para los scripts de Python?",
+                options: [".py", ".python", ".pt", ".p"],
+                answer: ".py",
+                explanation: "Los archivos de código fuente de Python se guardan con la extensión .py."
+            },
+            {
+                type: "multiple-choice", // True/False
+                question: "Python fue creado por Guido van Rossum. ¿Verdadero o Falso?",
+                options: ["Verdadero", "Falso"],
+                answer: "Verdadero",
+                explanation: "Guido van Rossum es el creador de Python."
+            },
+            {
+                type: "multiple-choice", // True/False
+                question: "En Python, los comentarios de una sola línea comienzan con '//'. ¿Verdadero o Falso?",
+                options: ["Verdadero", "Falso"],
+                answer: "Falso",
+                explanation: "Los comentarios de una sola línea en Python comienzan con el símbolo de almohadilla (#)."
+            }
+        ]
+    },
+    { // Nivel 2
+        title: "Variables y Tipos de Datos",
+        lesson: [
+            { title: "¿Qué es una Variable?", content: `<p>Una variable es un contenedor para almacenar datos. En Python, no necesitas declarar el tipo de variable explícitamente.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = "Ana"
+edad = 25
+altura = 1.65</code></pre></div>`},
+            { title: "Tipos de Datos Básicos", content: `<p>Python tiene varios tipos de datos incorporados:</p><ul><li><strong>str:</strong> Cadenas de texto ("Hola")</li><li><strong>int:</strong> Números enteros (42)</li><li><strong>float:</strong> Números decimales (3.14)</li><li><strong>bool:</strong> Valores booleanos (True/False)</li></ul>`},
+            { title: "Conversión de Tipos", content: `<p>Puedes convertir entre tipos usando funciones como <code>int()</code>, <code>str()</code>, <code>float()</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numero_texto = "42"
+numero = int(numero_texto)  # Convierte string a int
+
+edad = 25
+edad_texto = str(edad)  # Convierte int a string</code></pre></div>`},
+            { title: "Nombres de Variables", content: `<p>Las reglas para nombrar variables:</p><ul><li>Deben empezar con letra o guión bajo</li><li>Pueden contener letras, números y guiones bajos</li><li>Son sensibles a mayúsculas/minúsculas</li><li>Usa nombres descriptivos en inglés</li></ul><p>Ejemplos válidos: <code>nombre</code>, <code>edad_usuario</code>, <code>_privado</code></p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Las variables son fundamentales en Python. ¡Demuestra que las entiendes!</p>"}
+        ],
+        quiz: [
+            {
+                type: "multiple-choice",
+                question: "¿Cómo se declara una variable en Python?",
+                options: ["var nombre = 'Ana'", "let nombre = 'Ana'", "nombre = 'Ana'", "string nombre = 'Ana'"],
+                answer: "nombre = 'Ana'",
+                explanation: "En Python, las variables se declaran asignando un valor a un nombre."
+            },
+            {
+                type: "multiple-choice",
+                question: "¿Qué tipo de dato es 'Hola Mundo'?",
+                options: ["int", "float", "str", "bool"],
+                answer: "str",
+                explanation: "Las cadenas de texto en Python son de tipo 'str'."
+            },
+            {
+                type: "multiple-choice",
+                question: "¿Qué función se utiliza para convertir un valor a un número entero?",
+                options: ["str()", "float()", "int()", "bool()"],
+                answer: "int()",
+                explanation: "La función int() intenta convertir un valor a un entero."
+            },
+            {
+                type: "multiple-choice", 
+                question: "Los nombres de las variables en Python pueden comenzar con un número. ¿Verdadero o Falso?",
+                options: ["Verdadero", "Falso"],
+                answer: "Falso",
+                explanation: "Los nombres de las variables deben comenzar con una letra o un guion bajo."
+            },
+            {
+                type: "multiple-choice",
+                question: "Python es un lenguaje fuertemente tipado. ¿Verdadero o Falso?",
+                options: ["Verdadero", "Falso"],
+                answer: "Verdadero",
+                explanation: "Aunque Python es de tipado dinámico, es fuertemente tipado. No permite operaciones entre tipos incompatibles sin una conversión explícita."
+            }
+        ]
+    },
+    { // Nivel 3
+        title: "Operadores",
+        lesson: [
+            { title: "Operadores Aritméticos", content: `<p>Python soporta los operadores matemáticos básicos:</p><ul><li><code>+</code> Suma</li><li><code>-</code> Resta</li><li><code>*</code> Multiplicación</li><li><code>/</code> División</li><li><code>//</code> División entera</li><li><code>%</code> Módulo (resto)</li><li><code>**</code> Potencia</li></ul><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">a = 10
+b = 3
+print(a + b)  # 13
+print(a // b) # 3 (división entera)
+print(a % b)  # 1 (resto)
+print(a ** b) # 1000 (10^3)</code></pre></div>`},
+            { title: "Operadores de Asignación", content: `<p>Además del <code>=</code> básico, hay operadores compuestos:</p><ul><li><code>+=</code> Suma y asigna</li><li><code>-=</code> Resta y asigna</li><li><code>*=</code> Multiplica y asigna</li><li><code>/=</code> Divide y asigna</li></ul><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">x = 5
+x += 3  # Equivalente a x = x + 3
+print(x)  # 8</code></pre></div>`},
+            { title: "Operadores de Comparación", content: `<p>Comparan valores y devuelven True o False:</p><ul><li><code>==</code> Igual a</li><li><code>!=</code> Diferente de</li><li><code><</code> Menor que</li><li><code>></code> Mayor que</li><li><code><=</code> Menor o igual</li><li><code>>=</code> Mayor o igual</li></ul>`},
+            { title: "Operadores Lógicos", content: `<p>Combinan expresiones booleanas:</p><ul><li><code>and</code> Y lógico</li><li><code>or</code> O lógico</li><li><code>not</code> Negación</li></ul><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 25
+tiene_licencia = True
+
+if edad >= 18 and tiene_licencia:
+    print("Puede conducir")</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Los operadores son esenciales para manipular datos. ¡Demuestra que los dominas!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué operador calcula el resto de una división?", options: ["//", "%", "/", "**"], answer: "%" },
+            { type: "multiple-choice", question: "¿Qué operador eleva a potencia?", options: ["^", "**", "*", "pow"], answer: "**" },
+            { type: "multiple-choice", question: "¿Qué hace x += 5?", options: ["Asigna 5 a x", "Suma 5 a x", "Multiplica x por 5", "Divide x por 5"], answer: "Suma 5 a x" },
+            { type: "multiple-choice", question: "El operador 'and' devuelve True si ambas condiciones son verdaderas. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { type: "multiple-choice", question: "¿Cuál es el resultado de 10 // 3?", options: ["3.33", "3", "1", "30"], answer: "3" }
+        ]
+    },
+    { // Nivel 4
+        title: "Control de Flujo: Condicionales",
+        lesson: [
+            { title: "Sentencia if", content: `<p>La estructura <code>if</code> ejecuta código solo si una condición es verdadera.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 18
+if edad >= 18:
+    print("Eres mayor de edad")</code></pre></div><p>Nota: Python usa indentación (4 espacios) para definir bloques de código.</p>`},
+            { title: "Sentencia else", content: `<p><code>else</code> se ejecuta cuando la condición del <code>if</code> es falsa.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 16
+if edad >= 18:
+    print("Eres mayor de edad")
+else:
+    print("Eres menor de edad")</code></pre></div>`},
+            { title: "Sentencia elif", content: `<p><code>elif</code> permite múltiples condiciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">calificacion = 85
+if calificacion >= 90:
+    print("Excelente")
+elif calificacion >= 80:
+    print("Muy bien")
+elif calificacion >= 70:
+    print("Bien")
+else:
+    print("Necesitas mejorar")</code></pre></div>`},
+            { title: "Condicionales Anidados", content: `<p>Puedes anidar condicionales dentro de otros.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 25
+tiene_licencia = True
+
+if edad >= 18:
+    if tiene_licencia:
+        print("Puede conducir")
+    else:
+        print("Necesita licencia")
+else:
+    print("Muy joven para conducir")</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Los condicionales permiten que tu programa tome decisiones. ¡Demuestra que los entiendes!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué palabra clave se usa para condicionales?", options: ["when", "if", "switch", "case"], answer: "if" },
+            { type: "multiple-choice", question: "¿Qué se ejecuta si la condición de un 'if' es falsa y no hay 'elif' verdaderos?", options: ["if", "elif", "else", "then"], answer: "else" },
+            { type: "multiple-choice", question: "Puedes tener múltiples sentencias 'elif' después de un 'if'. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { type: "multiple-choice", question: "¿Cómo se definen los bloques de código en Python (por ejemplo, dentro de un if)?", options: ["Con llaves {}", "Con paréntesis ()", "Con indentación", "Con punto y coma"], answer: "Con indentación" },
+            { type: "multiple-choice", question: "¿Cuál es la estructura correcta de una sentencia condicional en Python?", options: ["if condition: code", "if condition { code }", "if (condition) code", "if condition then code"], answer: "if condition: code" }
+        ]
+    },
+    { // Nivel 5
+        title: "Bucles",
+        lesson: [
+            { title: "Bucle for", content: `<p>El bucle <code>for</code> itera sobre una secuencia (lista, string, rango, etc.).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">for i in range(5):
+    print(i)  # Imprime 0, 1, 2, 3, 4
+
+frutas = ["manzana", "banana", "naranja"]
+for fruta in frutas:
+    print(fruta)</code></pre></div>`},
+            { title: "Función range()", content: `<p><code>range()</code> genera una secuencia de números.</p><ul><li><code>range(5)</code> → 0, 1, 2, 3, 4</li><li><code>range(2, 6)</code> → 2, 3, 4, 5</li><li><code>range(1, 10, 2)</code> → 1, 3, 5, 7, 9</li></ul>`},
+            { title: "Bucle while", content: `<p>El bucle <code>while</code> se ejecuta mientras una condición sea verdadera.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">contador = 0
+while contador < 5:
+    print(contador)
+    contador += 1</code></pre></div>`},
+            { title: "break y continue", content: `<p><code>break</code> sale del bucle. <code>continue</code> salta a la siguiente iteración.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">for i in range(10):
+    if i == 5:
+        break  # Sale del bucle cuando i = 5
+    if i % 2 == 0:
+        continue  # Salta los números pares
+    print(i)</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Los bucles son poderosos para automatizar tareas repetitivas. ¡Demuestra que los dominas!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué bucle se usa para iterar sobre una secuencia (como una lista)?", options: ["while", "for", "if", "loop"], answer: "for" },
+            { type: "multiple-choice", question: "¿Qué palabra clave se usa para salir de un bucle prematuramente?", options: ["continue", "exit", "stop", "break"], answer: "break" },
+            { type: "multiple-choice", question: "El bucle 'while' se ejecuta mientras su condición sea verdadera. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { type: "multiple-choice", question: "¿Qué hace la palabra clave 'continue' en un bucle?", options: ["Termina el bucle", "Salta a la siguiente iteración", "Reinicia el bucle", "Genera un error"], answer: "Salta a la siguiente iteración" },
+            { type: "multiple-choice", question: "¿Qué genera `range(3)`?", options: ["1, 2, 3", "0, 1, 2", "0, 1, 2, 3", "1, 2"], answer: "0, 1, 2" }
+        ]
+    },
+    { // Nivel 6
+        title: "Funciones",
+        lesson: [
+            { title: "¿Qué es una Función?", content: `<p>Una función es un bloque de código reutilizable que realiza una tarea específica.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar():
+   print("¡Hola!")</code></pre></div>`},
+            { title: "Parámetros y Argumentos", content: `<p>Los parámetros son variables que recibe la función. Los argumentos son los valores que se pasan.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar(nombre):
+   print(f"¡Hola, {nombre}!")
+
+saludar("Ana")  # Argumento: "Ana"</code></pre></div>`},
+            { title: "Return Statement", content: `<p><code>return</code> devuelve un valor desde la función.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def sumar(a, b):
+   return a + b
+
+resultado = sumar(3, 5)  # resultado = 8</code></pre></div>`},
+            { title: "Parámetros por Defecto", content: `<p>Puedes asignar valores por defecto a los parámetros.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar(nombre="Usuario"):
+   print(f"¡Hola, {nombre}!")
+
+saludar()  # ¡Hola, Usuario!
+saludar("Ana")  # ¡Hola, Ana!</code></pre></div>`},
+            { title: "Funciones Lambda", content: `<p>Funciones anónimas de una línea usando <code>lambda</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">cuadrado = lambda x: x ** 2
+   print(cuadrado(4))  # 16</code></pre></div>`},
+            { title: "Scope de Variables", content: `<p>Variables locales existen solo dentro de la función. Variables globales existen en todo el programa.</p>`},
+            { title: "Documentación con Docstrings", content: `<p>Los docstrings documentan qué hace la función.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def sumar(a, b):
+   """Suma dos números y devuelve el resultado."""
+   return a + b</code></pre></div>`},
+            { title: "Input del Usuario", content: `<p>La función <code>input()</code> permite obtener entrada del usuario.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = input("¿Cuál es tu nombre? ")
+print(f"Hola, {nombre}!")</code></pre></div><p>La función <code>input()</code> siempre devuelve un string. Usa <code>int()</code> o <code>float()</code> para convertir a números.</p>`},
+            { title: "Funciones Avanzadas", content: `<p>Python tiene funciones incorporadas útiles como <code>len()</code>, <code>max()</code>, <code>min()</code>, <code>sum()</code>, etc.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numeros = [1, 2, 3, 4, 5]
+print(len(numeros))  # 5
+print(max(numeros))  # 5
+print(min(numeros))  # 1
+print(sum(numeros))  # 15</code></pre></div>`},
+            { title: "Funciones Recursivas", content: `<p>Una función recursiva se llama a sí misma para resolver un problema.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def factorial(n):
+   if n == 0:
+       return 1
+   return n * factorial(n - 1)
+
+print(factorial(5))  # 120</code></pre></div>`},
+            { title: "Funciones de Orden Superior", content: `<p>Funciones que reciben otras funciones como parámetros o devuelven funciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def aplicar_operacion(func, a, b):
+   return func(a, b)
+
+def sumar(a, b):
+   return a + b
+
+resultado = aplicar_operacion(sumar, 3, 5)  # 8</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Las funciones son el corazón de la programación. ¡Demuestra que las dominas!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Cómo se define una función en Python?", options: ["function miFuncion():", "def miFuncion():", "function miFuncion()", "def miFuncion()"], answer: "def miFuncion():" },
+            { type: "multiple-choice", question: "¿Qué palabra clave se usa para devolver un valor de una función?", options: ["send", "return", "yield", "give"], answer: "return" },
+            { type: "multiple-choice", question: "Una función siempre debe tener la palabra clave 'return'. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Falso", explanation: "Una función que no tiene una sentencia 'return' explícita devuelve 'None' por defecto." },
+            { type: "multiple-choice", question: "¿Qué es un argumento en el contexto de una función?", options: ["Un tipo de dato", "Una variable dentro de la función", "El valor que se pasa a la función al llamarla", "El nombre de la función"], answer: "El valor que se pasa a la función al llamarla" },
+            { type: "multiple-choice", question: "¿Qué imprimirá el siguiente código: `print(type(lambda:None))`?", options: ["<class 'function'>", "<class 'lambda'>", "<class 'NoneType'>", "Error"], answer: "<class 'function'>", explanation: "Las funciones lambda son objetos de tipo función." }
+        ]
+    },
+    { // Nivel 7
+        title: "Listas",
+        lesson: [
+            { title: "Creando Listas", content: `<p>Las listas almacenan múltiples valores en una sola variable.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frutas = ["manzana", "banana", "naranja"]</code></pre></div>`},
+            { title: "Accediendo a Elementos", content: `<p>Los elementos se acceden por índice, empezando desde 0.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print(frutas[0])  # manzana
+print(frutas[2])  # naranja
+print(frutas[-1]) # Último elemento</code></pre></div>`},
+            { title: "Modificando Listas", content: `<p>Puedes cambiar elementos asignando nuevos valores.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frutas[1] = "pera"
+print(frutas)  # ["manzana", "pera", "naranja"]</code></pre></div>`},
+            { title: "Métodos de Listas", content: `<p>append() añade al final, insert() añade en posición específica, remove() elimina por valor.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frutas.append("uva")  # Añade al final
+frutas.insert(1, "kiwi")  # Inserta en posición 1
+frutas.remove("banana")  # Elimina "banana"</code></pre></div>`},
+            { title: "Slicing de Listas", content: `<p>Extrae porciones de la lista con [inicio:fin].</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numeros = [0, 1, 2, 3, 4, 5]
+print(numeros[1:4])  # [1, 2, 3]
+print(numeros[:3])   # [0, 1, 2]
+print(numeros[2:])   # [2, 3, 4, 5]</code></pre></div>`},
+            { title: "Listas Anidadas", content: `<p>Listas dentro de listas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">matriz = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+print(matriz[1][2])  # 6</code></pre></div>`},
+            { title: "Comprensión de Listas", content: `<p>Crear listas de forma concisa.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">cuadrados = [x**2 for x in range(5)]
+print(cuadrados)  # [0, 1, 4, 9, 16]</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Las listas organizan datos. ¡Muestra que sabes manejarlas!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué método se utiliza para agregar un elemento al final de una lista?", options: ["insert()", "add()", "append()", "extend()"], answer: "append()" },
+            { type: "multiple-choice", question: "¿Qué índice se usa para acceder al primer elemento de una lista?", options: ["1", "0", "-1", "first"], answer: "0" },
+            { type: "multiple-choice", question: "Las listas en Python son inmutables. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Falso", explanation: "Las listas son mutables, lo que significa que se pueden modificar después de su creación." },
+            { type: "multiple-choice", question: "¿Qué devolvería `mi_lista[-1]`?", options: ["El primer elemento", "El último elemento", "El segundo elemento", "Un error"], answer: "El último elemento" },
+            { type: "multiple-choice", question: "El método `pop()` sin argumentos elimina y devuelve el último elemento de una lista. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" }
+        ]
+    },
+    { // Nivel 8
+        title: "Diccionarios",
+        lesson: [
+            { title: "Creando Diccionarios", content: `<p>Los diccionarios almacenan pares clave-valor.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">persona = {
+   "nombre": "Ana",
+   "edad": 25,
+   "ciudad": "Madrid"
+}</code></pre></div>`},
+            { title: "Accediendo a Valores", content: `<p>Accede a valores usando las claves.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print(persona["nombre"])  # Ana
+print(persona.get("edad"))  # 25</code></pre></div>`},
+            { title: "Modificando Diccionarios", content: `<p>Cambia valores asignando nuevos valores a las claves.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">persona["edad"] = 26
+persona["profesion"] = "desarrolladora"</code></pre></div>`},
+            { title: "Métodos de Diccionarios", content: `<p>keys() devuelve claves, values() devuelve valores, items() devuelve pares.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print(persona.keys())   # dict_keys(['nombre', 'edad', 'ciudad'])
+print(persona.values()) # dict_values(['Ana', 25, 'Madrid'])
+print(persona.items())  # dict_items([('nombre', 'Ana'), ('edad', 25), ...])</code></pre></div>`},
+            { title: "Eliminando Elementos", content: `<p>del elimina por clave, pop() elimina y devuelve el valor.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">del persona["ciudad"]
+edad = persona.pop("edad")</code></pre></div>`},
+            { title: "Diccionarios Anidados", content: `<p>Diccionarios dentro de diccionarios.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">empresa = {
+   "departamentos": {
+       "ventas": {"jefe": "Ana", "empleados": 10},
+       "IT": {"jefe": "Carlos", "empleados": 5}
+   }
+}</code></pre></div>`},
+            { title: "Comprensión de Diccionarios", content: `<p>Crear diccionarios de forma concisa.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">cuadrados = {x: x**2 for x in range(5)}
+print(cuadrados)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Los diccionarios organizan datos con claves. ¡Demuestra que los entiendes!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué caracteriza a los diccionarios en Python?", options: ["Son ordenados por defecto", "Almacenan pares clave-valor", "Solo pueden tener claves numéricas", "Son inmutables"], answer: "Almacenan pares clave-valor" },
+            { type: "multiple-choice", question: "¿Cómo se accede al valor asociado a una clave en un diccionario?", options: ["diccionario(clave)", "diccionario.get(clave)", "diccionario[clave]", "Ambas b y c son correctas"], answer: "Ambas b y c son correctas" },
+            { type: "multiple-choice", question: "Las claves de un diccionario deben ser únicas. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero", explanation: "Si se asigna un valor a una clave existente, el valor anterior se sobrescribe." },
+            { type: "multiple-choice", question: "¿Qué método se usa para obtener todas las claves de un diccionario?", options: ["get_keys()", "keys()", "values()", "items()"], answer: "keys()" },
+            { type: "multiple-choice", question: "Los diccionarios son un tipo de dato mutable. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero", explanation: "Se pueden añadir, modificar y eliminar pares clave-valor después de la creación del diccionario." }
+        ]
+    },
+    { // Nivel 9
+        title: "Archivos",
+        lesson: [
+            { title: "Abriendo Archivos", content: `<p>Usa <code>open()</code> para abrir archivos. Especifica el modo: 'r' para leer, 'w' para escribir.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">archivo = open("ejemplo.txt", "r")  # Leer
+archivo = open("ejemplo.txt", "w")  # Escribir</code></pre></div>`},
+            { title: "Leyendo Archivos", content: `<p>read() lee todo el archivo, readline() lee una línea, readlines() lee todas las líneas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("ejemplo.txt", "r") as archivo:
+   contenido = archivo.read()
+   print(contenido)</code></pre></div>`},
+            { title: "Escribiendo en Archivos", content: `<p>write() escribe texto en el archivo.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("ejemplo.txt", "w") as archivo:
+   archivo.write("Hola, mundo!")</code></pre></div>`},
+            { title: "Context Manager (with)", content: `<p><code>with</code> asegura que el archivo se cierre automáticamente.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("archivo.txt", "r") as f:
+   contenido = f.read()
+# El archivo se cierra automáticamente aquí</code></pre></div>`},
+            { title: "Modos de Archivo", content: `<p>'r' leer, 'w' escribir (sobrescribe), 'a' añadir, 'r+' leer y escribir.</p>`},
+            { title: "Trabajando con CSV", content: `<p>Usa el módulo csv para archivos CSV.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import csv
+with open("datos.csv", "r") as archivo:
+   lector = csv.reader(archivo)
+   for fila in lector:
+       print(fila)</code></pre></div>`},
+            { title: "Manejo de Errores", content: `<p>Usa try-except para manejar errores de archivos.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+   with open("archivo.txt", "r") as f:
+       contenido = f.read()
+except FileNotFoundError:
+   print("Archivo no encontrado")</code></pre></div>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Los archivos permiten persistir datos. ¡Demuestra que sabes manejarlos!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué función se usa para abrir un archivo en Python?", options: ["open_file()", "open()", "file.open()", "read_file()"], answer: "open()" },
+            { type: "multiple-choice", question: "¿Qué modo se debe usar para abrir un archivo y añadir contenido al final?", options: ["'r'", "'w'", "'a'", "'x'"], answer: "'a'" },
+            { type: "multiple-choice", question: "Es una buena práctica usar la sentencia `with` para trabajar con archivos porque cierra el archivo automáticamente. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { type: "multiple-choice", question: "¿Qué método lee el archivo entero en una sola cadena de texto?", options: ["readline()", "readlines()", "read()", "read_all()"], answer: "read()" },
+            { type: "multiple-choice", question: "El modo 'w' para abrir un archivo creará el archivo si no existe. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" }
+        ]
+    },
+    { // Nivel 10
+        title: "Excepciones",
+        lesson: [
+            { title: "¿Qué son las Excepciones?", content: `<p>Las excepciones son errores que ocurren durante la ejecución del programa.</p>`},
+            { title: "Try y Except", content: `<p><code>try</code> ejecuta código que puede fallar, <code>except</code> maneja el error.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+   numero = int("abc")
+except ValueError:
+   print("Error: no es un número")</code></pre></div>`},
+            { title: "Múltiples Except", content: `<p>Puedes manejar diferentes tipos de excepciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+   resultado = 10 / 0
+except ZeroDivisionError:
+   print("No se puede dividir por cero")
+except ValueError:
+   print("Error de valor")</code></pre></div>`},
+            { title: "Else y Finally", content: `<p><code>else</code> se ejecuta si no hay excepciones, <code>finally</code> siempre se ejecuta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+   numero = int("123")
+except ValueError:
+   print("Error")
+else:
+   print("Conversión exitosa")
+finally:
+   print("Siempre se ejecuta")</code></pre></div>`},
+            { title: "Raise Exception", content: `<p><code>raise</code> lanza una excepción manualmente.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">if edad < 0:
+   raise ValueError("La edad no puede ser negativa")</code></pre></div>`},
+            { title: "Excepciones Personalizadas", content: `<p>Puedes crear tus propias excepciones heredando de Exception.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class MiError(Exception):
+   pass
+
+raise MiError("Este es mi error personalizado")</code></pre></div>`},
+            { title: "Debugging con Print", content: `<p>Usa print() para depurar y ver qué está pasando en tu código.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Manejar errores hace tu código robusto. ¡Demuestra que sabes hacerlo!</p>"}
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Para qué se utiliza el bloque `try` en el manejo de excepciones?", options: ["Para ejecutar código sin errores", "Para definir un error personalizado", "Para encerrar código que podría generar un error", "Para finalizar el programa"], answer: "Para encerrar código que podría generar un error" },
+            { type: "multiple-choice", question: "¿Qué bloque se ejecuta si ocurre una excepción en el bloque `try`?", options: ["except", "else", "finally", "catch"], answer: "except" },
+            { type: "multiple-choice", question: "El bloque `finally` se ejecuta solo si no ocurre una excepción. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Falso", explanation: "El bloque `finally` se ejecuta siempre, independientemente de si ocurrió una excepción o no." },
+            { type: "multiple-choice", question: "¿Qué excepción se genera al intentar dividir por cero?", options: ["MathError", "ZeroDivisionError", "DivideError", "ArithmeticError"], answer: "ZeroDivisionError" },
+            { type: "multiple-choice", question: "Se puede usar la palabra clave `raise` para lanzar una excepción manualmente. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" }
+        ]
+    },
+    { // Nivel 11
+        title: "Módulos y Paquetes",
+        lesson: [
+            { title: "¿Qué son los Módulos?", content: `<p>Un módulo es un archivo de Python con código que puedes reutilizar.</p>`},
+            { title: "Importando Módulos", content: `<p>Usa <code>import</code> para usar un módulo.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import math
+
+print(math.pi)</code></pre></div>`},
+            { title: "Módulos Estándar", content: `<p>Python viene con muchos módulos útiles como <code>math</code>, <code>random</code>, <code>datetime</code>.</p>`},
+            { title: "Creando Paquetes", content: `<p>Un paquete es una carpeta de módulos. Debe contener un archivo <code>__init__.py</code>.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>Los módulos y paquetes organizan tu código. ¡Demuestra que sabes cómo!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué es un módulo?", options: ["Un archivo de Python", "Una función", "Una clase", "Una variable"], answer: "Un archivo de Python" },
+            { question: "¿Qué palabra clave se usa para importar?", options: ["include", "import", "use", "require"], answer: "import" },
+            { question: "¿Qué archivo necesita un paquete?", options: ["main.py", "__init__.py", "package.json", "setup.py"], answer: "__init__.py" },
+            { question: "¿Qué módulo usarías para fechas y horas?", options: ["time", "date", "datetime", "calendar"], answer: "datetime" },
+            { question: "¿Qué módulo usarías para números aleatorios?", options: ["random", "number", "rand", "aleatorio"], answer: "random" }
+        ]
+    },
+    { // Nivel 12
+        title: "Programación Orientada a Objetos (POO)",
+        lesson: [
+            { title: "Clases y Objetos", content: `<p>Una clase es un plano para crear objetos. Un objeto es una instancia de una clase.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Perro:
+    pass
+
+mi_perro = Perro()</code></pre></div>`},
+            { title: "Atributos y Métodos", content: `<p>Los atributos son variables de una clase. Los métodos son funciones de una clase.</p>`},
+            { title: "El Método __init__", content: `<p><code>__init__</code> es un método especial que se ejecuta al crear un objeto.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Perro:
+    def __init__(self, nombre):
+        self.nombre = nombre</code></pre></div>`},
+            { title: "Herencia", content: `<p>Una clase puede heredar atributos y métodos de otra clase.</p>`},
+            { title: "Polimorfismo", content: `<p>El polimorfismo permite que objetos de diferentes clases respondan al mismo método.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>La POO es un paradigma poderoso. ¡Demuestra que lo entiendes!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué es una clase?", options: ["Un objeto", "Un plano para crear objetos", "Una función", "Una variable"], answer: "Un plano para crear objetos" },
+            { question: "¿Qué es un objeto?", options: ["Una instancia de una clase", "Una clase", "Una función", "Un módulo"], answer: "Una instancia de una clase" },
+            { question: "¿Qué método se ejecuta al crear un objeto?", options: ["__main__", "__init__", "__new__", "__create__"], answer: "__init__" },
+            { question: "¿Qué es la herencia?", options: ["Ocultar información", "Tomar prestado código", "Heredar de otra clase", "Crear objetos"], answer: "Heredar de otra clase" },
+            { question: "¿Qué permite el polimorfismo?", options: ["Múltiples formas", "Heredar código", "Ocultar datos", "Crear clases"], answer: "Múltiples formas" }
+        ]
+    },
+    { // Nivel 13
+        title: "POO Avanzada",
+        lesson: [
+            { title: "Encapsulamiento", content: `<p>El encapsulamiento restringe el acceso a métodos y atributos.</p>`},
+            { title: "Métodos Privados", content: `<p>Los métodos con doble guión bajo (<code>__</code>) al principio son privados.</p>`},
+            { title: "Decoradores", content: `<p>Los decoradores modifican el comportamiento de una función o método.</p>`},
+            { title: "@property", content: `<p>El decorador <code>@property</code> permite acceder a un método como si fuera un atributo.</p>`},
+            { title: "@staticmethod y @classmethod", content: `<p><code>@staticmethod</code> es un método que no recibe la instancia de la clase. <code>@classmethod</code> recibe la clase como primer argumento.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>¡Ahora eres un experto en POO!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué hace el encapsulamiento?", options: ["Expone todo", "Restringe el acceso", "Crea objetos", "Hereda código"], answer: "Restringe el acceso" },
+            { question: "¿Cómo se define un método privado?", options: ["_metodo", "__metodo", "metodo__", "metodo_"], answer: "__metodo" },
+            { question: "¿Qué hace un decorador?", options: ["Decora el código", "Modifica una función", "Crea una clase", "Elimina una función"], answer: "Modifica una función" },
+            { question: "¿Qué permite @property?", options: ["Acceder a un método como atributo", "Crear un atributo", "Eliminar un atributo", "Hacer un atributo privado"], answer: "Acceder a un método como atributo" },
+            { question: "¿Cuál es la diferencia entre @staticmethod y @classmethod?", options: ["Ninguna", "@staticmethod no recibe la instancia", "@classmethod no recibe la clase", "@staticmethod es para clases"], answer: "@staticmethod no recibe la instancia" }
+        ]
+    },
+    { // Nivel 14
+        title: "Iteradores y Generadores",
+        lesson: [
+            { title: "Protocolo de Iteración", content: `<p>Un objeto iterable tiene un método <code>__iter__</code> que devuelve un iterador.</p>`},
+            { title: "Creando Iteradores", content: `<p>Un iterador tiene un método <code>__next__</code> que devuelve el siguiente elemento.</p>`},
+            { title: "Generadores", content: `<p>Los generadores son una forma simple de crear iteradores usando <code>yield</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def mi_generador():
+    yield 1
+    yield 2
+    yield 3</code></pre></div>`},
+            { title: "Expresiones Generadoras", content: `<p>Similares a las listas de comprensión, pero con paréntesis.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>¡Ahora sabes cómo crear tus propias secuencias!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué método tiene un objeto iterable?", options: ["__next__", "__iter__", "__start__", "__end__"], answer: "__iter__" },
+            { question: "¿Qué método tiene un iterador?", options: ["__iter__", "__next__", "__get__", "__set__"], answer: "__next__" },
+            { question: "¿Qué palabra clave se usa en los generadores?", options: ["return", "yield", "generate", "next"], answer: "yield" },
+            { question: "¿Qué devuelve un generador?", options: ["Una lista", "Un iterador", "Un diccionario", "Una tupla"], answer: "Un iterador" },
+            { question: "¿Cómo se crea una expresión generadora?", options: ["[]", "{}", "()", "<>"], answer: "()" }
+        ]
+    },
+    { // Nivel 15
+        title: "Automatización de Tareas Creativas",
+        lesson: [
+            { title: "Automatización con Python", content: `<p>Python es excelente para automatizar tareas repetitivas. Vamos a crear un script que organice archivos automáticamente.</p>`},
+            { title: "Trabajando con Archivos del Sistema", content: `<p>Usa el módulo <code>os</code> y <code>shutil</code> para manipular archivos y directorios.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import os
+import shutil
+
+# Crear directorios si no existen
+os.makedirs("Documentos", exist_ok=True)
+os.makedirs("Imágenes", exist_ok=True)
+os.makedirs("Videos", exist_ok=True)</code></pre></div>`},
+            { title: "Organizador de Archivos Automático", content: `<p>Crea un script que mueva archivos a carpetas según su extensión.</p>`},
+            { title: "Caso Real: Backup Automático", content: `<p>Los programadores usan Python para crear backups automáticos de sus proyectos.</p>`},
+            { title: "Ejercicio: Organizador de Descargas", content: `<h3>Crea un Script de Organización</h3>
+        <p>Completa el código para organizar archivos por tipo.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import os
+import shutil
+
+def organizar_archivos(directorio_origen):
+    # Extensiones por categoría
+    categorias = {
+        'Documentos': ['.pdf', '.docx', '.txt', '.xlsx'],
+        'Imágenes': ['.jpg', '.png', '.gif', '.bmp'],
+        'Videos': ['.mp4', '.avi', '.mkv', '.mov']
+    }
+    
+    for archivo in os.listdir(directorio_origen):
+        if os.path.isfile(os.path.join(directorio_origen, archivo)):
+            # Obtener extensión
+            _, extension = os.path.splitext(archivo)
+            
+            # Encontrar categoría
+            for categoria, extensiones in categorias.items():
+                if extension.lower() in extensiones:
+                    # Crear directorio si no existe
+                    os.makedirs(categoria, exist_ok=True)
+                    # Mover archivo
+                    shutil.move(
+                        os.path.join(directorio_origen, archivo),
+                        os.path.join(categoria, archivo)
+                    )
+                    print(f"Movido {archivo} a {categoria}")
+                    break
+
+# Usar el script
+organizar_archivos(".")  # Organiza el directorio actual</code></pre></div>
+        <p><strong>Caso de uso real:</strong> Este script puede automatizar la organización de tu carpeta de descargas, ahorrándote tiempo valioso.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>¡La automatización es el futuro! ¡Demuestra tus conocimientos!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué módulo se usa para trabajar con archivos del sistema?", options: ["file", "os", "system", "path"], answer: "os" },
+            { question: "¿Qué función crea directorios?", options: ["mkdir", "makedirs", "createdir", "newdir"], answer: "makedirs" },
+            { question: "¿Qué módulo mueve archivos?", options: ["os", "shutil", "move", "copy"], answer: "shutil" },
+            { question: "¿Para qué se usa exist_ok=True?", options: ["Crear archivos", "Ignorar errores si existe", "Forzar creación", "Eliminar archivos"], answer: "Ignorar errores si existe" },
+            { question: "¿Cuál es un caso real de automatización?", options: ["Jugar videojuegos", "Organizar archivos", "Ver películas", "Escuchar música"], answer: "Organizar archivos" }
+        ]
+    },
+    { // Nivel 16
+        title: "Análisis de Datos con Python",
+        lesson: [
+            { title: "Introducción al Análisis de Datos", content: `<p>Python es el rey del análisis de datos. Con librerías como pandas y matplotlib, puedes procesar y visualizar datos fácilmente.</p>`},
+            { title: "Trabajando con CSV", content: `<p>Los archivos CSV son comunes para datos. Vamos a leer y analizar uno.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import csv
+
+# Leer archivo CSV
+with open('ventas.csv', 'r') as archivo:
+    lector = csv.DictReader(archivo)
+    for fila in lector:
+        print(f"Producto: {fila['producto']}, Ventas: {fila['ventas']}")</code></pre></div>`},
+            { title: "Estadísticas Básicas", content: `<p>Calcula promedios, máximos, mínimos y más con tus datos.</p>`},
+            { title: "Caso Real: Análisis de Ventas", content: `<p>Las empresas usan Python para analizar ventas, identificar tendencias y tomar decisiones.</p>`},
+            { title: "Ejercicio: Analizador de Calificaciones", content: `<h3>Crea un Analizador de Datos</h3>
+        <p>Completa el código para analizar calificaciones de estudiantes.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import csv
+
+def analizar_calificaciones(archivo_csv):
+    calificaciones = []
+    
+    with open(archivo_csv, 'r') as archivo:
+        lector = csv.DictReader(archivo)
+        for fila in lector:
+            calificaciones.append(int(fila['calificacion']))
+    
+    if calificaciones:
+        promedio = sum(calificaciones) / len(calificaciones)
+        maxima = max(calificaciones)
+        minima = min(calificaciones)
+        
+        print(f"Total de estudiantes: {len(calificaciones)}")
+        print(f"Promedio: {promedio:.2f}")
+        print(f"Calificación máxima: {maxima}")
+        print(f"Calificación mínima: {minima}")
+        
+        # Contar aprobados (mayor o igual a 60)
+        aprobados = sum(1 for calif in calificaciones if calif >= 60)
+        print(f"Aprobados: {aprobados} ({aprobados/len(calificaciones)*100:.1f}%)")
+    
+    return promedio, maxima, minima
+
+# Usar la función
+analizar_calificaciones("calificaciones.csv")</code></pre></div>
+        <p><strong>Caso de uso real:</strong> Este tipo de análisis se usa en escuelas y universidades para evaluar el rendimiento estudiantil.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>¡El análisis de datos es una habilidad valiosa! ¡Demuestra tus conocimientos!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué formato de archivo es común para datos?", options: ["TXT", "CSV", "HTML", "XML"], answer: "CSV" },
+            { question: "¿Qué función calcula el promedio?", options: ["avg()", "mean()", "sum()/len()", "average()"], answer: "sum()/len()" },
+            { question: "¿Qué hace max()?", options: ["Encuentra el mínimo", "Encuentra el máximo", "Suma valores", "Cuenta elementos"], answer: "Encuentra el máximo" },
+            { question: "¿Para qué se usa DictReader?", options: ["Leer como lista", "Leer como diccionario", "Escribir datos", "Crear archivos"], answer: "Leer como diccionario" },
+            { question: "¿Cuál es un caso real de análisis de datos?", options: ["Contar palabras", "Analizar ventas", "Jugar juegos", "Ver videos"], answer: "Analizar ventas" }
+        ]
+    },
+    { // Nivel 17
+        title: "Desarrollo Web con Flask",
+        lesson: [
+            { title: "Introducción a Flask", content: `<p>Flask es un framework web ligero para Python. Perfecto para crear APIs y aplicaciones web simples.</p>`},
+            { title: "Tu Primera App Web", content: `<p>Crea una aplicación web básica con Flask.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "¡Hola desde Flask!"
+
+if __name__ == '__main__':
+    app.run(debug=True)</code></pre></div>`},
+            { title: "Rutas y Templates", content: `<p>Crea múltiples páginas y usa templates para el HTML.</p>`},
+            { title: "Caso Real: API de Tareas", content: `<p>Las startups usan Flask para crear MVPs (productos mínimos viables) rápidamente.</p>`},
+            { title: "Ejercicio: API de Lista de Tareas", content: `<h3>Crea una API REST Simple</h3>
+        <p>Completa el código para una API de tareas básica.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+tareas = []
+
+@app.route('/tareas', methods=['GET'])
+def obtener_tareas():
+    return jsonify(tareas)
+
+@app.route('/tareas', methods=['POST'])
+def agregar_tarea():
+    nueva_tarea = {
+        'id': len(tareas) + 1,
+        'titulo': request.json.get('titulo'),
+        'completada': False
+    }
+    tareas.append(nueva_tarea)
+    return jsonify(nueva_tarea), 201
+
+@app.route('/tareas/<int:tarea_id>', methods=['PUT'])
+def actualizar_tarea(tarea_id):
+    tarea = next((t for t in tareas if t['id'] == tarea_id), None)
+    if tarea:
+        tarea['completada'] = not tarea['completada']
+        return jsonify(tarea)
+    return jsonify({'error': 'Tarea no encontrada'}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)</code></pre></div>
+        <p><strong>Caso de uso real:</strong> APIs como esta se usan en aplicaciones móviles y web para gestionar datos.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>¡Ahora puedes crear aplicaciones web! ¡Demuestra tus conocimientos!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué es Flask?", options: ["Un IDE", "Un framework web", "Una base de datos", "Un lenguaje"], answer: "Un framework web" },
+            { question: "¿Qué decorador se usa para rutas?", options: ["@route", "@app.route", "@path", "@url"], answer: "@app.route" },
+            { question: "¿Qué devuelve jsonify()?", options: ["HTML", "JSON", "Texto plano", "XML"], answer: "JSON" },
+            { question: "¿Para qué se usa request.json?", options: ["Enviar datos", "Recibir datos JSON", "Crear rutas", "Configurar app"], answer: "Recibir datos JSON" },
+            { question: "¿Cuál es un caso real de Flask?", options: ["Crear juegos", "Crear APIs web", "Editar fotos", "Reproducir música"], answer: "Crear APIs web" }
+        ]
+    },
+    { // Nivel 18
+        title: "Machine Learning Básico",
+        lesson: [
+            { title: "Introducción al Machine Learning", content: `<p>El Machine Learning permite que las computadoras aprendan patrones de datos sin ser programadas explícitamente.</p>`},
+            { title: "Scikit-learn: Tu Primer Modelo", content: `<p>Scikit-learn es la librería más popular para ML en Python.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from sklearn.linear_model import LinearRegression
+import numpy as np
+
+# Datos de ejemplo
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([2, 4, 6, 8, 10])
+
+# Crear y entrenar modelo
+modelo = LinearRegression()
+modelo.fit(X, y)
+
+# Hacer predicción
+prediccion = modelo.predict([[6]])
+print(f"Predicción para 6: {prediccion[0]}")</code></pre></div>`},
+            { title: "Tipos de Machine Learning", content: `<p>Aprendizaje supervisado, no supervisado y por refuerzo.</p>`},
+            { title: "Caso Real: Predicción de Precios", content: `<p>Las empresas usan ML para predecir ventas, precios de acciones y comportamiento de clientes.</p>`},
+            { title: "Ejercicio: Clasificador de Flores", content: `<h3>Crea un Modelo de Clasificación</h3>
+        <p>Completa el código para clasificar especies de flores.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+
+# Cargar dataset de iris
+iris = load_iris()
+X = iris.data  # Características (largo/ancho de pétalos y sépalos)
+y = iris.target  # Etiquetas (especies)
+
+# Dividir en entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Crear y entrenar modelo
+modelo = KNeighborsClassifier(n_neighbors=3)
+modelo.fit(X_train, y_train)
+
+# Hacer predicciones
+predicciones = modelo.predict(X_test)
+
+# Calcular precisión
+precision = accuracy_score(y_test, predicciones)
+print(f"Precisión del modelo: {precision:.2f}")
+
+# Predecir una nueva flor
+nueva_flor = [[5.1, 3.5, 1.4, 0.2]]  # Características de una flor
+prediccion = modelo.predict(nueva_flor)
+especies = ['setosa', 'versicolor', 'virginica']
+print(f"La flor es probablemente: {especies[prediccion[0]]}")</code></pre></div>
+        <p><strong>Caso de uso real:</strong> Este tipo de modelos se usan en agricultura para identificar especies de plantas automáticamente.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>¡El ML es el futuro! ¡Demuestra tus conocimientos!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué es Machine Learning?", options: ["Programar computadoras", "Hacer que aprendan patrones", "Crear bases de datos", "Diseñar websites"], answer: "Hacer que aprendan patrones" },
+            { question: "¿Qué librería es popular para ML?", options: ["pandas", "numpy", "scikit-learn", "matplotlib"], answer: "scikit-learn" },
+            { question: "¿Qué hace fit()?", options: ["Hace predicciones", "Entrena el modelo", "Evalúa el modelo", "Carga datos"], answer: "Entrena el modelo" },
+            { question: "¿Qué hace predict()?", options: ["Entrena modelo", "Hace predicciones", "Evalúa precisión", "Divide datos"], answer: "Hace predicciones" },
+            { question: "¿Cuál es un caso real de ML?", options: ["Contar números", "Predecir precios", "Escribir texto", "Crear música"], answer: "Predecir precios" }
+        ]
+    },
+    { // Nivel 19
+        title: "Creación de Juegos con Pygame",
+        lesson: [
+            { title: "Introducción a Pygame", content: `<p>Pygame es una librería para crear juegos en Python. Perfecta para aprender programación de manera divertida.</p>`},
+            { title: "Tu Primer Juego", content: `<p>Crea una ventana básica y dibuja formas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import pygame
+import sys
+
+# Inicializar Pygame
+pygame.init()
+
+# Configurar ventana
+ventana = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Mi Primer Juego")
+
+# Bucle principal
+ejecutando = True
+while ejecutando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            ejecutando = False
+    
+    # Llenar fondo
+    ventana.fill((0, 0, 0))
+    
+    # Dibujar círculo
+    pygame.draw.circle(ventana, (255, 0, 0), (400, 300), 50)
+    
+    # Actualizar pantalla
+    pygame.display.flip()
+
+pygame.quit()
+sys.exit()</code></pre></div>`},
+            { title: "Sprites y Movimiento", content: `<p>Añade personajes que se mueven con el teclado.</p>`},
+            { title: "Caso Real: Juegos Educativos", content: `<p>Los juegos creados con Pygame se usan en educación para enseñar conceptos de programación.</p>`},
+            { title: "Ejercicio: Juego de Nave Espacial", content: `<h3>Crea un Juego Simple</h3>
+        <p>Completa el código para un juego donde una nave se mueve con las flechas.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import pygame
+import sys
+
+pygame.init()
+
+# Configuración
+ANCHO = 800
+ALTO = 600
+FPS = 60
+
+ventana = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Juego de Nave")
+reloj = pygame.time.Clock()
+
+# Colores
+NEGRO = (0, 0, 0)
+BLANCO = (255, 255, 255)
+AZUL = (0, 0, 255)
+
+# Nave
+nave_x = ANCHO // 2
+nave_y = ALTO - 50
+nave_velocidad = 5
+
+ejecutando = True
+while ejecutando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            ejecutando = False
+    
+    # Controles
+    teclas = pygame.key.get_pressed()
+    if teclas[pygame.K_LEFT] and nave_x > 0:
+        nave_x -= nave_velocidad
+    if teclas[pygame.K_RIGHT] and nave_x < ANCHO - 50:
+        nave_x += nave_velocidad
+    if teclas[pygame.K_UP] and nave_y > 0:
+        nave_y -= nave_velocidad
+    if teclas[pygame.K_DOWN] and nave_y < ALTO - 50:
+        nave_y += nave_velocidad
+    
+    # Dibujar
+    ventana.fill(NEGRO)
+    pygame.draw.rect(ventana, AZUL, (nave_x, nave_y, 50, 50))
+    
+    pygame.display.flip()
+    reloj.tick(FPS)
+
+pygame.quit()
+sys.exit()</code></pre></div>
+        <p><strong>Caso de uso real:</strong> Juegos como este se usan como base para crear aplicaciones interactivas y simuladores.</p>`},
+            { title: "¡Listo para el Quiz!", content: "<p>¡Crear juegos es divertido y educativo! ¡Demuestra tus conocimientos!</p>"}
+        ],
+        quiz: [
+            { question: "¿Qué es Pygame?", options: ["Un lenguaje", "Una librería para juegos", "Un IDE", "Una base de datos"], answer: "Una librería para juegos" },
+            { question: "¿Qué hace pygame.init()?", options: ["Crea ventana", "Inicializa Pygame", "Dibuja formas", "Maneja eventos"], answer: "Inicializa Pygame" },
+            { question: "¿Qué maneja eventos del teclado?", options: ["pygame.draw", "pygame.event", "pygame.key", "pygame.mouse"], answer: "pygame.key" },
+            { question: "¿Para qué se usa pygame.display.flip()?", options: ["Crear ventana", "Actualizar pantalla", "Dibujar formas", "Manejar eventos"], answer: "Actualizar pantalla" },
+            { question: "¿Cuál es un caso real de Pygame?", options: ["Crear websites", "Crear juegos educativos", "Analizar datos", "Enviar emails"], answer: "Crear juegos educativos" }
+        ]
+    },
+    { // Nivel 20
+        title: "Proyecto Final: Sistema de Gestión",
+        lesson: [
+            { title: "Aplicando todo lo Aprendido", content: `<p>Es hora de combinar todos los conceptos que has aprendido en un proyecto real.</p>`},
+            { title: "Proyecto: Sistema de Biblioteca Digital", content: `<p>Crea un sistema completo para gestionar libros, usuarios y préstamos.</p>`},
+            { title: "Arquitectura del Proyecto", content: `<p>Usa clases, archivos, bases de datos simples y una interfaz de usuario.</p>`},
+            { title: "Caso Real: Sistemas Empresariales", content: `<p>Los sistemas como este se usan en bibliotecas, escuelas y pequeñas empresas.</p>`},
+            { title: "Ejercicio: Implementa el Sistema", content: `<h3>Crea un Sistema de Gestión de Biblioteca</h3>
+        <p>Completa el código para un sistema que gestione libros y préstamos.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import json
+import os
+from datetime import datetime, timedelta
+
+class Libro:
+    def __init__(self, titulo, autor, isbn):
+        self.titulo = titulo
+        self.autor = autor
+        self.isbn = isbn
+        self.disponible = True
+        self.prestado_a = None
+        self.fecha_prestamo = None
+        self.fecha_devolucion = None
+
+class Usuario:
+    def __init__(self, nombre, id_usuario):
+        self.nombre = nombre
+        self.id_usuario = id_usuario
+        self.libros_prestados = []
+
+class Biblioteca:
+    def __init__(self):
+        self.libros = []
+        self.usuarios = []
+        self.archivo_datos = "biblioteca.json"
+        self.cargar_datos()
+    
+    def cargar_datos(self):
+        if os.path.exists(self.archivo_datos):
+            with open(self.archivo_datos, 'r') as f:
+                datos = json.load(f)
+                # Cargar libros y usuarios...
+    
+    def guardar_datos(self):
+        datos = {
+            'libros': [vars(libro) for libro in self.libros],
+            'usuarios': [vars(usuario) for usuario in self.usuarios]
+        }
+        with open(self.archivo_datos, 'w') as f:
+            json.dump(datos, f, indent=2, default=str)
+    
+    def agregar_libro(self, titulo, autor, isbn):
+        libro = Libro(titulo, autor, isbn)
+        self.libros.append(libro)
+        self.guardar_datos()
+        print(f"Libro '{titulo}' agregado exitosamente.")
+    
+    def registrar_usuario(self, nombre, id_usuario):
+        usuario = Usuario(nombre, id_usuario)
+        self.usuarios.append(usuario)
+        self.guardar_datos()
+        print(f"Usuario '{nombre}' registrado.")
+    
+    def prestar_libro(self, isbn, id_usuario):
+        libro = next((l for l in self.libros if l.isbn == isbn), None)
+        usuario = next((u for u in self.usuarios if u.id_usuario == id_usuario), None)
+        
+        if libro and usuario and libro.disponible:
+            libro.disponible = False
+            libro.prestado_a = id_usuario
+            libro.fecha_prestamo = datetime.now()
+            libro.fecha_devolucion = libro.fecha_prestamo + timedelta(days=14)
+            usuario.libros_prestados.append(isbn)
+            self.guardar_datos()
+            print(f"Libro prestado a {usuario.nombre}. Devolver antes de {libro.fecha_devolucion.strftime('%d/%m/%Y')}")
+        else:
+            print("Libro no disponible o usuario no encontrado.")
+    
+    def devolver_libro(self, isbn, id_usuario):
+        libro = next((l for l in self.libros if l.isbn == isbn), None)
+        usuario = next((u for u in self.usuarios if u.id_usuario == id_usuario), None)
+        
+        if libro and usuario and not libro.disponible and libro.prestado_a == id_usuario:
+            libro.disponible = True
+            libro.prestado_a = None
+            libro.fecha_prestamo = None
+            libro.fecha_devolucion = None
+            usuario.libros_prestados.remove(isbn)
+            self.guardar_datos()
+            print("Libro devuelto exitosamente.")
+        else:
+            print("Error en la devolución.")
+
+# Función principal
+def menu_principal():
+    biblioteca = Biblioteca()
+    
+    while True:
+        print("\\n=== SISTEMA DE BIBLIOTECA ===")
+        print("1. Agregar libro")
+        print("2. Registrar usuario")
+        print("3. Prestar libro")
+        print("4. Devolver libro")
+        print("5. Mostrar libros disponibles")
+        print("6. Salir")
+        
+        opcion = input("Selecciona una opción: ")
+        
+        if opcion == "1":
+            titulo = input("Título: ")
+            autor = input("Autor: ")
+            isbn = input("ISBN: ")
+            biblioteca.agregar_libro(titulo, autor, isbn)
+        
+        elif opcion == "2":
+            nombre = input("Nombre: ")
+            id_usuario = input("ID de usuario: ")
+            biblioteca.registrar_usuario(nombre, id_usuario)
+        
+        elif opcion == "3":
+            isbn = input("ISBN del libro: ")
+            id_usuario = input("ID del usuario: ")
+            biblioteca.prestar_libro(isbn, id_usuario)
+        
+        elif opcion == "4":
+            isbn = input("ISBN del libro: ")
+            id_usuario = input("ID del usuario: ")
+            biblioteca.devolver_libro(isbn, id_usuario)
+        
+        elif opcion == "5":
+            print("\\nLibros disponibles:")
+            for libro in biblioteca.libros:
+                if libro.disponible:
+                    print(f"- {libro.titulo} por {libro.autor} (ISBN: {libro.isbn})")
+        
+        elif opcion == "6":
+            print("¡Hasta luego!")
+            break
+        
+        else:
+            print("Opción no válida.")
+
+if __name__ == "__main__":
+    menu_principal()</code></pre></div>
+        <p><strong>Caso de uso real:</strong> Sistemas como este se usan en bibliotecas escolares y públicas para gestionar inventarios y préstamos.</p>`},
+            { title: "¡Felicidades!", content: "<p>¡Has completado el curso de Python! Ahora eres un desarrollador de Python capaz de construir tus propias aplicaciones.</p>"}
+        ],
+        quiz: [
+            { question: "¿Cuál es el primer paso para desarrollar un proyecto?", options: ["Escribir el código", "Definir el alcance", "Testear la aplicación", "Desplegar el proyecto"], answer: "Definir el alcance" },
+            { question: "¿Qué es el despliegue?", options: ["Poner tu aplicación en producción", "Escribir el código", "Testear la aplicación", "Diseñar la arquitectura"], answer: "Poner tu aplicación en producción" },
+            { question: "¿Qué es un bot de Telegram?", options: ["Un juego", "Un programa que interactúa con Telegram", "Un web scraper", "Una aplicación de lista de tareas"], answer: "Un programa que interactúa con Telegram" },
+            { question: "¿Qué es un web scraper?", options: ["Un programa que extrae datos de sitios web", "Un juego", "Un bot de Telegram", "Una aplicación de lista de tareas"], answer: "Un programa que extrae datos de sitios web" },
+            { question: "¿Qué has aprendido en este curso?", options: ["Nada", "Algo", "Mucho", "Todo"], answer: "Todo" }
+        ]
+    }
+]
+
+// --- LÓGICA DE QUIZ MEJORADA ---
+let currentQuizType = "";
+let currentQuizData = {};
+let userAnswers = {};
+let foundErrors = [];
+
+// --- LÓGICA DE LA APLICACIÓN (STRICT FIREBASE) ---
+let currentLevel = 0;
+let resultsScoreV = 0;
+let currentLessonStep = 0;
+let currentQuizQuestion = 0;
+let score = 0;
+let currentPracticeStep = 0;
+let userProgress = { completedLevels: [], quizScores: {} };
+const COURSE_ID = 'python';
+
+const challengeMap = {
+    5: 'python_challenge1',
+    10: 'python_challenge2',
+    15: 'python_challenge3',
+    20: 'python_challenge4'
+};
+
+// INIT (Strict)
+document.addEventListener('DOMContentLoaded', async () => {
+    // Rely on window globals from firebase-config module
+    const { showLoading, hideLoading, checkConnection, getUserFromFirestore } = window;
+    
+    if (!checkConnection()) return;
+    if (showLoading) showLoading('Sincronizando curso Python...');
+
+    const localSession = JSON.parse(localStorage.getItem('currentUser'));
+    if (!localSession || !localSession.id) {
+        alert('Sesión no encontrada. Redirigiendo...');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    try {
+        if (getUserFromFirestore) {
+            const firestoreUser = await getUserFromFirestore(localSession.id);
+            if (!firestoreUser) throw new Error('Usuario no encontrado en DB.');
+            
+            // Sync Local State
+            if (firestoreUser.pythonProgress) {
+                userProgress = firestoreUser.pythonProgress;
+                // Defaults
+                if (!userProgress.completedLevels) userProgress.completedLevels = [];
+                if (!userProgress.quizScores) userProgress.quizScores = {};
+            } else {
+                 console.log('🆕 Inicializando progreso Python vacío.');
+                 userProgress = { completedLevels: [], quizScores: {} };
+            }
+            
+            // Update Session Cache
+            localStorage.setItem('currentUser', JSON.stringify(firestoreUser));
+            localStorage.setItem('pythonCourseProgress', JSON.stringify(userProgress));
+        }
+        
+        // Initial Render
+        renderLevelSelection();
+        showPanel('levelSelection');
+        
+        // Check for Challenge Return
+        const urlParams = new URLSearchParams(window.location.search);
+        const challengeCompleted = urlParams.get('completed');
+        if (challengeCompleted === 'true') {
+             // Logic to handle challenge completion visualization if needed
+             // Usually challenges redirect back and we might want to unlock next level here if not done
+        }
+        
+        if (hideLoading) hideLoading();
+
+    } catch (e) {
+        console.error('❌ Error Init Python:', e);
+        alert('Error cargando curso: ' + e.message);
+        window.location.href = 'menu_inicio.html';
+    }
+});
+
+async function saveProgress() {
+    // 1. Update Global wrapper variable if needed (userProgress IS valid here)
+    // 2. Sync to Firebase
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.id && window.updateCourseProgress) {
+        
+        // Prepare payload
+        const progressPayload = {
+            ...userProgress,
+            lastUpdated: new Date().toISOString()
+        };
+        
+        // Optimistic Cache Update
+        currentUser.pythonProgress = progressPayload;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        localStorage.setItem('pythonCourseProgress', JSON.stringify(progressPayload)); // Legacy cache
+        
+        try {
+            await window.updateCourseProgress(currentUser.id, 'pythonProgress', progressPayload);
+            console.log('✅ Python Progress Saved to Firestore');
+        } catch (e) {
+            console.error('❌ Error saving python progress:', e);
+        }
+    }
+}
+
+// Deprecated: updateGlobalUserProgress was legacy local storage sync. 
+// We mapped functionality into saveProgress above. 
+// Keeping empty dummy if called elsewhere, or safely removing.
+function updateGlobalUserProgress() {
+    saveProgress(); 
+}
+
+function markLevelCompleted(levelIndex) {
+    if (!userProgress.completedLevels.includes(levelIndex)) {
+        userProgress.completedLevels.push(levelIndex);
+        saveProgress();
+        showLevelUpNotification();
+    }
+    renderLevelSelection();
+}
+
+function showLevelUpNotification() {
+    const notification = document.createElement('div');
+    notification.id = 'level-up-notification';
+    notification.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50';
+    notification.innerHTML = `
+        <div class="bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl text-center animate-bounce">
+            <div class="text-4xl mb-2">🎉</div>
+            <div class="text-xl font-bold">¡Nivel Completado!</div>
+            <div class="text-lg">+1 Nivel</div>
+        </div>
+    `;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        if (notification.parentNode) notification.parentNode.removeChild(notification);
+    }, 3000);
+}
+
+const panels = { levelSelection: document.getElementById('level-selection-panel'), lesson: document.getElementById('lesson-panel'), quiz: document.getElementById('quiz-panel'), results: document.getElementById('results-panel'), practice: document.getElementById('practice-panel') };
+const savedTheme = localStorage.getItem('theme') || 'dark';
+if (savedTheme === 'light') document.documentElement.classList.remove('dark');
+
+function showPanel(panelName) { 
+    Object.values(panels).forEach(p => p.classList.remove('active')); 
+    if(panels[panelName]) panels[panelName].classList.add('active'); 
+    lucide.createIcons(); 
+}
+
+function renderLevelSelection() {
+    const levelGrid = document.getElementById('level-grid');
+    levelGrid.innerHTML = '';
+
+    for (let i = 1; i <= courseData.length; i++) {
+        const levelIndex = i - 1;
+        const node = document.createElement('div');
+        const isCompleted = userProgress.completedLevels.includes(levelIndex);
+        const isUnlocked = levelIndex === 0 || userProgress.completedLevels.includes(levelIndex - 1);
+
+        let status = 'locked', icon = 'lock';
+        if (isCompleted) {
+            status = 'completed';
+            icon = 'check';
+        } else if (isUnlocked) {
+            status = 'unlocked';
+            icon = 'play';
+        }
+
+        node.className = `level-node ${status}`;
+        node.innerHTML = `
+            <div class="level-icon-wrapper">
+                <i data-lucide="${icon}" class="w-8 h-8"></i>
+            </div>
+            <span class="level-number">Nivel ${i}</span>
+        `;
+
+        if (isUnlocked) {
+            node.onclick = () => startLevel(levelIndex);
+        }
+
+        levelGrid.appendChild(node);
+    }
+
+    // Mostrar botón de práctica
+    const practiceBtn = document.getElementById('practice-btn');
+    const completedCount = userProgress.completedLevels.length;
+    if (completedCount >= 5) {
+        practiceBtn.classList.remove('hidden');
+        practiceBtn.textContent = 'Práctica 1';
+        practiceBtn.onclick = () => startPractice(0);
+    } else {
+        practiceBtn.classList.add('hidden');
+    }
+    
+    lucide.createIcons();
+}
+
+function startLevel(levelIndex) { 
+    currentLevel = levelIndex; 
+    currentLessonStep = 0; 
+    renderLesson(); 
+    showPanel('lesson'); 
+}
+
+function renderLesson() {
+    const levelData = courseData[currentLevel];
+    const stepData = levelData.lesson[currentLessonStep];
+    document.getElementById('lesson-title').textContent = `Nivel ${currentLevel + 1}: ${stepData.title}`;
+    document.getElementById('lesson-content').innerHTML = stepData.content;
+    document.getElementById('lesson-step').textContent = `${currentLessonStep + 1} / ${levelData.lesson.length}`;
+    const progress = ((currentLessonStep + 1) / levelData.lesson.length) * 100;
+    document.getElementById('lesson-progress').style.width = `${progress}%`;
+    const prevBtn = document.getElementById('prev-btn');
+    prevBtn.disabled = currentLessonStep === 0;
+    document.getElementById('next-btn').textContent = (currentLessonStep === levelData.lesson.length - 1) ? 'Iniciar Quiz' : 'Siguiente';
+
+    // Re-initialize drag and drop after content change
+    setTimeout(() => {
+        initializeClickToPlace();
+    }, 100);
+}
+
+function startQuiz() {
+    currentQuizQuestion = 0;
+    score = 0;
+    renderQuizQuestion();
+    showPanel('quiz');
+    // Bloquear chat durante el quiz
+    document.getElementById('chat-modal').classList.add('hidden');
+    document.getElementById('chat-toggle-btn').style.display = 'none';
+}
+
+function renderQuizQuestion() {
+    const levelData = courseData[currentLevel];
+    const questionData = levelData.quiz[currentQuizQuestion];
+    currentQuizData = questionData;
+    currentQuizType = questionData.type;
+
+    document.getElementById('quiz-level-title').textContent = `Quiz - Nivel ${currentLevel + 1}`;
+    document.getElementById('quiz-progress').textContent = `${currentQuizQuestion + 1}/${levelData.quiz.length}`;
+    document.getElementById('quiz-question').textContent = questionData.question;
+
+    // Actualizar indicador de tipo de pregunta
+    const typeNames = {
+        "multiple-choice": "Selección múltiple",
+    };
+    document.getElementById('quiz-type-indicator').textContent = typeNames[currentQuizType] || "Pregunta";
+
+    // Ocultar todos los contenedores primero
+    document.querySelectorAll('#quiz-content > div').forEach(container => {
+        container.classList.add('hidden');
+    });
+
+    // Limpiar respuestas anteriores
+    userAnswers = {};
+    foundErrors = [];
+    document.getElementById('quiz-feedback').classList.add('hidden');
+
+    // Mostrar el contenedor adecuado según el tipo de pregunta
+    renderMultipleChoice();
+
+
+    // Configurar botones
+    document.getElementById('quiz-hint-btn').onclick = showHint;
+}
+
+function renderMultipleChoice() {
+    const container = document.getElementById('multiple-choice-container');
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+
+    // Crear letras fijas en orden a, b, c, d
+    const letters = ['a', 'b', 'c', 'd'];
+
+    // Barajar las opciones antes de asignarlas a las letras
+    const shuffledOptions = [...currentQuizData.options].sort(() => Math.random() - 0.5);
+
+    // Crear opciones con letras fijas pero contenido aleatorio
+    letters.forEach((letter, index) => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = `${letter}) ${shuffledOptions[index]}`;
+        optionButton.className = 'quiz-option p-4 rounded-lg text-left';
+        optionButton.dataset.answer = shuffledOptions[index];
+        optionButton.dataset.isCorrect = shuffledOptions[index] === currentQuizData.answer ? 'true' : 'false';
+        optionButton.onclick = () => {
+            // Verificar si la respuesta es correcta y actualizar el score
+            if (optionButton.dataset.isCorrect === 'true') {
+                score++;
+            }
+            // Avanzar a la siguiente pregunta
+            currentQuizQuestion++;
+            if (currentQuizQuestion < courseData[currentLevel].quiz.length) {
+                renderQuizQuestion();
+            } else {
+                showResults();
+            }
+        };
+        container.appendChild(optionButton);
+    });
+}
+
+function renderCodeCompletion() {
+    const container = document.getElementById('code-completion-container');
+    container.classList.remove('hidden');
+
+    // Configurar el código con inputs
+    document.getElementById('code-completion-code').innerHTML = currentQuizData.code;
+
+    // Agregar event listeners a los inputs
+    setTimeout(() => {
+        document.querySelectorAll('.code-input').forEach(input => {
+            const inputElement = document.createElement('input');
+            inputElement.type = 'text';
+            inputElement.className = 'code-completion-input';
+            inputElement.dataset.answer = input.dataset.answer;
+            inputElement.addEventListener('input', function() {
+                userAnswers[input.dataset.answer] = this.value;
+            });
+            input.parentNode.replaceChild(inputElement, input);
+        });
+    }, 100);
+}
+
+function renderDragDrop() {
+    const container = document.getElementById('drag-drop-container');
+    container.classList.remove('hidden');
+
+    // Barajar opciones
+    const shuffledOptions = [...currentQuizData.options].sort(() => Math.random() - 0.5);
+
+    // Crear área de opciones
+    const optionsArea = document.createElement('div');
+    optionsArea.className = 'drag-drop-options';
+    optionsArea.innerHTML = '<h4 class="text-sm font-semibold mb-2">Opciones:</h4>';
+
+    shuffledOptions.forEach(option => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'drag-option';
+        optionElement.textContent = option;
+        optionElement.draggable = true;
+        optionElement.addEventListener('dragstart', handleDragStart);
+        optionsArea.appendChild(optionElement);
+    });
+
+    // Crear área de destino
+    const targetsArea = document.createElement('div');
+    targetsArea.className = 'drag-drop-targets';
+    targetsArea.innerHTML = '<h4 class="text-sm font-semibold mb-2">Arrastra aquí en orden:</h4>';
+
+    currentQuizData.correctOrder.forEach(() => {
+        const targetElement = document.createElement('div');
+        targetElement.className = 'drag-target';
+        targetElement.addEventListener('dragover', handleDragOver);
+        targetElement.addEventListener('drop', handleDrop);
+        targetsArea.appendChild(targetElement);
+    });
+
+    // Limpiar y agregar elementos
+    container.innerHTML = '';
+    container.appendChild(optionsArea);
+    container.appendChild(targetsArea);
+}
+
+function handleDragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.textContent);
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/plain');
+    const target = e.target.closest('.drag-target');
+
+    if (target && !target.querySelector('.drag-option')) {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'drag-option';
+        optionElement.textContent = data;
+        optionElement.draggable = false;
+        target.appendChild(optionElement);
+        target.classList.add('occupied');
+
+        // Guardar respuesta
+        const targetIndex = Array.from(target.parentNode.children).indexOf(target);
+        userAnswers[targetIndex] = data;
+    }
+}
+
+function renderMatching() {
+    const container = document.getElementById('matching-container');
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+
+    // Barajar pares
+    const shuffledPairs = [...currentQuizData.pairs].sort(() => Math.random() - 0.5);
+
+    // Crear columnas
+    const conceptsColumn = document.createElement('div');
+    const descriptionsColumn = document.createElement('div');
+
+    conceptsColumn.innerHTML = '<h4 class="text-sm font-semibold mb-2">Conceptos:</h4>';
+    descriptionsColumn.innerHTML = '<h4 class="text-sm font-semibold mb-2">Descripciones:</h4>';
+
+    shuffledPairs.forEach(pair => {
+        const conceptElement = document.createElement('div');
+        conceptElement.className = 'matching-item';
+        conceptElement.textContent = pair.concept;
+        conceptElement.dataset.concept = pair.concept;
+        conceptElement.addEventListener('click', () => selectMatchingItem(conceptElement, 'concept'));
+        conceptsColumn.appendChild(conceptElement);
+
+        const descriptionElement = document.createElement('div');
+        descriptionElement.className = 'matching-item';
+        descriptionElement.textContent = pair.description;
+        descriptionElement.dataset.concept = pair.concept;
+        descriptionElement.addEventListener('click', () => selectMatchingItem(descriptionElement, 'description'));
+        descriptionsColumn.appendChild(descriptionElement);
+    });
+
+    container.appendChild(conceptsColumn);
+    container.appendChild(descriptionsColumn);
+}
+
+let selectedConcept = null;
+let selectedDescription = null;
+
+function selectMatchingItem(element, type) {
+    if (type === 'concept') {
+        // Deseleccionar concepto anterior
+        if (selectedConcept) {
+            selectedConcept.classList.remove('selected');
+        }
+
+        selectedConcept = element;
+        element.classList.add('selected');
+    } else {
+        // Deseleccionar descripción anterior
+        if (selectedDescription) {
+            selectedDescription.classList.remove('selected');
+        }
+
+        selectedDescription = element;
+        element.classList.add('selected');
+    }
+
+    // Si ambos están seleccionados, verificar si coinciden
+    if (selectedConcept && selectedDescription) {
+        if (selectedConcept.dataset.concept === selectedDescription.dataset.concept) {
+            // Coinciden - marcarlos como emparejados
+            selectedConcept.classList.remove('selected');
+            selectedConcept.classList.add('matched');
+            selectedDescription.classList.remove('selected');
+            selectedDescription.classList.add('matched');
+
+            // Guardar emparejamiento
+            userAnswers[selectedConcept.dataset.concept] = true;
+
+            // Resetear selección
+            selectedConcept = null;
+            selectedDescription = null;
+        } else {
+            // No coinciden - quitar selección después de un breve momento
+            setTimeout(() => {
+                selectedConcept.classList.remove('selected');
+                selectedDescription.classList.remove('selected');
+                selectedConcept = null;
+                selectedDescription = null;
+            }, 1000);
+        }
+    }
+}
+
+function renderOrdering() {
+    const container = document.getElementById('ordering-container');
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+
+    // Barajar pasos
+    const shuffledSteps = [...currentQuizData.steps].sort(() => Math.random() - 0.5);
+
+    shuffledSteps.forEach(step => {
+        const stepElement = document.createElement('div');
+        stepElement.className = 'ordering-item';
+        stepElement.draggable = true;
+        stepElement.dataset.step = step;
+
+        const handleElement = document.createElement('div');
+        handleElement.className = 'ordering-handle';
+        handleElement.innerHTML = '<i data-lucide="grip-vertical"></i>';
+
+        stepElement.appendChild(handleElement);
+        stepElement.appendChild(document.createTextNode(step));
+
+        stepElement.addEventListener('dragstart', handleOrderingDragStart);
+        stepElement.addEventListener('dragover', handleOrderingDragOver);
+        stepElement.addEventListener('drop', handleOrderingDrop);
+        stepElement.addEventListener('dragend', handleOrderingDragEnd);
+
+        container.appendChild(stepElement);
+    });
+
+    setTimeout(() => lucide.createIcons(), 100);
+}
+
+let draggedElement = null;
+
+function handleOrderingDragStart(e) {
+    draggedElement = e.target;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.target.outerHTML);
+    e.target.classList.add('dragging');
+}
+
+function handleOrderingDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    const target = e.target.closest('.ordering-item');
+    if (target && target !== draggedElement) {
+        const rect = target.getBoundingClientRect();
+        const next = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
+        container.insertBefore(draggedElement, next ? target.nextSibling : target);
+    }
+}
+
+function handleOrderingDrop(e) {
+    e.preventDefault();
+}
+
+function handleOrderingDragEnd(e) {
+    e.target.classList.remove('dragging');
+
+    // Guardar orden actual
+    userAnswers.order = Array.from(document.querySelectorAll('.ordering-item')).map(item => item.dataset.step);
+}
+
+function renderErrorFinding() {
+    const container = document.getElementById('error-finding-container');
+    container.classList.remove('hidden');
+
+    // Crear contenedor de código con áreas clickeables para errores
+    const codeContainer = document.createElement('div');
+    codeContainer.className = 'error-code';
+
+    // Dividir el código en líneas
+    const lines = currentQuizData.code.split('\n');
+
+    lines.forEach((line, lineIndex) => {
+        const lineElement = document.createElement('div');
+        lineElement.className = 'flex';
+
+        // Número de línea
+        const lineNumber = document.createElement('div');
+        lineNumber.className = 'w-8 text-right pr-2 text-gray-500 select-none';
+        lineNumber.textContent = lineIndex + 1;
+        lineElement.appendChild(lineNumber);
+
+        // Contenido de la línea
+        const lineContent = document.createElement('div');
+        lineContent.className = 'flex-1 relative';
+        lineContent.innerHTML = `<code class="language-python">${line}</code>`;
+
+        // Agregar áreas clickeables para errores en esta línea
+        currentQuizData.errors.forEach(error => {
+            if (error.line === lineIndex + 1) {
+                const errorSpot = document.createElement('div');
+                errorSpot.className = 'error-spot';
+                errorSpot.style.left = `${error.start}ch`;
+                errorSpot.style.width = `${error.end - error.start}ch`;
+                errorSpot.style.height = '1.2em';
+                errorSpot.style.top = '0';
+                errorSpot.dataset.description = error.description;
+                errorSpot.addEventListener('click', () => markErrorFound(errorSpot, error.description));
+                lineContent.appendChild(errorSpot);
+            }
+        });
+
+        lineElement.appendChild(lineContent);
+        codeContainer.appendChild(lineElement);
+    });
+
+    container.innerHTML = '';
+    container.appendChild(codeContainer);
+
+    // Resaltar sintaxis
+    setTimeout(() => Prism.highlightAll(), 100);
+}
+
+function markErrorFound(errorSpot, description) {
+    if (!errorSpot.classList.contains('found')) {
+        errorSpot.classList.add('found');
+        foundErrors.push(description);
+        userAnswers.foundErrors = foundErrors;
+    }
+}
+
+function showHint() {
+    let hint = "";
+
+    switch(currentQuizType) {
+        case "multiple-choice":
+            hint = "Lee cuidadosamente todas las opciones antes de seleccionar una.";
+            break;
+        case "code-completion":
+            hint = "Piensa en qué función o palabra clave falta para que el código funcione correctamente.";
+            break;
+        case "drag-drop":
+            hint = "Recuerda la sintaxis básica de Python para formar sentencias válidas.";
+            break;
+        case "matching":
+            hint = "Haz clic primero en un concepto y luego en su descripción correspondiente.";
+            break;
+        case "ordering":
+            hint = "Piensa en el orden lógico de los pasos para ejecutar un programa Python.";
+            break;
+        case "error-finding":
+            hint = "Busca errores comunes como tipos de datos incorrectos o sintaxis mal formada.";
+            break;
+    }
+
+    alert(hint);
+}
+
+function checkAnswer() {
+    let isCorrect = false;
+    const feedback = document.getElementById('quiz-feedback');
+
+    switch(currentQuizType) {
+        case "multiple-choice":
+            isCorrect = userAnswers.selected === currentQuizData.answer;
+            break;
+        case "code-completion":
+            isCorrect = Object.values(userAnswers).includes(currentQuizData.answer);
+            break;
+        case "drag-drop":
+            const userOrder = Object.values(userAnswers);
+            isCorrect = JSON.stringify(userOrder) === JSON.stringify(currentQuizData.correctOrder);
+            break;
+        case "matching":
+            isCorrect = Object.keys(userAnswers).length === currentQuizData.pairs.length;
+            break;
+        case "ordering":
+            isCorrect = JSON.stringify(userAnswers.order) === JSON.stringify(currentQuizData.correctOrder);
+            break;
+        case "error-finding":
+            isCorrect = foundErrors.length === currentQuizData.errors.length;
+            break;
+    }
+
+    // Mostrar feedback
+    feedback.textContent = isCorrect ?
+        "¡Correcto! " + (currentQuizData.explanation || "Buen trabajo.") :
+        "Incorrecto. " + (currentQuizData.explanation || "Inténtalo de nuevo.");
+    feedback.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+    feedback.classList.remove('hidden');
+
+    // Si es correcto, avanzar después de un breve retraso
+    if (isCorrect) {
+        setTimeout(() => {
+            currentQuizQuestion++;
+            if (currentQuizQuestion < courseData[currentLevel].quiz.length) {
+                renderQuizQuestion();
+            } else {
+                showResults();
+            }
+        }, 2000);
+    }
+}
+
+function showResults() {
+    const totalQuestions = courseData[currentLevel].quiz.length;
+    const passed = score >= (totalQuestions * 0.7);
+    const percentage = Math.round((score / totalQuestions) * 100);
+
+    // Save Score logic
+    if (userProgress.quizScores === undefined) userProgress.quizScores = {};
+    if (userProgress.quizScores[currentLevel] === undefined || score > userProgress.quizScores[currentLevel]) {
+        userProgress.quizScores[currentLevel] = score;
+        saveProgress();
+        // Guardar quizScores para leaderboard
+        saveQuizScore(score, courseData[currentLevel].quiz.length, COURSE_ID, currentLevel + 1);
+        // Mostrar challenge si corresponde
+        checkAndShowChallenge(currentLevel + 1, challengeMap);
+    }
+
+    const resultsTitle = document.getElementById('results-title');
+    const resultsScore = document.getElementById('results-score');
+    const resultsMessage = document.getElementById('results-message');
+    const resultsIcon = document.getElementById('results-icon');
+    const nextLevelBtn = document.getElementById('next-level-btn');
+    const challengeBtn = document.getElementById('code-challenge-btn');
+
+    resultsScore.textContent = `Puntuación: ${score}/${totalQuestions} (${percentage}%)`;
+
+    if (passed) {
+        resultsTitle.textContent = '¡Felicidades!';
+        resultsMessage.textContent = 'Has aprobado el cuestionario.';
+        resultsIcon.setAttribute('data-lucide', 'award');
+        resultsIcon.style.color = 'var(--green)';
+
+        // Verificar si hay desafío
+        const challenge = challengeMap[currentLevel];
+        
+        if (challenge) {
+            challengeBtn.classList.remove('hidden');
+            challengeBtn.href = challenge.file;
+            challengeBtn.innerHTML = `<i data-lucide="code"></i> ${challenge.title}`;
+            nextLevelBtn.classList.add('hidden');
+        } else {
+            challengeBtn.classList.add('hidden');
+            nextLevelBtn.classList.remove('hidden');
+            markLevelCompleted(currentLevel);
+        }
+
+    } else {
+        resultsTitle.textContent = '¡Inténtalo de nuevo!';
+        resultsMessage.textContent = 'Necesitas al menos 70% para aprobar.';
+        resultsIcon.setAttribute('data-lucide', 'refresh-cw');
+        resultsIcon.style.color = 'var(--red)';
+        nextLevelBtn.classList.add('hidden');
+        challengeBtn.classList.add('hidden');
+    }
+    
+    lucide.createIcons();
+    showPanel('results');
+    
+    // Desbloquear chat después del quiz
+    document.getElementById('chat-toggle-btn').style.display = 'block';
+}
+
+// Event Listeners
+document.getElementById('next-btn').addEventListener('click', () => { 
+    if (currentLessonStep < courseData[currentLevel].lesson.length - 1) { 
+        currentLessonStep++; 
+        renderLesson(); 
+    } else { 
+        startQuiz(); 
+    } 
+});
+
+document.getElementById('prev-btn').addEventListener('click', () => { 
+    if (currentLessonStep > 0) { 
+        currentLessonStep--; 
+        renderLesson(); 
+    } 
+});
+
+document.getElementById('close-lesson-btn').addEventListener('click', () => { 
+    renderLevelSelection(); 
+    showPanel('levelSelection'); 
+});
+
+document.getElementById('retry-lesson-btn').addEventListener('click', () => startLevel(currentLevel));
+
+document.getElementById('next-level-btn').addEventListener('click', () => {
+    if (currentLevel + 1 < courseData.length) {
+        startLevel(currentLevel + 1);
+    } else {
+        renderLevelSelection();
+        showPanel('levelSelection');
+    }
+});
+
+function startPractice(practiceIndex) {
+    currentPracticeStep = practiceIndex;
+    renderPractice();
+    showPanel('practice');
+}
+
+function renderPractice() {
+    const practiceDataItem = practiceData[currentPracticeStep];
+    document.getElementById('practice-title').textContent = practiceDataItem.title;
+    document.getElementById('practice-content').innerHTML = practiceDataItem.content;
+    document.getElementById('practice-step').textContent = `${currentPracticeStep + 1} / ${practiceData.length}`;
+    const prevBtn = document.getElementById('prev-practice-btn');
+    prevBtn.disabled = currentPracticeStep === 0;
+    document.getElementById('next-practice-btn').textContent = (currentPracticeStep === practiceData.length - 1) ? 'Finalizar' : 'Siguiente';
+}
+
+document.getElementById('next-practice-btn').addEventListener('click', () => {
+    if (currentPracticeStep < practiceData.length - 1) {
+        currentPracticeStep++;
+        renderPractice();
+    } else {
+        renderLevelSelection();
+        showPanel('levelSelection');
+    }
+});
+
+document.getElementById('prev-practice-btn').addEventListener('click', () => {
+    if (currentPracticeStep > 0) {
+        currentPracticeStep--;
+        renderPractice();
+    }
+});
+
+document.getElementById('close-practice-btn').addEventListener('click', () => {
+    renderLevelSelection();
+    showPanel('levelSelection');
+});
+
+// Theme toggle
+document.getElementById('theme-toggle').addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const icon = document.querySelector('#theme-toggle i');
+    icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+    lucide.createIcons();
+});
+
+// Chat functionality
+document.getElementById('chat-toggle-btn').addEventListener('click', () => {
+    const chatModal = document.getElementById('chat-modal');
+    chatModal.classList.toggle('hidden');
+});
+
+document.getElementById('chat-close-btn').addEventListener('click', () => {
+    document.getElementById('chat-modal').classList.add('hidden');
+});
+
+document.getElementById('chat-send-btn').addEventListener('click', sendMessage);
+
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    // Add user message
+    addMessageToChat(message, 'user');
+    input.value = '';
+
+    // Show loading
+    const loading = document.getElementById('chat-loading');
+    loading.classList.remove('hidden');
+
+    // Simulate AI response after a delay
+    setTimeout(() => {
+        loading.classList.add('hidden');
+        // Simple response logic - in a real app, this would call an API
+        const response = generateAIResponse(message);
+        addMessageToChat(response, 'ai');
+    }, 1000);
+}
+
+function addMessageToChat(message, sender) {
+    const messagesContainer = document.getElementById('chat-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+    
+    const bubble = document.createElement('div');
+    bubble.className = `chat-message-bubble ${sender === 'user' ? 'user-message' : 'ai-message'}`;
+    bubble.textContent = message;
+    
+    messageDiv.appendChild(bubble);
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function generateAIResponse(message) {
+    // Enhanced AI tutor functionality
+    const lowerMessage = message.toLowerCase();
+
+    if (lowerMessage.includes('hola') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
+        return '¡Hola! Soy tu tutor de Python. Puedo ayudarte a entender conceptos, evaluar tu código o dar pistas. ¿Qué necesitas?';
+    } else if (lowerMessage.includes('nivel') || lowerMessage.includes('lección')) {
+        return 'Actualmente estás en el nivel ' + (currentLevel + 1) + '. ¿Necesitas ayuda con algún concepto específico?';
+    } else if (lowerMessage.includes('variable') || lowerMessage.includes('variables')) {
+        return 'Las variables en Python son contenedores para almacenar datos. Se crean simplemente asignando un valor: nombre = "Ana", edad = 25. No necesitas declarar el tipo.';
+    } else if (lowerMessage.includes('función') || lowerMessage.includes('funciones')) {
+        return 'Las funciones en Python se definen con "def". Pueden recibir parámetros y devolver valores con "return". Ejemplo: def suma(a, b): return a + b';
+    } else if (lowerMessage.includes('lista') || lowerMessage.includes('listas')) {
+        return 'Las listas en Python son colecciones ordenadas y mutables. Se crean con corchetes: frutas = ["manzana", "banana"]. Accede con índices: frutas[0]';
+    } else if (lowerMessage.includes('diccionario') || lowerMessage.includes('diccionarios')) {
+        return 'Los diccionarios almacenan pares clave-valor. Se crean con llaves: persona = {"nombre": "Ana", "edad": 25}. Accede con claves: persona["nombre"]';
+    } else if (lowerMessage.includes('error') || lowerMessage.includes('problema')) {
+        return 'Si tienes un error, revisa la sintaxis y asegúrate de que todas las variables estén definidas. ¿Puedes compartir el código con el error?';
+    } else if (lowerMessage.includes('evaluar') || lowerMessage.includes('revisar') || lowerMessage.includes('código')) {
+        return '¡Claro! Pega tu código aquí y te ayudaré a revisarlo. Puedo detectar errores comunes y sugerir mejoras.';
+    } else if (lowerMessage.includes('pista') || lowerMessage.includes('ayuda')) {
+        return 'Para el ejercicio actual, recuerda usar los comandos indicados. Si es un código con errores, busca sintaxis incorrecta. Si es completar código, piensa en qué función o estructura falta.';
+    } else if (lowerMessage.includes('input')) {
+        return 'input() lee entrada del usuario como string. Para números usa int(input()) o float(input()).';
+    } else if (lowerMessage.includes('print')) {
+        return 'print() muestra texto en pantalla. Usa f-strings para variables: print(f"Hola {nombre}")';
+    } else if (lowerMessage.includes('if') || lowerMessage.includes('condicional')) {
+        return 'Las condicionales usan if/elif/else. Recuerda los dos puntos (:) y la indentación. Ejemplo: if edad >= 18: print("Adulto")';
+    } else {
+        return 'Interesante pregunta sobre Python. ¿Podrías ser más específico? Puedo ayudarte con conceptos, código o ejercicios.';
+    }
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', async () => {
+    // Sync with Firestore first
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        try {
+            const parsedUser = JSON.parse(savedUser);
+            if (window.getUserFromFirestore) {
+                const firestoreUser = await window.getUserFromFirestore(parsedUser.id);
+                if (firestoreUser && firestoreUser.pythonProgress) {
+                    // Update local storage with Firestore data
+                    localStorage.setItem('pythonCourseProgress', JSON.stringify(firestoreUser.pythonProgress));
+                    // Update user in local storage too
+                    parsedUser.pythonProgress = firestoreUser.pythonProgress;
+                    localStorage.setItem('currentUser', JSON.stringify(parsedUser));
+                    console.log('✅ Progreso de Python sincronizado desde Firestore');
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error al sincronizar con Firestore:', error);
+        }
+    }
+
+    loadProgress();
+    renderLevelSelection();
+    showPanel('levelSelection');
+    lucide.createIcons();
+
+    // Initialize error finding functionality
+    initializeErrorFinding();
+    initializeCodeCompletion();
+});
+
+// Error finding functionality
+function initializeErrorFinding() {
+    // Make code clickable for error finding
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.code-block') && e.target.closest('#error-code-1, #error-code-2')) {
+            const codeBlock = e.target.closest('.code-block');
+            const codeElement = codeBlock.querySelector('code');
+            if (codeElement) {
+                const selection = window.getSelection();
+                const selectedText = selection.toString().trim();
+                if (selectedText) {
+                    // Check if selected text is an error
+                    const errors = getErrorsForBlock(codeBlock.id);
+                    if (errors.includes(selectedText)) {
+                        // Mark as found
+                        e.target.style.backgroundColor = 'rgba(158, 206, 106, 0.3)';
+                        e.target.style.borderRadius = '3px';
+                        checkAllErrorsFound(codeBlock.id);
+                    }
+                }
+            }
+        }
+    });
+
+    // Give up buttons
+    document.getElementById('give-up-1').addEventListener('click', () => {
+        document.getElementById('solution-1').classList.remove('hidden');
+    });
+    document.getElementById('give-up-2').addEventListener('click', () => {
+        document.getElementById('solution-2').classList.remove('hidden');
+    });
+}
+
+function getErrorsForBlock(blockId) {
+    const errorMap = {
+        'error-code-1': ['input("Ingresa tu edad: ")', '"Hola {nombre}, tienes {edad} años!"'],
+        'error-code-2': ['input("Primer número: ")', 'input("Segundo número: ")', 'if num1 > num2', 'else num2 > num1:']
+    };
+    return errorMap[blockId] || [];
+}
+
+function checkAllErrorsFound(blockId) {
+    // Track found errors and update counter
+    const errorCounts = {
+        'error-code-1': 2,
+        'error-code-2': 4
+    };
+
+    // In a real implementation, track which errors have been found
+    // For now, just show encouragement
+    setTimeout(() => {
+        alert('¡Bien! Has encontrado un error. Sigue buscando los demás.');
+        updateCommandCounter(blockId);
+    }, 500);
+}
+
+function updateCommandCounter(blockId) {
+    const counterMap = {
+        'error-code-1': 'command-counter-1',
+        'error-code-2': 'command-counter-2'
+    };
+
+    const counterElement = document.getElementById(counterMap[blockId]);
+    if (counterElement) {
+        // Simulate finding errors - in real implementation, track actual found errors
+        const current = parseInt(counterElement.textContent.split(':')[1].split('/')[0]);
+        if (current < parseInt(counterElement.textContent.split('/')[1])) {
+            counterElement.textContent = `Usados: ${current + 1}/${counterElement.textContent.split('/')[1]}`;
+        }
+    }
+}
+
+// Code completion functionality
+function initializeCodeCompletion() {
+    document.getElementById('check-fill-1').addEventListener('click', () => checkFill(1));
+    document.getElementById('check-fill-2').addEventListener('click', () => checkFill(2));
+
+    // Initialize click-to-place for fill exercises
+    initializeClickToPlace();
+}
+
+let selectedCommand = null;
+
+function initializeClickToPlace() {
+    // Remove existing event listeners to avoid duplicates
+    document.querySelectorAll('.command-item').forEach(item => {
+        item.removeEventListener('click', handleCommandSelect);
+        item.addEventListener('click', handleCommandSelect);
+    });
+
+    // Make drop zones clickable for placement
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.removeEventListener('click', handleZoneClick);
+        zone.addEventListener('click', handleZoneClick);
+    });
+
+    // Reset buttons - only add if they exist
+    const resetBtn1 = document.getElementById('reset-fill-1');
+    const resetBtn2 = document.getElementById('reset-fill-2');
+    if (resetBtn1) {
+        resetBtn1.removeEventListener('click', () => resetFill(1));
+        resetBtn1.addEventListener('click', () => resetFill(1));
+    }
+    if (resetBtn2) {
+        resetBtn2.removeEventListener('click', () => resetFill(2));
+        resetBtn2.addEventListener('click', () => resetFill(2));
+    }
+}
+
+function handleCommandSelect(e) {
+    // Remove previous selection
+    document.querySelectorAll('.command-item.selected').forEach(item => {
+        item.classList.remove('selected');
+    });
+
+    // Select this command
+    selectedCommand = e.target.dataset.command;
+    e.target.classList.add('selected');
+
+    // Add visual feedback - command follows mouse
+    document.addEventListener('mousemove', followMouse);
+}
+
+function followMouse(e) {
+    if (selectedCommand) {
+        const selectedElement = document.querySelector('.command-item.selected');
+        if (selectedElement) {
+            // Create floating element that follows mouse
+            let floatingElement = document.getElementById('floating-command');
+            if (!floatingElement) {
+                floatingElement = document.createElement('div');
+                floatingElement.id = 'floating-command';
+                floatingElement.className = 'fixed bg-blue-500 text-white px-3 py-1 rounded shadow-lg pointer-events-none z-50';
+                floatingElement.textContent = selectedCommand;
+                document.body.appendChild(floatingElement);
+            }
+            floatingElement.style.left = (e.clientX + 10) + 'px';
+            floatingElement.style.top = (e.clientY + 10) + 'px';
+        }
+    }
+}
+
+function handleZoneClick(e) {
+    if (selectedCommand && !e.currentTarget.dataset.value) {
+        const dropZone = e.currentTarget;
+
+        // Clear previous content
+        dropZone.textContent = '';
+
+        // Add the command
+        const commandSpan = document.createElement('span');
+        commandSpan.textContent = selectedCommand;
+        commandSpan.className = 'bg-blue-500 text-white px-2 py-1 rounded text-sm';
+        dropZone.appendChild(commandSpan);
+
+        // Store the value
+        dropZone.dataset.value = selectedCommand;
+
+        // Hide the selected item
+        const selectedItem = document.querySelector('.command-item.selected');
+        if (selectedItem) {
+            selectedItem.style.display = 'none';
+            selectedItem.classList.remove('selected');
+        }
+
+        // Remove floating element
+        const floatingElement = document.getElementById('floating-command');
+        if (floatingElement) {
+            floatingElement.remove();
+        }
+
+        // Clear selection
+        selectedCommand = null;
+        document.removeEventListener('mousemove', followMouse);
+    }
+}
+
+function resetFill(exerciseNum) {
+    // Reset drop zones
+    document.querySelectorAll(`#practice-content .drop-zone`).forEach(zone => {
+        zone.textContent = '';
+        zone.dataset.value = '';
+        zone.style.backgroundColor = '';
+    });
+
+    // Show all command items
+    document.querySelectorAll('.command-item').forEach(item => {
+        item.style.display = 'inline-block';
+        item.style.opacity = '1';
+    });
+
+    // Reset feedback
+    const feedback = document.getElementById(`fill-feedback-${exerciseNum}`);
+    feedback.innerHTML = '';
+
+    // Reset counter
+    const counterElement = document.getElementById(`command-counter-fill-${exerciseNum}`);
+    if (counterElement) {
+        counterElement.textContent = `Completados: 0/${counterElement.textContent.split('/')[1]}`;
+    }
+}
+
+function checkFill(exerciseNum) {
+    const answers = {
+        1: ['input', 'int', 'input', 'f'],
+        2: ['float', 'input', 'float', 'input', 'f', 'if', 'f', 'elif', 'f', 'else']
+    };
+
+    const correct = answers[exerciseNum];
+    let allCorrect = true;
+    const feedback = document.getElementById(`fill-feedback-${exerciseNum}`);
+
+    // Check drop zones instead of inputs
+    const dropZones = document.querySelectorAll(`#practice-content .drop-zone`);
+    dropZones.forEach((zone, index) => {
+        const value = zone.dataset.value || '';
+        if (value === correct[index]) {
+            zone.style.borderColor = 'green';
+            zone.style.backgroundColor = 'rgba(158, 206, 106, 0.1)';
+        } else {
+            zone.style.borderColor = 'red';
+            zone.style.backgroundColor = 'rgba(247, 118, 142, 0.1)';
+            allCorrect = false;
+        }
+    });
+
+    if (allCorrect) {
+        feedback.innerHTML = '<span style="color: green;">¡Excelente! Todos los huecos están correctos.</span>';
+        updateFillCounter(exerciseNum, true);
+    } else {
+        feedback.innerHTML = '<span style="color: red;">Algunos huecos están incorrectos. Revisa y vuelve a intentar.</span>';
+        updateFillCounter(exerciseNum, false);
+    }
+}
+
+function updateFillCounter(exerciseNum, success) {
+    const counterElement = document.getElementById(`command-counter-fill-${exerciseNum}`);
+    if (counterElement) {
+        const total = parseInt(counterElement.textContent.split('/')[1]);
+        let current = parseInt(counterElement.textContent.split(':')[1].split('/')[0]);
+        if (success && current < total) {
+            current = total; // Mark as completed when all correct
+        }
+        counterElement.textContent = `Completados: ${current}/${total}`;
+    }
+}
+</script>
+
+<!-- Prism.js core and languages -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+</body>
+</html>

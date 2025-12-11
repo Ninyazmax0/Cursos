@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking Global - Status Code 418</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Firebase Modules -->
+    <script type="module" src="assets/js/firebase-config.js"></script>
+    <script type="module" src="assets/js/firebase-storage.js"></script>
+</head>
+
+<style>
+    /* VARIABLES DE TEMA TOKYO NIGHT - Copiadas para consistencia */
+    :root {
+        --background: #1a1b26;
+        --foreground: #a9b1d6;
+        --card-background: #24283b;
+        --border: #414868;
+        --accent: #7aa2f7;
+        --accent-dark: #5a7edb;
+        --gold: #e0af68;
+        --silver: #c0caf5;
+        --bronze: #cf7553;
+        --font-sans: 'Inter', sans-serif;
+    }
+
+    body {
+        background-color: var(--background);
+        color: var(--foreground);
+        font-family: var(--font-sans);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .glass-panel {
+        background-color: rgba(36, 40, 59, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+    }
+
+    /* Podium Styles */
+    .podium-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        height: 350px;
+        margin-bottom: 2rem;
+        gap: 1rem;
+    }
+
+    .podium-place {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .podium-place:hover { transform: scale(1.05); }
+
+    .podium-block {
+        width: 100px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        padding-bottom: 1rem;
+        font-weight: bold;
+        color: rgba(0,0,0,0.7);
+        position: relative;
+    }
+
+    /* Rank Specifics */
+    .rank-1 .podium-block { height: 180px; background: linear-gradient(to top, #e0af68, #f7d794); box-shadow: 0 0 20px rgba(224, 175, 104, 0.4); }
+    .rank-1 .avatar-wrapper { border-color: var(--gold); box-shadow: 0 0 15px var(--gold); }
+    
+    .rank-2 .podium-block { height: 130px; background: linear-gradient(to top, #a0a8cc, #c0caf5); }
+    .rank-2 .avatar-wrapper { border-color: var(--silver); }
+    
+    .rank-3 .podium-block { height: 100px; background: linear-gradient(to top, #cf7553, #e8a082); }
+    .rank-3 .avatar-wrapper { border-color: var(--bronze); }
+
+    .avatar-wrapper {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 4px solid var(--border);
+        overflow: hidden;
+        margin-bottom: 10px;
+        background-color: var(--card-background);
+        position: relative;
+    }
+    
+    .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .crown { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); color: var(--gold); filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); animation: float 3s ease-in-out infinite; }
+
+    @keyframes float { 0% { transform: translate(-50%, 0px); } 50% { transform: translate(-50%, -10px); } 100% { transform: translate(-50%, 0px); } }
+
+    /* List Styles */
+    .leaderboard-row {
+        background-color: var(--card-background);
+        border: 1px solid var(--border);
+        transition: all 0.2s;
+    }
+    .leaderboard-row:hover { transform: translateX(5px); border-color: var(--accent); }
+    
+    .current-user-row {
+        border-color: var(--accent);
+        background-color: rgba(122, 162, 247, 0.1);
+        position: sticky;
+        bottom: 20px;
+        z-index: 10;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+</style>
+
+<body>
+    
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <a href="menu_inicio.html" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i> Volver
+            </a>
+            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                Salón de la Fama
+            </h1>
+            <div class="w-20"></div> <!-- Spacer for center alignment -->
+        </header>
+
+        <!-- Owners Section -->
+        <div id="owners-section" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <!-- Cargado dinámicamente -->
+        </div>
+
+        <!-- Podium Section -->
+        <h2 class="text-2xl font-bold text-center mb-6 text-white">Top 3 Estudiantes</h2>
+        <div id="podium" class="podium-container">
+            <!-- Cargado dinámicamente -->
+             <div class="text-center opacity-50 animate-pulse">Calculando puntajes...</div>
+        </div>
+
+        <!-- Full List Section -->
+        <div class="glass-panel p-6 shadow-2xl">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2" style="color: var(--accent);">
+                <i data-lucide="list-ordered"></i> Clasificación General
+            </h3>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-sm text-gray-400 border-b border-gray-700">
+                            <th class="p-4 w-16">#</th>
+                            <th class="p-4">Coder</th>
+                            <th class="p-4 text-center">Rango</th>
+                            <th class="p-4 text-center">Niveles</th>
+                            <th class="p-4 text-right">XP Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-list">
+                        <!-- Lista cargada dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadLeaderboard();
+        });
+
+        function calculateXP(user) {
+            let totalLevels = 0;
+            let totalQuizScore = 0;
+
+            const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
+            
+            courses.forEach(course => {
+                const progress = user[course] || {};
+                const levels = progress.completedLevels || [];
+                const scores = progress.quizScores || {}; // New format: { 0: 8, 1: 10 }
+
+                totalLevels += levels.length;
+
+                // Add scores based on levels completed
+                levels.forEach(levelIndex => {
+                    // Base Pass XP (if completed, assume at least 7/10 or just base bonus)
+                    // But we want "First Attempt Only" logic mentioned by user.
+                    // We only look at stored scores. Even if they retry 100 times, users[course].quizScores[levelIndex]
+                    // should ONLY contain the first attempt (handled in web_course.html saving logic).
+                    
+                    const score = scores[levelIndex] || 7; // Default to 7 if missing (migration)
+                    totalQuizScore += score;
+                });
+            });
+
+            // XP FORMULA: (Levels * 100) + (QuizPoints * 10)
+            // Perfect 10/10 level = 100 + 100 = 200 XP
+            // Pass 7/10 level = 100 + 70 = 170 XP
+            return (totalLevels * 100) + (totalQuizScore * 10);
+        }
+
+        function getRankTitle(levelCount) {
+             if (levelCount >= 80) return { title: '🦄 Leyenda', color: '#ff00ff' };
+             if (levelCount >= 60) return { title: '👽 Hacker', color: '#00ff00' };
+             if (levelCount >= 40) return { title: '🧠 Ingeniero', color: '#cyan' };
+             if (levelCount >= 20) return { title: '🚀 Desarrollador', color: '#yellow' };
+             if (levelCount >= 5)  return { title: '👩‍💻 Aprendiz', color: '#blue' };
+             return { title: '🥚 Novato', color: '#gray' };
+        }
+
+        async function loadLeaderboard() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            // Intentar obtener usuarios desde Firebase primero
+            let allUsers = [];
+            if (window.getAllUsersFromFirestore) {
+                try {
+                    allUsers = await getAllUsersFromFirestore();
+                    console.log('🔥 Leaderboard cargado desde Firebase:', allUsers.length, 'usuarios');
+                } catch(err) {
+                    console.warn('Firebase no disponible, usando localStorage');
+                }
+            }
+            
+            // Fallback a localStorage
+            if (allUsers.length === 0) {
+                allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+            }
+
+            // Calculate XP for everyone
+            // Filter out owners and unwanted users
+            const rankingUsers = allUsers.filter(user => {
+                const name = user.name.toLowerCase();
+                const isOwner = name.includes('steven') || name.includes('amelia');
+                const isIgnored = name.includes('airi') || name.includes('aria') || name.includes('ana');
+                return !isOwner && !isIgnored;
+            });
+
+            // Get Owners for separate display
+            const owners = allUsers.filter(user => {
+                const name = user.name.toLowerCase();
+                return name.includes('steven') || name.includes('amelia');
+            });
+
+            // Ensure Steven and Amelia are in the owner list
+            if (!owners.find(u => u.name.toLowerCase().includes('steven'))) {
+                owners.push({ id: 'steven-founder', name: 'Steven', role: 'Founder', avatar: 'https://ui-avatars.com/api/?name=Steven&background=0D8ABC&color=fff', totalLevels: 0, xp: 99999 });
+            }
+             if (!owners.find(u => u.name.toLowerCase().includes('amelia'))) {
+                owners.push({ id: 'amelia-founder', name: 'Amelia', role: 'Co-Founder', avatar: 'https://cdn.myanimelist.net/images/characters/8/239523.jpg', totalLevels: 0, xp: 99999 });
+            }
+
+            // Calculate XP for ranking users
+            const rankedUsers = rankingUsers.map(user => {
+                const xp = calculateXP(user);
+                
+                // Calculate total levels for Rank Title
+                const totalLevels = (user.webProgress?.completedLevels?.length || 0) + 
+                                    (user.pythonProgress?.completedLevels?.length || 0) +
+                                    (user.rubyProgress?.completedLevels?.length || 0) +
+                                    (user.databaseProgress?.completedLevels?.length || 0);
+
+                return { ...user, xp, totalLevels };
+            }).sort((a, b) => b.xp - a.xp); // Sort by XP descending
+
+            renderOwners(owners);
+            renderPodium(rankedUsers.slice(0, 3));
+            renderList(rankedUsers, currentUser.id);
+        }
+
+        function renderOwners(owners) {
+            const container = document.getElementById('owners-section');
+            container.innerHTML = '';
+            
+            owners.forEach(owner => {
+                const isAmelia = owner.name.toLowerCase().includes('amelia');
+                const role = isAmelia ? 'Co-Founder & CTO' : 'Founder & CEO';
+                const borderColor = isAmelia ? 'border-red-500' : 'border-blue-500';
+                const glowColor = isAmelia ? 'rgba(247, 118, 142, 0.2)' : 'rgba(59, 130, 246, 0.2)';
+                
+                container.innerHTML += `
+                    <div onclick="window.location.href='perfil_usuario.html?id=${isAmelia ? 'amelia-founder' : 'steven-founder'}'" class="glass-panel p-6 flex items-center gap-6 transform hover:scale-105 transition-all duration-300 cursor-pointer" style="border-left: 4px solid ${isAmelia ? '#f7768e' : '#3b82f6'}; box-shadow: 0 4px 20px ${glowColor}">
+                        <div class="relative">
+                            <div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br ${isAmelia ? 'from-red-500 to-orange-500' : 'from-blue-500 to-cyan-500'}">
+                                <img src="${owner.avatar}" class="w-full h-full rounded-full object-cover border-2 border-white">
+                            </div>
+                            <div class="absolute -bottom-2 -right-2 bg-gradient-to-r ${isAmelia ? 'from-red-600 to-pink-600' : 'from-blue-600 to-indigo-600'} text-white text-xs px-2 py-0.5 rounded-full border border-white font-bold shadow-lg">
+                                OWNER
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">${owner.name}</h3>
+                            <p class="text-sm font-mono opacity-80" style="color: ${isAmelia ? '#f7768e' : '#7aa2f7'}">${role}</p>
+                            <p class="text-xs text-gray-400 mt-1 max-w-[200px]">${isAmelia ? 'La mente maestra detrás del código.' : 'El arquitecto de la visión.'}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderPodium(top3) {
+            const container = document.getElementById('podium');
+            container.innerHTML = '';
+
+            // Order for Podium: 2nd - 1st - 3rd (Visual pyramid)
+            const order = [1, 0, 2]; // Index in top3 array
+            
+            order.forEach(idx => {
+                const user = top3[idx];
+                if (!user) return; // Less than 3 users
+
+                const rank = idx + 1;
+                const isWinner = rank === 1;
+                
+                container.innerHTML += `
+                    <div class="podium-place rank-${rank}">
+                        <div class="text-center mb-2">
+                             <p class="font-bold text-sm truncate w-24">${user.name}</p>
+                             <p class="text-xs text-accent">${user.xp} XP</p>
+                        </div>
+                        <div class="avatar-wrapper relative">
+                            <img src="${user.avatar || 'https://via.placeholder.com/80'}" alt="${user.name}">
+                            ${isWinner ? '<i data-lucide="crown" class="w-8 h-8 crown"></i>' : ''}
+                        </div>
+                        <div class="podium-block">
+                            <span class="text-2xl">${rank}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function renderList(users, currentUserId) {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = '';
+
+            users.forEach((user, index) => {
+                const rankInfo = getRankTitle(user.totalLevels);
+                const isMe = user.id === currentUserId;
+                
+                const row = document.createElement('tr');
+                row.className = `leaderboard-row ${isMe ? 'current-user-row' : ''} border-b border-gray-700 cursor-pointer hover:bg-gray-800 transition-colors`;
+                row.onclick = () => window.location.href = `perfil_usuario.html?id=${encodeURIComponent(user.id || user.name)}`;
+                
+                row.innerHTML = `
+                    <td class="p-4 font-bold ${index < 3 ? 'text-yellow-400' : 'text-gray-500'}">${index + 1}</td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-3">
+                            <img src="${user.avatar || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-full border border-gray-600">
+                            <div>
+                                <p class="font-semibold ${isMe ? 'text-accent' : ''}">${user.name} ${isMe ? '(Tú)' : ''}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-4 text-center">
+                        <span class="px-2 py-1 rounded text-xs font-bold bg-opacity-20" style="background-color: ${rankInfo.color}30; color: ${rankInfo.color}; border: 1px solid ${rankInfo.color}">
+                            ${rankInfo.title}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center font-mono opacity-70">${user.totalLevels}</td>
+                    <td class="p-4 text-right font-bold text-accent">${user.xp} XP</td>
+                `;
+                list.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>

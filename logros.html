@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sala de Trofeos - Status Code 418</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Firebase Modules -->
+    <script type="module" src="assets/js/firebase-config.js"></script>
+    <script type="module" src="assets/js/firebase-storage.js"></script>
+    <style>
+        /* Tokyo Night Theme */
+        :root {
+            --background: #1a1b26;
+            --foreground: #a9b1d6;
+            --card-background: #24283b;
+            --border: #414868;
+            --accent: #7aa2f7;
+            --green: #9ece6a;
+            --yellow: #e0af68;
+            --red: #f7768e;
+            --purple: #bb9af7;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Fondo animado */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .background-night {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+        }
+
+        .glass-panel {
+            background-color: rgba(36, 40, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        /* Achievement Card */
+        .achievement-card {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            z-index: 10;
+        }
+
+        .achievement-locked {
+            filter: grayscale(100%) opacity(0.6);
+            border-style: dashed;
+        }
+        
+        .achievement-locked:hover {
+            filter: grayscale(0%) opacity(1);
+        }
+
+        .rarity-common { border-color: var(--border); }
+        .rarity-rare { border-color: var(--accent); box-shadow: 0 0 10px rgba(122, 162, 247, 0.1); }
+        .rarity-epic { border-color: var(--yellow); box-shadow: 0 0 15px rgba(224, 175, 104, 0.2); }
+
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <div class="background-night"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+            <div class="flex items-center gap-4">
+                <a href="menu_inicio.html" class="p-2 bg-card-background rounded-full hover:bg-accent hover:text-white transition">
+                    <i data-lucide="arrow-left"></i>
+                </a>
+                <div>
+                    <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                        Sala de Trofeos
+                    </h1>
+                    <p class="text-gray-400">Colecciona momentos, no cosas.</p>
+                </div>
+            </div>
+            
+            <div class="glass-panel p-4 flex gap-8">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-white" id="unlocked-count">0/20</p>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest">Desbloqueados</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-yellow" id="completion-rate">0%</p>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest">Completado</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Achievements Grid -->
+        <div id="achievements-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Loading -->
+            <div class="col-span-full text-center py-12">
+                <i data-lucide="loader" class="w-12 h-12 animate-spin mx-auto text-accent"></i>
+                <p class="mt-4 text-gray-400">Cargando tus hazañas...</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { achievements } from './assets/js/achievements.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAchievements();
+        });
+
+        function loadAchievements() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const unlockedIds = currentUser.achievements || [];
+            
+            const container = document.getElementById('achievements-list');
+            container.innerHTML = ''; // Clear loading
+
+            // Stats
+            document.getElementById('unlocked-count').textContent = `${unlockedIds.length}/${achievements.length}`;
+            document.getElementById('completion-rate').textContent = `${Math.round((unlockedIds.length / achievements.length) * 100)}%`;
+
+            achievements.forEach(ach => {
+                const isUnlocked = unlockedIds.includes(ach.id);
+                const card = document.createElement('div');
+                
+                // Styles based on state
+                let bgClass = "bg-card-background";
+                let iconColor = "text-gray-400";
+                
+                if (isUnlocked) {
+                    if (ach.rarity === 'common') { bgClass = "bg-gray-800"; iconColor = "text-gray-300"; }
+                    if (ach.rarity === 'rare') { bgClass = "bg-blue-900/30"; iconColor = "text-blue-400"; }
+                    if (ach.rarity === 'epic') { bgClass = "bg-yellow-900/20"; iconColor = "text-yellow-400"; }
+                }
+
+                card.className = `achievement-card glass-panel p-6 border ${isUnlocked ? '' : 'achievement-locked'} rarity-${ach.rarity} ${bgClass} flex flex-col gap-4`;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="p-3 rounded-xl bg-black/20 ${iconColor}">
+                            <i data-lucide="${ach.icon}" class="w-8 h-8"></i>
+                        </div>
+                        ${isUnlocked ? '<i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>' : '<i data-lucide="lock" class="w-5 h-5 text-gray-500"></i>'}
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-lg text-white mb-1 group">${ach.name}</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            ${isUnlocked ? ach.desc : `<span class="italic opacity-70">Pista: ${ach.hint}</span>`}
+                        </p>
+                    </div>
+
+                    ${isUnlocked ? `
+                        <div class="mt-auto pt-4 border-t border-white/5">
+                            <span class="text-xs font-mono uppercase tracking-widest ${ach.rarity === 'epic' ? 'text-yellow-500' : 'text-gray-500'}">
+                                ${ach.rarity}
+                            </span>
+                        </div>
+                    ` : ''}
+                `;
+
+                container.appendChild(card);
+            });
+
+            // Initialize icons
+            if (window.lucide) window.lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

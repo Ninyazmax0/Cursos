@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Historia de Status Code 418</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #1a1b26;
+            --foreground: #a9b1d6;
+            --card-background: #24283b;
+            --accent: #f7768e;
+            --border: #414868;
+        }
+        body { background-color: var(--background); color: var(--foreground); font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(36, 40, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(247, 118, 142, 0.1);
+        }
+        
+        .content-box {
+            background-color: rgba(36, 40, 59, 0.85);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- FONDO ANIMADO --- */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .background-day, .background-night {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .background-day { background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif'); }
+        .background-night { background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif'); }
+
+        .dark .background-night { opacity: 1; }
+        :not(.dark) .background-day { opacity: 1; }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12 selection:bg-accent selection:text-white">
+
+    <!-- FONDO ANIMADO -->
+    <div class="background-container">
+        <div class="background-day"></div>
+        <div class="background-night"></div>
+    </div>
+
+    <main class="max-w-5xl mx-auto pb-20 mt-12">
+        
+        <div class="glass-card p-8 md:p-12 rounded-3xl border border-gray-700/50 shadow-2xl backdrop-blur-xl bg-[#1a1b26]/60">
+            <!-- Header -->
+            <header class="mb-16 border-b border-gray-700/50 pb-8">
+                <a href="menu_inicio.html" class="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6 group">
+                    <i data-lucide="arrow-left" class="group-hover:-translate-x-1 transition-transform"></i> Volver al Hub
+                </a>
+                
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    El origen de <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500">Status Code 418</span>.
+                </h1>
+                <p class="text-xl text-gray-400 max-w-2xl leading-relaxed">
+                    Una historia sobre bugs, café, teteras y dos amigos que no sabían en qué se estaban metiendo.
+                </p>
+            </header>
+
+            <!-- CAPÍTULO 1: PYTHON PURO -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-blue-400 font-mono text-sm tracking-widest uppercase">El Origen</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Solo eran apuntes.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Octubre 2025
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            Todo empezó con una meta simple: aprender <strong>Python</strong> sin morir en el intento. No había planes de dominación mundial, ni una plataforma educativa. Solo yo, mi editor de código y una carpeta llena de scripts vergonzosos de "Hola Mundo".
+                        </p>
+                        <div class="p-4 bg-black/30 rounded-lg border-l-4 border-blue-500 italic text-gray-400">
+                            "Era mi espacio personal. Mi jardín zen de código... lleno de bugs, pero mío."
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 2: RUBY & SQL -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-red-500 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-red-400 font-mono text-sm tracking-widest uppercase">La Exploración</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Ruby y el caos de datos.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Finales Octubre 2025
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            Entonces descubrí <strong>Ruby</strong>. Fue amor a primera línea de código. Era elegante, simple... todo lo contrario a mis intentos de entender Bases de Datos.
+                        </p>
+                        <p>
+                            Intentar normalizar tablas en SQL fue mi primera crisis existencial real. Las relaciones "muchos a muchos" se sentían más como un drama adolescente que como ingeniería de software. Pero ahí estaba el germen de la idea: esto no podía ser solo para mí.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 3: LA IDEA Y EL CAOS -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-purple-400 font-mono text-sm tracking-widest uppercase">El Colapso</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Confiar en la IA fue un error.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Noviembre 2025
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            "¿Por qué solo apuntes? ¡Hagamos una plataforma interactiva!", pensé. Qué iluso.
+                        </p>
+                        <p>
+                            En mi desesperación por avanzar rápido, cometí el pecado capital: copiar y pegar código generado por IA sin leerlo. El resultado fue una quimera de dependencias rotas y lógica circular.
+                        </p>
+                        <p>
+                            Pasé dos semanas atrapado en un bucle infinito de depuración. Cada "solución" creaba tres problemas nuevos. Estaba a punto de borrar todo y dedicarme a la agricultura.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 4: LA RESOLUCIÓN -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-400 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-green-400 font-mono text-sm tracking-widest uppercase">La Salvación</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Amelia al rescate.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Principios Diciembre 2025
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-6 text-gray-300">
+                        <p>
+                            Tragué mi orgullo y llamé a <strong>Amelia</strong>. A pesar de tener 14 años, intelectualmente vive en otro plano existencial. Llegó, vio el desastre en mi pantalla y, sin decir una palabra, ocupó mi silla. Solo pidió café. Mucho café.
+                        </p>
+                        <p>
+                            Pasamos la tarde arreglando el código. Ella dominaba el backend: reestructuró la lógica del servidor, optimizó las consultas y configuró todo el sistema de datos. Yo me quedé en el frontend, asegurándome de que la interfaz no pareciera una página de los 90 y que cada píxel estuviera perfectamente alineado.
+                        </p>
+                        <p>
+                            Cuando por fin funcionó, el servidor decidió celebrar el momento devolviendo un error <strong>418 (I'm a teapot)</strong>. Nos reímos hasta que nos dolió el estómago. Ahí nació el nombre. <strong>Status Code 418</strong>: tal vez un poco inestables, tal vez llenos de errores, pero al final del día, funcionamos.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 5: FIREBASE -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-cyan-400 font-mono text-sm tracking-widest uppercase">La Evolución</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Llevándolo a la nube.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Mediados Diciembre 2025
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            La academia funcionaba, pero todo el progreso se guardaba localmente. Si alguien cambiaba de dispositivo, perdía todo. Amelia sugirió usar una base de datos en la nube.
+                        </p>
+                        <p>
+                            Ninguno de los dos había trabajado con esto antes, así que pasamos dos días leyendo documentación y probando configuraciones. Amelia se encargó de la arquitectura mientras yo me aseguraba de que todo siguiera viéndose bien.
+                        </p>
+                        <p>
+                            Cuando finalmente vimos los datos sincronizándose entre dispositivos, nos quedamos mirando la pantalla en silencio. Funcionaba. Realmente funcionaba.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 6: TIEMPO REAL -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-400 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-yellow-400 font-mono text-sm tracking-widest uppercase">La Magia</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Todo en vivo.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Finales Diciembre 2025
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            Amelia abrió dos ventanas del navegador. Completó un nivel en una y, casi al instante, la tabla de posiciones en la otra se actualizó sola. Sin refrescar. Sin recargar. Simplemente <strong>funcionó</strong>.
+                        </p>
+                        <p>
+                            Implementamos sincronización en tiempo real para el leaderboard, el progreso de los cursos, y hasta un sistema que muestra quién más está estudiando en ese momento.
+                        </p>
+                        <p>
+                            Ver los datos cambiar en vivo, sin tocar nada, se sentía como magia. Y por primera vez, todo parecía estar tomando forma.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 7: LOGROS -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-purple-400 font-mono text-sm tracking-widest uppercase">La Gamificación</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Haciendo el aprendizaje más divertido.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Principios Enero 2026
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            Amelia sugirió añadir un sistema de logros para hacer la plataforma más entretenida. No solo los típicos de "Completaste el Curso", sino también algunos ocultos y divertidos.
+                        </p>
+                        <p>
+                            Ella se encargó de la lógica de detección mientras yo diseñaba los íconos. Ahora tenemos una Sala de Trofeos con 20 logros para desbloquear, desde los obvios hasta los más creativos.
+                        </p>
+                        <p>
+                            Es un detalle pequeño, pero hace que la experiencia se sienta más viva y recompensante.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 7.5: EL GRAN DEBUG -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-orange-400 font-mono text-sm tracking-widest uppercase">La Crisis</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Cuando todo dejó de funcionar.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Mediados Diciembre 2025
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            Después de migrar todo a la nube, algo salió mal. El mapa de niveles no aparecía, los perfiles no cargaban, y había errores por todas partes.
+                        </p>
+                        <p>
+                            Pasamos horas revisando cada línea de código. Amelia encontró el primer problema: una función que nunca se estaba ejecutando. Lo arreglamos y los niveles aparecieron.
+                        </p>
+                        <p>
+                            Luego vino el segundo problema: los parámetros de las URLs no coincidían. Otro arreglo rápido y los perfiles empezaron a funcionar. Poco a poco, todo volvió a la normalidad.
+                        </p>
+                        <p>
+                            Al final de la noche, todo funcionaba perfectamente. Sin errores, sin problemas. Solo dos personas muy cansadas y una plataforma que finalmente estaba completa.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 8: EL PRESENTE -->
+            <section class="relative pl-8 md:pl-0 mb-24">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-500 to-transparent md:hidden"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="md:w-1/3">
+                        <span class="text-pink-400 font-mono text-sm tracking-widest uppercase">Hoy</span>
+                        <h2 class="text-3xl font-bold text-white mt-2">Status Code 418: En vivo.</h2>
+                        <div class="mt-4 text-sm text-gray-500 font-mono bg-card-background border border-border p-2 rounded inline-block">
+                            Actualidad
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed space-y-4 text-gray-300">
+                        <p>
+                            Han pasado poco más de dos meses desde que empecé con simples apuntes de Python. Hoy, Status Code 418 es una plataforma completa con perfiles de usuario, leaderboards en tiempo real, 4 cursos interactivos, y una obsesión poco sana con el modo oscuro.
+                        </p>
+                        <p>
+                            Amelia sigue insistiendo en que "podría optimizarse más" y yo sigo moviendo botones 2 píxeles a la derecha. Pero ya no es solo código espagueti. Es <strong>nuestra</strong> plataforma.
+                        </p>
+                        <div class="p-6 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-cyan-500/10 rounded-2xl border border-pink-500/30 mt-6">
+                            <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                                <i data-lucide="coffee" class="w-6 h-6"></i>
+                                Lo que Status Code 418 es HOY
+                            </h3>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-green-400 text-xl">✓</span>
+                                    <span><strong>4 Cursos Maestros:</strong> Web, Python, Ruby, DB. (Sin copy-paste de IA).</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-green-400 text-xl">✓</span>
+                                    <span><strong>Infraestructura Real:</strong> Firebase Firestore manteniendo todo sincronizado.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-green-400 text-xl">✓</span>
+                                    <span><strong>Sala de Trofeos:</strong> 20 logros ocultos para desbloquear.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-green-400 text-xl">✓</span>
+                                    <span><strong>Standardization:</strong> Navegación unificada y commits limpios.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-green-400 text-xl">✓</span>
+                                    <span><strong>Diseño Tokyo Night:</strong> Porque cuidar tus ojos es prioridad.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <p class="text-center text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 mt-8">
+                            Steven + Amelia = Tal vez inestables, pero funcionamos. ☕
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TARJETAS DE PERSONAJES -->
+            <section class="relative pl-8 md:pl-0">
+                <h2 class="text-3xl font-bold text-white mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-pink-500">Los Protagonistas</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- STEVEN -->
+                    <div onclick="window.location.href='perfil_usuario.html?id=steven-founder'" class="glass-card p-6 rounded-xl border border-blue-500/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 bg-gray-800/40 cursor-pointer group">
+                        <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-blue-600 to-cyan-400 mb-4 shadow-[0_0_20px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.8)] transition-all">
+                            <img id="steven-story-img" src="https://ui-avatars.com/api/?name=Steven&background=0D8ABC&color=fff" class="w-full h-full rounded-full border-2 border-white object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Steven</h3>
+                        <span class="text-xs font-mono text-blue-400 mb-2 font-bold tracking-widest">EL SOÑADOR</span>
+                        <p class="text-sm text-gray-400 italic">"Yo pinto las nubes, ella construye la escalera para alcanzarlas."</p>
+                    </div>
+
+                    <!-- AMELIA -->
+                    <div onclick="window.location.href='perfil_usuario.html?id=amelia-founder'" class="glass-card p-6 rounded-xl border border-red-500/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 bg-gray-800/40 cursor-pointer group">
+                        <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-red-600 to-orange-400 mb-4 shadow-[0_0_20px_rgba(247,118,142,0.5)] group-hover:shadow-[0_0_30px_rgba(247,118,142,0.8)] transition-all">
+                            <img src="https://cdn.myanimelist.net/images/characters/8/239523.jpg" class="w-full h-full rounded-full border-2 border-white object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Amelia</h3>
+                        <span class="text-xs font-mono text-red-400 mb-2 font-bold tracking-widest">LA ARQUITECTA</span>
+                        <p class="text-sm text-gray-400 italic">"Él es un caos. Pero es mi caos favorito. Y alguien tiene que arreglar sus bugs."</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="text-center text-gray-600 text-sm pb-8 font-mono">
+        &copy; 2025 Status Code 418.
+    </footer>
+
+    <script type="module">
+        import { checkAchievement } from './assets/js/achievements.js';
+        
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('currentUser');
+            if(savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    if(user.name && user.name.toLowerCase().includes('steven')) {
+                        const stevenImg = document.getElementById('steven-story-img');
+                        if(stevenImg && user.avatar) stevenImg.src = user.avatar;
+                    }
+                } catch(e) {}
+            }
+
+            // Teapot Achievement Trigger
+            const headerTitle = document.querySelector('h1 span');
+            if(headerTitle) {
+                let clicks = 0;
+                headerTitle.addEventListener('click', () => {
+                    clicks++;
+                    if(clicks === 5) {
+                        checkAchievement('teapot');
+                        alert("🫖 I'm a teapot!");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

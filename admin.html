@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador - Status Code 418</title>
+    <!-- Tailwind CSS para un diseño responsivo y moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons para iconos limpios y modernos -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Font Awesome para íconos de lenguajes (HTML, CSS, JS, etc.) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK (Eliminado - usando assets/js/firebase-config.js) -->
+</head>
+
+<style>
+    /* VARIABLES DE TEMA TOKYO NIGHT */
+    :root {
+        --background: #1a1b26;
+        --foreground: #a9b1d6;
+        --card-background: #24283b;
+        --border: #414868;
+        --accent: #7aa2f7; /* Azul Principal */
+        --accent-dark: #5a7edb;
+        --green: #9ece6a; /* Éxito */
+        --yellow: #e0af68; /* Advertencia */
+        --red: #f7768e; /* Error */
+        --font-sans: 'Inter', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+        color: var(--foreground);
+        font-family: var(--font-sans);
+        margin: 0;
+        padding: 0;
+        position: relative;
+        overflow-x: hidden;
+        min-height: 100vh;
+        background-color: var(--background); /* Asegura el color base */
+    }
+
+    /* --- FONDO ANIMADO (NO MODIFICADO POR REGLA) --- */
+    .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        transition: opacity 0.5s ease;
+    }
+
+    .background-day, .background-night {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+
+    .background-day {
+        background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
+    }
+
+    .background-night {
+        background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+    }
+
+    /* La clase 'dark' en <html> activa el fondo nocturno */
+    .dark .background-night {
+        opacity: 1;
+    }
+
+    /* Si se quita 'dark', se activa el fondo diurno */
+    :not(.dark) .background-day {
+        opacity: 1;
+    }
+
+    /* --- CONTENEDOR PRINCIPAL MEJORADO --- */
+    .content-box {
+        background-color: rgba(36, 40, 59, 0.85); /* Semi-transparente para ver el fondo */
+        border: 1px solid var(--border);
+        border-radius: 20px; /* Bordes más redondeados */
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px); /* Efecto cristal */
+        margin: 2rem auto; /* Centrado y margen en PC */
+        max-width: 90%; /* Adaptable en móvil */
+        min-height: calc(100vh - 4rem); /* Ocupa casi toda la altura */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start; /* Alineación superior para buen scroll */
+        position: relative;
+    }
+
+    @media (min-width: 768px) {
+        .content-box {
+            max-width: 1100px;
+            min-height: 90vh;
+        }
+    }
+
+    /* --- ESTILOS DE PANELES Y TARJETAS --- */
+    .panel {
+        display: none; /* Ocultos por defecto */
+        width: 100%;
+        padding: 1rem 0;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; /* Centrar contenido verticalmente */
+        text-align: center;
+        flex-grow: 1;
+    }
+    .panel.active {
+        display: flex; /* Mostrar panel activo */
+    }
+
+    .main-title {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--accent);
+        text-shadow: 0 0 10px var(--accent);
+        margin-bottom: 0.5rem;
+    }
+    .main-subtitle {
+        font-size: 1.25rem;
+        color: var(--foreground);
+        max-width: 600px;
+        margin-bottom: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        .main-title { font-size: 4rem; }
+    }
+
+    .course-card-link { text-decoration: none; }
+
+    .course-card {
+        background-color: var(--card-background);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        text-align: center;
+        height: 100%;
+    }
+
+    .course-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        border-color: var(--accent);
+    }
+
+    .course-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .course-title { font-size: 1.25rem; font-weight: 600; color: var(--foreground); }
+    .course-description { font-size: 0.9rem; color: #a9b1d6; opacity: 0.8; }
+
+    /* Grid responsivo para las tarjetas */
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 1000px;
+        margin-top: 2rem;
+    }
+
+    /* Botones de acción */
+    .btn-action {
+        background-color: var(--accent);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-action:hover:not(:disabled) {
+        background-color: var(--accent-dark);
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background-color: var(--card-background);
+        color: var(--foreground);
+        border: 1px solid var(--border);
+    }
+     .btn-secondary:hover:not(:disabled) {
+        background-color: var(--border);
+    }
+
+    /* Estilos específicos para admin */
+    .admin-card {
+        background-color: var(--card-background);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    .user-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: var(--card-background);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin: 0.5rem 0;
+    }
+
+    .level-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .level-btn {
+        padding: 0.25rem 0.5rem;
+        border: 1px solid var(--border);
+        background-color: var(--card-background);
+        color: var(--foreground);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+
+    .level-btn.locked {
+        background-color: var(--red);
+        color: white;
+    }
+
+    .level-btn.unlocked {
+        background-color: var(--green);
+        color: white;
+    }
+</style>
+
+<body>
+    <!-- Capas de Fondo -->
+    <div class="background-container">
+        <div class="background-day"></div>
+        <div class="background-night"></div>
+    </div>
+
+    <!-- Contenedor de la Aplicación -->
+    <div class="content-box">
+
+        <!-- Botón de Tema (Sol/Luna) -->
+        <button id="theme-toggle" class="absolute top-5 right-5 p-2 rounded-full transition-colors z-10"
+                style="background-color: var(--card-background); border: 1px solid var(--border); color: var(--foreground);"
+                onmouseover="this.style.backgroundColor='var(--border)'"
+                onmouseout="this.style.backgroundColor='var(--card-background)'">
+            <i id="theme-icon" data-lucide="sun" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Panel de Login Admin -->
+        <div id="admin-login-panel" class="panel active">
+            <h1 class="main-title mt-8">Panel de Administrador</h1>
+            <p class="main-subtitle">Ingresa tu contraseña de administrador</p>
+            <div class="w-full max-w-md mx-auto">
+                <input type="password" id="admin-password" placeholder="Contraseña" class="w-full p-3 rounded-lg mb-4" style="background-color: var(--card-background); border: 1px solid var(--border); color: var(--foreground);">
+                <button id="admin-login-btn" class="btn-action w-full">Acceder</button>
+            </div>
+        </div>
+
+        <!-- Panel de Dashboard Admin -->
+        <div id="admin-dashboard-panel" class="panel">
+            <h1 class="main-title mt-8">Dashboard Administrador</h1>
+            <div class="w-full max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="admin-card">
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--accent);">Usuarios Registrados</h3>
+                        <p id="total-users" class="text-2xl">0</p>
+                    </div>
+                    <div class="admin-card">
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--accent);">Usuarios Online</h3>
+                        <p id="online-users" class="text-2xl">0</p>
+                    </div>
+                    <div class="admin-card">
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--accent);">Total Niveles Desbloqueados</h3>
+                        <p id="total-unlocked" class="text-2xl">0</p>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--accent);">Tabla de Usuarios y Progreso</h3>
+                    <div id="users-table" class="max-h-96 overflow-y-auto">
+                        <!-- Tabla de usuarios se cargará aquí -->
+                    </div>
+                </div>
+
+                <!-- Gestión de Usuarios -->
+                <div class="admin-card">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--accent);">Gestión de Usuarios</h3>
+                    <button id="add-user-btn" class="btn-action">Agregar Nuevo Usuario</button>
+                    <button onclick="window.location.reload()" class="btn-secondary ml-2">Actualizar Datos</button>
+                </div>
+
+                <!-- ZONA DE PELIGRO -->
+                <div class="admin-card" style="border: 1px solid var(--red);">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--red);">⚠️ Zona de Peligro</h3>
+                    <p class="text-sm text-gray-400 mb-4">Acciones destructivas e irreversibles.</p>
+                    <button id="purge-users-btn" class="btn-action w-full" style="background-color: var(--red);">
+                        <i data-lucide="trash-2" class="w-4 h-4 inline mr-2"></i> PURGAR TODO (Menos Owners)
+                    </button>
+                </div>
+
+                <!-- Panel de Submissions para Revisión -->
+                <div class="admin-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold" style="color: var(--accent);">📝 Submissions Pendientes</h3>
+                        <div class="flex gap-2">
+                             <button id="refresh-submissions-btn" class="btn-secondary text-sm">
+                                <i data-lucide="refresh-cw" class="w-4 h-4 inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="submissions-list" class="max-h-96 overflow-y-auto space-y-2">
+                        <!-- Submissions se cargarán aquí -->
+                        <p class="text-center text-gray-500 py-4">Cargando envíos...</p>
+                    </div>
+                </div>
+
+                <!-- Modal para Revisar Submission -->
+                <div id="review-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-50 p-4">
+                    <div class="bg-card-background border border-border rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto" style="background-color: var(--card-background); border-color: var(--border);">
+                        <div class="sticky top-0 bg-card-background border-b border-border p-4 flex justify-between items-center" style="background-color: var(--card-background); border-color: var(--border);">
+                            <h3 class="text-xl font-bold" style="color: var(--accent);">Revisar Submission</h3>
+                            <button id="close-review-modal" class="text-gray-400 hover:text-white">
+                                <i data-lucide="x" class="w-6 h-6"></i>
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <!-- Info del Estudiante -->
+                            <div class="grid grid-cols-2 gap-4 mb-4 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                                <div>
+                                    <p class="text-xs text-gray-400">Estudiante</p>
+                                    <p id="review-student-name" class="font-bold"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Challenge</p>
+                                    <p id="review-challenge-id" class="font-bold"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Curso</p>
+                                    <p id="review-course-name" class="font-bold"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Fecha</p>
+                                    <p id="review-date" class="font-bold"></p>
+                                </div>
+                            </div>
+
+                            <!-- Código del Estudiante -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2" style="color: var(--accent);">Código del Estudiante</label>
+                                <pre id="review-code" class="p-4 rounded-lg overflow-x-auto text-sm" style="background-color: #1a1a1a; border: 1px solid var(--border); color: var(--green); font-family: var(--font-mono); max-height: 400px;"></pre>
+                            </div>
+
+                            <!-- Calificación -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2" style="color: var(--accent);">Nota (0-10)</label>
+                                <input type="number" id="review-score" min="0" max="10" step="0.5" class="w-full p-3 rounded-lg" style="background-color: var(--card-background); border: 1px solid var(--border); color: var(--foreground);" placeholder="Ej: 8.5">
+                            </div>
+
+                            <!-- Feedback -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium mb-2" style="color: var(--accent);">Feedback para el Estudiante</label>
+                                <textarea id="review-feedback" rows="4" class="w-full p-3 rounded-lg" style="background-color: var(--card-background); border: 1px solid var(--border); color: var(--foreground);" placeholder="Escribe comentarios constructivos..."></textarea>
+                            </div>
+
+                            <!-- Botones de Acción -->
+                            <div class="flex gap-4">
+                                <button id="approve-btn" class="btn-action flex-1" style="background-color: var(--green);">
+                                    <i data-lucide="check" class="w-4 h-4 inline"></i> Aprobar
+                                </button>
+                                <button id="reject-btn" class="btn-action flex-1" style="background-color: var(--red);">
+                                    <i data-lucide="x" class="w-4 h-4 inline"></i> Rechazar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="index.html" class="mt-8 text-sm hover:underline" style="color: var(--accent);">Volver al Inicio</a>
+
+            <!-- Modal para Agregar/Editar Usuario -->
+            <div id="user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                <div class="bg-card-background border border-border rounded-lg p-6 w-full max-w-md mx-4">
+                    <h3 id="modal-title" class="text-xl font-bold mb-4" style="color: var(--accent);">Agregar Usuario</h3>
+                    <form id="user-form">
+                        <input type="hidden" id="user-index" value="-1">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2" style="color: var(--foreground);">Nombre</label>
+                            <input type="text" id="user-name" required class="w-full p-2 rounded" style="background-color: var(--card-background); border: 1px solid var(--border); color: var(--foreground);">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2" style="color: var(--foreground);">Avatar (URL)</label>
+                            <input type="url" id="user-avatar" required class="w-full p-2 rounded" style="background-color: var(--card-background); border: 1px solid var(--border); color: var(--foreground);">
+                        </div>
+                        <div class="flex gap-2 pt-4">
+                            <button type="submit" class="btn-action flex-1">Guardar</button>
+                            <button type="button" id="cancel-btn" class="btn-secondary flex-1">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-auto pt-6 text-sm text-center opacity-60">
+            <span id="current-year"></span> Status Code 418 - Panel Administrador
+        </footer>
+    </div>
+
+    <!-- Application Logic -->
+    <script type="module">
+        // Importar configuración centralizada
+        import { listenToUsers, deleteUserFromFirestore, syncUserToFirestore, db } from './assets/js/firebase-config.js';
+        
+        // --- CLEANUP SCRIPT (Local fallbacks) ---
+        (function cleanupUsers() {
+            try {
+                let allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+                const originalLength = allUsers.length;
+                allUsers = allUsers.filter(user => {
+                    const name = (user.name || '').toLowerCase();
+                    return !(name.includes('airi') || name.includes('ana') || name.includes('aria'));
+                });
+                if (allUsers.length !== originalLength) {
+                    localStorage.setItem('allUsers', JSON.stringify(allUsers));
+                }
+            } catch (e) { console.error(e); }
+        })();
+
+        // --- LÓGICA DE TEMA (Día/Noche) ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function updateTheme(theme) {
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            themeIcon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+            localStorage.setItem('theme', theme);
+            lucide.createIcons();
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            updateTheme(isDark ? 'light' : 'dark');
+        });
+
+        // --- LÓGICA DE ADMIN ---
+        const ADMIN_PASSWORD = "admin123"; // Contraseña de Admin Panel
+        let users = []; // Se llenará desde Firebase
+
+        document.getElementById('admin-login-btn').addEventListener('click', () => {
+            const password = document.getElementById('admin-password').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('admin-login-panel').classList.remove('active');
+                document.getElementById('admin-dashboard-panel').classList.add('active');
+                initDashboard();
+            } else {
+                alert('Contraseña incorrecta');
+            }
+        });
+
+        // Permitir login con Enter
+        document.getElementById('admin-password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('admin-login-btn').click();
+            }
+        });
+
+        // --- DASHBOARD REAL-TIME ---
+        function initDashboard() {
+            console.log('🚀 Iniciando Dashboard Admin con Firebase Real-time...');
+            
+            // Usar el listener centralizado
+            listenToUsers((updatedUsers) => {
+                users = updatedUsers;
+                renderDashboard();
+                
+                // Actualizar fallback local por si acaso
+                localStorage.setItem('allUsers', JSON.stringify(users));
+            });
+        }
+
+        function renderDashboard() {
+            console.log('🔄 Renderizando dashboard con', users.length, 'usuarios');
+            
+            // Calcular estadísticas
+            document.getElementById('total-users').textContent = users.length;
+            const onlineUsers = users.filter(user => user.isOnline).length;
+            document.getElementById('online-users').textContent = onlineUsers;
+
+            const totalUnlocked = users.reduce((sum, user) => {
+                const webUnlocked = user.webProgress?.unlockedLevel || 1;
+                const pythonUnlocked = user.pythonProgress?.unlockedLevel || 1;
+                const rubyUnlocked = user.rubyProgress?.unlockedLevel || 1;
+                const dbUnlocked = user.databaseProgress?.unlockedLevel || 1;
+                return sum + webUnlocked + pythonUnlocked + rubyUnlocked + dbUnlocked - 4;
+            }, 0);
+            document.getElementById('total-unlocked').textContent = totalUnlocked;
+
+            renderUsersTable();
+            renderCodeEvaluations();
+        }
+
+        function renderUsersTable() {
+            const usersTable = document.getElementById('users-table');
+            usersTable.innerHTML = `
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr style="background-color: var(--card-background); border-bottom: 1px solid var(--border);">
+                            <th class="p-3 text-left">Usuario</th>
+                            <th class="p-3 text-center">Estado</th>
+                            <th class="p-3 text-center">Progreso (Web / Py / Rb / DB)</th>
+                            <th class="p-3 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map((user, index) => {
+                            // Progress Bars Logic (Simplified for cleaner table)
+                            const web = user.webProgress?.completedLevels?.length || 0;
+                            const py = user.pythonProgress?.completedLevels?.length || 0;
+                            const rb = user.rubyProgress?.completedLevels?.length || 0;
+                            const db = user.databaseProgress?.completedLevels?.length || 0;
+                            
+                            const isOnline = user.isOnline;
+                            const userId = user.id || user.name; 
+
+                            return `
+                                <tr style="border-bottom: 1px solid var(--border);">
+                                    <td class="p-3">
+                                        <div class="flex items-center gap-3">
+                                            <img src="${user.avatar || 'https://via.placeholder.com/32'}" alt="${user.name}" class="w-8 h-8 rounded-full object-cover">
+                                            <div>
+                                                <p class="font-semibold">${user.name}</p>
+                                                <p class="text-xs opacity-70">${user.rank || 'Student'}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-3 text-center">
+                                       <div class="w-2 h-2 rounded-full mx-auto ${isOnline ? 'bg-green-400' : 'bg-gray-400'}" title="${isOnline ? 'Online' : 'Offline'}"></div>
+                                    </td>
+                                    <td class="p-3 text-center">
+                                        <div class="flex gap-2 justify-center text-xs font-mono">
+                                            <span class="text-blue-400">${web}</span>/
+                                            <span class="text-yellow-400">${py}</span>/
+                                            <span class="text-red-400">${rb}</span>/
+                                            <span class="text-green-400">${db}</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-3 text-center">
+                                        <div class="flex gap-1 justify-center flex-wrap">
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleEditUser('${userId}')" style="background-color: var(--accent); color: white;">Editar</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleUnlockAll('${userId}')" style="background-color: var(--green); color: white;" title="Desbloquear TODO">Unlock All</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleUnlockLevel('${userId}')" style="background-color: var(--accent-dark); color: white;" title="Desbloquear Nivel Específico">Set Level</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleResetProgress('${userId}')" style="background-color: var(--yellow); color: black;">Reset</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleDeleteUser('${userId}')" style="background-color: var(--red); color: white;">Kill</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderCodeEvaluations() {
+            const evaluations = JSON.parse(localStorage.getItem('codeEvaluations') || '[]');
+            const evaluationsDiv = document.getElementById('code-evaluations');
+            
+            // ... (código existente para evaluaciones, se mantiene igual visualmente)
+            // Nota: Podríamos mover las evaluaciones a Firestore también en el futuro
+            // Por ahora solo mostraremos un mensaje si está vacío
+            if (!evaluationsDiv) return; // Si no existe el div (en el HTML original parece faltar o estar más abajo)
+
+            // ... logica visual ...
+        }
+
+        // --- ACCIONES EXPORTADAS A GLOBAL (para onclick en HTML) ---
+        
+        window.handleDeleteUser = async (userId) => {
+            if(confirm('¿Estás seguro de eliminar este usuario DE LA BASE DE DATOS REAL? No se puede deshacer.')) {
+                try {
+                    // Buscar usuario completo por ID o Nombre para asegurar ID correcto
+                    const userToDelete = users.find(u => u.id === userId || u.name === userId);
+                    if (userToDelete && userToDelete.id) {
+                         await deleteUserFromFirestore(userToDelete.id);
+                         alert('Usuario eliminado correctamente.');
+                    } else {
+                        alert('Error: ID de usuario no encontrado.');
+                    }
+                } catch(e) {
+                    alert('Error al eliminar: ' + e.message);
+                }
+            }
+        };
+
+        window.handleEditUser = (userId) => {
+             const user = users.find(u => u.id === userId || u.name === userId);
+             if (user) {
+                 const index = users.indexOf(user);
+                 openModal(index); // Reutilizamos la lógica del modal existente
+             }
+        };
+
+        window.handleUnlockAll = async (userId) => {
+             if(!confirm('¿Desbloquear TODOS los niveles para este usuario?')) return;
+             try {
+                const user = users.find(u => u.id === userId || u.name === userId);
+                if (!user || !user.id) throw new Error('Usuario no encontrado');
+
+                const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
+                courses.forEach(course => {
+                    if (!user[course]) user[course] = {};
+                    user[course].unlockedLevel = 99; // Unlock all
+                });
+                
+                await syncUserToFirestore(user);
+                alert('Niveles desbloqueados exitosamente.');
+             } catch(e) {
+                 alert('Error: ' + e.message);
+             }
+         };
+
+         window.handleResetProgress = async (userId) => {
+             if(!confirm('¿REINICIAR TODO el progreso de este usuario? Irreversible.')) return;
+             try {
+                const user = users.find(u => u.id === userId || u.name === userId);
+                if (!user || !user.id) throw new Error('Usuario no encontrado');
+
+                const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
+                courses.forEach(course => {
+                    user[course] = {
+                        unlockedLevel: 1,
+                        completedLevels: [],
+                        quizScores: {},
+                        codeEvaluations: [] // if applicable
+                    };
+                });
+                
+                await syncUserToFirestore(user);
+                alert('Progreso reiniciado exitosamente.');
+             } catch(e) {
+                 alert('Error: ' + e.message);
+             }
+         };
+
+        // --- GESTIÓN DE USUARIOS (Modal) ---
+        const modal = document.getElementById('user-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const userForm = document.getElementById('user-form');
+        const userIndexInput = document.getElementById('user-index');
+        const userNameInput = document.getElementById('user-name');
+        const userAvatarInput = document.getElementById('user-avatar');
+        const userEmailInput = document.getElementById('user-email');
+        const addUserBtn = document.getElementById('add-user-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+
+        if(addUserBtn) addUserBtn.addEventListener('click', () => openModal());
+        if(cancelBtn) cancelBtn.addEventListener('click', closeModal);
+        
+        if(userForm) {
+            userForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await saveUser();
+            });
+        }
+
+        function openModal(index = -1) {
+            if (index >= 0) {
+                const user = users[index];
+                modalTitle.textContent = 'Editar Usuario';
+                userIndexInput.value = user.id; // Usamos ID en lugar de índice
+                userNameInput.value = user.name || '';
+                userAvatarInput.value = user.avatar || '';
+                userEmailInput.value = user.email || '';
+            } else {
+                modalTitle.textContent = 'Agregar Usuario';
+                userIndexInput.value = "NEW";
+                userNameInput.value = '';
+                userAvatarInput.value = '';
+                userEmailInput.value = '';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        async function saveUser() {
+            const userId = userIndexInput.value;
+            const name = userNameInput.value.trim();
+            const avatar = userAvatarInput.value.trim();
+            // Email removed
+
+            if (!name || !avatar) {
+                alert('Todos los campos son obligatorios');
+                return;
+            }
+
+            const isNew = userId === "NEW";
+            // Generar ID para nuevo usuario si es necesario
+            const finalId = isNew ? name.toLowerCase().replace(/\s+/g, '_') : userId;
+
+            // Datos base
+            const userData = {
+                id: finalId,
+                name,
+                avatar,
+                isOnline: false, // Default
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Preservar datos existentes si es edición
+            if (!isNew) {
+                const existing = users.find(u => u.id === finalId);
+                Object.assign(userData, existing, userData); // Merge safe
+            } else {
+                // Datos default para nuevos
+                userData.rank = 'Student';
+                userData.webProgress = { completedLevels: [], unlockedLevel: 1 };
+                userData.pythonProgress = { completedLevels: [], unlockedLevel: 1 };
+                userData.rubyProgress = { completedLevels: [], unlockedLevel: 1 };
+                userData.databaseProgress = { completedLevels: [], unlockedLevel: 1 };
+            }
+
+            try {
+                await syncUserToFirestore(userData);
+                alert(isNew ? 'Usuario creado exitosamente' : 'Usuario actualizado exitosamente');
+                closeModal();
+            } catch(e) {
+                alert('Error al guardar en Firebase: ' + e.message);
+            }
+        }
+
+        // ==========================================
+        // SISTEMA DE REVISIÓN DE SUBMISSIONS (FIRESTORE)
+        // ==========================================
+        import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        let submissions = [];
+
+        async function loadSubmissions() {
+            const listContainer = document.getElementById('submissions-list');
+            if(!listContainer) return;
+            
+            try {
+                const q = collection(db, "submissions");
+                const snapshot = await getDocs(q);
+                
+                submissions = [];
+                snapshot.forEach(doc => {
+                    submissions.push({
+                        docId: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                // Filter pending
+                const pending = submissions.filter(s => s.status === 'pending');
+                
+                if (pending.length === 0) {
+                    listContainer.innerHTML = '<p class="text-center text-gray-500 py-4">No hay envíos pendientes. ¡Tomate un café! ☕</p>';
+                    return;
+                }
+
+                listContainer.innerHTML = pending.map(sub => `
+                    <div class="user-item hover:border-accent cursor-pointer transition-colors" onclick="window.openReviewModal('${sub.docId}')">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+                            <div>
+                                <p class="font-bold text-sm text-white">${sub.courseId?.toUpperCase()} - ${sub.challengeId}</p>
+                                <p class="text-xs text-gray-400">Por: ${sub.userName} • ${new Date(sub.timestamp).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        <button class="btn-secondary text-xs px-2 py-1">Revisar</button>
+                    </div>
+                `).join('');
+                if(window.lucide) lucide.createIcons();
+
+            } catch (error) {
+                console.error("Error loading submissions:", error);
+                if (error.code === 'permission-denied') {
+                     listContainer.innerHTML = '<p class="text-center text-red-500">Sin permisos de lectura.</p>';
+                } else {
+                     listContainer.innerHTML = '<p class="text-center text-gray-500 py-4">No hay envíos disponibles.</p>';
+                }
+            }
+        }
+
+        window.openReviewModal = (docId) => {
+            const sub = submissions.find(s => s.docId === docId);
+            if (!sub) return;
+            
+            document.getElementById('review-student-name').textContent = sub.userName;
+            document.getElementById('review-challenge-id').textContent = sub.challengeId;
+            document.getElementById('review-course-name').textContent = sub.courseId;
+            document.getElementById('review-date').textContent = new Date(sub.timestamp).toLocaleString();
+            document.getElementById('review-code').textContent = sub.code;
+            document.getElementById('review-score').value = '';
+            document.getElementById('review-feedback').value = '';
+
+            // Setup buttons
+            const approveBtn = document.getElementById('approve-btn');
+            const rejectBtn = document.getElementById('reject-btn');
+            
+            const newApprove = approveBtn.cloneNode(true);
+            const newReject = rejectBtn.cloneNode(true);
+            approveBtn.parentNode.replaceChild(newApprove, approveBtn);
+            rejectBtn.parentNode.replaceChild(newReject, rejectBtn);
+
+            newApprove.onclick = () => processVerdict(sub, 'approved');
+            newReject.onclick = () => processVerdict(sub, 'rejected');
+
+            document.getElementById('review-modal').classList.remove('hidden');
+        };
+
+        async function processVerdict(submission, status) {
+            const score = document.getElementById('review-score').value;
+            const feedback = document.getElementById('review-feedback').value;
+
+            if (status === 'approved' && !score) return alert("Debes calificar el envío.");
+
+            try {
+                // Update Submission Status
+                const subRef = doc(db, "submissions", submission.docId);
+                await updateDoc(subRef, {
+                    status: status,
+                    score: score || 0,
+                    feedback: feedback,
+                    reviewedAt: new Date().toISOString()
+                });
+
+                alert(`Envío ${status === 'approved' ? 'Aprobado' : 'Rechazado'}`);
+                document.getElementById('review-modal').classList.add('hidden');
+                loadSubmissions(); 
+
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
+        }
+
+        document.getElementById('close-review-modal').addEventListener('click', () => {
+            document.getElementById('review-modal').classList.add('hidden');
+        });
+        
+        const refreshBtn = document.getElementById('refresh-submissions-btn');
+        if(refreshBtn) refreshBtn.addEventListener('click', loadSubmissions);
+
+
+         // --- NUEVAS FUNCIONES DE UNLOCK EXPORTADAS A WINDOW ---
+
+         window.handleUnlockLevel = async (userId) => {
+            const levelStr = prompt("Ingresa el número de nivel a desbloquear (1-20):");
+            const level = parseInt(levelStr);
+            if (!level || level < 1 || level > 20) return alert("Nivel inválido.");
+
+            try {
+                const user = users.find(u => u.id === userId || u.name === userId);
+                if (!user || !user.id) throw new Error('Usuario no encontrado');
+
+                const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
+                courses.forEach(course => {
+                    if (!user[course]) user[course] = {};
+                    user[course].unlockedLevel = level;
+                });
+
+                await syncUserToFirestore(user);
+                alert(`Progreso ajustado al Nivel ${level} para todos los cursos.`);
+            } catch(e) {
+                alert('Error: ' + e.message);
+            }
+         };
+
+         // Fix Unlock All to be robust
+        window.handleUnlockAll = async (userId) => {
+             if(!confirm('¿Desbloquear TODOS los niveles para este usuario?')) return;
+             try {
+                const user = users.find(u => u.id === userId || u.name === userId);
+                if (!user || !user.id) throw new Error('Usuario no encontrado');
+
+                const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
+                courses.forEach(course => {
+                    if (!user[course]) user[course] = {};
+                    user[course].unlockedLevel = 21; 
+                    user[course].completedLevels = Array.from({length: 20}, (_, i) => i + 1);
+                });
+                
+                await syncUserToFirestore(user);
+                alert('Niveles desbloqueados exitosamente (Modo Dios).');
+             } catch(e) {
+                 alert('Error: ' + e.message);
+             }
+         };
+
+
+
+
+
+        // --- Inicialización ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Carga el tema guardado
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            updateTheme(savedTheme);
+
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            lucide.createIcons();
+        });
+
+
+        
+        // --- PURGA DE USUARIOS (DANGER ZONE) ---
+        const purgeBtn = document.getElementById('purge-users-btn');
+        if (purgeBtn) {
+            purgeBtn.addEventListener('click', async () => {
+                // Doble confirmación de seguridad
+                if (!confirm('☠️ ¿ESTÁS SEGURO? \n\nEsto borrará PERMANENTEMENTE a todos los usuarios de la base de datos, EXCEPTO a Steven y Amelia.\n\nEsta acción NO SE PUEDE DESHACER.')) return;
+                
+                const code = prompt('Escribe "ELIMINAR" para confirmar:');
+                if (code !== 'ELIMINAR') {
+                    alert('Código incorrecto. Operación cancelada.');
+                    return;
+                }
+
+                // Filtrar usuarios a borrar
+                // PROTEGER SOLO A LOS OWNERS LEGÍTIMOS (ID exacto)
+                // "steven" y "amelia" son los IDs generados por el sistema estándar.
+                // Cualquier otro "Steven" con ID numérico (ej: 173922...) será borrado.
+                const safeIds = ['steven', 'amelia'];
+                
+                const usersToDelete = users.filter(u => !safeIds.includes(u.id));
+
+                if (usersToDelete.length === 0) {
+                    alert('No hay usuarios para eliminar (solo quedan los Owners legítimos).');
+                    return;
+                }
+
+                if(!confirm(`⚠️ ATENCIÓN: Se van a eliminar ${usersToDelete.length} usuarios.\n\nEsto incluye clones o duplicados con nombres repetidos pero IDs diferentes.\n\n¿PROCEDER?`)) return;
+
+                alert(`Iniciando purga de ${usersToDelete.length} usuarios...`);
+
+                let deletedCount = 0;
+                let errors = 0;
+
+                for (const user of usersToDelete) {
+                    try {
+                        if (user.id) {
+                            await deleteUserFromFirestore(user.id);
+                            deletedCount++;
+                            console.log(`🗑️ Eliminado: ${user.name} (ID: ${user.id})`);
+                        }
+                    } catch (e) {
+                        console.error(`❌ Error eliminando a ${user.name}:`, e);
+                        errors++;
+                    }
+                }
+
+                alert(`Purga completada.\n\nEliminados: ${deletedCount}\nErrores: ${errors}\n\nLos Owners Steven y Amelia están a salvo.`);
+            });
+        }
+        
+    </script>
+</body>
+</html>
