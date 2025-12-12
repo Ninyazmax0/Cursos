@@ -415,6 +415,90 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Modal para Selección Granular de Niveles -->
+            <div id="level-select-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                <div class="bg-card-background border border-border rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto" style="background-color: var(--card-background); border-color: var(--border);">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--accent);">🎯 Seleccionar Niveles por Curso</h3>
+                    <p class="text-sm text-gray-400 mb-4">Usuario: <span id="level-modal-username" class="font-bold" style="color: var(--foreground);"></span></p>
+                    
+                    <input type="hidden" id="level-modal-userid" value="">
+                    
+                    <!-- Grid de Cursos -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <!-- Web Course -->
+                        <div class="admin-card">
+                            <div class="flex items-center gap-2 mb-3">
+                                <input type="checkbox" id="course-web" class="course-checkbox w-4 h-4" checked>
+                                <label for="course-web" class="font-bold" style="color: var(--accent);">🌐 Desarrollo Web</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label class="text-sm">Nivel:</label>
+                                <input type="number" id="level-web" min="1" max="20" value="1" class="w-20 p-2 rounded text-center" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);">
+                                <span class="text-xs text-gray-400">/ 20</span>
+                            </div>
+                        </div>
+
+                        <!-- Python Course -->
+                        <div class="admin-card">
+                            <div class="flex items-center gap-2 mb-3">
+                                <input type="checkbox" id="course-python" class="course-checkbox w-4 h-4" checked>
+                                <label for="course-python" class="font-bold" style="color: var(--yellow);">🐍 Python</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label class="text-sm">Nivel:</label>
+                                <input type="number" id="level-python" min="1" max="20" value="1" class="w-20 p-2 rounded text-center" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);">
+                                <span class="text-xs text-gray-400">/ 20</span>
+                            </div>
+                        </div>
+
+                        <!-- Ruby Course -->
+                        <div class="admin-card">
+                            <div class="flex items-center gap-2 mb-3">
+                                <input type="checkbox" id="course-ruby" class="course-checkbox w-4 h-4" checked>
+                                <label for="course-ruby" class="font-bold" style="color: var(--red);">💎 Ruby</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label class="text-sm">Nivel:</label>
+                                <input type="number" id="level-ruby" min="1" max="20" value="1" class="w-20 p-2 rounded text-center" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);">
+                                <span class="text-xs text-gray-400">/ 20</span>
+                            </div>
+                        </div>
+
+                        <!-- Database Course -->
+                        <div class="admin-card">
+                            <div class="flex items-center gap-2 mb-3">
+                                <input type="checkbox" id="course-database" class="course-checkbox w-4 h-4" checked>
+                                <label for="course-database" class="font-bold" style="color: var(--green);">🗄️ Bases de Datos</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label class="text-sm">Nivel:</label>
+                                <input type="number" id="level-database" min="1" max="20" value="1" class="w-20 p-2 rounded text-center" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);">
+                                <span class="text-xs text-gray-400">/ 20</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acciones Rápidas -->
+                    <div class="mb-4 p-3 rounded" style="background-color: rgba(122, 162, 247, 0.1); border: 1px solid var(--border);">
+                        <p class="text-xs font-bold mb-2" style="color: var(--accent);">⚡ Acciones Rápidas</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <button type="button" onclick="setAllLevels(1)" class="btn-secondary text-xs px-3 py-1">Todos a Nivel 1</button>
+                            <button type="button" onclick="setAllLevels(5)" class="btn-secondary text-xs px-3 py-1">Todos a Nivel 5</button>
+                            <button type="button" onclick="setAllLevels(10)" class="btn-secondary text-xs px-3 py-1">Todos a Nivel 10</button>
+                            <button type="button" onclick="setAllLevels(20)" class="btn-secondary text-xs px-3 py-1">Desbloquear Todo</button>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="flex gap-3">
+                        <button type="button" id="save-levels-btn" class="btn-action flex-1">
+                            <i data-lucide="save" class="w-4 h-4 inline mr-1"></i> Guardar Cambios
+                        </button>
+                        <button type="button" id="cancel-levels-btn" class="btn-secondary flex-1">Cancelar</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -866,26 +950,101 @@
          // --- NUEVAS FUNCIONES DE UNLOCK EXPORTADAS A WINDOW ---
 
          window.handleUnlockLevel = async (userId) => {
-            const levelStr = prompt("Ingresa el número de nivel a desbloquear (1-20):");
-            const level = parseInt(levelStr);
-            if (!level || level < 1 || level > 20) return alert("Nivel inválido.");
-
-            try {
-                const user = users.find(u => u.id === userId || u.name === userId);
-                if (!user || !user.id) throw new Error('Usuario no encontrado');
-
-                const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
-                courses.forEach(course => {
-                    if (!user[course]) user[course] = {};
-                    user[course].unlockedLevel = level;
-                });
-
-                await syncUserToFirestore(user);
-                alert(`Progreso ajustado al Nivel ${level} para todos los cursos.`);
-            } catch(e) {
-                alert('Error: ' + e.message);
+            const user = users.find(u => u.id === userId || u.name === userId);
+            if (!user || !user.id) {
+                alert('Usuario no encontrado');
+                return;
             }
+
+            // Abrir modal y cargar datos actuales del usuario
+            const modal = document.getElementById('level-select-modal');
+            document.getElementById('level-modal-userid').value = user.id;
+            document.getElementById('level-modal-username').textContent = user.name;
+
+            // Cargar niveles actuales
+            document.getElementById('level-web').value = user.webProgress?.unlockedLevel || 1;
+            document.getElementById('level-python').value = user.pythonProgress?.unlockedLevel || 1;
+            document.getElementById('level-ruby').value = user.rubyProgress?.unlockedLevel || 1;
+            document.getElementById('level-database').value = user.databaseProgress?.unlockedLevel || 1;
+
+            modal.classList.remove('hidden');
+            if(window.lucide) lucide.createIcons();
          };
+
+         // Función para establecer todos los niveles a un valor específico
+         window.setAllLevels = (level) => {
+            document.getElementById('level-web').value = level;
+            document.getElementById('level-python').value = level;
+            document.getElementById('level-ruby').value = level;
+            document.getElementById('level-database').value = level;
+         };
+
+         // Cerrar modal de niveles
+         const cancelLevelsBtn = document.getElementById('cancel-levels-btn');
+         if(cancelLevelsBtn) {
+             cancelLevelsBtn.addEventListener('click', () => {
+                 document.getElementById('level-select-modal').classList.add('hidden');
+             });
+         }
+
+         // Guardar niveles seleccionados
+         const saveLevelsBtn = document.getElementById('save-levels-btn');
+         if(saveLevelsBtn) {
+             saveLevelsBtn.addEventListener('click', async () => {
+                 const userId = document.getElementById('level-modal-userid').value;
+                 const user = users.find(u => u.id === userId);
+                 
+                 if (!user || !user.id) {
+                     alert('Error: Usuario no encontrado');
+                     return;
+                 }
+
+                 try {
+                     // Obtener qué cursos están seleccionados
+                     const webChecked = document.getElementById('course-web').checked;
+                     const pythonChecked = document.getElementById('course-python').checked;
+                     const rubyChecked = document.getElementById('course-ruby').checked;
+                     const databaseChecked = document.getElementById('course-database').checked;
+
+                     // Actualizar solo los cursos seleccionados
+                     if (webChecked) {
+                         const level = parseInt(document.getElementById('level-web').value);
+                         if (!user.webProgress) user.webProgress = {};
+                         user.webProgress.unlockedLevel = level;
+                     }
+                     if (pythonChecked) {
+                         const level = parseInt(document.getElementById('level-python').value);
+                         if (!user.pythonProgress) user.pythonProgress = {};
+                         user.pythonProgress.unlockedLevel = level;
+                     }
+                     if (rubyChecked) {
+                         const level = parseInt(document.getElementById('level-ruby').value);
+                         if (!user.rubyProgress) user.rubyProgress = {};
+                         user.rubyProgress.unlockedLevel = level;
+                     }
+                     if (databaseChecked) {
+                         const level = parseInt(document.getElementById('level-database').value);
+                         if (!user.databaseProgress) user.databaseProgress = {};
+                         user.databaseProgress.unlockedLevel = level;
+                     }
+
+                     // Guardar en Firebase
+                     await syncUserToFirestore(user);
+                     
+                     // Construir mensaje de confirmación
+                     const updatedCourses = [];
+                     if (webChecked) updatedCourses.push(`Web (${document.getElementById('level-web').value})`);
+                     if (pythonChecked) updatedCourses.push(`Python (${document.getElementById('level-python').value})`);
+                     if (rubyChecked) updatedCourses.push(`Ruby (${document.getElementById('level-ruby').value})`);
+                     if (databaseChecked) updatedCourses.push(`Database (${document.getElementById('level-database').value})`);
+
+                     alert(`✅ Niveles actualizados exitosamente:\n${updatedCourses.join('\n')}`);
+                     document.getElementById('level-select-modal').classList.add('hidden');
+                 } catch(e) {
+                     alert('Error al guardar: ' + e.message);
+                 }
+             });
+         }
 
          // Fix Unlock All to be robust
         window.handleUnlockAll = async (userId) => {

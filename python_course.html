@@ -14,6 +14,8 @@
     <script type="module" src="assets/js/firebase-storage.js"></script>
 <link rel="stylesheet" href="assets/prism-tokyo.css">
     <script src="assets/js/course_system.js"></script>
+    <!-- Pyodide for Python execution in browser -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     <style>
      :root {
          --background: #1a1b26;
@@ -1091,6 +1093,213 @@
                 background-color: rgba(247, 118, 142, 0.1);
                 color: var(--red);
                 border: 1px solid var(--red);
+            }
+
+            /* Estilos para la Consola Interactiva de Python */
+            .python-interactive-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                margin: 2rem 0;
+            }
+
+            @media (max-width: 768px) {
+                .python-interactive-container {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .code-display-panel {
+                background-color: #1e1e2e;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .code-display-header {
+                background-color: var(--border);
+                padding: 0.75rem 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .code-display-header .dots {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .code-display-header .dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+            }
+
+            .code-display-body {
+                padding: 1rem;
+                overflow-x: auto;
+                flex-grow: 1;
+            }
+
+            .code-display-body pre {
+                margin: 0;
+                font-family: var(--font-mono);
+                font-size: 0.9rem;
+                line-height: 1.6;
+                color: #c0caf5;
+            }
+
+            .console-panel {
+                background-color: #1a1a1a;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .console-header {
+                background-color: var(--border);
+                padding: 0.75rem 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .console-header .title {
+                font-weight: 600;
+                color: var(--foreground);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .console-controls {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .console-btn {
+                padding: 0.4rem 0.8rem;
+                border-radius: 6px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                border: none;
+                cursor: pointer;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+
+            .console-btn-run {
+                background-color: var(--green);
+                color: var(--background);
+            }
+
+            .console-btn-run:hover {
+                background-color: #b4f481;
+            }
+
+            .console-btn-run:disabled {
+                background-color: var(--border);
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+
+            .console-btn-clear {
+                background-color: var(--red);
+                color: white;
+            }
+
+            .console-btn-clear:hover {
+                background-color: #ff8fa3;
+            }
+
+            .console-output {
+                padding: 1rem;
+                min-height: 200px;
+                max-height: 400px;
+                overflow-y: auto;
+                font-family: var(--font-mono);
+                font-size: 0.9rem;
+                line-height: 1.6;
+                color: #c0caf5;
+                flex-grow: 1;
+            }
+
+            .console-output::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .console-output::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .console-output::-webkit-scrollbar-thumb {
+                background-color: var(--border);
+                border-radius: 4px;
+            }
+
+            .console-line {
+                margin-bottom: 0.5rem;
+            }
+
+            .console-line.output {
+                color: #9ece6a;
+            }
+
+            .console-line.error {
+                color: var(--red);
+            }
+
+            .console-line.input {
+                color: var(--yellow);
+            }
+
+            .console-line.info {
+                color: var(--accent);
+            }
+
+            .console-input-prompt {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+                background-color: rgba(122, 162, 247, 0.1);
+                border-top: 1px solid var(--border);
+            }
+
+            .console-input-field {
+                flex-grow: 1;
+                background-color: transparent;
+                border: none;
+                color: var(--foreground);
+                font-family: var(--font-mono);
+                font-size: 0.9rem;
+                outline: none;
+            }
+
+            .console-loading {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: var(--yellow);
+            }
+
+            .console-loading .spinner {
+                width: 16px;
+                height: 16px;
+                border: 2px solid var(--border);
+                border-top-color: var(--yellow);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
             }
         </style></head>
 <body>
@@ -3679,6 +3888,229 @@ function updateFillCounter(exerciseNum, success) {
         counterElement.textContent = `Completados: ${current}/${total}`;
     }
 }
+
+// ========================================
+// CONSOLA INTERACTIVA DE PYTHON CON PYODIDE
+// ========================================
+
+let pyodide = null;
+let pyodideReady = false;
+let currentInputResolver = null;
+
+// Inicializar Pyodide
+async function initPyodide() {
+    if (pyodideReady) return;
+    
+    try {
+        console.log('🐍 Inicializando Pyodide...');
+        pyodide = await loadPyodide({
+            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+        });
+        pyodideReady = true;
+        console.log('✅ Pyodide listo!');
+    } catch (error) {
+        console.error('❌ Error al cargar Pyodide:', error);
+    }
+}
+
+// Crear componente de consola interactiva
+function createInteractiveConsole(code, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const consoleHTML = `
+        <div class="python-interactive-container">
+            <!-- Panel de Código -->
+            <div class="code-display-panel">
+                <div class="code-display-header">
+                    <div class="dots">
+                        <span class="dot" style="background-color: var(--red);"></span>
+                        <span class="dot" style="background-color: var(--yellow);"></span>
+                        <span class="dot" style="background-color: var(--green);"></span>
+                    </div>
+                    <span style="color: var(--foreground); font-size: 0.85rem; font-weight: 600;">📝 Código Python</span>
+                </div>
+                <div class="code-display-body">
+                    <pre><code class="language-python">${code}</code></pre>
+                </div>
+            </div>
+
+            <!-- Panel de Consola -->
+            <div class="console-panel">
+                <div class="console-header">
+                    <div class="title">
+                        <i data-lucide="terminal" class="w-4 h-4"></i>
+                        Consola Interactiva
+                    </div>
+                    <div class="console-controls">
+                        <button class="console-btn console-btn-run" onclick="runPythonCode('${containerId}')">
+                            <i data-lucide="play" class="w-4 h-4"></i>
+                            Ejecutar
+                        </button>
+                        <button class="console-btn console-btn-clear" onclick="clearConsole('${containerId}')">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="console-output" id="${containerId}-output">
+                    <div class="console-line info">👋 Presiona "Ejecutar" para correr el código Python</div>
+                </div>
+                <div class="console-input-prompt hidden" id="${containerId}-input-prompt">
+                    <span style="color: var(--yellow);">>>> </span>
+                    <input type="text" class="console-input-field" id="${containerId}-input" placeholder="Escribe aquí..." />
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = consoleHTML;
+    
+    // Re-highlight syntax
+    if (window.Prism) Prism.highlightAll();
+    if (window.lucide) lucide.createIcons();
+
+    // Setup input handler
+    const inputField = document.getElementById(`${containerId}-input`);
+    if (inputField) {
+        inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const value = inputField.value;
+                if (currentInputResolver) {
+                    currentInputResolver(value);
+                    currentInputResolver = null;
+                }
+                inputField.value = '';
+                document.getElementById(`${containerId}-input-prompt`).classList.add('hidden');
+            }
+        });
+    }
+}
+
+// Ejecutar código Python
+async function runPythonCode(containerId) {
+    const outputDiv = document.getElementById(`${containerId}-output`);
+    const runBtn = document.querySelector(`#${containerId} .console-btn-run`);
+    
+    if (!outputDiv || !runBtn) return;
+
+    // Inicializar Pyodide si no está listo
+    if (!pyodideReady) {
+        outputDiv.innerHTML = '<div class="console-loading"><div class="spinner"></div> Cargando intérprete de Python (primera vez, ~6MB)...</div>';
+        runBtn.disabled = true;
+        await initPyodide();
+        runBtn.disabled = false;
+    }
+
+    // Obtener el código
+    const codeElement = document.querySelector(`#${containerId} .code-display-body code`);
+    if (!codeElement) return;
+    
+    const code = codeElement.textContent;
+
+    // Limpiar consola
+    outputDiv.innerHTML = '<div class="console-line info">🚀 Ejecutando...</div>';
+
+    try {
+        // Configurar funciones de I/O personalizadas
+        let outputBuffer = [];
+        
+        pyodide.globals.set('custom_input', async (prompt) => {
+            return await getUserInput(containerId, prompt);
+        });
+
+        pyodide.runPython(`
+import sys
+from js import custom_input
+
+class CustomStdout:
+    def write(self, text):
+        if text.strip():
+            print_output(text)
+    def flush(self):
+        pass
+
+sys.stdout = CustomStdout()
+
+# Override input function
+def input(prompt=''):
+    print_output(prompt, is_prompt=True)
+    result = custom_input(prompt)
+    return result
+
+__builtins__.input = input
+        `);
+
+        // Función para mostrar output
+        pyodide.globals.set('print_output', (text, is_prompt = false) => {
+            const line = document.createElement('div');
+            line.className = `console-line ${is_prompt ? 'input' : 'output'}`;
+            line.textContent = text;
+            outputDiv.appendChild(line);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        });
+
+        // Ejecutar el código del usuario
+        await pyodide.runPythonAsync(code);
+        
+        // Mensaje de finalización
+        const doneLine = document.createElement('div');
+        doneLine.className = 'console-line info';
+        doneLine.textContent = '✅ Ejecución completada';
+        outputDiv.appendChild(doneLine);
+
+    } catch (error) {
+        const errorLine = document.createElement('div');
+        errorLine.className = 'console-line error';
+        errorLine.textContent = `❌ Error: ${error.message}`;
+        outputDiv.appendChild(errorLine);
+    }
+
+    outputDiv.scrollTop = outputDiv.scrollHeight;
+}
+
+// Obtener input del usuario
+function getUserInput(containerId, prompt) {
+    return new Promise((resolve) => {
+        const inputPrompt = document.getElementById(`${containerId}-input-prompt`);
+        const inputField = document.getElementById(`${containerId}-input`);
+        
+        if (!inputPrompt || !inputField) {
+            resolve('');
+            return;
+        }
+
+        inputPrompt.classList.remove('hidden');
+        inputField.focus();
+        currentInputResolver = resolve;
+    });
+}
+
+// Limpiar consola
+function clearConsole(containerId) {
+    const outputDiv = document.getElementById(`${containerId}-output`);
+    if (outputDiv) {
+        outputDiv.innerHTML = '<div class="console-line info">🧹 Consola limpiada</div>';
+    }
+}
+
+// Función helper para agregar consola a lecciones
+function addInteractiveConsoleToLesson(code) {
+    return `
+        <div id="interactive-console-${Date.now()}"></div>
+        <script>
+            createInteractiveConsole(\`${code.replace(/`/g, '\\`')}\`, 'interactive-console-${Date.now()}');
+        <\/script>
+    `;
+}
+
+// Inicializar Pyodide al cargar la página (en segundo plano)
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar Pyodide después de 2 segundos para no bloquear la carga inicial
+    setTimeout(() => {
+        initPyodide();
+    }, 2000);
+});
+
 </script>
 
 <!-- Prism.js core and languages -->

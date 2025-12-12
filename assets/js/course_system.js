@@ -47,10 +47,17 @@ function showChallengeButton(challengeId, resultsMessageElement) {
     const existingBtn = document.querySelector('.challenge-btn');
     if (existingBtn) existingBtn.remove();
     
+    // Detectar el curso actual desde la URL del archivo
+    const currentPage = window.location.pathname;
+    let courseParam = 'web'; // Default
+    if (currentPage.includes('python_course')) courseParam = 'python';
+    else if (currentPage.includes('ruby_course')) courseParam = 'ruby';
+    else if (currentPage.includes('database_course')) courseParam = 'database';
+    
     const challengeBtn = document.createElement('button');
     challengeBtn.className = 'btn-primary mt-4 challenge-btn';
     challengeBtn.innerHTML = '<i data-lucide="zap"></i> ¡Ir al Desafío!';
-    challengeBtn.onclick = () => window.location.href = `challenges/engine.html?id=${challengeId}`;
+    challengeBtn.onclick = () => window.location.href = `challenges/engine.html?id=${challengeId}&course=${courseParam}`;
     
     resultsMessageElement.insertAdjacentElement('afterend', challengeBtn);
     

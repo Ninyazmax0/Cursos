@@ -361,16 +361,28 @@
             modal: document.getElementById('result-modal')
         };
 
-        // 1. Obtener ID del Desafío de la URL
+        // 1. Obtener ID del Desafío y Curso de la URL
         const urlParams = new URLSearchParams(window.location.search);
         challengeId = urlParams.get('id');
+        const courseId = urlParams.get('course') || 'web'; // Default a 'web' si no se especifica
+
+        // Función helper para obtener la URL del curso correcto
+        function getCourseUrl() {
+            const courseMap = {
+                'web': '../web_course.html',
+                'python': '../python_course.html',
+                'ruby': '../ruby_course.html',
+                'database': '../database_course.html'
+            };
+            return courseMap[courseId] || '../web_course.html';
+        }
 
         // 2. Cargar Configuración
         if (challengeId && window.CHALLENGES_CONFIG && window.CHALLENGES_CONFIG[challengeId]) {
             currentConfig = window.CHALLENGES_CONFIG[challengeId];
         } else {
             alert("Error: Desafío no encontrado o configuración inválida.");
-            window.location.href = '../web_course.html';
+            window.location.href = getCourseUrl();
         }
 
         let attemptsUsed = parseInt(localStorage.getItem(challengeId + '_attempts') || '0');
@@ -420,7 +432,7 @@
             } catch(e) {
                 console.error("Error init challenge:", e);
                 alert("Error al cargar el desafío.");
-                window.location.href = '../web_course.html';
+                window.location.href = getCourseUrl();
             } finally {
                 if (hideLoading) hideLoading();
             }
@@ -518,8 +530,8 @@
                 retryBtn.classList.add('hidden');
                 feedback.innerHTML += '<div class="mt-4 p-3 bg-green-500/20 border border-green-500/30 text-green-300 text-center rounded-lg font-bold">¡Aprobado! Redirigiendo...</div>';
                 setTimeout(() => {
-                    const levelNum = challengeId.replace('level', '');
-                    window.location.href = '../web_course.html?completed=' + levelNum;
+                    const levelNum = challengeId.replace('level', '').replace('python', '').replace('ruby', '').replace('db', '');
+                    window.location.href = getCourseUrl() + '?completed=' + levelNum;
                 }, 3000);
             } else {
                 retryBtn.classList.remove('hidden');
@@ -527,7 +539,7 @@
         }
         
         document.getElementById('back-btn').addEventListener('click', () => {
-             if(confirm("¿Salir del desafío?")) window.location.href = '../web_course.html';
+             if(confirm("¿Salir del desafío?")) window.location.href = getCourseUrl();
         });
 
     </script>
