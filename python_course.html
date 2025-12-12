@@ -14,8 +14,11 @@
     <script type="module" src="assets/js/firebase-storage.js"></script>
 <link rel="stylesheet" href="assets/prism-tokyo.css">
     <script src="assets/js/course_system.js"></script>
-    <!-- Pyodide for Python execution in browser -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <!-- Monaco Editor Loader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <!-- Theme Manager -->
+    <script src="assets/js/theme-manager.js"></script>
     <style>
      :root {
          --background: #1a1b26;
@@ -1431,6 +1434,16 @@
                     <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     Volver al Hub
                 </a>
+                <button id="chat-toggle-btn" class="p-2 rounded-full hover:bg-white/10 text-white transition-colors relative" title="Chat IA">
+                    <i data-lucide="message-square" class="w-5 h-5"></i>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                </button>
+                
+                <button onclick="document.getElementById('theme-store-modal').classList.remove('hidden'); window.themeManager.renderStore();" class="p-2 rounded-full hover:bg-white/10 text-yellow-400 transition-colors" title="Tienda de Temas">
+                    <i data-lucide="store" class="w-5 h-5"></i>
+                </button>
+
+                <div class="w-px h-6 bg-white/20 mx-2"></div>
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/10 transition-colors">
                     <i id="theme-icon" data-lucide="sun" class="w-5 h-5 text-gray-300"></i>
                 </button>
@@ -4455,6 +4468,126 @@ function showResults() {
     document.getElementById('chat-toggle-btn').style.display = 'block';
 }
 
+// Render Level Selection Grid
+function renderLevelSelection() {
+    const levelGrid = document.getElementById('level-grid');
+    if (!levelGrid) return;
+    
+    levelGrid.innerHTML = '';
+    levelGrid.style.display = 'grid';
+    levelGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(80px, 1fr))';
+    levelGrid.style.gap = '32px 16px';
+    levelGrid.style.width = '100%';
+    levelGrid.style.maxWidth = '60rem';
+    levelGrid.style.margin = '0 auto';
+    
+    courseData.forEach((level, index) => {
+        const isUnlocked = index < userProgress.unlockedLevel;
+        const isCompleted = userProgress.completedLevels.includes(index);
+        
+        const levelNode = document.createElement('div');
+        levelNode.className = `level-node ${isCompleted ? 'completed' : isUnlocked ? 'unlocked' : 'locked'}`;
+        levelNode.style.display = 'flex';
+        levelNode.style.flexDirection = 'column';
+        levelNode.style.alignItems = 'center';
+        levelNode.style.position = 'relative';
+        levelNode.style.cursor = isUnlocked ? 'pointer' : 'not-allowed';
+        
+        const iconWrapper = document.createElement('div');
+        iconWrapper.className = 'level-icon-wrapper';
+        iconWrapper.style.width = '64px';
+        iconWrapper.style.height = '64px';
+        iconWrapper.style.borderRadius = '50%';
+        iconWrapper.style.display = 'flex';
+        iconWrapper.style.alignItems = 'center';
+        iconWrapper.style.justifyContent = 'center';
+        iconWrapper.style.border = '3px solid';
+        iconWrapper.style.transition = 'all 0.3s ease';
+        
+        const icon = document.createElement('i');
+        if (isCompleted) {
+            icon.setAttribute('data-lucide', 'check-circle');
+            iconWrapper.style.borderColor = 'var(--green)';
+            iconWrapper.style.backgroundColor = 'var(--green)';
+            iconWrapper.style.color = 'var(--card-background)';
+        } else if (isUnlocked) {
+            icon.setAttribute('data-lucide', 'circle');
+            iconWrapper.style.borderColor = 'var(--accent)';
+            iconWrapper.style.color = 'var(--accent)';
+        } else {
+            icon.setAttribute('data-lucide', 'lock');
+            iconWrapper.style.borderColor = 'var(--border)';
+            iconWrapper.style.color = 'var(--border)';
+            iconWrapper.style.backgroundColor = 'transparent';
+        }
+        icon.className = 'w-8 h-8';
+        
+        iconWrapper.appendChild(icon);
+        
+        const levelNumber = document.createElement('div');
+        levelNumber.className = 'level-number';
+        levelNumber.textContent = `Nivel ${index + 1}`;
+        levelNumber.style.marginTop = '8px';
+        levelNumber.style.fontWeight = '600';
+        levelNumber.style.fontSize = '0.9rem';
+        
+        levelNode.appendChild(iconWrapper);
+        levelNode.appendChild(levelNumber);
+        
+        if (isUnlocked) {
+            levelNode.addEventListener('click', () => startLevel(index));
+        }
+        
+        levelGrid.appendChild(levelNode);
+    });
+    
+    // Render practice levels grid
+    const practiceLevelGrid = document.getElementById('practice-level-grid');
+    if (practiceLevelGrid) {
+        practiceLevelGrid.innerHTML = '';
+        practiceData.forEach((practice, index) => {
+            const practiceNode = document.createElement('div');
+            practiceNode.className = 'level-node unlocked';
+            practiceNode.style.display = 'flex';
+            practiceNode.style.flexDirection = 'column';
+            practiceNode.style.alignItems = 'center';
+            practiceNode.style.cursor = 'pointer';
+            
+            const iconWrapper = document.createElement('div');
+            iconWrapper.className = 'level-icon-wrapper';
+            iconWrapper.style.width = '64px';
+            iconWrapper.style.height = '64px';
+            iconWrapper.style.borderRadius = '50%';
+            iconWrapper.style.display = 'flex';
+            iconWrapper.style.alignItems = 'center';
+            iconWrapper.style.justifyContent = 'center';
+            iconWrapper.style.border = '3px solid var(--yellow)';
+            iconWrapper.style.color = 'var(--yellow)';
+            
+            const icon = document.createElement('i');
+            icon.setAttribute('data-lucide', 'code-2');
+            icon.className = 'w-8 h-8';
+            iconWrapper.appendChild(icon);
+            
+            const practiceNumber = document.createElement('div');
+            practiceNumber.className = 'level-number';
+            practiceNumber.textContent = `Práctica ${index + 1}`;
+            practiceNumber.style.marginTop = '8px';
+            practiceNumber.style.fontWeight = '600';
+            practiceNumber.style.fontSize = '0.9rem';
+            
+            practiceNode.appendChild(iconWrapper);
+            practiceNode.appendChild(practiceNumber);
+            
+            practiceNode.addEventListener('click', () => startPractice(index));
+            
+            practiceLevelGrid.appendChild(practiceNode);
+        });
+    }
+    
+    lucide.createIcons();
+}
+
 // Event Listeners
 document.getElementById('next-btn').addEventListener('click', () => { 
     if (currentLessonStep < courseData[currentLevel].lesson.length - 1) { 
@@ -4902,12 +5035,13 @@ function updateFillCounter(exerciseNum, success) {
 }
 
 // ========================================
-// CONSOLA INTERACTIVA DE PYTHON CON PYODIDE
+// CONSOLA INTERACTIVA DE PYTHON CON MONACO EDITOR
 // ========================================
 
 let pyodide = null;
 let pyodideReady = false;
 let currentInputResolver = null;
+window.monacoEditors = {}; // Store editor instances
 
 // Inicializar Pyodide
 async function initPyodide() {
@@ -4925,51 +5059,53 @@ async function initPyodide() {
     }
 }
 
-// Crear componente de consola interactiva
+// Crear componente de consola interactiva con Monaco
 function createInteractiveConsole(code, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
     const consoleHTML = `
-        <div class="python-interactive-container">
-            <!-- Panel de Código -->
-            <div class="code-display-panel">
-                <div class="code-display-header">
-                    <div class="dots">
-                        <span class="dot" style="background-color: var(--red);"></span>
-                        <span class="dot" style="background-color: var(--yellow);"></span>
-                        <span class="dot" style="background-color: var(--green);"></span>
+        <div class="python-interactive-container grid grid-cols-1 lg:grid-cols-2 gap-4 h-[500px]">
+            <!-- Panel de Código (Monaco) -->
+            <div class="code-display-panel flex flex-col h-full border-r border-gray-700/50">
+                <div class="code-display-header flex justify-between items-center p-2 bg-gray-900/50">
+                    <div class="flex items-center gap-2">
+                        <div class="dots flex gap-1">
+                            <span class="dot w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-yellow-500"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-green-500"></span>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 ml-2">main.py</span>
                     </div>
-                    <span style="color: var(--foreground); font-size: 0.85rem; font-weight: 600;">📝 Código Python</span>
+                    <span class="text-xs text-gray-500">Monaco Editor</span>
                 </div>
-                <div class="code-display-body">
-                    <pre><code class="language-python">${code}</code></pre>
-                </div>
+                <!-- Container para Monaco -->
+                <div id="monaco-${containerId}" class="flex-1 w-full min-h-0 overflow-hidden"></div>
             </div>
 
             <!-- Panel de Consola -->
-            <div class="console-panel">
-                <div class="console-header">
-                    <div class="title">
+            <div class="console-panel flex flex-col h-full bg-[#1a1b26]">
+                <div class="console-header flex justify-between items-center p-2 border-b border-gray-700/50">
+                    <div class="title flex items-center gap-2 text-gray-300 text-sm font-mono">
                         <i data-lucide="terminal" class="w-4 h-4"></i>
-                        Consola Interactiva
+                        Terminal
                     </div>
-                    <div class="console-controls">
-                        <button class="console-btn console-btn-run" onclick="runPythonCode('${containerId}')">
-                            <i data-lucide="play" class="w-4 h-4"></i>
+                    <div class="console-controls flex gap-2">
+                         <button class="console-btn console-btn-run flex items-center gap-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs transition-colors" onclick="runPythonCode('${containerId}')">
+                            <i data-lucide="play" class="w-3 h-3"></i>
                             Ejecutar
                         </button>
-                        <button class="console-btn console-btn-clear" onclick="clearConsole('${containerId}')">
+                        <button class="console-btn console-btn-clear p-1 hover:bg-gray-700 rounded text-gray-400 transition-colors" onclick="clearConsole('${containerId}')" title="Limpiar">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
-                <div class="console-output" id="${containerId}-output">
-                    <div class="console-line info">👋 Presiona "Ejecutar" para correr el código Python</div>
+                <div class="console-output flex-1 p-4 overflow-y-auto font-mono text-sm" id="${containerId}-output">
+                    <div class="console-line info text-gray-500">>>> Esperando ejecución...</div>
                 </div>
-                <div class="console-input-prompt hidden" id="${containerId}-input-prompt">
-                    <span style="color: var(--yellow);">>>> </span>
-                    <input type="text" class="console-input-field" id="${containerId}-input" placeholder="Escribe aquí..." />
+                <div class="console-input-prompt hidden flex items-center p-2 border-t border-gray-700/50 bg-gray-900/30" id="${containerId}-input-prompt">
+                    <span class="text-yellow-500 mr-2 font-mono">>>></span>
+                    <input type="text" class="console-input-field bg-transparent border-none outline-none text-white w-full font-mono text-sm" id="${containerId}-input" placeholder="Escribe aquí..." />
                 </div>
             </div>
         </div>
@@ -4977,8 +5113,6 @@ function createInteractiveConsole(code, containerId) {
 
     container.innerHTML = consoleHTML;
     
-    // Re-highlight syntax
-    if (window.Prism) Prism.highlightAll();
     if (window.lucide) lucide.createIcons();
 
     // Setup input handler
@@ -4996,9 +5130,37 @@ function createInteractiveConsole(code, containerId) {
             }
         });
     }
+
+    // Inicializar Monaco Editor
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+        // Define themes first
+        if (window.themeManager) window.themeManager.defineCustomThemes();
+        
+        const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+        const userTheme = user.preferredTheme || 'vs-dark';
+
+        const editorElement = document.getElementById(`monaco-${containerId}`);
+        if(editorElement) {
+             window.monacoEditors[containerId] = monaco.editor.create(editorElement, {
+                value: code.trim(),
+                language: 'python',
+                theme: userTheme, // Use user preference
+                automaticLayout: true,
+                minimap: { enabled: true },
+                fontSize: 14,
+                lineNumbers: 'on',
+                renderIndentGuides: true,       // Explicit indentation guides
+                guides: { indentation: true }, // For newer Monaco versions
+                scrollBeyondLastLine: false,
+                roundedSelection: true,
+                padding: { top: 10 }
+            });
+        }
+    });
 }
 
-// Ejecutar código Python
+// Ejecutar código Python desde Monaco
 async function runPythonCode(containerId) {
     const outputDiv = document.getElementById(`${containerId}-output`);
     const runBtn = document.querySelector(`#${containerId} .console-btn-run`);
@@ -5013,11 +5175,13 @@ async function runPythonCode(containerId) {
         runBtn.disabled = false;
     }
 
-    // Obtener el código
-    const codeElement = document.querySelector(`#${containerId} .code-display-body code`);
-    if (!codeElement) return;
-    
-    const code = codeElement.textContent;
+    // Obtener el código desde Monaco
+    const editor = window.monacoEditors[containerId];
+    if (!editor) {
+        console.error("Editor no encontrado para", containerId);
+        return;
+    }
+    const code = editor.getValue();
 
     // Limpiar consola
     outputDiv.innerHTML = '<div class="console-line info">🚀 Ejecutando...</div>';

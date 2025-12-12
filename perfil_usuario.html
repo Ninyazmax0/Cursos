@@ -359,6 +359,27 @@
         }
 
         function renderProfile(user) {
+            // Apply Avatar Frames if user has one equipped
+            const avatarContainer = document.querySelector('#user-avatar').parentElement;
+            
+            // Limpiar frames anteriores
+            avatarContainer.classList.remove('frame-steven', 'frame-amelia', 'frame-gold');
+            
+            // Lógica de Frames Específicos
+            if (user.id === 'steven-founder' || userId === 'steven-founder') {
+                 avatarContainer.classList.add('frame-steven');
+            } else if (user.id === 'amelia-founder' || userId === 'amelia-founder') {
+                 avatarContainer.classList.add('frame-amelia');
+            }
+            // Future compatibility for equipped frames
+            else if (user.equippedFrame) {
+                 avatarContainer.classList.add(user.equippedFrame);
+            }
+
+            // Actualizar elementos
+            document.getElementById('user-name').textContent = user.name || 'Estudiante';
+            document.getElementById('user-avatar').src = user.avatar || 'assets/default-avatar.png';
+            
             // Información básica
             document.getElementById('user-name').textContent = user.name;
             document.getElementById('user-avatar').src = user.avatar || 'https://ui-avatars.com/api/?name=' + user.name;
@@ -422,6 +443,9 @@
         const grid = document.getElementById('achievements-grid');
         const userAchievements = user.achievements || [];
         
+        // Update grid layout for badges
+        grid.className = 'grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4';
+        
         if (userAchievements.length === 0) {
             grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">Aún no has desbloqueado logros. ¡Sigue explorando!</div>';
             return;
@@ -431,20 +455,53 @@
             const ach = achievements.find(a => a.id === id);
             if (!ach) return '';
             
-            const colors = {
-                common: 'border-gray-500/30 bg-gray-500/10 text-gray-300',
-                rare: 'border-blue-400/30 bg-blue-400/10 text-blue-300',
-                epic: 'border-yellow-400/30 bg-yellow-400/10 text-yellow-300 shadow-[0_0_15px_rgba(250,204,21,0.2)]'
+            const styles = {
+                common: {
+                    bg: 'bg-gradient-to-br from-gray-700 to-gray-900',
+                    border: 'border-gray-500',
+                    icon: 'text-gray-300',
+                    shadow: 'shadow-gray-900/50'
+                },
+                rare: {
+                    bg: 'bg-gradient-to-br from-blue-900 to-slate-900',
+                    border: 'border-blue-400',
+                    icon: 'text-blue-300',
+                    shadow: 'shadow-blue-900/50'
+                },
+                epic: {
+                    bg: 'bg-gradient-to-br from-yellow-700 to-amber-900',
+                    border: 'border-yellow-400',
+                    icon: 'text-yellow-300',
+                    shadow: 'shadow-yellow-900/50'
+                },
+                legendary: {
+                     bg: 'bg-gradient-to-br from-purple-700 to-pink-900',
+                     border: 'border-pink-400',
+                     icon: 'text-pink-300',
+                     shadow: 'shadow-purple-900/50'
+                }
             };
 
+            const style = styles[ach.rarity] || styles.common;
+
             return `
-                <div class="p-4 rounded-xl border ${colors[ach.rarity]} flex flex-col items-center text-center gap-2 transition-transform hover:scale-105">
-                    <div class="p-2 rounded-full bg-background/50">
-                        <i data-lucide="${ach.icon}" class="w-6 h-6"></i>
+                <div class="group relative flex flex-col items-center cursor-help">
+                    <!-- Badge Circle -->
+                    <div class="w-16 h-16 rounded-full ${style.bg} border-2 ${style.border} flex items-center justify-center shadow-lg ${style.shadow} transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                        <i data-lucide="${ach.icon}" class="w-8 h-8 ${style.icon}"></i>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-sm">${ach.name}</h4>
-                        <p class="text-[10px] opacity-70 leading-tight">${ach.desc}</p>
+                    
+                    <!-- Name Label -->
+                    <span class="mt-2 text-[10px] font-bold text-center opacity-80 group-hover:opacity-100 group-hover:text-accent transition-colors truncate w-full px-1">
+                        ${ach.name}
+                    </span>
+
+                    <!-- Tooltip -->
+                    <div class="absolute bottom-full mb-2 w-48 p-3 rounded-lg bg-gray-900 border border-gray-700 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 text-center pointer-events-none transform translate-y-2 group-hover:translate-y-0">
+                        <h5 class="font-bold text-sm ${style.icon} mb-1">${ach.name}</h5>
+                        <p class="text-xs text-gray-300">${ach.desc}</p>
+                        ${ach.hint ? `<p class="text-[10px] text-gray-500 mt-1 italic">"${ach.hint}"</p>` : ''}
+                        <div class="absolute top-100 left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
                     </div>
                 </div>
             `;

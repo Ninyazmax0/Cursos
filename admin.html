@@ -1007,25 +1007,30 @@
                      const databaseChecked = document.getElementById('course-database').checked;
 
                      // Actualizar solo los cursos seleccionados
+                     // Actualizar solo los cursos seleccionados
                      if (webChecked) {
                          const level = parseInt(document.getElementById('level-web').value);
                          if (!user.webProgress) user.webProgress = {};
                          user.webProgress.unlockedLevel = level;
+                         user.webProgress.completedLevels = Array.from({length: level - 1}, (_, i) => i);
                      }
                      if (pythonChecked) {
                          const level = parseInt(document.getElementById('level-python').value);
                          if (!user.pythonProgress) user.pythonProgress = {};
                          user.pythonProgress.unlockedLevel = level;
+                         user.pythonProgress.completedLevels = Array.from({length: level - 1}, (_, i) => i);
                      }
                      if (rubyChecked) {
                          const level = parseInt(document.getElementById('level-ruby').value);
                          if (!user.rubyProgress) user.rubyProgress = {};
                          user.rubyProgress.unlockedLevel = level;
+                         user.rubyProgress.completedLevels = Array.from({length: level - 1}, (_, i) => i);
                      }
                      if (databaseChecked) {
                          const level = parseInt(document.getElementById('level-database').value);
                          if (!user.databaseProgress) user.databaseProgress = {};
                          user.databaseProgress.unlockedLevel = level;
+                         user.databaseProgress.completedLevels = Array.from({length: level - 1}, (_, i) => i);
                      }
 
                      // Guardar en Firebase
