@@ -1301,6 +1301,102 @@
             @keyframes spin {
                 to { transform: rotate(360deg); }
             }
+
+            /* Rainbow Indentation para Código Python */
+            .code-display-body pre code,
+            .code-block pre code {
+                position: relative;
+                display: block;
+            }
+
+            /* Indent Rainbow - Niveles de indentación con colores */
+            .code-display-body pre code .indent-level-1,
+            .code-block pre code .indent-level-1 {
+                border-left: 2px solid rgba(255, 85, 85, 0.3);
+                padding-left: 1rem;
+            }
+
+            .code-display-body pre code .indent-level-2,
+            .code-block pre code .indent-level-2 {
+                border-left: 2px solid rgba(255, 170, 85, 0.3);
+                padding-left: 1rem;
+            }
+
+            .code-display-body pre code .indent-level-3,
+            .code-block pre code .indent-level-3 {
+                border-left: 2px solid rgba(255, 255, 85, 0.3);
+                padding-left: 1rem;
+            }
+
+            .code-display-body pre code .indent-level-4,
+            .code-block pre code .indent-level-4 {
+                border-left: 2px solid rgba(85, 255, 85, 0.3);
+                padding-left: 1rem;
+            }
+
+            .code-display-body pre code .indent-level-5,
+            .code-block pre code .indent-level-5 {
+                border-left: 2px solid rgba(85, 170, 255, 0.3);
+                padding-left: 1rem;
+            }
+
+            .code-display-body pre code .indent-level-6,
+            .code-block pre code .indent-level-6 {
+                border-left: 2px solid rgba(170, 85, 255, 0.3);
+                padding-left: 1rem;
+            }
+
+            /* Mejoras visuales para la consola de código */
+            .code-display-panel pre,
+            .code-block pre {
+                background-color: #1e1e2e !important;
+                border-radius: 8px;
+                position: relative;
+            }
+
+            .code-display-panel pre code,
+            .code-block pre code {
+                font-family: var(--font-mono);
+                font-size: 0.9rem;
+                line-height: 1.7;
+                color: #c0caf5;
+            }
+
+            /* Colores de sintaxis mejorados para Python */
+            .code-block pre code.language-python .token.keyword {
+                color: #bb9af7;
+                font-weight: 600;
+            }
+
+            .code-block pre code.language-python .token.string {
+                color: #9ece6a;
+            }
+
+            .code-block pre code.language-python .token.number {
+                color: #ff9e64;
+            }
+
+            .code-block pre code.language-python .token.comment {
+                color: #565f89;
+                font-style: italic;
+            }
+
+            .code-block pre code.language-python .token.function {
+                color: #7aa2f7;
+            }
+
+            .code-block pre code.language-python .token.operator {
+                color: #89ddff;
+            }
+
+            .code-block pre code.language-python .token.punctuation {
+                color: #a9b1d6;
+            }
+
+            .code-block pre code.language-python .token.boolean {
+                color: #ff9e64;
+                font-weight: 600;
+            }
         </style></head>
 <body>
     <div class="background-container">
@@ -1759,147 +1855,204 @@ for estudiante in estudiantes:
 
 const courseData = [
     { // Nivel 1
-        title: "Introducción a Python",
+        title: "Variables y Tipos de Datos",
         lesson: [
-            { title: "¿Qué es Python?", content: `<p>Python es un lenguaje de programación de alto nivel, interpretado y de propósito general. Fue creado por Guido van Rossum y lanzado por primera vez en 1991.</p><p>Python se destaca por su sintaxis clara y legible, lo que lo hace ideal para principiantes. Es ampliamente utilizado en desarrollo web, ciencia de datos, inteligencia artificial, automatización y más.</p>`},
-            { title: "¿Por qué Python?", content: `<p>Python es popular por varias razones:</p><ul><li><strong>Sintaxis simple:</strong> El código es fácil de leer y escribir</li><li><strong>Versátil:</strong> Se puede usar para muchos tipos de proyectos</li><li><strong>Gran comunidad:</strong> Mucha documentación y librerías disponibles</li><li><strong>Multiplataforma:</strong> Funciona en Windows, Mac y Linux</li></ul>`},
-            { title: "Instalando Python", content: `<p>Para instalar Python:</p><ol><li>Ve a <code>python.org</code></li><li>Descarga la versión más reciente</li><li>Ejecuta el instalador</li><li>Verifica la instalación con <code>python --version</code> en la terminal</li></ol><p>Alternativamente, puedes usar entornos online como Replit o Google Colab para practicar sin instalar nada.</p>`},
-            { title: "Tu primer programa", content: `<p>El programa "Hola Mundo" es tradicionalmente el primero que escribes en un nuevo lenguaje.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print("¡Hola Mundo!")</code></pre></div><p>Guarda este código en un archivo con extensión <code>.py</code> y ejecútalo con <code>python nombre_del_archivo.py</code></p>`},
-            { title: "Comentarios", content: `<p>Los comentarios explican qué hace el código. En Python, los comentarios de una línea empiezan con <code>#</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Este es un comentario
-print("¡Hola!")  # Este también es un comentario</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Has aprendido los fundamentos de Python. ¡Demuestra tus conocimientos!</p>"}
+            { 
+                title: "¿Qué es una Variable?", 
+                content: `<p>Una <strong>variable</strong> es un espacio en la memoria del computador que almacena un valor. En Python, crear una variable es tan simple como asignar un valor usando el operador de asignación <code>=</code>.</p>
+                <p>A diferencia de lenguajes como C++ o Java, Python es <strong>dinámicamente tipado</strong>, lo que significa que no necesitas declarar el tipo de dato de antemano. El intérprete lo infiere automáticamente según el valor asignado.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Declaración simple de variables
+nombre = "Ana"
+edad = 25
+altura = 1.75
+es_estudiante = True
+
+# Reasignación con diferente tipo
+edad = "veinticinco"  # Ahora es string
+edad = 25.5           # Ahora es float</code></pre></div>`
+            },
+            { 
+                title: "Tipos de Datos Primitivos", 
+                content: `<p>Python tiene cuatro tipos de datos primitivos fundamentales:</p>
+                <ul>
+                    <li><strong>String (str)</strong>: Cadenas de texto. Ejemplo: <code>"Hola"</code></li>
+                    <li><strong>Integer (int)</strong>: Números enteros. Ejemplo: <code>42</code></li>
+                    <li><strong>Float</strong>: Números decimales. Ejemplo: <code>3.14</code></li>
+                    <li><strong>Boolean (bool)</strong>: <code>True</code> o <code>False</code></li>
+                </ul>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">texto = "Python"
+numero = 100
+decimal = 3.14
+activo = True
+
+print(type(texto))   # <class 'str'>
+print(type(numero))  # <class 'int'></code></pre></div>`
+            },
+            { 
+                title: "Funciones print() e input()", 
+                content: `<p>La función <code>print()</code> muestra información. La función <code>input()</code> captura datos del usuario.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print("Hola Mundo")
+
+nombre = input("¿Tu nombre? ")
+edad = int(input("¿Tu edad? "))
+
+print(f"Hola {nombre}, tienes {edad} años")</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Prueba el Código</h3>
+                <div id="console-nivel-1"></div>
+                <script>
+                    createInteractiveConsole(\`nombre = input("¿Cómo te llamas? ")
+edad = int(input("¿Cuántos años tienes? "))
+
+print(f"\\nHola {nombre}!")
+año_nacimiento = 2025 - edad
+print(f"Naciste en {año_nacimiento}")
+print(f"Has vivido {edad * 12} meses")\`, 'console-nivel-1');
+                </script>`
+            }
         ],
         quiz: [
-            {
-                type: "multiple-choice",
-                question: "¿Qué tipo de lenguaje es Python?",
-                options: ["Compilado", "Interpretado", "Binario", "Máquina"],
-                answer: "Interpretado",
-                explanation: "Python es un lenguaje interpretado, lo que significa que el código se ejecuta línea por línea."
-            },
-            {
-                type: "multiple-choice",
-                question: "¿Qué función se usa para obtener entrada del usuario en la consola?",
-                options: ["input()", "get()", "read()", "scan()"],
-                answer: "input()",
-                explanation: "La función input() lee una línea de la entrada, la convierte en una cadena y la devuelve."
-            },
-            {
-                type: "multiple-choice",
-                question: "¿Cuál es la extensión de archivo comúnmente utilizada para los scripts de Python?",
-                options: [".py", ".python", ".pt", ".p"],
-                answer: ".py",
-                explanation: "Los archivos de código fuente de Python se guardan con la extensión .py."
-            },
-            {
-                type: "multiple-choice", // True/False
-                question: "Python fue creado por Guido van Rossum. ¿Verdadero o Falso?",
-                options: ["Verdadero", "Falso"],
-                answer: "Verdadero",
-                explanation: "Guido van Rossum es el creador de Python."
-            },
-            {
-                type: "multiple-choice", // True/False
-                question: "En Python, los comentarios de una sola línea comienzan con '//'. ¿Verdadero o Falso?",
-                options: ["Verdadero", "Falso"],
-                answer: "Falso",
-                explanation: "Los comentarios de una sola línea en Python comienzan con el símbolo de almohadilla (#)."
-            }
+            { type: "multiple-choice", question: "¿Qué función muestra información?", options: ["input()", "print()", "show()", "display()"], answer: "print()" },
+            { type: "multiple-choice", question: "¿Qué devuelve input()?", options: ["int", "str", "float", "Depende"], answer: "str" },
+            { type: "multiple-choice", question: "¿Cómo crear f-string?", options: ["s\"texto\"", "f\"texto\"", "format()", "str()"], answer: "f\"texto\"" },
+            { type: "multiple-choice", question: "¿Convertir a entero?", options: ["int()", "str()", "float()", "number()"], answer: "int()" },
+            { type: "multiple-choice", question: "Python dinámicamente tipado significa:", options: ["No tiene tipos", "Infiere tipos", "Solo strings", "Requiere declaración"], answer: "Infiere tipos" }
         ]
     },
     { // Nivel 2
-        title: "Variables y Tipos de Datos",
+        title: "Operadores Matemáticos",
         lesson: [
-            { title: "¿Qué es una Variable?", content: `<p>Una variable es un contenedor para almacenar datos. En Python, no necesitas declarar el tipo de variable explícitamente.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = "Ana"
-edad = 25
-altura = 1.65</code></pre></div>`},
-            { title: "Tipos de Datos Básicos", content: `<p>Python tiene varios tipos de datos incorporados:</p><ul><li><strong>str:</strong> Cadenas de texto ("Hola")</li><li><strong>int:</strong> Números enteros (42)</li><li><strong>float:</strong> Números decimales (3.14)</li><li><strong>bool:</strong> Valores booleanos (True/False)</li></ul>`},
-            { title: "Conversión de Tipos", content: `<p>Puedes convertir entre tipos usando funciones como <code>int()</code>, <code>str()</code>, <code>float()</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numero_texto = "42"
-numero = int(numero_texto)  # Convierte string a int
+            { 
+                title: "Operadores Básicos", 
+                content: `<p>Python soporta operadores aritméticos estándar con precedencia definida.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">suma = 5 + 3          # 8
+resta = 10 - 4        # 6
+multiplicacion = 6 * 7  # 42
+division = 15 / 3     # 5.0
 
-edad = 25
-edad_texto = str(edad)  # Convierte int a string</code></pre></div>`},
-            { title: "Nombres de Variables", content: `<p>Las reglas para nombrar variables:</p><ul><li>Deben empezar con letra o guión bajo</li><li>Pueden contener letras, números y guiones bajos</li><li>Son sensibles a mayúsculas/minúsculas</li><li>Usa nombres descriptivos en inglés</li></ul><p>Ejemplos válidos: <code>nombre</code>, <code>edad_usuario</code>, <code>_privado</code></p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Las variables son fundamentales en Python. ¡Demuestra que las entiendes!</p>"}
+division_entera = 17 // 5   # 3
+modulo = 17 % 5             # 2
+potencia = 2 ** 3           # 8</code></pre></div>`
+            },
+            { 
+                title: "Orden de Operaciones", 
+                content: `<p>Python sigue PEMDAS: Paréntesis, Exponentes, Multiplicación/División, Adición/Sustracción.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">resultado = 2 + 3 * 4    # 14
+resultado = (2 + 3) * 4  # 20
+
+precio = (100 * 0.85) * 1.21  # Con descuento e IVA</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Calculadora</h3>
+                <div id="console-nivel-2"></div>
+                <script>
+                    createInteractiveConsole(\`num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
+
+print(f"\\n{num1} + {num2} = {num1 + num2}")
+print(f"{num1} - {num2} = {num1 - num2}")
+print(f"{num1} * {num2} = {num1 * num2}")
+
+if num2 != 0:
+    print(f"{num1} / {num2} = {num1 / num2:.2f}")
+    print(f"{num1} // {num2} = {num1 // num2}")
+else:
+    print("No se puede dividir por cero")\`, 'console-nivel-2');
+                </script>`
+            }
         ],
         quiz: [
-            {
-                type: "multiple-choice",
-                question: "¿Cómo se declara una variable en Python?",
-                options: ["var nombre = 'Ana'", "let nombre = 'Ana'", "nombre = 'Ana'", "string nombre = 'Ana'"],
-                answer: "nombre = 'Ana'",
-                explanation: "En Python, las variables se declaran asignando un valor a un nombre."
-            },
-            {
-                type: "multiple-choice",
-                question: "¿Qué tipo de dato es 'Hola Mundo'?",
-                options: ["int", "float", "str", "bool"],
-                answer: "str",
-                explanation: "Las cadenas de texto en Python son de tipo 'str'."
-            },
-            {
-                type: "multiple-choice",
-                question: "¿Qué función se utiliza para convertir un valor a un número entero?",
-                options: ["str()", "float()", "int()", "bool()"],
-                answer: "int()",
-                explanation: "La función int() intenta convertir un valor a un entero."
-            },
-            {
-                type: "multiple-choice", 
-                question: "Los nombres de las variables en Python pueden comenzar con un número. ¿Verdadero o Falso?",
-                options: ["Verdadero", "Falso"],
-                answer: "Falso",
-                explanation: "Los nombres de las variables deben comenzar con una letra o un guion bajo."
-            },
-            {
-                type: "multiple-choice",
-                question: "Python es un lenguaje fuertemente tipado. ¿Verdadero o Falso?",
-                options: ["Verdadero", "Falso"],
-                answer: "Verdadero",
-                explanation: "Aunque Python es de tipado dinámico, es fuertemente tipado. No permite operaciones entre tipos incompatibles sin una conversión explícita."
-            }
+            { type: "multiple-choice", question: "¿Resultado de 10 // 3?", options: ["3.33", "3", "4", "3.0"], answer: "3" },
+            { type: "multiple-choice", question: "¿Operador para resto?", options: ["/", "//", "%", "**"], answer: "%" },
+            { type: "multiple-choice", question: "¿Resultado de 2 ** 3?", options: ["6", "8", "9", "5"], answer: "8" },
+            { type: "multiple-choice", question: "¿Qué hace x += 5?", options: ["Suma 5 a x", "Compara", "Resta", "Multiplica"], answer: "Suma 5 a x" },
+            { type: "multiple-choice", question: "¿Resultado de 5 + 3 * 2?", options: ["16", "11", "13", "10"], answer: "11" }
         ]
     },
     { // Nivel 3
-        title: "Operadores",
+        title: "Operadores de Comparación y Lógicos",
         lesson: [
-            { title: "Operadores Aritméticos", content: `<p>Python soporta los operadores matemáticos básicos:</p><ul><li><code>+</code> Suma</li><li><code>-</code> Resta</li><li><code>*</code> Multiplicación</li><li><code>/</code> División</li><li><code>//</code> División entera</li><li><code>%</code> Módulo (resto)</li><li><code>**</code> Potencia</li></ul><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">a = 10
-b = 3
-print(a + b)  # 13
-print(a // b) # 3 (división entera)
-print(a % b)  # 1 (resto)
-print(a ** b) # 1000 (10^3)</code></pre></div>`},
-            { title: "Operadores de Asignación", content: `<p>Además del <code>=</code> básico, hay operadores compuestos:</p><ul><li><code>+=</code> Suma y asigna</li><li><code>-=</code> Resta y asigna</li><li><code>*=</code> Multiplica y asigna</li><li><code>/=</code> Divide y asigna</li></ul><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">x = 5
-x += 3  # Equivalente a x = x + 3
-print(x)  # 8</code></pre></div>`},
-            { title: "Operadores de Comparación", content: `<p>Comparan valores y devuelven True o False:</p><ul><li><code>==</code> Igual a</li><li><code>!=</code> Diferente de</li><li><code><</code> Menor que</li><li><code>></code> Mayor que</li><li><code><=</code> Menor o igual</li><li><code>>=</code> Mayor o igual</li></ul>`},
-            { title: "Operadores Lógicos", content: `<p>Combinan expresiones booleanas:</p><ul><li><code>and</code> Y lógico</li><li><code>or</code> O lógico</li><li><code>not</code> Negación</li></ul><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 25
-tiene_licencia = True
+            { 
+                title: "Operadores de Comparación", 
+                content: `<p>Los operadores de comparación comparan dos valores y devuelven <code>True</code> o <code>False</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Comparaciones básicas
+5 == 5   # True (igual a)
+5 != 3   # True (diferente de)
+7 > 3    # True (mayor que)
+2 < 8    # True (menor que)
+5 >= 5   # True (mayor o igual)
+3 <= 2   # False (menor o igual)
 
-if edad >= 18 and tiene_licencia:
-    print("Puede conducir")</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Los operadores son esenciales para manipular datos. ¡Demuestra que los dominas!</p>"}
+# Comparar strings
+"python" == "Python"  # False (case-sensitive)
+"abc" < "xyz"         # True (orden alfabético)</code></pre></div>`
+            },
+            { 
+                title: "Operadores Lógicos", 
+                content: `<p>Los operadores lógicos combinan condiciones booleanas.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># and - ambas condiciones deben ser True
+edad = 20
+tiene_licencia = True
+puede_conducir = edad >= 18 and tiene_licencia  # True
+
+# or - al menos una condición debe ser True
+es_fin_semana = dia == "sábado" or dia == "domingo"
+
+# not - invierte el valor
+no_es_menor = not (edad < 18)  # True</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Verificador de Condiciones</h3>
+                <div id="console-nivel-3"></div>
+                <script>
+                    createInteractiveConsole(\`edad = int(input("¿Cuántos años tienes? "))
+nota = float(input("¿Qué nota sacaste? "))
+
+if edad >= 18:
+    categoria = "adulto"
+elif edad >= 13:
+    categoria = "adolescente"
+else:
+    categoria = "niño"
+
+aprobado = nota >= 70
+
+print(f"\\nEres {categoria}")
+print(f"Nota: {nota}")
+if aprobado:
+    print("¡Aprobaste!")
+else:
+    print("Necesitas estudiar más")\`, 'console-nivel-3');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Qué operador calcula el resto de una división?", options: ["//", "%", "/", "**"], answer: "%" },
-            { type: "multiple-choice", question: "¿Qué operador eleva a potencia?", options: ["^", "**", "*", "pow"], answer: "**" },
-            { type: "multiple-choice", question: "¿Qué hace x += 5?", options: ["Asigna 5 a x", "Suma 5 a x", "Multiplica x por 5", "Divide x por 5"], answer: "Suma 5 a x" },
-            { type: "multiple-choice", question: "El operador 'and' devuelve True si ambas condiciones son verdaderas. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
-            { type: "multiple-choice", question: "¿Cuál es el resultado de 10 // 3?", options: ["3.33", "3", "1", "30"], answer: "3" }
+            { type: "multiple-choice", question: "¿Qué devuelve 5 == 5?", options: ["5", "True", "False", "Error"], answer: "True" },
+            { type: "multiple-choice", question: "Operador para 'diferente de':", options: ["<>", "=/=", "!=", "not"], answer: "!=" },
+            { type: "multiple-choice", question: "¿Qué devuelve True and False?", options: ["True", "False", "Error", "None"], answer: "False" },
+            { type: "multiple-choice", question: "¿Qué devuelve True or False?", options: ["True", "False", "Error", "None"], answer: "True" },
+            { type: "multiple-choice", question: "¿Qué hace not?", options: ["Suma", "Resta", "Invierte", "Compara"], answer: "Invierte" }
         ]
     },
     { // Nivel 4
-        title: "Control de Flujo: Condicionales",
+        title: "Condicionales (if, elif, else)",
         lesson: [
-            { title: "Sentencia if", content: `<p>La estructura <code>if</code> ejecuta código solo si una condición es verdadera.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 18
-if edad >= 18:
-    print("Eres mayor de edad")</code></pre></div><p>Nota: Python usa indentación (4 espacios) para definir bloques de código.</p>`},
-            { title: "Sentencia else", content: `<p><code>else</code> se ejecuta cuando la condición del <code>if</code> es falsa.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 16
+            { 
+                title: "La sentencia if", 
+                content: `<p>La sentencia <code>if</code> ejecuta código solo si una condición es verdadera.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 20
 if edad >= 18:
     print("Eres mayor de edad")
-else:
-    print("Eres menor de edad")</code></pre></div>`},
-            { title: "Sentencia elif", content: `<p><code>elif</code> permite múltiples condiciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">calificacion = 85
+    print("Puedes votar")</code></pre></div>`
+            },
+            { 
+                title: "if-else y elif", 
+                content: `<p><code>else</code> se ejecuta cuando el if es falso. <code>elif</code> permite múltiples condiciones.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">calificacion = 85
 if calificacion >= 90:
     print("Excelente")
 elif calificacion >= 80:
@@ -1907,813 +2060,1667 @@ elif calificacion >= 80:
 elif calificacion >= 70:
     print("Bien")
 else:
-    print("Necesitas mejorar")</code></pre></div>`},
-            { title: "Condicionales Anidados", content: `<p>Puedes anidar condicionales dentro de otros.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">edad = 25
-tiene_licencia = True
+    print("Necesitas mejorar")</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Clasificador de Edad</h3>
+                <div id="console-nivel-4"></div>
+                <script>
+                    createInteractiveConsole(\`edad = int(input("¿Cuántos años tienes? "))
 
-if edad >= 18:
-    if tiene_licencia:
-        print("Puede conducir")
-    else:
-        print("Necesita licencia")
+if edad < 13:
+    print("Eres un niño")
+    actividad = "jugar"
+elif edad < 18:
+    print("Eres adolescente")
+    actividad = "estudiar"
+elif edad < 60:
+    print("Eres adulto")
+    actividad = "trabajar"
 else:
-    print("Muy joven para conducir")</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Los condicionales permiten que tu programa tome decisiones. ¡Demuestra que los entiendes!</p>"}
+    print("Eres adulto mayor")
+    actividad = "disfrutar"
+
+print(f"Actividad: {actividad}")\`, 'console-nivel-4');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Qué palabra clave se usa para condicionales?", options: ["when", "if", "switch", "case"], answer: "if" },
-            { type: "multiple-choice", question: "¿Qué se ejecuta si la condición de un 'if' es falsa y no hay 'elif' verdaderos?", options: ["if", "elif", "else", "then"], answer: "else" },
-            { type: "multiple-choice", question: "Puedes tener múltiples sentencias 'elif' después de un 'if'. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
-            { type: "multiple-choice", question: "¿Cómo se definen los bloques de código en Python (por ejemplo, dentro de un if)?", options: ["Con llaves {}", "Con paréntesis ()", "Con indentación", "Con punto y coma"], answer: "Con indentación" },
-            { type: "multiple-choice", question: "¿Cuál es la estructura correcta de una sentencia condicional en Python?", options: ["if condition: code", "if condition { code }", "if (condition) code", "if condition then code"], answer: "if condition: code" }
+            { type: "multiple-choice", question: "¿Palabra clave para condicionales?", options: ["when", "if", "switch", "case"], answer: "if" },
+            { type: "multiple-choice", question: "¿Qué se ejecuta si if es falso?", options: ["if", "elif", "else", "then"], answer: "else" },
+            { type: "multiple-choice", question: "¿Múltiples elif permitidos?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { type: "multiple-choice", question: "¿Cómo se definen bloques?", options: ["Llaves {}", "Paréntesis ()", "Indentación", "Punto y coma"], answer: "Indentación" },
+            { type: "multiple-choice", question: "Estructura correcta:", options: ["if condition: code", "if condition { code }", "if (condition) code", "if condition then code"], answer: "if condition: code" }
         ]
     },
     { // Nivel 5
-        title: "Bucles",
+        title: "Bucles (for y while)",
         lesson: [
-            { title: "Bucle for", content: `<p>El bucle <code>for</code> itera sobre una secuencia (lista, string, rango, etc.).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">for i in range(5):
-    print(i)  # Imprime 0, 1, 2, 3, 4
+            { 
+                title: "El bucle for", 
+                content: `<p>El bucle <code>for</code> itera sobre secuencias.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4
 
-frutas = ["manzana", "banana", "naranja"]
+frutas = ["manzana", "banana"]
 for fruta in frutas:
-    print(fruta)</code></pre></div>`},
-            { title: "Función range()", content: `<p><code>range()</code> genera una secuencia de números.</p><ul><li><code>range(5)</code> → 0, 1, 2, 3, 4</li><li><code>range(2, 6)</code> → 2, 3, 4, 5</li><li><code>range(1, 10, 2)</code> → 1, 3, 5, 7, 9</li></ul>`},
-            { title: "Bucle while", content: `<p>El bucle <code>while</code> se ejecuta mientras una condición sea verdadera.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">contador = 0
+    print(fruta)</code></pre></div>`
+            },
+            { 
+                title: "El bucle while", 
+                content: `<p>El bucle <code>while</code> se ejecuta mientras la condición sea verdadera.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">contador = 0
 while contador < 5:
     print(contador)
-    contador += 1</code></pre></div>`},
-            { title: "break y continue", content: `<p><code>break</code> sale del bucle. <code>continue</code> salta a la siguiente iteración.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">for i in range(10):
+    contador += 1</code></pre></div>`
+            },
+            { 
+                title: "break y continue", 
+                content: `<p><code>break</code> sale del bucle. <code>continue</code> salta a la siguiente iteración.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">for i in range(10):
     if i == 5:
-        break  # Sale del bucle cuando i = 5
+        break
     if i % 2 == 0:
-        continue  # Salta los números pares
-    print(i)</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Los bucles son poderosos para automatizar tareas repetitivas. ¡Demuestra que los dominas!</p>"}
+        continue
+    print(i)</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Suma de Números</h3>
+                <div id="console-nivel-5"></div>
+                <script>
+                    createInteractiveConsole(\`n = int(input("¿Hasta qué número sumar? "))
+
+suma = 0
+for i in range(1, n + 1):
+    suma += i
+    print(f"{i} → suma: {suma}")
+
+print(f"\\nResultado: {suma}")\`, 'console-nivel-5');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Qué bucle se usa para iterar sobre una secuencia (como una lista)?", options: ["while", "for", "if", "loop"], answer: "for" },
-            { type: "multiple-choice", question: "¿Qué palabra clave se usa para salir de un bucle prematuramente?", options: ["continue", "exit", "stop", "break"], answer: "break" },
-            { type: "multiple-choice", question: "El bucle 'while' se ejecuta mientras su condición sea verdadera. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
-            { type: "multiple-choice", question: "¿Qué hace la palabra clave 'continue' en un bucle?", options: ["Termina el bucle", "Salta a la siguiente iteración", "Reinicia el bucle", "Genera un error"], answer: "Salta a la siguiente iteración" },
-            { type: "multiple-choice", question: "¿Qué genera `range(3)`?", options: ["1, 2, 3", "0, 1, 2", "0, 1, 2, 3", "1, 2"], answer: "0, 1, 2" }
+            { type: "multiple-choice", question: "¿Bucle para iterar secuencias?", options: ["while", "for", "if", "loop"], answer: "for" },
+            { type: "multiple-choice", question: "¿Salir de bucle?", options: ["continue", "exit", "stop", "break"], answer: "break" },
+            { type: "multiple-choice", question: "while se ejecuta mientras:", options: ["Condición True", "Condición False", "Siempre", "Nunca"], answer: "Condición True" },
+            { type: "multiple-choice", question: "¿Qué hace continue?", options: ["Termina", "Salta iteración", "Reinicia", "Error"], answer: "Salta iteración" },
+            { type: "multiple-choice", question: "¿Qué genera range(3)?", options: ["1, 2, 3", "0, 1, 2", "0, 1, 2, 3", "1, 2"], answer: "0, 1, 2" }
         ]
     },
     { // Nivel 6
         title: "Funciones",
         lesson: [
-            { title: "¿Qué es una Función?", content: `<p>Una función es un bloque de código reutilizable que realiza una tarea específica.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar():
-   print("¡Hola!")</code></pre></div>`},
-            { title: "Parámetros y Argumentos", content: `<p>Los parámetros son variables que recibe la función. Los argumentos son los valores que se pasan.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar(nombre):
-   print(f"¡Hola, {nombre}!")
+            { 
+                title: "Definir Funciones", 
+                content: `<p>Las funciones son bloques de código reutilizables.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar():
+    print("¡Hola!")
 
-saludar("Ana")  # Argumento: "Ana"</code></pre></div>`},
-            { title: "Return Statement", content: `<p><code>return</code> devuelve un valor desde la función.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def sumar(a, b):
-   return a + b
+saludar()  # Llamar la función</code></pre></div>`
+            },
+            { 
+                title: "Parámetros y Return", 
+                content: `<p>Las funciones pueden recibir parámetros y devolver valores.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def sumar(a, b):
+    return a + b
 
-resultado = sumar(3, 5)  # resultado = 8</code></pre></div>`},
-            { title: "Parámetros por Defecto", content: `<p>Puedes asignar valores por defecto a los parámetros.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar(nombre="Usuario"):
-   print(f"¡Hola, {nombre}!")
+resultado = sumar(3, 5)  # 8</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Calculadora con Funciones</h3>
+                <div id="console-nivel-6"></div>
+                <script>
+                    createInteractiveConsole(\`def sumar(a, b):
+    return a + b
 
-saludar()  # ¡Hola, Usuario!
-saludar("Ana")  # ¡Hola, Ana!</code></pre></div>`},
-            { title: "Funciones Lambda", content: `<p>Funciones anónimas de una línea usando <code>lambda</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">cuadrado = lambda x: x ** 2
-   print(cuadrado(4))  # 16</code></pre></div>`},
-            { title: "Scope de Variables", content: `<p>Variables locales existen solo dentro de la función. Variables globales existen en todo el programa.</p>`},
-            { title: "Documentación con Docstrings", content: `<p>Los docstrings documentan qué hace la función.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def sumar(a, b):
-   """Suma dos números y devuelve el resultado."""
-   return a + b</code></pre></div>`},
-            { title: "Input del Usuario", content: `<p>La función <code>input()</code> permite obtener entrada del usuario.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = input("¿Cuál es tu nombre? ")
-print(f"Hola, {nombre}!")</code></pre></div><p>La función <code>input()</code> siempre devuelve un string. Usa <code>int()</code> o <code>float()</code> para convertir a números.</p>`},
-            { title: "Funciones Avanzadas", content: `<p>Python tiene funciones incorporadas útiles como <code>len()</code>, <code>max()</code>, <code>min()</code>, <code>sum()</code>, etc.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numeros = [1, 2, 3, 4, 5]
-print(len(numeros))  # 5
-print(max(numeros))  # 5
-print(min(numeros))  # 1
-print(sum(numeros))  # 15</code></pre></div>`},
-            { title: "Funciones Recursivas", content: `<p>Una función recursiva se llama a sí misma para resolver un problema.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def factorial(n):
-   if n == 0:
-       return 1
-   return n * factorial(n - 1)
+def restar(a, b):
+    return a - b
 
-print(factorial(5))  # 120</code></pre></div>`},
-            { title: "Funciones de Orden Superior", content: `<p>Funciones que reciben otras funciones como parámetros o devuelven funciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def aplicar_operacion(func, a, b):
-   return func(a, b)
+num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
 
-def sumar(a, b):
-   return a + b
-
-resultado = aplicar_operacion(sumar, 3, 5)  # 8</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Las funciones son el corazón de la programación. ¡Demuestra que las dominas!</p>"}
+print(f"\\nSuma: {sumar(num1, num2)}")
+print(f"Resta: {restar(num1, num2)}")\`, 'console-nivel-6');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Cómo se define una función en Python?", options: ["function miFuncion():", "def miFuncion():", "function miFuncion()", "def miFuncion()"], answer: "def miFuncion():" },
-            { type: "multiple-choice", question: "¿Qué palabra clave se usa para devolver un valor de una función?", options: ["send", "return", "yield", "give"], answer: "return" },
-            { type: "multiple-choice", question: "Una función siempre debe tener la palabra clave 'return'. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Falso", explanation: "Una función que no tiene una sentencia 'return' explícita devuelve 'None' por defecto." },
-            { type: "multiple-choice", question: "¿Qué es un argumento en el contexto de una función?", options: ["Un tipo de dato", "Una variable dentro de la función", "El valor que se pasa a la función al llamarla", "El nombre de la función"], answer: "El valor que se pasa a la función al llamarla" },
-            { type: "multiple-choice", question: "¿Qué imprimirá el siguiente código: `print(type(lambda:None))`?", options: ["<class 'function'>", "<class 'lambda'>", "<class 'NoneType'>", "Error"], answer: "<class 'function'>", explanation: "Las funciones lambda son objetos de tipo función." }
+            { type: "multiple-choice", question: "¿Cómo definir función?", options: ["function", "def", "func", "define"], answer: "def" },
+            { type: "multiple-choice", question: "¿Devolver valor?", options: ["send", "return", "yield", "give"], answer: "return" },
+            { type: "multiple-choice", question: "¿Función necesita return?", options: ["Verdadero", "Falso"], answer: "Falso" },
+            { type: "multiple-choice", question: "¿Qué es un argumento?", options: ["Tipo de dato", "Variable interna", "Valor pasado", "Nombre función"], answer: "Valor pasado" },
+            { type: "multiple-choice", question: "Llamar función:", options: ["nombre()", "call nombre", "run nombre", "exec nombre"], answer: "nombre()" }
         ]
     },
     { // Nivel 7
         title: "Listas",
         lesson: [
-            { title: "Creando Listas", content: `<p>Las listas almacenan múltiples valores en una sola variable.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frutas = ["manzana", "banana", "naranja"]</code></pre></div>`},
-            { title: "Accediendo a Elementos", content: `<p>Los elementos se acceden por índice, empezando desde 0.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print(frutas[0])  # manzana
-print(frutas[2])  # naranja
-print(frutas[-1]) # Último elemento</code></pre></div>`},
-            { title: "Modificando Listas", content: `<p>Puedes cambiar elementos asignando nuevos valores.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frutas[1] = "pera"
-print(frutas)  # ["manzana", "pera", "naranja"]</code></pre></div>`},
-            { title: "Métodos de Listas", content: `<p>append() añade al final, insert() añade en posición específica, remove() elimina por valor.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frutas.append("uva")  # Añade al final
-frutas.insert(1, "kiwi")  # Inserta en posición 1
-frutas.remove("banana")  # Elimina "banana"</code></pre></div>`},
-            { title: "Slicing de Listas", content: `<p>Extrae porciones de la lista con [inicio:fin].</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numeros = [0, 1, 2, 3, 4, 5]
-print(numeros[1:4])  # [1, 2, 3]
-print(numeros[:3])   # [0, 1, 2]
-print(numeros[2:])   # [2, 3, 4, 5]</code></pre></div>`},
-            { title: "Listas Anidadas", content: `<p>Listas dentro de listas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">matriz = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-print(matriz[1][2])  # 6</code></pre></div>`},
-            { title: "Comprensión de Listas", content: `<p>Crear listas de forma concisa.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">cuadrados = [x**2 for x in range(5)]
-print(cuadrados)  # [0, 1, 4, 9, 16]</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Las listas organizan datos. ¡Muestra que sabes manejarlas!</p>"}
+            { 
+                title: "Crear y Acceder Listas", 
+                content: `<p>Las listas almacenan múltiples valores.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frutas = ["manzana", "banana", "naranja"]
+print(frutas[0])   # manzana
+print(frutas[-1])  # naranja (último)</code></pre></div>`
+            },
+            { 
+                title: "Métodos de Listas", 
+                content: `<p>Las listas tienen métodos para modificarlas.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numeros = [1, 2, 3]
+numeros.append(4)      # [1, 2, 3, 4]
+numeros.insert(0, 0)   # [0, 1, 2, 3, 4]
+numeros.remove(2)      # [0, 1, 3, 4]</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Gestor de Tareas</h3>
+                <div id="console-nivel-7"></div>
+                <script>
+                    createInteractiveConsole(\`tareas = []
+
+for i in range(3):
+    tarea = input(f"Tarea {i+1}: ")
+    tareas.append(tarea)
+
+print("\\nTus tareas:")
+for i, tarea in enumerate(tareas, 1):
+    print(f"{i}. {tarea}")\`, 'console-nivel-7');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Qué método se utiliza para agregar un elemento al final de una lista?", options: ["insert()", "add()", "append()", "extend()"], answer: "append()" },
-            { type: "multiple-choice", question: "¿Qué índice se usa para acceder al primer elemento de una lista?", options: ["1", "0", "-1", "first"], answer: "0" },
-            { type: "multiple-choice", question: "Las listas en Python son inmutables. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Falso", explanation: "Las listas son mutables, lo que significa que se pueden modificar después de su creación." },
-            { type: "multiple-choice", question: "¿Qué devolvería `mi_lista[-1]`?", options: ["El primer elemento", "El último elemento", "El segundo elemento", "Un error"], answer: "El último elemento" },
-            { type: "multiple-choice", question: "El método `pop()` sin argumentos elimina y devuelve el último elemento de una lista. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" }
+            { type: "multiple-choice", question: "¿Agregar al final?", options: ["insert()", "add()", "append()", "extend()"], answer: "append()" },
+            { type: "multiple-choice", question: "¿Índice primer elemento?", options: ["1", "0", "-1", "first"], answer: "0" },
+            { type: "multiple-choice", question: "¿Listas son inmutables?", options: ["Verdadero", "Falso"], answer: "Falso" },
+            { type: "multiple-choice", question: "¿Qué devuelve lista[-1]?", options: ["Primero", "Último", "Segundo", "Error"], answer: "Último" },
+            { type: "multiple-choice", question: "pop() sin argumentos:", options: ["Elimina primero", "Elimina último", "Error", "No hace nada"], answer: "Elimina último" }
         ]
     },
     { // Nivel 8
         title: "Diccionarios",
         lesson: [
-            { title: "Creando Diccionarios", content: `<p>Los diccionarios almacenan pares clave-valor.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">persona = {
-   "nombre": "Ana",
-   "edad": 25,
-   "ciudad": "Madrid"
-}</code></pre></div>`},
-            { title: "Accediendo a Valores", content: `<p>Accede a valores usando las claves.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print(persona["nombre"])  # Ana
-print(persona.get("edad"))  # 25</code></pre></div>`},
-            { title: "Modificando Diccionarios", content: `<p>Cambia valores asignando nuevos valores a las claves.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">persona["edad"] = 26
-persona["profesion"] = "desarrolladora"</code></pre></div>`},
-            { title: "Métodos de Diccionarios", content: `<p>keys() devuelve claves, values() devuelve valores, items() devuelve pares.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print(persona.keys())   # dict_keys(['nombre', 'edad', 'ciudad'])
-print(persona.values()) # dict_values(['Ana', 25, 'Madrid'])
-print(persona.items())  # dict_items([('nombre', 'Ana'), ('edad', 25), ...])</code></pre></div>`},
-            { title: "Eliminando Elementos", content: `<p>del elimina por clave, pop() elimina y devuelve el valor.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">del persona["ciudad"]
-edad = persona.pop("edad")</code></pre></div>`},
-            { title: "Diccionarios Anidados", content: `<p>Diccionarios dentro de diccionarios.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">empresa = {
-   "departamentos": {
-       "ventas": {"jefe": "Ana", "empleados": 10},
-       "IT": {"jefe": "Carlos", "empleados": 5}
-   }
-}</code></pre></div>`},
-            { title: "Comprensión de Diccionarios", content: `<p>Crear diccionarios de forma concisa.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">cuadrados = {x: x**2 for x in range(5)}
-print(cuadrados)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Los diccionarios organizan datos con claves. ¡Demuestra que los entiendes!</p>"}
+            { 
+                title: "Crear Diccionarios", 
+                content: `<p>Los diccionarios almacenan pares clave-valor.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">persona = {
+    "nombre": "Ana",
+    "edad": 25,
+    "ciudad": "Madrid"
+}
+print(persona["nombre"])  # Ana</code></pre></div>`
+            },
+            { 
+                title: "Métodos de Diccionarios", 
+                content: `<p>Los diccionarios tienen métodos útiles.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">persona.keys()    # Claves
+persona.values()  # Valores
+persona.items()   # Pares clave-valor</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Agenda de Contactos</h3>
+                <div id="console-nivel-8"></div>
+                <script>
+                    createInteractiveConsole(\`contactos = {}
+
+for i in range(2):
+    nombre = input(f"Nombre {i+1}: ")
+    telefono = input(f"Teléfono: ")
+    contactos[nombre] = telefono
+
+print("\\nContactos:")
+for nombre, tel in contactos.items():
+    print(f"{nombre}: {tel}")\`, 'console-nivel-8');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Qué caracteriza a los diccionarios en Python?", options: ["Son ordenados por defecto", "Almacenan pares clave-valor", "Solo pueden tener claves numéricas", "Son inmutables"], answer: "Almacenan pares clave-valor" },
-            { type: "multiple-choice", question: "¿Cómo se accede al valor asociado a una clave en un diccionario?", options: ["diccionario(clave)", "diccionario.get(clave)", "diccionario[clave]", "Ambas b y c son correctas"], answer: "Ambas b y c son correctas" },
-            { type: "multiple-choice", question: "Las claves de un diccionario deben ser únicas. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero", explanation: "Si se asigna un valor a una clave existente, el valor anterior se sobrescribe." },
-            { type: "multiple-choice", question: "¿Qué método se usa para obtener todas las claves de un diccionario?", options: ["get_keys()", "keys()", "values()", "items()"], answer: "keys()" },
-            { type: "multiple-choice", question: "Los diccionarios son un tipo de dato mutable. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero", explanation: "Se pueden añadir, modificar y eliminar pares clave-valor después de la creación del diccionario." }
+            { type: "multiple-choice", question: "¿Qué almacenan diccionarios?", options: ["Solo valores", "Pares clave-valor", "Solo claves", "Números"], answer: "Pares clave-valor" },
+            { type: "multiple-choice", question: "¿Acceder a valor?", options: ["dict(clave)", "dict.get(clave)", "dict[clave]", "b y c"], answer: "b y c" },
+            { type: "multiple-choice", question: "¿Claves únicas?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { type: "multiple-choice", question: "¿Obtener claves?", options: ["get_keys()", "keys()", "values()", "items()"], answer: "keys()" },
+            { type: "multiple-choice", question: "¿Diccionarios mutables?", options: ["Verdadero", "Falso"], answer: "Verdadero" }
         ]
     },
     { // Nivel 9
-        title: "Archivos",
+        title: "Tuplas y Sets",
         lesson: [
-            { title: "Abriendo Archivos", content: `<p>Usa <code>open()</code> para abrir archivos. Especifica el modo: 'r' para leer, 'w' para escribir.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">archivo = open("ejemplo.txt", "r")  # Leer
-archivo = open("ejemplo.txt", "w")  # Escribir</code></pre></div>`},
-            { title: "Leyendo Archivos", content: `<p>read() lee todo el archivo, readline() lee una línea, readlines() lee todas las líneas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("ejemplo.txt", "r") as archivo:
-   contenido = archivo.read()
-   print(contenido)</code></pre></div>`},
-            { title: "Escribiendo en Archivos", content: `<p>write() escribe texto en el archivo.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("ejemplo.txt", "w") as archivo:
-   archivo.write("Hola, mundo!")</code></pre></div>`},
-            { title: "Context Manager (with)", content: `<p><code>with</code> asegura que el archivo se cierre automáticamente.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("archivo.txt", "r") as f:
-   contenido = f.read()
-# El archivo se cierra automáticamente aquí</code></pre></div>`},
-            { title: "Modos de Archivo", content: `<p>'r' leer, 'w' escribir (sobrescribe), 'a' añadir, 'r+' leer y escribir.</p>`},
-            { title: "Trabajando con CSV", content: `<p>Usa el módulo csv para archivos CSV.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import csv
-with open("datos.csv", "r") as archivo:
-   lector = csv.reader(archivo)
-   for fila in lector:
-       print(fila)</code></pre></div>`},
-            { title: "Manejo de Errores", content: `<p>Usa try-except para manejar errores de archivos.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
-   with open("archivo.txt", "r") as f:
-       contenido = f.read()
-except FileNotFoundError:
-   print("Archivo no encontrado")</code></pre></div>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Los archivos permiten persistir datos. ¡Demuestra que sabes manejarlos!</p>"}
+            { 
+                title: "Tuplas", 
+                content: `<p>Las tuplas son listas inmutables.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">coordenadas = (10, 20)
+print(coordenadas[0])  # 10
+
+# No se pueden modificar
+# coordenadas[0] = 15  # Error!</code></pre></div>`
+            },
+            { 
+                title: "Sets", 
+                content: `<p>Los sets son colecciones sin duplicados.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">numeros = {1, 2, 3, 2, 1}
+print(numeros)  # {1, 2, 3}
+
+numeros.add(4)
+numeros.remove(1)</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Eliminar Duplicados</h3>
+                <div id="console-nivel-9"></div>
+                <script>
+                    createInteractiveConsole(\`numeros = []
+
+for i in range(5):
+    num = int(input(f"Número {i+1}: "))
+    numeros.append(num)
+
+print(f"\\nCon duplicados: {numeros}")
+sin_duplicados = list(set(numeros))
+print(f"Sin duplicados: {sin_duplicados}")\`, 'console-nivel-9');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Qué función se usa para abrir un archivo en Python?", options: ["open_file()", "open()", "file.open()", "read_file()"], answer: "open()" },
-            { type: "multiple-choice", question: "¿Qué modo se debe usar para abrir un archivo y añadir contenido al final?", options: ["'r'", "'w'", "'a'", "'x'"], answer: "'a'" },
-            { type: "multiple-choice", question: "Es una buena práctica usar la sentencia `with` para trabajar con archivos porque cierra el archivo automáticamente. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
-            { type: "multiple-choice", question: "¿Qué método lee el archivo entero en una sola cadena de texto?", options: ["readline()", "readlines()", "read()", "read_all()"], answer: "read()" },
-            { type: "multiple-choice", question: "El modo 'w' para abrir un archivo creará el archivo si no existe. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" }
+            { type: "multiple-choice", question: "¿Tuplas son mutables?", options: ["Verdadero", "Falso"], answer: "Falso" },
+            { type: "multiple-choice", question: "¿Sets permiten duplicados?", options: ["Verdadero", "Falso"], answer: "Falso" },
+            { type: "multiple-choice", question: "¿Crear tupla?", options: ["[]", "()", "{}", "<>"], answer: "()" },
+            { type: "multiple-choice", question: "¿Crear set?", options: ["[]", "()", "{}", "set()"], answer: "{}" },
+            { type: "multiple-choice", question: "¿Agregar a set?", options: ["append()", "add()", "insert()", "push()"], answer: "add()" }
         ]
     },
     { // Nivel 10
-        title: "Excepciones",
+        title: "Manejo de Archivos",
         lesson: [
-            { title: "¿Qué son las Excepciones?", content: `<p>Las excepciones son errores que ocurren durante la ejecución del programa.</p>`},
-            { title: "Try y Except", content: `<p><code>try</code> ejecuta código que puede fallar, <code>except</code> maneja el error.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
-   numero = int("abc")
-except ValueError:
-   print("Error: no es un número")</code></pre></div>`},
-            { title: "Múltiples Except", content: `<p>Puedes manejar diferentes tipos de excepciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
-   resultado = 10 / 0
-except ZeroDivisionError:
-   print("No se puede dividir por cero")
-except ValueError:
-   print("Error de valor")</code></pre></div>`},
-            { title: "Else y Finally", content: `<p><code>else</code> se ejecuta si no hay excepciones, <code>finally</code> siempre se ejecuta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
-   numero = int("123")
-except ValueError:
-   print("Error")
-else:
-   print("Conversión exitosa")
-finally:
-   print("Siempre se ejecuta")</code></pre></div>`},
-            { title: "Raise Exception", content: `<p><code>raise</code> lanza una excepción manualmente.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">if edad < 0:
-   raise ValueError("La edad no puede ser negativa")</code></pre></div>`},
-            { title: "Excepciones Personalizadas", content: `<p>Puedes crear tus propias excepciones heredando de Exception.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class MiError(Exception):
-   pass
+            { 
+                title: "Abrir y Leer Archivos", 
+                content: `<p>Python puede leer y escribir archivos.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("archivo.txt", "r") as f:
+    contenido = f.read()
+    print(contenido)</code></pre></div>`
+            },
+            { 
+                title: "Escribir Archivos", 
+                content: `<p>Puedes escribir en archivos de texto.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">with open("archivo.txt", "w") as f:
+    f.write("Hola Mundo")
+    f.write("\\nSegunda línea")</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Simulador de Archivo</h3>
+                <div id="console-nivel-10"></div>
+                <script>
+                    createInteractiveConsole(\`# Simulación de escritura
+contenido = []
 
-raise MiError("Este es mi error personalizado")</code></pre></div>`},
-            { title: "Debugging con Print", content: `<p>Usa print() para depurar y ver qué está pasando en tu código.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Manejar errores hace tu código robusto. ¡Demuestra que sabes hacerlo!</p>"}
+for i in range(3):
+    linea = input(f"Línea {i+1}: ")
+    contenido.append(linea)
+
+print("\\nContenido del archivo:")
+for i, linea in enumerate(contenido, 1):
+    print(f"{i}: {linea}")
+
+print(f"\\nTotal de líneas: {len(contenido)}")\`, 'console-nivel-10');
+                </script>`
+            }
         ],
         quiz: [
-            { type: "multiple-choice", question: "¿Para qué se utiliza el bloque `try` en el manejo de excepciones?", options: ["Para ejecutar código sin errores", "Para definir un error personalizado", "Para encerrar código que podría generar un error", "Para finalizar el programa"], answer: "Para encerrar código que podría generar un error" },
-            { type: "multiple-choice", question: "¿Qué bloque se ejecuta si ocurre una excepción en el bloque `try`?", options: ["except", "else", "finally", "catch"], answer: "except" },
-            { type: "multiple-choice", question: "El bloque `finally` se ejecuta solo si no ocurre una excepción. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Falso", explanation: "El bloque `finally` se ejecuta siempre, independientemente de si ocurrió una excepción o no." },
-            { type: "multiple-choice", question: "¿Qué excepción se genera al intentar dividir por cero?", options: ["MathError", "ZeroDivisionError", "DivideError", "ArithmeticError"], answer: "ZeroDivisionError" },
-            { type: "multiple-choice", question: "Se puede usar la palabra clave `raise` para lanzar una excepción manualmente. ¿Verdadero o Falso?", options: ["Verdadero", "Falso"], answer: "Verdadero" }
+            { type: "multiple-choice", question: "¿Abrir para leer?", options: ["'r'", "'w'", "'a'", "'x'"], answer: "'r'" },
+            { type: "multiple-choice", question: "¿Abrir para escribir?", options: ["'r'", "'w'", "'a'", "'x'"], answer: "'w'" },
+            { type: "multiple-choice", question: "¿with cierra archivo?", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { type: "multiple-choice", question: "¿Leer todo el archivo?", options: ["read()", "readline()", "readlines()", "readall()"], answer: "read()" },
+            { type: "multiple-choice", question: "¿Modo para añadir?", options: ["'r'", "'w'", "'a'", "'x'"], answer: "'a'" }
         ]
     },
     { // Nivel 11
-        title: "Módulos y Paquetes",
+        title: "Introducción a POO - Clases y Objetos",
         lesson: [
-            { title: "¿Qué son los Módulos?", content: `<p>Un módulo es un archivo de Python con código que puedes reutilizar.</p>`},
-            { title: "Importando Módulos", content: `<p>Usa <code>import</code> para usar un módulo.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import math
+            { 
+                title: "¿Qué es la Programación Orientada a Objetos?", 
+                content: `<p>La <strong>Programación Orientada a Objetos (POO)</strong> es un paradigma de programación que organiza el código en "objetos" que representan entidades del mundo real. En lugar de pensar en funciones y datos separados, la POO agrupa datos y comportamientos relacionados en una sola unidad.</p>
+                <p><strong>¿Por qué usar POO?</strong></p>
+                <ul>
+                    <li><strong>Organización:</strong> El código es más fácil de entender y mantener</li>
+                    <li><strong>Reutilización:</strong> Puedes crear plantillas (clases) y usarlas múltiples veces</li>
+                    <li><strong>Modularidad:</strong> Cada objeto tiene responsabilidades claras</li>
+                    <li><strong>Escalabilidad:</strong> Facilita el crecimiento de proyectos grandes</li>
+                </ul>
+                <p><strong>Ejemplo del mundo real:</strong> Piensa en un carro. Tiene <em>atributos</em> (color, marca, modelo) y <em>comportamientos</em> (acelerar, frenar, girar). En POO, crearías una "clase Carro" que define estos atributos y comportamientos, y luego crearías "objetos" específicos (tu carro rojo Toyota, mi carro azul Honda).</p>`
+            },
+            { 
+                title: "Crear una Clase - La Plantilla", 
+                content: `<p>Una <strong>clase</strong> es como un plano o plantilla que define qué atributos y métodos tendrán los objetos creados a partir de ella. Se define usando la palabra clave <code>class</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Definir una clase simple
+class Persona:
+    pass  # Clase vacía por ahora
 
-print(math.pi)</code></pre></div>`},
-            { title: "Módulos Estándar", content: `<p>Python viene con muchos módulos útiles como <code>math</code>, <code>random</code>, <code>datetime</code>.</p>`},
-            { title: "Creando Paquetes", content: `<p>Un paquete es una carpeta de módulos. Debe contener un archivo <code>__init__.py</code>.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>Los módulos y paquetes organizan tu código. ¡Demuestra que sabes cómo!</p>"}
+# Crear un objeto (instancia) de la clase
+persona1 = Persona()
+print(type(persona1))  # <class '__main__.Persona'></code></pre></div>
+                <p><strong>Convenciones importantes:</strong></p>
+                <ul>
+                    <li>Los nombres de clases usan <strong>PascalCase</strong> (primera letra de cada palabra en mayúscula)</li>
+                    <li>Los nombres de objetos usan <strong>snake_case</strong> (minúsculas con guiones bajos)</li>
+                    <li><code>pass</code> es un placeholder cuando la clase aún no tiene contenido</li>
+                </ul>`
+            },
+            { 
+                title: "El Método __init__ - El Constructor", 
+                content: `<p>El método <code>__init__</code> es un <strong>método especial</strong> (también llamado constructor) que se ejecuta automáticamente cuando creas un nuevo objeto. Se usa para inicializar los atributos del objeto.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Persona:
+    def __init__(self, nombre, edad):
+        # self.nombre es un atributo de instancia
+        self.nombre = nombre
+        self.edad = edad
+
+# Crear objetos con valores específicos
+persona1 = Persona("Ana", 25)
+persona2 = Persona("Carlos", 30)
+
+print(persona1.nombre)  # Ana
+print(persona2.edad)    # 30</code></pre></div>
+                <p><strong>Desglose del código:</strong></p>
+                <ul>
+                    <li><code>def __init__(self, ...):</code> - Define el constructor</li>
+                    <li><code>self</code> - Referencia al objeto actual (siempre es el primer parámetro)</li>
+                    <li><code>self.nombre = nombre</code> - Crea un atributo llamado <code>nombre</code> y le asigna el valor recibido</li>
+                    <li><code>Persona("Ana", 25)</code> - Llama automáticamente a <code>__init__</code> con estos argumentos</li>
+                </ul>
+                <p><strong>Nota importante:</strong> <code>self</code> no se pasa explícitamente al crear el objeto. Python lo hace automáticamente.</p>`
+            },
+            { 
+                title: "Atributos de Instancia vs Atributos de Clase", 
+                content: `<p>Hay dos tipos de atributos en Python:</p>
+                <p><strong>1. Atributos de Instancia:</strong> Únicos para cada objeto, definidos en <code>__init__</code></p>
+                <p><strong>2. Atributos de Clase:</strong> Compartidos por todas las instancias, definidos fuera de <code>__init__</code></p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Estudiante:
+    # Atributo de clase (compartido por todos)
+    institucion = "Universidad Python"
+    total_estudiantes = 0
+    
+    def __init__(self, nombre, carrera):
+        # Atributos de instancia (únicos por objeto)
+        self.nombre = nombre
+        self.carrera = carrera
+        # Incrementar contador de clase
+        Estudiante.total_estudiantes += 1
+
+# Crear estudiantes
+est1 = Estudiante("Ana", "Ingeniería")
+est2 = Estudiante("Carlos", "Medicina")
+
+# Atributos de instancia (diferentes)
+print(est1.nombre)      # Ana
+print(est2.nombre)      # Carlos
+
+# Atributo de clase (mismo para ambos)
+print(est1.institucion)  # Universidad Python
+print(est2.institucion)  # Universidad Python
+print(Estudiante.total_estudiantes)  # 2</code></pre></div>
+                <p><strong>Cuándo usar cada uno:</strong></p>
+                <ul>
+                    <li><strong>Atributos de instancia:</strong> Datos únicos de cada objeto (nombre, edad, ID)</li>
+                    <li><strong>Atributos de clase:</strong> Datos compartidos o constantes (configuración, contadores)</li>
+                </ul>`
+            },
+            { 
+                title: "Métodos de Instancia", 
+                content: `<p>Los <strong>métodos</strong> son funciones definidas dentro de una clase que operan sobre los atributos del objeto. Siempre reciben <code>self</code> como primer parámetro.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class CuentaBancaria:
+    def __init__(self, titular, saldo_inicial):
+        self.titular = titular
+        self.saldo = saldo_inicial
+    
+    def depositar(self, cantidad):
+        """Agregar dinero a la cuenta"""
+        if cantidad > 0:
+            self.saldo += cantidad
+            return f"Depósito exitoso. Nuevo saldo: ${self.saldo}"
+        return "Cantidad inválida"
+    
+    def retirar(self, cantidad):
+        """Retirar dinero de la cuenta"""
+        if cantidad > self.saldo:
+            return "Fondos insuficientes"
+        if cantidad > 0:
+            self.saldo -= cantidad
+            return f"Retiro exitoso. Nuevo saldo: ${self.saldo}"
+        return "Cantidad inválida"
+    
+    def consultar_saldo(self):
+        """Ver el saldo actual"""
+        return f"Saldo de {self.titular}: ${self.saldo}"
+
+# Usar la clase
+cuenta = CuentaBancaria("Ana García", 1000)
+print(cuenta.consultar_saldo())  # Saldo de Ana García: $1000
+print(cuenta.depositar(500))     # Depósito exitoso. Nuevo saldo: $1500
+print(cuenta.retirar(200))       # Retiro exitoso. Nuevo saldo: $1300</code></pre></div>
+                <p><strong>Características de los métodos:</strong></p>
+                <ul>
+                    <li>Siempre tienen <code>self</code> como primer parámetro</li>
+                    <li>Pueden acceder y modificar atributos usando <code>self.atributo</code></li>
+                    <li>Pueden llamar a otros métodos usando <code>self.otro_metodo()</code></li>
+                    <li>Se llaman con notación de punto: <code>objeto.metodo()</code></li>
+                </ul>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Sistema de Gestión de Productos</h3>
+                <p>Este ejemplo muestra una clase completa con múltiples atributos y métodos trabajando juntos:</p>
+                
+                <div id="console-nivel-11"></div>
+                <script>
+                    createInteractiveConsole(\`class Producto:
+    def __init__(self, nombre, precio, stock):
+        self.nombre = nombre
+        self.precio = precio
+        self.stock = stock
+    
+    def vender(self, cantidad):
+        if cantidad > self.stock:
+            return f"Error: Solo hay {self.stock} unidades"
+        self.stock -= cantidad
+        total = cantidad * self.precio
+        return f"Venta exitosa. Total: \${total}. Stock restante: {self.stock}"
+    
+    def reabastecer(self, cantidad):
+        self.stock += cantidad
+        return f"Stock actualizado: {self.stock} unidades"
+    
+    def aplicar_descuento(self, porcentaje):
+        descuento = self.precio * (porcentaje / 100)
+        self.precio -= descuento
+        return f"Nuevo precio con {porcentaje}% descuento: \${self.precio:.2f}"
+    
+    def info(self):
+        return f"{self.nombre} - \${self.precio} - Stock: {self.stock}"
+
+# Crear producto
+laptop = Producto("Laptop Dell", 800, 10)
+print(laptop.info())
+
+# Realizar operaciones
+print(laptop.vender(3))
+print(laptop.reabastecer(5))
+print(laptop.aplicar_descuento(10))
+print(laptop.info())\`, 'console-nivel-11');
+                </script>
+                
+                <h3>Conceptos Aplicados</h3>
+                <ul>
+                    <li><code>__init__</code> - Inicializa los atributos del producto</li>
+                    <li><code>self.nombre, self.precio, self.stock</code> - Atributos de instancia</li>
+                    <li><code>vender(), reabastecer(), aplicar_descuento()</code> - Métodos que modifican el estado</li>
+                    <li><code>info()</code> - Método que devuelve información del objeto</li>
+                </ul>
+                
+                <h3>Caso de Uso Real</h3>
+                <p>Este tipo de clases se usan en sistemas de inventario de tiendas, e-commerce, y aplicaciones de punto de venta. Cada producto es un objeto con su propio estado (precio, stock) y comportamientos (vender, reabastecer).</p>`
+            }
         ],
         quiz: [
-            { question: "¿Qué es un módulo?", options: ["Un archivo de Python", "Una función", "Una clase", "Una variable"], answer: "Un archivo de Python" },
-            { question: "¿Qué palabra clave se usa para importar?", options: ["include", "import", "use", "require"], answer: "import" },
-            { question: "¿Qué archivo necesita un paquete?", options: ["main.py", "__init__.py", "package.json", "setup.py"], answer: "__init__.py" },
-            { question: "¿Qué módulo usarías para fechas y horas?", options: ["time", "date", "datetime", "calendar"], answer: "datetime" },
-            { question: "¿Qué módulo usarías para números aleatorios?", options: ["random", "number", "rand", "aleatorio"], answer: "random" }
+            { type: "multiple-choice", question: "¿Qué es una clase en POO?", options: ["Un objeto específico", "Una plantilla para crear objetos", "Una función", "Una variable"], answer: "Una plantilla para crear objetos" },
+            { type: "multiple-choice", question: "¿Qué hace el método __init__?", options: ["Elimina el objeto", "Inicializa los atributos", "Imprime el objeto", "Copia el objeto"], answer: "Inicializa los atributos" },
+            { type: "multiple-choice", question: "¿Qué es 'self' en Python?", options: ["Una palabra clave", "Referencia al objeto actual", "Un tipo de dato", "Una función"], answer: "Referencia al objeto actual" },
+            { type: "multiple-choice", question: "¿Cómo se crea un objeto de una clase?", options: ["new Clase()", "Clase.new()", "Clase()", "create Clase()"], answer: "Clase()" },
+            { type: "multiple-choice", question: "¿Cuál es la convención para nombres de clases?", options: ["snake_case", "camelCase", "PascalCase", "UPPER_CASE"], answer: "PascalCase" }
         ]
     },
     { // Nivel 12
-        title: "Programación Orientada a Objetos (POO)",
+        title: "POO - Herencia",
         lesson: [
-            { title: "Clases y Objetos", content: `<p>Una clase es un plano para crear objetos. Un objeto es una instancia de una clase.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Perro:
-    pass
+            { 
+                title: "¿Qué es la Herencia?", 
+                content: `<p>La <strong>herencia</strong> es un mecanismo que permite crear una nueva clase basada en una clase existente. La nueva clase (clase hija o subclase) hereda todos los atributos y métodos de la clase original (clase padre o superclase), y puede agregar o modificar funcionalidad.</p>
+                <p><strong>Beneficios de la herencia:</strong></p>
+                <ul>
+                    <li><strong>Reutilización de código:</strong> No necesitas reescribir código que ya existe</li>
+                    <li><strong>Jerarquía lógica:</strong> Modela relaciones "es un" del mundo real</li>
+                    <li><strong>Mantenimiento:</strong> Cambios en la clase padre se propagan a las hijas</li>
+                    <li><strong>Extensibilidad:</strong> Fácil agregar nuevas variantes</li>
+                </ul>
+                <p><strong>Ejemplo conceptual:</strong> Un "Empleado" es un tipo de "Persona". Un empleado tiene todo lo que tiene una persona (nombre, edad) más atributos específicos (salario, puesto). En lugar de duplicar el código de Persona, Empleado hereda de Persona.</p>`
+            },
+            { 
+                title: "Crear una Clase Hija", 
+                content: `<p>Para crear una clase que herede de otra, se coloca el nombre de la clase padre entre paréntesis después del nombre de la clase hija.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Clase padre (superclase)
+class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+    
+    def saludar(self):
+        return f"Hola, soy {self.nombre}"
 
-mi_perro = Perro()</code></pre></div>`},
-            { title: "Atributos y Métodos", content: `<p>Los atributos son variables de una clase. Los métodos son funciones de una clase.</p>`},
-            { title: "El Método __init__", content: `<p><code>__init__</code> es un método especial que se ejecuta al crear un objeto.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Perro:
+# Clase hija (subclase) que hereda de Persona
+class Empleado(Persona):
+    def __init__(self, nombre, edad, salario):
+        # Llamar al constructor de la clase padre
+        super().__init__(nombre, edad)
+        # Agregar atributo específico de Empleado
+        self.salario = salario
+    
+    def trabajar(self):
+        return f"{self.nombre} está trabajando"
+
+# Crear un empleado
+emp = Empleado("Carlos", 30, 50000)
+
+# Usar métodos heredados
+print(emp.saludar())  # Hola, soy Carlos (heredado de Persona)
+
+# Usar métodos propios
+print(emp.trabajar())  # Carlos está trabajando
+
+# Acceder a atributos
+print(f"Edad: {emp.edad}, Salario: ${emp.salario}")</code></pre></div>
+                <p><strong>Desglose del código:</strong></p>
+                <ul>
+                    <li><code>class Empleado(Persona):</code> - Empleado hereda de Persona</li>
+                    <li><code>super().__init__(nombre, edad)</code> - Llama al constructor de la clase padre</li>
+                    <li><code>self.salario = salario</code> - Agrega un nuevo atributo específico</li>
+                    <li>Empleado tiene acceso a <code>saludar()</code> aunque no lo definió</li>
+                </ul>`
+            },
+            { 
+                title: "La Función super() - Acceder a la Clase Padre", 
+                content: `<p>La función <code>super()</code> devuelve una referencia temporal a la clase padre, permitiéndote llamar sus métodos. Es especialmente útil en el constructor para inicializar los atributos heredados.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Vehiculo:
+    def __init__(self, marca, modelo):
+        self.marca = marca
+        self.modelo = modelo
+    
+    def info(self):
+        return f"{self.marca} {self.modelo}"
+
+class Auto(Vehiculo):
+    def __init__(self, marca, modelo, puertas):
+        # Forma recomendada: usar super()
+        super().__init__(marca, modelo)
+        self.puertas = puertas
+    
+    def info(self):
+        # Llamar al método info() del padre y extenderlo
+        info_base = super().info()
+        return f"{info_base} - {self.puertas} puertas"
+
+# Crear auto
+auto = Auto("Toyota", "Corolla", 4)
+print(auto.info())  # Toyota Corolla - 4 puertas</code></pre></div>
+                <p><strong>Ventajas de super():</strong></p>
+                <ul>
+                    <li>Evita duplicación de código</li>
+                    <li>Funciona correctamente con herencia múltiple</li>
+                    <li>Hace el código más mantenible</li>
+                    <li>Si cambias la clase padre, no necesitas modificar las hijas</li>
+                </ul>
+                <p><strong>Alternativa (no recomendada):</strong> Podrías llamar directamente <code>Vehiculo.__init__(self, marca, modelo)</code>, pero <code>super()</code> es más flexible y Pythonic.</p>`
+            },
+            { 
+                title: "Sobrescribir Métodos (Method Overriding)", 
+                content: `<p>Una clase hija puede <strong>sobrescribir</strong> (override) un método heredado definiendo un método con el mismo nombre. Esto permite personalizar el comportamiento para la clase hija.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Animal:
     def __init__(self, nombre):
-        self.nombre = nombre</code></pre></div>`},
-            { title: "Herencia", content: `<p>Una clase puede heredar atributos y métodos de otra clase.</p>`},
-            { title: "Polimorfismo", content: `<p>El polimorfismo permite que objetos de diferentes clases respondan al mismo método.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>La POO es un paradigma poderoso. ¡Demuestra que lo entiendes!</p>"}
+        self.nombre = nombre
+    
+    def hacer_sonido(self):
+        return "Algún sonido genérico"
+
+class Perro(Animal):
+    def hacer_sonido(self):
+        # Sobrescribe el método del padre
+        return f"{self.nombre} dice: ¡Guau guau!"
+
+class Gato(Animal):
+    def hacer_sonido(self):
+        # Sobrescribe el método del padre
+        return f"{self.nombre} dice: ¡Miau!"
+
+# Crear animales
+perro = Perro("Rex")
+gato = Gato("Michi")
+
+print(perro.hacer_sonido())  # Rex dice: ¡Guau guau!
+print(gato.hacer_sonido())   # Michi dice: ¡Miau!</code></pre></div>
+                <p><strong>Cuándo sobrescribir métodos:</strong></p>
+                <ul>
+                    <li>Cuando la clase hija necesita un comportamiento diferente</li>
+                    <li>Para especializar funcionalidad genérica</li>
+                    <li>Para agregar validaciones o lógica adicional</li>
+                </ul>
+                <p><strong>Puedes combinar:</strong> Sobrescribir un método pero aún llamar al método del padre con <code>super().metodo()</code> para extender (no reemplazar completamente) la funcionalidad.</p>`
+            },
+            { 
+                title: "Herencia Multinivel y Jerarquías", 
+                content: `<p>Python permite crear jerarquías de herencia de múltiples niveles, donde una clase hija puede ser padre de otra clase.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Persona:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    
+    def presentarse(self):
+        return f"Soy {self.nombre}"
+
+class Empleado(Persona):
+    def __init__(self, nombre, empresa):
+        super().__init__(nombre)
+        self.empresa = empresa
+    
+    def presentarse(self):
+        return f"{super().presentarse()}, trabajo en {self.empresa}"
+
+class Gerente(Empleado):
+    def __init__(self, nombre, empresa, departamento):
+        super().__init__(nombre, empresa)
+        self.departamento = departamento
+    
+    def presentarse(self):
+        return f"{super().presentarse()} como gerente de {self.departamento}"
+
+# Crear gerente
+gerente = Gerente("Ana", "TechCorp", "Desarrollo")
+print(gerente.presentarse())
+# Soy Ana, trabajo en TechCorp como gerente de Desarrollo
+
+# Verificar la jerarquía
+print(isinstance(gerente, Gerente))   # True
+print(isinstance(gerente, Empleado))  # True
+print(isinstance(gerente, Persona))   # True</code></pre></div>
+                <p><strong>Función isinstance():</strong> Verifica si un objeto es instancia de una clase o de cualquiera de sus clases padre.</p>
+                <p><strong>Función issubclass():</strong> Verifica si una clase es subclase de otra.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">print(issubclass(Gerente, Empleado))  # True
+print(issubclass(Gerente, Persona))   # True
+print(issubclass(Empleado, Gerente))  # False</code></pre></div>`
+            },
+            { 
+                title: "Código Completo y Consola Interactiva", 
+                content: `<h3>Sistema de Empleados con Herencia</h3>
+                <p>Este ejemplo muestra una jerarquía completa de clases para un sistema de recursos humanos:</p>
+                
+                <div id="console-nivel-12"></div>
+                <script>
+                    createInteractiveConsole(\`class Empleado:
+    def __init__(self, nombre, salario_base):
+        self.nombre = nombre
+        self.salario_base = salario_base
+    
+    def calcular_salario(self):
+        return self.salario_base
+    
+    def info(self):
+        return f"{self.nombre} - Salario: \${self.calcular_salario()}"
+
+class EmpleadoTiempoCompleto(Empleado):
+    def __init__(self, nombre, salario_base, bono_anual):
+        super().__init__(nombre, salario_base)
+        self.bono_anual = bono_anual
+    
+    def calcular_salario(self):
+        # Salario base + bono mensual
+        return self.salario_base + (self.bono_anual / 12)
+
+class EmpleadoPorHoras(Empleado):
+    def __init__(self, nombre, tarifa_hora, horas_trabajadas):
+        # No tiene salario base fijo
+        super().__init__(nombre, 0)
+        self.tarifa_hora = tarifa_hora
+        self.horas_trabajadas = horas_trabajadas
+    
+    def calcular_salario(self):
+        salario = self.tarifa_hora * self.horas_trabajadas
+        # Pago extra por horas extras (más de 160 horas/mes)
+        if self.horas_trabajadas > 160:
+            horas_extra = self.horas_trabajadas - 160
+            salario += horas_extra * self.tarifa_hora * 0.5
+        return salario
+
+# Crear empleados
+emp1 = EmpleadoTiempoCompleto("Ana García", 3000, 12000)
+emp2 = EmpleadoPorHoras("Carlos López", 20, 180)
+
+print(emp1.info())
+print(emp2.info())
+
+# Calcular nómina total
+empleados = [emp1, emp2]
+total_nomina = sum(emp.calcular_salario() for emp in empleados)
+print(f"\\nNómina total: \${total_nomina:.2f}")\`, 'console-nivel-12');
+                </script>
+                
+                <h3>Conceptos Aplicados</h3>
+                <ul>
+                    <li><code>Empleado</code> - Clase base con funcionalidad común</li>
+                    <li><code>EmpleadoTiempoCompleto</code> y <code>EmpleadoPorHoras</code> - Clases hijas especializadas</li>
+                    <li><code>calcular_salario()</code> - Método sobrescrito en cada clase hija</li>
+                    <li><code>super().__init__()</code> - Reutilización del constructor padre</li>
+                </ul>
+                
+                <h3>Caso de Uso Real</h3>
+                <p>Este patrón se usa en sistemas de nómina, ERP, y aplicaciones de recursos humanos donde diferentes tipos de empleados tienen reglas de cálculo de salario distintas pero comparten atributos comunes.</p>`
+            }
         ],
         quiz: [
-            { question: "¿Qué es una clase?", options: ["Un objeto", "Un plano para crear objetos", "Una función", "Una variable"], answer: "Un plano para crear objetos" },
-            { question: "¿Qué es un objeto?", options: ["Una instancia de una clase", "Una clase", "Una función", "Un módulo"], answer: "Una instancia de una clase" },
-            { question: "¿Qué método se ejecuta al crear un objeto?", options: ["__main__", "__init__", "__new__", "__create__"], answer: "__init__" },
-            { question: "¿Qué es la herencia?", options: ["Ocultar información", "Tomar prestado código", "Heredar de otra clase", "Crear objetos"], answer: "Heredar de otra clase" },
-            { question: "¿Qué permite el polimorfismo?", options: ["Múltiples formas", "Heredar código", "Ocultar datos", "Crear clases"], answer: "Múltiples formas" }
+            { type: "multiple-choice", question: "¿Qué es la herencia en POO?", options: ["Copiar código", "Crear clase basada en otra", "Eliminar una clase", "Modificar una clase"], answer: "Crear clase basada en otra" },
+            { type: "multiple-choice", question: "¿Qué hace super()?", options: ["Crea un objeto", "Accede a la clase padre", "Elimina la clase", "Copia la clase"], answer: "Accede a la clase padre" },
+            { type: "multiple-choice", question: "¿Qué es sobrescribir un método?", options: ["Eliminarlo", "Redefinirlo en clase hija", "Copiarlo", "Ocultarlo"], answer: "Redefinirlo en clase hija" },
+            { type: "multiple-choice", question: "¿Cómo se define una clase hija?", options: ["class Hija(Padre):", "class Hija extends Padre:", "class Hija < Padre:", "class Hija -> Padre:"], answer: "class Hija(Padre):" },
+            { type: "multiple-choice", question: "isinstance() verifica si:", options: ["Es una clase", "Es un objeto de una clase", "Es un método", "Es un atributo"], answer: "Es un objeto de una clase" }
         ]
-    },
+    }
+,
     { // Nivel 13
-        title: "POO Avanzada",
+        title: "POO - Encapsulamiento y Propiedades",
         lesson: [
-            { title: "Encapsulamiento", content: `<p>El encapsulamiento restringe el acceso a métodos y atributos.</p>`},
-            { title: "Métodos Privados", content: `<p>Los métodos con doble guión bajo (<code>__</code>) al principio son privados.</p>`},
-            { title: "Decoradores", content: `<p>Los decoradores modifican el comportamiento de una función o método.</p>`},
-            { title: "@property", content: `<p>El decorador <code>@property</code> permite acceder a un método como si fuera un atributo.</p>`},
-            { title: "@staticmethod y @classmethod", content: `<p><code>@staticmethod</code> es un método que no recibe la instancia de la clase. <code>@classmethod</code> recibe la clase como primer argumento.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>¡Ahora eres un experto en POO!</p>"}
+            {
+                title: "¿Qué es el Encapsulamiento?",
+                content: `<p>El <strong>encapsulamiento</strong> es el principio de ocultar los detalles internos de una clase y exponer solo lo necesario. Esto protege los datos de modificaciones accidentales y permite controlar cómo se accede y modifica la información.</p>
+                <p><strong>Beneficios del encapsulamiento:</strong></p>
+                <ul>
+                    <li><strong>Protección de datos:</strong> Evita que se modifiquen valores de forma incorrecta</li>
+                    <li><strong>Validación:</strong> Puedes validar datos antes de asignarlos</li>
+                    <li><strong>Flexibilidad:</strong> Puedes cambiar la implementación interna sin afectar el código externo</li>
+                    <li><strong>Mantenibilidad:</strong> Reduce el acoplamiento entre componentes</li>
+                </ul>
+                <p><strong>Ejemplo del mundo real:</strong> Un cajero automático encapsula el dinero. No puedes acceder directamente al dinero, solo a través de operaciones controladas (retirar, depositar) que validan tu identidad y saldo.</p>`
+            },
+            {
+                title: "Atributos Privados en Python",
+                content: `<p>En Python, los atributos "privados" se indican con <strong>doble guión bajo</strong> (<code>__</code>) al inicio del nombre. Esto activa el "name mangling" que dificulta (pero no imposibilita) el acceso desde fuera de la clase.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class CuentaBancaria:
+    def __init__(self, titular, saldo_inicial):
+        self.titular = titular  # Público
+        self.__saldo = saldo_inicial  # Privado
+    
+    def consultar_saldo(self):
+        return self.__saldo
+    
+    def depositar(self, cantidad):
+        if cantidad > 0:
+            self.__saldo += cantidad
+            return True
+        return False
+
+cuenta = CuentaBancaria("Ana", 1000)
+print(cuenta.titular)  # Ana (acceso directo OK)
+# print(cuenta.__saldo)  # Error: AttributeError
+print(cuenta.consultar_saldo())  # 1000 (acceso controlado OK)</code></pre></div>
+                <p><strong>Convenciones de privacidad:</strong></p>
+                <ul>
+                    <li><code>atributo</code> - Público, acceso libre</li>
+                    <li><code>_atributo</code> - "Protegido", convención de que es interno (no forzado)</li>
+                    <li><code>__atributo</code> - "Privado", name mangling aplicado</li>
+                </ul>
+                <p><strong>Nota:</strong> Python no tiene privacidad verdadera como Java o C++. El doble guión bajo es una convención fuerte, pero técnicamente aún puedes acceder con <code>objeto._Clase__atributo</code>.</p>`
+            },
+            {
+                title: "Propiedades con @property",
+                content: `<p>El decorador <code>@property</code> permite acceder a un método como si fuera un atributo, proporcionando un "getter" elegante. Esto te da control sobre cómo se accede a los datos sin cambiar la sintaxis de uso.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Temperatura:
+    def __init__(self, celsius):
+        self.__celsius = celsius
+    
+    @property
+    def celsius(self):
+        """Getter para celsius"""
+        return self.__celsius
+    
+    @property
+    def fahrenheit(self):
+        """Convertir a Fahrenheit automáticamente"""
+        return (self.__celsius * 9/5) + 32
+
+temp = Temperatura(25)
+print(temp.celsius)     # 25 (parece atributo, es método)
+print(temp.fahrenheit)  # 77.0 (calculado dinámicamente)</code></pre></div>
+                <p><strong>Ventajas de @property:</strong></p>
+                <ul>
+                    <li>Sintaxis limpia (parece un atributo normal)</li>
+                    <li>Puedes calcular valores dinámicamente</li>
+                    <li>Puedes agregar lógica sin cambiar la interfaz</li>
+                    <li>Permite migrar de atributos públicos a controlados sin romper código</li>
+                </ul>`
+            },
+            {
+                title: "Setters con @propiedad.setter",
+                content: `<p>El decorador <code>@propiedad.setter</code> permite definir cómo se asignan valores a una propiedad, agregando validación y control.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Persona:
+    def __init__(self, nombre, edad):
+        self.__nombre = nombre
+        self.__edad = edad
+    
+    @property
+    def edad(self):
+        """Getter para edad"""
+        return self.__edad
+    
+    @edad.setter
+    def edad(self, nueva_edad):
+        """Setter con validación"""
+        if nueva_edad < 0:
+            raise ValueError("La edad no puede ser negativa")
+        if nueva_edad > 150:
+            raise ValueError("Edad no realista")
+        self.__edad = nueva_edad
+    
+    @property
+    def nombre(self):
+        return self.__nombre
+    
+    @nombre.setter
+    def nombre(self, nuevo_nombre):
+        if not nuevo_nombre or not nuevo_nombre.strip():
+            raise ValueError("El nombre no puede estar vacío")
+        self.__nombre = nuevo_nombre.strip()
+
+persona = Persona("Ana", 25)
+print(persona.edad)  # 25
+
+persona.edad = 30  # OK, usa el setter
+print(persona.edad)  # 30
+
+# persona.edad = -5  # Error: ValueError</code></pre></div>
+                <p><strong>Patrón completo de propiedad:</strong></p>
+                <ol>
+                    <li>Atributo privado: <code>self.__atributo</code></li>
+                    <li>Getter con <code>@property</code></li>
+                    <li>Setter con <code>@atributo.setter</code></li>
+                    <li>Opcionalmente, deleter con <code>@atributo.deleter</code></li>
+                </ol>`
+            },
+            {
+                title: "Métodos Privados",
+                content: `<p>Al igual que los atributos, los métodos también pueden ser privados usando el doble guión bajo. Esto es útil para métodos auxiliares internos que no deberían llamarse desde fuera.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Calculadora:
+    def __init__(self):
+        self.__historial = []
+    
+    def __agregar_historial(self, operacion, resultado):
+        """Método privado para uso interno"""
+        self.__historial.append({
+            'operacion': operacion,
+            'resultado': resultado
+        })
+    
+    def sumar(self, a, b):
+        """Método público"""
+        resultado = a + b
+        self.__agregar_historial(f"{a} + {b}", resultado)
+        return resultado
+    
+    def multiplicar(self, a, b):
+        """Método público"""
+        resultado = a * b
+        self.__agregar_historial(f"{a} * {b}", resultado)
+        return resultado
+    
+    def ver_historial(self):
+        """Método público para acceder al historial"""
+        return self.__historial.copy()
+
+calc = Calculadora()
+print(calc.sumar(5, 3))  # 8
+print(calc.multiplicar(4, 2))  # 8
+print(calc.ver_historial())  # Lista de operaciones
+# calc.__agregar_historial("test", 0)  # Error: AttributeError</code></pre></div>
+                <p><strong>Cuándo usar métodos privados:</strong></p>
+                <ul>
+                    <li>Métodos auxiliares que solo usa la clase internamente</li>
+                    <li>Lógica de validación o procesamiento interno</li>
+                    <li>Métodos que podrían cambiar en futuras versiones</li>
+                </ul>`
+            },
+            {
+                title: "Código Completo y Consola Interactiva",
+                content: `<h3>Sistema de Cuenta Bancaria con Encapsulamiento</h3>
+                <p>Este ejemplo muestra un sistema bancario completo con validación y control de acceso:</p>
+                
+                <div id="console-nivel-13"></div>
+                <script>
+                    createInteractiveConsole(\`class CuentaBancaria:
+    def __init__(self, titular, saldo_inicial, limite_retiro=1000):
+        self.__titular = titular
+        self.__saldo = saldo_inicial
+        self.__limite_retiro = limite_retiro
+        self.__transacciones = []
+    
+    @property
+    def saldo(self):
+        """Consultar saldo (solo lectura desde fuera)"""
+        return self.__saldo
+    
+    @property
+    def titular(self):
+        return self.__titular
+    
+    def __registrar_transaccion(self, tipo, monto):
+        """Método privado para registro interno"""
+        self.__transacciones.append({
+            'tipo': tipo,
+            'monto': monto,
+            'saldo_resultante': self.__saldo
+        })
+    
+    def depositar(self, cantidad):
+        if cantidad <= 0:
+            return "Error: Cantidad debe ser positiva"
+        self.__saldo += cantidad
+        self.__registrar_transaccion('depósito', cantidad)
+        return f"Depósito exitoso. Nuevo saldo: \${self.__saldo}"
+    
+    def retirar(self, cantidad):
+        if cantidad <= 0:
+            return "Error: Cantidad debe ser positiva"
+        if cantidad > self.__limite_retiro:
+            return f"Error: Límite de retiro es \${self.__limite_retiro}"
+        if cantidad > self.__saldo:
+            return "Error: Fondos insuficientes"
+        self.__saldo -= cantidad
+        self.__registrar_transaccion('retiro', cantidad)
+        return f"Retiro exitoso. Nuevo saldo: \${self.__saldo}"
+    
+    def ver_transacciones(self):
+        return self.__transacciones.copy()
+
+# Crear cuenta
+cuenta = CuentaBancaria("Ana García", 5000, limite_retiro=2000)
+
+# Operaciones
+print(f"Titular: {cuenta.titular}")
+print(f"Saldo inicial: \${cuenta.saldo}")
+print(cuenta.depositar(1000))
+print(cuenta.retirar(500))
+print(cuenta.retirar(3000))  # Excede límite
+print(f"\\nTransacciones:")
+for t in cuenta.ver_transacciones():
+    print(f"  {t['tipo']}: \${t['monto']} -> Saldo: \${t['saldo_resultante']}")\`, 'console-nivel-13');
+                </script>
+                
+                <h3>Conceptos Aplicados</h3>
+                <ul>
+                    <li><code>__saldo, __titular, __transacciones</code> - Atributos privados</li>
+                    <li><code>@property</code> - Getters para acceso controlado</li>
+                    <li><code>__registrar_transaccion()</code> - Método privado interno</li>
+                    <li>Validación en métodos públicos</li>
+                    <li><code>.copy()</code> - Devolver copia para proteger datos internos</li>
+                </ul>
+                
+                <h3>Caso de Uso Real</h3>
+                <p>Este patrón se usa en aplicaciones bancarias, sistemas de pago, y cualquier aplicación que maneje datos sensibles que requieren validación y control de acceso estricto.</p>`
+            }
         ],
         quiz: [
-            { question: "¿Qué hace el encapsulamiento?", options: ["Expone todo", "Restringe el acceso", "Crea objetos", "Hereda código"], answer: "Restringe el acceso" },
-            { question: "¿Cómo se define un método privado?", options: ["_metodo", "__metodo", "metodo__", "metodo_"], answer: "__metodo" },
-            { question: "¿Qué hace un decorador?", options: ["Decora el código", "Modifica una función", "Crea una clase", "Elimina una función"], answer: "Modifica una función" },
-            { question: "¿Qué permite @property?", options: ["Acceder a un método como atributo", "Crear un atributo", "Eliminar un atributo", "Hacer un atributo privado"], answer: "Acceder a un método como atributo" },
-            { question: "¿Cuál es la diferencia entre @staticmethod y @classmethod?", options: ["Ninguna", "@staticmethod no recibe la instancia", "@classmethod no recibe la clase", "@staticmethod es para clases"], answer: "@staticmethod no recibe la instancia" }
+            { type: "multiple-choice", question: "¿Qué es el encapsulamiento?", options: ["Ocultar código", "Proteger y controlar acceso a datos", "Copiar objetos", "Eliminar atributos"], answer: "Proteger y controlar acceso a datos" },
+            { type: "multiple-choice", question: "¿Cómo se define un atributo privado?", options: ["_atributo", "__atributo", "private atributo", "atributo__"], answer: "__atributo" },
+            { type: "multiple-choice", question: "¿Qué hace @property?", options: ["Crea atributo", "Crea getter elegante", "Elimina método", "Copia propiedad"], answer: "Crea getter elegante" },
+            { type: "multiple-choice", question: "¿Para qué sirve un setter?", options: ["Leer valores", "Asignar valores con validación", "Eliminar valores", "Copiar valores"], answer: "Asignar valores con validación" },
+            { type: "multiple-choice", question: "¿Python tiene privacidad verdadera?", options: ["Sí, total", "No, es por convención", "Solo en clases", "Solo en métodos"], answer: "No, es por convención" }
         ]
     },
     { // Nivel 14
-        title: "Iteradores y Generadores",
+        title: "POO - Polimorfismo y Métodos Especiales",
         lesson: [
-            { title: "Protocolo de Iteración", content: `<p>Un objeto iterable tiene un método <code>__iter__</code> que devuelve un iterador.</p>`},
-            { title: "Creando Iteradores", content: `<p>Un iterador tiene un método <code>__next__</code> que devuelve el siguiente elemento.</p>`},
-            { title: "Generadores", content: `<p>Los generadores son una forma simple de crear iteradores usando <code>yield</code>.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def mi_generador():
-    yield 1
-    yield 2
-    yield 3</code></pre></div>`},
-            { title: "Expresiones Generadoras", content: `<p>Similares a las listas de comprensión, pero con paréntesis.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>¡Ahora sabes cómo crear tus propias secuencias!</p>"}
-        ],
-        quiz: [
-            { question: "¿Qué método tiene un objeto iterable?", options: ["__next__", "__iter__", "__start__", "__end__"], answer: "__iter__" },
-            { question: "¿Qué método tiene un iterador?", options: ["__iter__", "__next__", "__get__", "__set__"], answer: "__next__" },
-            { question: "¿Qué palabra clave se usa en los generadores?", options: ["return", "yield", "generate", "next"], answer: "yield" },
-            { question: "¿Qué devuelve un generador?", options: ["Una lista", "Un iterador", "Un diccionario", "Una tupla"], answer: "Un iterador" },
-            { question: "¿Cómo se crea una expresión generadora?", options: ["[]", "{}", "()", "<>"], answer: "()" }
-        ]
-    },
-    { // Nivel 15
-        title: "Automatización de Tareas Creativas",
-        lesson: [
-            { title: "Automatización con Python", content: `<p>Python es excelente para automatizar tareas repetitivas. Vamos a crear un script que organice archivos automáticamente.</p>`},
-            { title: "Trabajando con Archivos del Sistema", content: `<p>Usa el módulo <code>os</code> y <code>shutil</code> para manipular archivos y directorios.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import os
-import shutil
+            {
+                title: "¿Qué es el Polimorfismo?",
+                content: `<p>El <strong>polimorfismo</strong> (del griego "muchas formas") permite que objetos de diferentes clases respondan al mismo método de manera específica a su tipo. Es el principio de "una interfaz, múltiples implementaciones".</p>
+                <p><strong>Tipos de polimorfismo en Python:</strong></p>
+                <ul>
+                    <li><strong>Polimorfismo de herencia:</strong> Clases hijas sobrescriben métodos del padre</li>
+                    <li><strong>Duck typing:</strong> "Si camina como pato y grazna como pato, es un pato" - Python no verifica el tipo, solo que tenga los métodos necesarios</li>
+                    <li><strong>Sobrecarga de operadores:</strong> Definir cómo funcionan +, -, *, etc. con tus objetos</li>
+                </ul>
+                <p><strong>Ejemplo conceptual:</strong> Tanto un perro como un gato pueden "hacer_sonido()", pero cada uno lo hace diferente. El código que llama a "hacer_sonido()" no necesita saber si es perro o gato.</p>`
+            },
+            {
+                title: "Polimorfismo con Herencia",
+                content: `<p>El polimorfismo más común ocurre cuando múltiples clases hijas implementan el mismo método de diferentes formas:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Figura:
+    def area(self):
+        pass  # Método base sin implementación
 
-# Crear directorios si no existen
-os.makedirs("Documentos", exist_ok=True)
-os.makedirs("Imágenes", exist_ok=True)
-os.makedirs("Videos", exist_ok=True)</code></pre></div>`},
-            { title: "Organizador de Archivos Automático", content: `<p>Crea un script que mueva archivos a carpetas según su extensión.</p>`},
-            { title: "Caso Real: Backup Automático", content: `<p>Los programadores usan Python para crear backups automáticos de sus proyectos.</p>`},
-            { title: "Ejercicio: Organizador de Descargas", content: `<h3>Crea un Script de Organización</h3>
-        <p>Completa el código para organizar archivos por tipo.</p>
-        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import os
-import shutil
-
-def organizar_archivos(directorio_origen):
-    # Extensiones por categoría
-    categorias = {
-        'Documentos': ['.pdf', '.docx', '.txt', '.xlsx'],
-        'Imágenes': ['.jpg', '.png', '.gif', '.bmp'],
-        'Videos': ['.mp4', '.avi', '.mkv', '.mov']
-    }
+class Rectangulo(Figura):
+    def __init__(self, base, altura):
+        self.base = base
+        self.altura = altura
     
-    for archivo in os.listdir(directorio_origen):
-        if os.path.isfile(os.path.join(directorio_origen, archivo)):
-            # Obtener extensión
-            _, extension = os.path.splitext(archivo)
-            
-            # Encontrar categoría
-            for categoria, extensiones in categorias.items():
-                if extension.lower() in extensiones:
-                    # Crear directorio si no existe
-                    os.makedirs(categoria, exist_ok=True)
-                    # Mover archivo
-                    shutil.move(
-                        os.path.join(directorio_origen, archivo),
-                        os.path.join(categoria, archivo)
-                    )
-                    print(f"Movido {archivo} a {categoria}")
-                    break
+    def area(self):
+        return self.base * self.altura
 
-# Usar el script
-organizar_archivos(".")  # Organiza el directorio actual</code></pre></div>
-        <p><strong>Caso de uso real:</strong> Este script puede automatizar la organización de tu carpeta de descargas, ahorrándote tiempo valioso.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>¡La automatización es el futuro! ¡Demuestra tus conocimientos!</p>"}
-        ],
-        quiz: [
-            { question: "¿Qué módulo se usa para trabajar con archivos del sistema?", options: ["file", "os", "system", "path"], answer: "os" },
-            { question: "¿Qué función crea directorios?", options: ["mkdir", "makedirs", "createdir", "newdir"], answer: "makedirs" },
-            { question: "¿Qué módulo mueve archivos?", options: ["os", "shutil", "move", "copy"], answer: "shutil" },
-            { question: "¿Para qué se usa exist_ok=True?", options: ["Crear archivos", "Ignorar errores si existe", "Forzar creación", "Eliminar archivos"], answer: "Ignorar errores si existe" },
-            { question: "¿Cuál es un caso real de automatización?", options: ["Jugar videojuegos", "Organizar archivos", "Ver películas", "Escuchar música"], answer: "Organizar archivos" }
-        ]
-    },
-    { // Nivel 16
-        title: "Análisis de Datos con Python",
-        lesson: [
-            { title: "Introducción al Análisis de Datos", content: `<p>Python es el rey del análisis de datos. Con librerías como pandas y matplotlib, puedes procesar y visualizar datos fácilmente.</p>`},
-            { title: "Trabajando con CSV", content: `<p>Los archivos CSV son comunes para datos. Vamos a leer y analizar uno.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import csv
-
-# Leer archivo CSV
-with open('ventas.csv', 'r') as archivo:
-    lector = csv.DictReader(archivo)
-    for fila in lector:
-        print(f"Producto: {fila['producto']}, Ventas: {fila['ventas']}")</code></pre></div>`},
-            { title: "Estadísticas Básicas", content: `<p>Calcula promedios, máximos, mínimos y más con tus datos.</p>`},
-            { title: "Caso Real: Análisis de Ventas", content: `<p>Las empresas usan Python para analizar ventas, identificar tendencias y tomar decisiones.</p>`},
-            { title: "Ejercicio: Analizador de Calificaciones", content: `<h3>Crea un Analizador de Datos</h3>
-        <p>Completa el código para analizar calificaciones de estudiantes.</p>
-        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import csv
-
-def analizar_calificaciones(archivo_csv):
-    calificaciones = []
+class Circulo(Figura):
+    def __init__(self, radio):
+        self.radio = radio
     
-    with open(archivo_csv, 'r') as archivo:
-        lector = csv.DictReader(archivo)
-        for fila in lector:
-            calificaciones.append(int(fila['calificacion']))
+    def area(self):
+        return 3.14159 * self.radio ** 2
+
+class Triangulo(Figura):
+    def __init__(self, base, altura):
+        self.base = base
+        self.altura = altura
     
-    if calificaciones:
-        promedio = sum(calificaciones) / len(calificaciones)
-        maxima = max(calificaciones)
-        minima = min(calificaciones)
-        
-        print(f"Total de estudiantes: {len(calificaciones)}")
-        print(f"Promedio: {promedio:.2f}")
-        print(f"Calificación máxima: {maxima}")
-        print(f"Calificación mínima: {minima}")
-        
-        # Contar aprobados (mayor o igual a 60)
-        aprobados = sum(1 for calif in calificaciones if calif >= 60)
-        print(f"Aprobados: {aprobados} ({aprobados/len(calificaciones)*100:.1f}%)")
-    
-    return promedio, maxima, minima
+    def area(self):
+        return (self.base * self.altura) / 2
 
-# Usar la función
-analizar_calificaciones("calificaciones.csv")</code></pre></div>
-        <p><strong>Caso de uso real:</strong> Este tipo de análisis se usa en escuelas y universidades para evaluar el rendimiento estudiantil.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>¡El análisis de datos es una habilidad valiosa! ¡Demuestra tus conocimientos!</p>"}
-        ],
-        quiz: [
-            { question: "¿Qué formato de archivo es común para datos?", options: ["TXT", "CSV", "HTML", "XML"], answer: "CSV" },
-            { question: "¿Qué función calcula el promedio?", options: ["avg()", "mean()", "sum()/len()", "average()"], answer: "sum()/len()" },
-            { question: "¿Qué hace max()?", options: ["Encuentra el mínimo", "Encuentra el máximo", "Suma valores", "Cuenta elementos"], answer: "Encuentra el máximo" },
-            { question: "¿Para qué se usa DictReader?", options: ["Leer como lista", "Leer como diccionario", "Escribir datos", "Crear archivos"], answer: "Leer como diccionario" },
-            { question: "¿Cuál es un caso real de análisis de datos?", options: ["Contar palabras", "Analizar ventas", "Jugar juegos", "Ver videos"], answer: "Analizar ventas" }
-        ]
-    },
-    { // Nivel 17
-        title: "Desarrollo Web con Flask",
-        lesson: [
-            { title: "Introducción a Flask", content: `<p>Flask es un framework web ligero para Python. Perfecto para crear APIs y aplicaciones web simples.</p>`},
-            { title: "Tu Primera App Web", content: `<p>Crea una aplicación web básica con Flask.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from flask import Flask
+# Polimorfismo en acción
+figuras = [
+    Rectangulo(5, 3),
+    Circulo(4),
+    Triangulo(6, 4)
+]
 
-app = Flask(__name__)
+for figura in figuras:
+    # Mismo método, diferente implementación
+    print(f"Área: {figura.area()}")</code></pre></div>
+                <p><strong>Ventaja clave:</strong> El código que usa las figuras no necesita saber qué tipo específico es cada una. Solo necesita saber que tienen un método <code>area()</code>.</p>`
+            },
+            {
+                title: "Duck Typing - Polimorfismo sin Herencia",
+                content: `<p>Python usa <strong>duck typing</strong>: no importa el tipo del objeto, solo que tenga los métodos/atributos que necesitas. Esto permite polimorfismo sin herencia.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Pato:
+    def hablar(self):
+        return "¡Cuac cuac!"
 
-@app.route('/')
-def home():
-    return "¡Hola desde Flask!"
+class Perro:
+    def hablar(self):
+        return "¡Guau guau!"
 
-if __name__ == '__main__':
-    app.run(debug=True)</code></pre></div>`},
-            { title: "Rutas y Templates", content: `<p>Crea múltiples páginas y usa templates para el HTML.</p>`},
-            { title: "Caso Real: API de Tareas", content: `<p>Las startups usan Flask para crear MVPs (productos mínimos viables) rápidamente.</p>`},
-            { title: "Ejercicio: API de Lista de Tareas", content: `<h3>Crea una API REST Simple</h3>
-        <p>Completa el código para una API de tareas básica.</p>
-        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from flask import Flask, jsonify, request
+class Persona:
+    def hablar(self):
+        return "¡Hola!"
 
-app = Flask(__name__)
+def hacer_hablar(objeto):
+    # No importa el tipo, solo que tenga hablar()
+    print(objeto.hablar())
 
-tareas = []
-
-@app.route('/tareas', methods=['GET'])
-def obtener_tareas():
-    return jsonify(tareas)
-
-@app.route('/tareas', methods=['POST'])
-def agregar_tarea():
-    nueva_tarea = {
-        'id': len(tareas) + 1,
-        'titulo': request.json.get('titulo'),
-        'completada': False
-    }
-    tareas.append(nueva_tarea)
-    return jsonify(nueva_tarea), 201
-
-@app.route('/tareas/<int:tarea_id>', methods=['PUT'])
-def actualizar_tarea(tarea_id):
-    tarea = next((t for t in tareas if t['id'] == tarea_id), None)
-    if tarea:
-        tarea['completada'] = not tarea['completada']
-        return jsonify(tarea)
-    return jsonify({'error': 'Tarea no encontrada'}), 404
-
-if __name__ == '__main__':
-    app.run(debug=True)</code></pre></div>
-        <p><strong>Caso de uso real:</strong> APIs como esta se usan en aplicaciones móviles y web para gestionar datos.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>¡Ahora puedes crear aplicaciones web! ¡Demuestra tus conocimientos!</p>"}
-        ],
-        quiz: [
-            { question: "¿Qué es Flask?", options: ["Un IDE", "Un framework web", "Una base de datos", "Un lenguaje"], answer: "Un framework web" },
-            { question: "¿Qué decorador se usa para rutas?", options: ["@route", "@app.route", "@path", "@url"], answer: "@app.route" },
-            { question: "¿Qué devuelve jsonify()?", options: ["HTML", "JSON", "Texto plano", "XML"], answer: "JSON" },
-            { question: "¿Para qué se usa request.json?", options: ["Enviar datos", "Recibir datos JSON", "Crear rutas", "Configurar app"], answer: "Recibir datos JSON" },
-            { question: "¿Cuál es un caso real de Flask?", options: ["Crear juegos", "Crear APIs web", "Editar fotos", "Reproducir música"], answer: "Crear APIs web" }
-        ]
-    },
-    { // Nivel 18
-        title: "Machine Learning Básico",
-        lesson: [
-            { title: "Introducción al Machine Learning", content: `<p>El Machine Learning permite que las computadoras aprendan patrones de datos sin ser programadas explícitamente.</p>`},
-            { title: "Scikit-learn: Tu Primer Modelo", content: `<p>Scikit-learn es la librería más popular para ML en Python.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from sklearn.linear_model import LinearRegression
-import numpy as np
-
-# Datos de ejemplo
-X = np.array([[1], [2], [3], [4], [5]])
-y = np.array([2, 4, 6, 8, 10])
-
-# Crear y entrenar modelo
-modelo = LinearRegression()
-modelo.fit(X, y)
-
-# Hacer predicción
-prediccion = modelo.predict([[6]])
-print(f"Predicción para 6: {prediccion[0]}")</code></pre></div>`},
-            { title: "Tipos de Machine Learning", content: `<p>Aprendizaje supervisado, no supervisado y por refuerzo.</p>`},
-            { title: "Caso Real: Predicción de Precios", content: `<p>Las empresas usan ML para predecir ventas, precios de acciones y comportamiento de clientes.</p>`},
-            { title: "Ejercicio: Clasificador de Flores", content: `<h3>Crea un Modelo de Clasificación</h3>
-        <p>Completa el código para clasificar especies de flores.</p>
-        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
-
-# Cargar dataset de iris
-iris = load_iris()
-X = iris.data  # Características (largo/ancho de pétalos y sépalos)
-y = iris.target  # Etiquetas (especies)
-
-# Dividir en entrenamiento y prueba
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-# Crear y entrenar modelo
-modelo = KNeighborsClassifier(n_neighbors=3)
-modelo.fit(X_train, y_train)
-
-# Hacer predicciones
-predicciones = modelo.predict(X_test)
-
-# Calcular precisión
-precision = accuracy_score(y_test, predicciones)
-print(f"Precisión del modelo: {precision:.2f}")
-
-# Predecir una nueva flor
-nueva_flor = [[5.1, 3.5, 1.4, 0.2]]  # Características de una flor
-prediccion = modelo.predict(nueva_flor)
-especies = ['setosa', 'versicolor', 'virginica']
-print(f"La flor es probablemente: {especies[prediccion[0]]}")</code></pre></div>
-        <p><strong>Caso de uso real:</strong> Este tipo de modelos se usan en agricultura para identificar especies de plantas automáticamente.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>¡El ML es el futuro! ¡Demuestra tus conocimientos!</p>"}
-        ],
-        quiz: [
-            { question: "¿Qué es Machine Learning?", options: ["Programar computadoras", "Hacer que aprendan patrones", "Crear bases de datos", "Diseñar websites"], answer: "Hacer que aprendan patrones" },
-            { question: "¿Qué librería es popular para ML?", options: ["pandas", "numpy", "scikit-learn", "matplotlib"], answer: "scikit-learn" },
-            { question: "¿Qué hace fit()?", options: ["Hace predicciones", "Entrena el modelo", "Evalúa el modelo", "Carga datos"], answer: "Entrena el modelo" },
-            { question: "¿Qué hace predict()?", options: ["Entrena modelo", "Hace predicciones", "Evalúa precisión", "Divide datos"], answer: "Hace predicciones" },
-            { question: "¿Cuál es un caso real de ML?", options: ["Contar números", "Predecir precios", "Escribir texto", "Crear música"], answer: "Predecir precios" }
-        ]
-    },
-    { // Nivel 19
-        title: "Creación de Juegos con Pygame",
-        lesson: [
-            { title: "Introducción a Pygame", content: `<p>Pygame es una librería para crear juegos en Python. Perfecta para aprender programación de manera divertida.</p>`},
-            { title: "Tu Primer Juego", content: `<p>Crea una ventana básica y dibuja formas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import pygame
-import sys
-
-# Inicializar Pygame
-pygame.init()
-
-# Configurar ventana
-ventana = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Mi Primer Juego")
-
-# Bucle principal
-ejecutando = True
-while ejecutando:
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            ejecutando = False
-    
-    # Llenar fondo
-    ventana.fill((0, 0, 0))
-    
-    # Dibujar círculo
-    pygame.draw.circle(ventana, (255, 0, 0), (400, 300), 50)
-    
-    # Actualizar pantalla
-    pygame.display.flip()
-
-pygame.quit()
-sys.exit()</code></pre></div>`},
-            { title: "Sprites y Movimiento", content: `<p>Añade personajes que se mueven con el teclado.</p>`},
-            { title: "Caso Real: Juegos Educativos", content: `<p>Los juegos creados con Pygame se usan en educación para enseñar conceptos de programación.</p>`},
-            { title: "Ejercicio: Juego de Nave Espacial", content: `<h3>Crea un Juego Simple</h3>
-        <p>Completa el código para un juego donde una nave se mueve con las flechas.</p>
-        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import pygame
-import sys
-
-pygame.init()
-
-# Configuración
-ANCHO = 800
-ALTO = 600
-FPS = 60
-
-ventana = pygame.display.set_mode((ANCHO, ALTO))
-pygame.display.set_caption("Juego de Nave")
-reloj = pygame.time.Clock()
-
-# Colores
-NEGRO = (0, 0, 0)
-BLANCO = (255, 255, 255)
-AZUL = (0, 0, 255)
-
-# Nave
-nave_x = ANCHO // 2
-nave_y = ALTO - 50
-nave_velocidad = 5
-
-ejecutando = True
-while ejecutando:
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            ejecutando = False
-    
-    # Controles
-    teclas = pygame.key.get_pressed()
-    if teclas[pygame.K_LEFT] and nave_x > 0:
-        nave_x -= nave_velocidad
-    if teclas[pygame.K_RIGHT] and nave_x < ANCHO - 50:
-        nave_x += nave_velocidad
-    if teclas[pygame.K_UP] and nave_y > 0:
-        nave_y -= nave_velocidad
-    if teclas[pygame.K_DOWN] and nave_y < ALTO - 50:
-        nave_y += nave_velocidad
-    
-    # Dibujar
-    ventana.fill(NEGRO)
-    pygame.draw.rect(ventana, AZUL, (nave_x, nave_y, 50, 50))
-    
-    pygame.display.flip()
-    reloj.tick(FPS)
-
-pygame.quit()
-sys.exit()</code></pre></div>
-        <p><strong>Caso de uso real:</strong> Juegos como este se usan como base para crear aplicaciones interactivas y simuladores.</p>`},
-            { title: "¡Listo para el Quiz!", content: "<p>¡Crear juegos es divertido y educativo! ¡Demuestra tus conocimientos!</p>"}
-        ],
-        quiz: [
-            { question: "¿Qué es Pygame?", options: ["Un lenguaje", "Una librería para juegos", "Un IDE", "Una base de datos"], answer: "Una librería para juegos" },
-            { question: "¿Qué hace pygame.init()?", options: ["Crea ventana", "Inicializa Pygame", "Dibuja formas", "Maneja eventos"], answer: "Inicializa Pygame" },
-            { question: "¿Qué maneja eventos del teclado?", options: ["pygame.draw", "pygame.event", "pygame.key", "pygame.mouse"], answer: "pygame.key" },
-            { question: "¿Para qué se usa pygame.display.flip()?", options: ["Crear ventana", "Actualizar pantalla", "Dibujar formas", "Manejar eventos"], answer: "Actualizar pantalla" },
-            { question: "¿Cuál es un caso real de Pygame?", options: ["Crear websites", "Crear juegos educativos", "Analizar datos", "Enviar emails"], answer: "Crear juegos educativos" }
-        ]
-    },
-    { // Nivel 20
-        title: "Proyecto Final: Sistema de Gestión",
-        lesson: [
-            { title: "Aplicando todo lo Aprendido", content: `<p>Es hora de combinar todos los conceptos que has aprendido en un proyecto real.</p>`},
-            { title: "Proyecto: Sistema de Biblioteca Digital", content: `<p>Crea un sistema completo para gestionar libros, usuarios y préstamos.</p>`},
-            { title: "Arquitectura del Proyecto", content: `<p>Usa clases, archivos, bases de datos simples y una interfaz de usuario.</p>`},
-            { title: "Caso Real: Sistemas Empresariales", content: `<p>Los sistemas como este se usan en bibliotecas, escuelas y pequeñas empresas.</p>`},
-            { title: "Ejercicio: Implementa el Sistema", content: `<h3>Crea un Sistema de Gestión de Biblioteca</h3>
-        <p>Completa el código para un sistema que gestione libros y préstamos.</p>
-        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import json
-import os
-from datetime import datetime, timedelta
-
-class Libro:
-    def __init__(self, titulo, autor, isbn):
+# Todos funcionan con la misma función
+hacer_hablar(Pato())     # ¡Cuac cuac!
+hacer_hablar(Perro())    # ¡Guau guau!
+hacer_hablar(Persona())  # ¡Hola!</code></pre></div>
+                <p><strong>Filosofía de Python:</strong> "Es más fácil pedir perdón que permiso" (EAFP). En lugar de verificar tipos, simplemente intenta usar el método y maneja errores si no existe.</p>`
+            },
+            {
+                title: "Métodos Especiales (Magic Methods)",
+                content: `<p>Los <strong>métodos especiales</strong> (también llamados "dunder methods" por el doble guión bajo) permiten que tus objetos se comporten como tipos built-in de Python. Comienzan y terminan con <code>__</code>.</p>
+                <p><strong>Métodos especiales comunes:</strong></p>
+                <ul>
+                    <li><code>__init__(self)</code> - Constructor</li>
+                    <li><code>__str__(self)</code> - Representación legible (para <code>print()</code>)</li>
+                    <li><code>__repr__(self)</code> - Representación técnica (para debugging)</li>
+                    <li><code>__len__(self)</code> - Longitud (para <code>len()</code>)</li>
+                    <li><code>__getitem__(self, key)</code> - Acceso con corchetes <code>obj[key]</code></li>
+                    <li><code>__eq__(self, other)</code> - Igualdad <code>==</code></li>
+                </ul>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Libro:
+    def __init__(self, titulo, autor, paginas):
         self.titulo = titulo
         self.autor = autor
-        self.isbn = isbn
-        self.disponible = True
-        self.prestado_a = None
-        self.fecha_prestamo = None
-        self.fecha_devolucion = None
+        self.paginas = paginas
+    
+    def __str__(self):
+        # Para print() - legible para humanos
+        return f'"{self.titulo}" por {self.autor}'
+    
+    def __repr__(self):
+        # Para debugging - reproducible
+        return f"Libro('{self.titulo}', '{self.autor}', {self.paginas})"
+    
+    def __len__(self):
+        # Para len()
+        return self.paginas
+    
+    def __eq__(self, otro):
+        # Para comparación ==
+        return self.titulo == otro.titulo and self.autor == otro.autor
 
-class Usuario:
-    def __init__(self, nombre, id_usuario):
+libro1 = Libro("1984", "George Orwell", 328)
+libro2 = Libro("1984", "George Orwell", 328)
+
+print(libro1)  # "1984" por George Orwell (usa __str__)
+print(repr(libro1))  # Libro('1984', 'George Orwell', 328) (usa __repr__)
+print(len(libro1))  # 328 (usa __len__)
+print(libro1 == libro2)  # True (usa __eq__)</code></pre></div>`
+            },
+            {
+                title: "Sobrecarga de Operadores",
+                content: `<p>Puedes definir cómo funcionan los operadores matemáticos (+, -, *, /) con tus objetos usando métodos especiales:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __add__(self, otro):
+        # Sobrecarga del operador +
+        return Vector(self.x + otro.x, self.y + otro.y)
+    
+    def __sub__(self, otro):
+        # Sobrecarga del operador -
+        return Vector(self.x - otro.x, self.y - otro.y)
+    
+    def __mul__(self, escalar):
+        # Sobrecarga del operador *
+        return Vector(self.x * escalar, self.y * escalar)
+    
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+
+v3 = v1 + v2  # Usa __add__
+print(v3)  # Vector(4, 6)
+
+v4 = v1 - v2  # Usa __sub__
+print(v4)  # Vector(2, 2)
+
+v5 = v1 * 2  # Usa __mul__
+print(v5)  # Vector(6, 8)</code></pre></div>
+                <p><strong>Operadores sobrecargables:</strong></p>
+                <ul>
+                    <li><code>__add__</code> (+), <code>__sub__</code> (-), <code>__mul__</code> (*), <code>__truediv__</code> (/)</li>
+                    <li><code>__lt__</code> (<), <code>__le__</code> (<=), <code>__gt__</code> (>), <code>__ge__</code> (>=)</li>
+                    <li><code>__and__</code> (&), <code>__or__</code> (|), <code>__xor__</code> (^)</li>
+                </ul>`
+            },
+            {
+                title: "Código Completo y Consola Interactiva",
+                content: `<h3>Sistema de Carrito de Compras con Polimorfismo</h3>
+                <p>Este ejemplo muestra polimorfismo y métodos especiales en un sistema de e-commerce:</p>
+                
+                <div id="console-nivel-14"></div>
+                <script>
+                    createInteractiveConsole(\`class Producto:
+    def __init__(self, nombre, precio):
         self.nombre = nombre
-        self.id_usuario = id_usuario
-        self.libros_prestados = []
+        self.precio = precio
+    
+    def __str__(self):
+        return f"{self.nombre}: \${self.precio}"
+    
+    def __repr__(self):
+        return f"Producto('{self.nombre}', {self.precio})"
+
+class CarritoCompras:
+    def __init__(self):
+        self.productos = []
+    
+    def __len__(self):
+        # len(carrito) devuelve cantidad de productos
+        return len(self.productos)
+    
+    def __getitem__(self, index):
+        # carrito[0] accede a productos
+        return self.productos[index]
+    
+    def __add__(self, producto):
+        # carrito + producto agrega al carrito
+        nuevo_carrito = CarritoCompras()
+        nuevo_carrito.productos = self.productos.copy()
+        nuevo_carrito.productos.append(producto)
+        return nuevo_carrito
+    
+    def agregar(self, producto):
+        self.productos.append(producto)
+    
+    def total(self):
+        return sum(p.precio for p in self.productos)
+    
+    def __str__(self):
+        if not self.productos:
+            return "Carrito vacío"
+        items = "\\n".join(f"  - {p}" for p in self.productos)
+        return f"Carrito ({len(self)} productos):\\n{items}\\nTotal: \${self.total()}"
+
+# Crear productos
+p1 = Producto("Laptop", 800)
+p2 = Producto("Mouse", 25)
+p3 = Producto("Teclado", 60)
+
+# Crear carrito
+carrito = CarritoCompras()
+carrito.agregar(p1)
+carrito.agregar(p2)
+
+# Usar métodos especiales
+print(f"Productos en carrito: {len(carrito)}")
+print(f"Primer producto: {carrito[0]}")
+
+# Usar operador +
+carrito = carrito + p3
+print("\\n" + str(carrito))\`, 'console-nivel-14');
+                </script>
+                
+                <h3>Conceptos Aplicados</h3>
+                <ul>
+                    <li><code>__str__</code> y <code>__repr__</code> - Representaciones del objeto</li>
+                    <li><code>__len__</code> - Soporte para <code>len()</code></li>
+                    <li><code>__getitem__</code> - Acceso con corchetes</li>
+                    <li><code>__add__</code> - Sobrecarga del operador +</li>
+                    <li>Polimorfismo con diferentes productos</li>
+                </ul>
+                
+                <h3>Caso de Uso Real</h3>
+                <p>Este patrón se usa en plataformas de e-commerce, sistemas de punto de venta, y aplicaciones de gestión de inventario donde diferentes tipos de productos comparten una interfaz común.</p>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué es el polimorfismo?", options: ["Copiar objetos", "Múltiples formas de un método", "Eliminar clases", "Crear objetos"], answer: "Múltiples formas de un método" },
+            { type: "multiple-choice", question: "¿Qué es duck typing?", options: ["Verificar tipos", "Si tiene los métodos, funciona", "Crear patos", "Eliminar tipos"], answer: "Si tiene los métodos, funciona" },
+            { type: "multiple-choice", question: "¿Qué hace __str__?", options: ["Crea string", "Representación legible", "Elimina objeto", "Copia objeto"], answer: "Representación legible" },
+            { type: "multiple-choice", question: "¿Qué método sobrecarga el operador +?", options: ["__plus__", "__add__", "__sum__", "__positive__"], answer: "__add__" },
+            { type: "multiple-choice", question: "¿Para qué sirve __len__?", options: ["Crear longitud", "Soporte para len()", "Eliminar elementos", "Copiar lista"], answer: "Soporte para len()" }
+        ]
+    },
+    { // Nivel 15 - DESAFÍO
+        title: "Proyecto POO - Sistema de Gestión",
+        lesson: [
+            { title: "Proyecto Completo con POO", content: `<p>Aplicarás todo lo aprendido de POO en un proyecto real: un Sistema de Biblioteca Digital.</p><p><strong>Características:</strong> Gestión de libros, usuarios, préstamos, persistencia JSON, validación de reglas.</p>` },
+            { title: "Diseño del Sistema", content: `<p><strong>Clases principales:</strong></p><ul><li>Libro: ISBN, título, autor, disponible</li><li>Usuario: ID, nombre, libros_prestados (máx 3)</li><li>Biblioteca: catálogo, usuarios, operaciones</li></ul>` },
+            { title: "Implementación", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Libro:
+    def __init__(self, isbn, titulo, autor):
+        self.isbn = isbn
+        self.titulo = titulo
+        self.autor = autor
+        self.disponible = True
+    
+    def prestar(self):
+        self.disponible = False
+    
+    def devolver(self):
+        self.disponible = True</code></pre></div>` },
+            { title: "Consola Interactiva", content: `<div id="console-nivel-15"></div><script>createInteractiveConsole(\`class Libro:
+    def __init__(self, isbn, titulo):
+        self.isbn = isbn
+        self.titulo = titulo
+        self.disponible = True
 
 class Biblioteca:
     def __init__(self):
-        self.libros = []
-        self.usuarios = []
-        self.archivo_datos = "biblioteca.json"
-        self.cargar_datos()
+        self.libros = {}
     
-    def cargar_datos(self):
-        if os.path.exists(self.archivo_datos):
-            with open(self.archivo_datos, 'r') as f:
-                datos = json.load(f)
-                # Cargar libros y usuarios...
+    def agregar_libro(self, libro):
+        self.libros[libro.isbn] = libro
+        return f"✓ '{libro.titulo}' agregado"
     
-    def guardar_datos(self):
-        datos = {
-            'libros': [vars(libro) for libro in self.libros],
-            'usuarios': [vars(usuario) for usuario in self.usuarios]
-        }
-        with open(self.archivo_datos, 'w') as f:
-            json.dump(datos, f, indent=2, default=str)
-    
-    def agregar_libro(self, titulo, autor, isbn):
-        libro = Libro(titulo, autor, isbn)
-        self.libros.append(libro)
-        self.guardar_datos()
-        print(f"Libro '{titulo}' agregado exitosamente.")
-    
-    def registrar_usuario(self, nombre, id_usuario):
-        usuario = Usuario(nombre, id_usuario)
-        self.usuarios.append(usuario)
-        self.guardar_datos()
-        print(f"Usuario '{nombre}' registrado.")
-    
-    def prestar_libro(self, isbn, id_usuario):
-        libro = next((l for l in self.libros if l.isbn == isbn), None)
-        usuario = next((u for u in self.usuarios if u.id_usuario == id_usuario), None)
-        
-        if libro and usuario and libro.disponible:
-            libro.disponible = False
-            libro.prestado_a = id_usuario
-            libro.fecha_prestamo = datetime.now()
-            libro.fecha_devolucion = libro.fecha_prestamo + timedelta(days=14)
-            usuario.libros_prestados.append(isbn)
-            self.guardar_datos()
-            print(f"Libro prestado a {usuario.nombre}. Devolver antes de {libro.fecha_devolucion.strftime('%d/%m/%Y')}")
-        else:
-            print("Libro no disponible o usuario no encontrado.")
-    
-    def devolver_libro(self, isbn, id_usuario):
-        libro = next((l for l in self.libros if l.isbn == isbn), None)
-        usuario = next((u for u in self.usuarios if u.id_usuario == id_usuario), None)
-        
-        if libro and usuario and not libro.disponible and libro.prestado_a == id_usuario:
-            libro.disponible = True
-            libro.prestado_a = None
-            libro.fecha_prestamo = None
-            libro.fecha_devolucion = None
-            usuario.libros_prestados.remove(isbn)
-            self.guardar_datos()
-            print("Libro devuelto exitosamente.")
-        else:
-            print("Error en la devolución.")
+    def listar_disponibles(self):
+        return [l.titulo for l in self.libros.values() if l.disponible]
 
-# Función principal
-def menu_principal():
-    biblioteca = Biblioteca()
-    
-    while True:
-        print("\\n=== SISTEMA DE BIBLIOTECA ===")
-        print("1. Agregar libro")
-        print("2. Registrar usuario")
-        print("3. Prestar libro")
-        print("4. Devolver libro")
-        print("5. Mostrar libros disponibles")
-        print("6. Salir")
-        
-        opcion = input("Selecciona una opción: ")
-        
-        if opcion == "1":
-            titulo = input("Título: ")
-            autor = input("Autor: ")
-            isbn = input("ISBN: ")
-            biblioteca.agregar_libro(titulo, autor, isbn)
-        
-        elif opcion == "2":
-            nombre = input("Nombre: ")
-            id_usuario = input("ID de usuario: ")
-            biblioteca.registrar_usuario(nombre, id_usuario)
-        
-        elif opcion == "3":
-            isbn = input("ISBN del libro: ")
-            id_usuario = input("ID del usuario: ")
-            biblioteca.prestar_libro(isbn, id_usuario)
-        
-        elif opcion == "4":
-            isbn = input("ISBN del libro: ")
-            id_usuario = input("ID del usuario: ")
-            biblioteca.devolver_libro(isbn, id_usuario)
-        
-        elif opcion == "5":
-            print("\\nLibros disponibles:")
-            for libro in biblioteca.libros:
-                if libro.disponible:
-                    print(f"- {libro.titulo} por {libro.autor} (ISBN: {libro.isbn})")
-        
-        elif opcion == "6":
-            print("¡Hasta luego!")
-            break
-        
-        else:
-            print("Opción no válida.")
-
-if __name__ == "__main__":
-    menu_principal()</code></pre></div>
-        <p><strong>Caso de uso real:</strong> Sistemas como este se usan en bibliotecas escolares y públicas para gestionar inventarios y préstamos.</p>`},
-            { title: "¡Felicidades!", content: "<p>¡Has completado el curso de Python! Ahora eres un desarrollador de Python capaz de construir tus propias aplicaciones.</p>"}
+bib = Biblioteca()
+print(bib.agregar_libro(Libro("001", "1984")))
+print(bib.agregar_libro(Libro("002", "El Principito")))
+print("Disponibles:", bib.listar_disponibles())\`, 'console-nivel-15');</script><p><strong>🎮 Desafío python_challenge3:</strong> Implementa sistema completo con persistencia JSON.</p>` }
         ],
         quiz: [
-            { question: "¿Cuál es el primer paso para desarrollar un proyecto?", options: ["Escribir el código", "Definir el alcance", "Testear la aplicación", "Desplegar el proyecto"], answer: "Definir el alcance" },
-            { question: "¿Qué es el despliegue?", options: ["Poner tu aplicación en producción", "Escribir el código", "Testear la aplicación", "Diseñar la arquitectura"], answer: "Poner tu aplicación en producción" },
-            { question: "¿Qué es un bot de Telegram?", options: ["Un juego", "Un programa que interactúa con Telegram", "Un web scraper", "Una aplicación de lista de tareas"], answer: "Un programa que interactúa con Telegram" },
-            { question: "¿Qué es un web scraper?", options: ["Un programa que extrae datos de sitios web", "Un juego", "Un bot de Telegram", "Una aplicación de lista de tareas"], answer: "Un programa que extrae datos de sitios web" },
-            { question: "¿Qué has aprendido en este curso?", options: ["Nada", "Algo", "Mucho", "Todo"], answer: "Todo" }
+            { type: "multiple-choice", question: "¿Qué es composición en POO?", options: ["Herencia múltiple", "Una clase contiene objetos de otras", "Copiar clases", "Eliminar objetos"], answer: "Una clase contiene objetos de otras" },
+            { type: "multiple-choice", question: "¿Para qué sirve to_dict()?", options: ["Crear diccionario", "Serializar para JSON", "Eliminar objeto", "Copiar objeto"], answer: "Serializar para JSON" },
+            { type: "multiple-choice", question: "¿Qué hace @staticmethod?", options: ["Crea variable estática", "Método sin self", "Elimina método", "Copia método"], answer: "Método sin self" },
+            { type: "multiple-choice", question: "¿Por qué usar JSON?", options: ["Es rápido", "Formato legible y estándar", "Es binario", "Es encriptado"], answer: "Formato legible y estándar" },
+            { type: "multiple-choice", question: "¿Qué valida un límite de préstamos?", options: ["Si existe libro", "Regla de negocio", "Si está disponible", "Si existe usuario"], answer: "Regla de negocio" }
+        ]
+    },
+    { // Nivel 16
+        title: "Automatización - Archivos y Directorios",
+        lesson: [
+            { title: "Módulos para Archivos", content: `<p>Python tiene módulos poderosos para automatizar tareas con archivos:</p><ul><li><code>os</code>: Operaciones del sistema operativo</li><li><code>shutil</code>: Copiar, mover archivos</li><li><code>pathlib</code>: Rutas orientadas a objetos</li></ul>` },
+            { title: "Operaciones Básicas", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import os
+import shutil
+
+# Crear directorio
+os.makedirs("carpeta", exist_ok=True)
+
+# Listar archivos
+archivos = os.listdir(".")
+
+# Copiar archivo
+shutil.copy("origen.txt", "destino.txt")
+
+# Mover archivo
+shutil.move("archivo.txt", "carpeta/")</code></pre></div>` },
+            { title: "Organizador Automático", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import os
+
+categorias = {
+    'Documentos': ['.pdf', '.docx', '.txt'],
+    'Imágenes': ['.jpg', '.png', '.gif'],
+    'Videos': ['.mp4', '.avi']
+}
+
+for archivo in os.listdir('.'):
+    ext = os.path.splitext(archivo)[1]
+    for categoria, extensiones in categorias.items():
+        if ext in extensiones:
+            os.makedirs(categoria, exist_ok=True)
+            # shutil.move(archivo, f"{categoria}/{archivo}")
+            print(f"Mover {archivo} a {categoria}")</code></pre></div>` },
+            { title: "Consola Interactiva", content: `<div id="console-nivel-16"></div><script>createInteractiveConsole(\`import os
+
+# Simular organización de archivos
+archivos = ["foto.jpg", "documento.pdf", "video.mp4", "imagen.png"]
+
+categorias = {
+    'Documentos': ['.pdf', '.docx'],
+    'Imágenes': ['.jpg', '.png'],
+    'Videos': ['.mp4']
+}
+
+for archivo in archivos:
+    ext = os.path.splitext(archivo)[1]
+    for categoria, extensiones in categorias.items():
+        if ext in extensiones:
+            print(f"📁 {archivo} → {categoria}/")
+            break\`, 'console-nivel-16');</script><p><strong>Caso real:</strong> Organizar automáticamente carpeta de Descargas.</p>` }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué módulo mueve archivos?", options: ["os", "shutil", "move", "file"], answer: "shutil" },
+            { type: "multiple-choice", question: "¿Qué hace makedirs()?", options: ["Crea archivo", "Crea directorio", "Elimina directorio", "Lista archivos"], answer: "Crea directorio" },
+            { type: "multiple-choice", question: "¿Para qué sirve exist_ok=True?", options: ["Crear si existe", "No error si existe", "Forzar creación", "Eliminar existente"], answer: "No error si existe" },
+            { type: "multiple-choice", question: "¿Qué devuelve os.listdir()?", options: ["String", "Lista de archivos", "Diccionario", "Tupla"], answer: "Lista de archivos" },
+            { type: "multiple-choice", question: "¿Qué hace os.path.splitext()?", options: ["Une rutas", "Separa nombre y extensión", "Crea ruta", "Elimina extensión"], answer: "Separa nombre y extensión" }
+        ]
+    },
+    { // Nivel 17
+        title: "Automatización - Fechas y Tiempo",
+        lesson: [
+            { title: "Módulo datetime", content: `<p>El módulo <code>datetime</code> maneja fechas, horas y duraciones:</p><ul><li><code>datetime</code>: Fecha y hora combinadas</li><li><code>date</code>: Solo fecha</li><li><code>time</code>: Solo hora</li><li><code>timedelta</code>: Duración/diferencia</li></ul>` },
+            { title: "Trabajar con Fechas", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from datetime import datetime, timedelta
+
+# Fecha actual
+ahora = datetime.now()
+print(ahora)
+
+# Crear fecha específica
+cumple = datetime(2024, 12, 25)
+
+# Formatear fecha
+print(ahora.strftime("%d/%m/%Y"))
+
+# Operaciones
+mañana = ahora + timedelta(days=1)
+hace_una_semana = ahora - timedelta(weeks=1)</code></pre></div>` },
+            { title: "Calculadora de Fechas", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from datetime import datetime
+
+def dias_hasta(fecha_objetivo):
+    hoy = datetime.now()
+    diferencia = fecha_objetivo - hoy
+    return diferencia.days
+
+navidad = datetime(2024, 12, 25)
+print(f"Días hasta Navidad: {dias_hasta(navidad)}")</code></pre></div>` },
+            { title: "Consola Interactiva", content: `<div id="console-nivel-17"></div><script>createInteractiveConsole(\`from datetime import datetime, timedelta
+
+# Fecha actual
+ahora = datetime.now()
+print(f"Hoy: {ahora.strftime('%d/%m/%Y %H:%M')}")
+
+# Operaciones
+mañana = ahora + timedelta(days=1)
+print(f"Mañana: {mañana.strftime('%d/%m/%Y')}")
+
+# Calcular edad
+nacimiento = datetime(2000, 1, 1)
+edad = (ahora - nacimiento).days // 365
+print(f"\\nSi naciste el 01/01/2000, tienes {edad} años")
+
+# Días hasta fin de año
+fin_año = datetime(ahora.year, 12, 31)
+dias = (fin_año - ahora).days
+print(f"Días hasta fin de año: {dias}")\`, 'console-nivel-17');</script><p><strong>Caso real:</strong> Sistemas de reservas, recordatorios, análisis temporal.</p>` }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué módulo maneja fechas?", options: ["time", "datetime", "date", "calendar"], answer: "datetime" },
+            { type: "multiple-choice", question: "¿Qué es timedelta?", options: ["Fecha", "Hora", "Duración/diferencia", "Zona horaria"], answer: "Duración/diferencia" },
+            { type: "multiple-choice", question: "¿Qué hace strftime()?", options: ["Crea fecha", "Formatea fecha a string", "Parsea string", "Suma fechas"], answer: "Formatea fecha a string" },
+            { type: "multiple-choice", question: "¿Cómo sumar 7 días a una fecha?", options: ["fecha + 7", "fecha + timedelta(days=7)", "fecha.add(7)", "fecha + days(7)"], answer: "fecha + timedelta(days=7)" },
+            { type: "multiple-choice", question: "¿Qué devuelve datetime.now()?", options: ["String", "Fecha actual", "Hora actual", "Timestamp"], answer: "Fecha actual" }
+        ]
+    },
+    { // Nivel 18
+        title: "APIs y Requests",
+        lesson: [
+            { title: "¿Qué es una API?", content: `<p>Una <strong>API (Application Programming Interface)</strong> permite que programas se comuniquen entre sí. Las <strong>APIs REST</strong> usan HTTP para intercambiar datos (generalmente JSON).</p><p><strong>Métodos HTTP:</strong> GET (obtener), POST (crear), PUT (actualizar), DELETE (eliminar)</p>` },
+            { title: "Módulo requests", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import requests
+
+# GET request
+respuesta = requests.get("https://api.ejemplo.com/datos")
+
+# Verificar éxito
+if respuesta.status_code == 200:
+    datos = respuesta.json()  # Parsear JSON
+    print(datos)
+
+# POST request con datos
+datos_enviar = {"nombre": "Ana", "edad": 25}
+respuesta = requests.post("https://api.ejemplo.com/usuarios", json=datos_enviar)</code></pre></div>` },
+            { title: "Consultar API de Clima", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import requests
+
+def obtener_clima(ciudad):
+    url = "https://api.openweathermap.org/data/2.5/weather"
+    params = {
+        'q': ciudad,
+        'appid': 'TU_API_KEY',
+        'units': 'metric',
+        'lang': 'es'
+    }
+    
+    respuesta = requests.get(url, params=params)
+    datos = respuesta.json()
+    
+    return {
+        'temperatura': datos['main']['temp'],
+        'descripcion': datos['weather'][0]['description']
+    }</code></pre></div>` },
+            { title: "Consola Interactiva", content: `<div id="console-nivel-18"></div><script>createInteractiveConsole(\`# Simulación de API (sin requests real)
+# En producción usarías: import requests
+
+class APISimulada:
+    def get(self, url):
+        # Simular respuesta de API
+        return {
+            'status_code': 200,
+            'json': lambda: {
+                'ciudad': 'Madrid',
+                'temperatura': 22,
+                'descripcion': 'Soleado',
+                'humedad': 45
+            }
+        }
+
+api = APISimulada()
+respuesta = api.get("https://api.clima.com/madrid")
+
+if respuesta['status_code'] == 200:
+    datos = respuesta['json']()
+    print(f"🌡️ Clima en {datos['ciudad']}:")
+    print(f"   Temperatura: {datos['temperatura']}°C")
+    print(f"   Condición: {datos['descripcion']}")
+    print(f"   Humedad: {datos['humedad']}%")\`, 'console-nivel-18');</script><p><strong>Caso real:</strong> Integración con servicios externos (clima, mapas, redes sociales, pagos).</p>` }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué es una API REST?", options: ["Base de datos", "Interfaz para comunicación HTTP", "Lenguaje de programación", "Framework"], answer: "Interfaz para comunicación HTTP" },
+            { type: "multiple-choice", question: "¿Qué método HTTP obtiene datos?", options: ["POST", "GET", "PUT", "DELETE"], answer: "GET" },
+            { type: "multiple-choice", question: "¿Qué hace .json()?", options: ["Crea JSON", "Parsea respuesta a diccionario", "Envía JSON", "Valida JSON"], answer: "Parsea respuesta a diccionario" },
+            { type: "multiple-choice", question: "¿Qué indica status_code 200?", options: ["Error", "Éxito", "No encontrado", "Creado"], answer: "Éxito" },
+            { type: "multiple-choice", question: "¿Para qué sirven los params?", options: ["Headers", "Parámetros de URL", "Body", "Cookies"], answer: "Parámetros de URL" }
+        ]
+    },
+    { // Nivel 19
+        title: "Web Scraping",
+        lesson: [
+            { title: "¿Qué es Web Scraping?", content: `<p><strong>Web scraping</strong> es extraer datos de sitios web automáticamente. Se usa para:</p><ul><li>Monitoreo de precios</li><li>Agregación de noticias</li><li>Investigación de mercado</li><li>Análisis de datos</li></ul><p><strong>⚠️ Ética:</strong> Respetar robots.txt, no sobrecargar servidores, revisar términos de servicio.</p>` },
+            { title: "BeautifulSoup", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import requests
+from bs4 import BeautifulSoup
+
+# Obtener HTML
+respuesta = requests.get("https://ejemplo.com")
+html = respuesta.text
+
+# Parsear HTML
+soup = BeautifulSoup(html, 'html.parser')
+
+# Buscar elementos
+titulos = soup.find_all('h2', class_='titulo')
+for titulo in titulos:
+    print(titulo.text)
+
+# Buscar por CSS selector
+enlaces = soup.select('a.link-importante')
+for enlace in enlaces:
+    print(enlace['href'])</code></pre></div>` },
+            { title: "Scraper de Noticias", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from bs4 import BeautifulSoup
+import requests
+
+def extraer_noticias(url):
+    respuesta = requests.get(url)
+    soup = BeautifulSoup(respuesta.text, 'html.parser')
+    
+    noticias = []
+    for articulo in soup.find_all('article'):
+        titulo = articulo.find('h2').text
+        resumen = articulo.find('p').text
+        noticias.append({
+            'titulo': titulo,
+            'resumen': resumen
+        })
+    
+    return noticias</code></pre></div>` },
+            { title: "Consola Interactiva", content: `<div id="console-nivel-19"></div><script>createInteractiveConsole(\`# Simulación de web scraping (sin BeautifulSoup real)
+# En producción usarías: from bs4 import BeautifulSoup
+
+html_ejemplo = """
+<html>
+  <body>
+    <h1>Noticias del Día</h1>
+    <article>
+      <h2>Noticia 1</h2>
+      <p>Descripción de la primera noticia</p>
+    </article>
+    <article>
+      <h2>Noticia 2</h2>
+      <p>Descripción de la segunda noticia</p>
+    </article>
+  </body>
+</html>
+"""
+
+# Simulación simple de parsing
+import re
+
+titulos = re.findall(r'<h2>(.*?)</h2>', html_ejemplo)
+descripciones = re.findall(r'<p>(.*?)</p>', html_ejemplo)
+
+print("📰 Noticias extraídas:")
+for i, (titulo, desc) in enumerate(zip(titulos, descripciones), 1):
+    print(f"\\n{i}. {titulo}")
+    print(f"   {desc}")\`, 'console-nivel-19');</script><p><strong>Caso real:</strong> Monitoreo de precios, agregadores de noticias, análisis de competencia.</p>` }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué es web scraping?", options: ["Crear sitios web", "Extraer datos de sitios web", "Diseñar páginas", "Hostear sitios"], answer: "Extraer datos de sitios web" },
+            { type: "multiple-choice", question: "¿Qué librería parsea HTML?", options: ["requests", "BeautifulSoup", "scrapy", "selenium"], answer: "BeautifulSoup" },
+            { type: "multiple-choice", question: "¿Qué hace find_all()?", options: ["Encuentra un elemento", "Encuentra todos los elementos", "Crea elementos", "Elimina elementos"], answer: "Encuentra todos los elementos" },
+            { type: "multiple-choice", question: "¿Qué es robots.txt?", options: ["Archivo de configuración", "Reglas de scraping del sitio", "Base de datos", "Script"], answer: "Reglas de scraping del sitio" },
+            { type: "multiple-choice", question: "¿Para qué sirve .text?", options: ["Crear texto", "Obtener texto del elemento", "Buscar texto", "Eliminar texto"], answer: "Obtener texto del elemento" }
+        ]
+    },
+    { // Nivel 20 - DESAFÍO FINAL
+        title: "Proyecto Final Integrador",
+        lesson: [
+            { title: "Integrando Todo lo Aprendido", content: `<p>¡Llegaste al final del curso! Ahora crearás un <strong>proyecto que integra TODOS los conceptos</strong>:</p><ul><li>✅ POO (clases, herencia, encapsulamiento)</li><li>✅ Manejo de archivos y persistencia</li><li>✅ Fechas y tiempo</li><li>✅ APIs y requests</li><li>✅ Web scraping (opcional)</li></ul>` },
+            { title: "Opciones de Proyecto", content: `<p><strong>Opción 1: Bot de Noticias Automático</strong></p><ul><li>Hace scraping de múltiples fuentes</li><li>Filtra por categorías usando POO</li><li>Guarda en archivos por fecha</li><li>Envía resumen (simulado)</li></ul><p><strong>Opción 2: Sistema de Gestión Empresarial</strong></p><ul><li>Gestiona productos, clientes, ventas</li><li>Persistencia con JSON</li><li>Reportes por fecha</li><li>Interfaz de menú</li></ul><p><strong>Opción 3: Analizador de Datos</strong></p><ul><li>Obtiene datos de API</li><li>Procesa y analiza</li><li>Guarda resultados</li><li>Genera estadísticas</li></ul>` },
+            { title: "Ejemplo: Sistema de Tareas con API", content: `<div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from datetime import datetime
+import json
+
+class Tarea:
+    def __init__(self, titulo, prioridad="media"):
+        self.titulo = titulo
+        self.prioridad = prioridad
+        self.completada = False
+        self.fecha_creacion = datetime.now()
+    
+    def completar(self):
+        self.completada = True
+    
+    def to_dict(self):
+        return {
+            'titulo': self.titulo,
+            'prioridad': self.prioridad,
+            'completada': self.completada,
+            'fecha': self.fecha_creacion.isoformat()
+        }
+
+class GestorTareas:
+    def __init__(self):
+        self.tareas = []
+    
+    def agregar(self, tarea):
+        self.tareas.append(tarea)
+    
+    def listar_pendientes(self):
+        return [t for t in self.tareas if not t.completada]
+    
+    def guardar(self, archivo="tareas.json"):
+        with open(archivo, 'w') as f:
+            json.dump([t.to_dict() for t in self.tareas], f)</code></pre></div>` },
+            { title: "Consola Interactiva - Proyecto Demo", content: `<div id="console-nivel-20"></div><script>createInteractiveConsole(\`from datetime import datetime
+
+class Tarea:
+    def __init__(self, titulo, prioridad="media"):
+        self.titulo = titulo
+        self.prioridad = prioridad
+        self.completada = False
+        self.fecha = datetime.now().strftime("%d/%m/%Y")
+    
+    def completar(self):
+        self.completada = True
+    
+    def __str__(self):
+        estado = "✓" if self.completada else "○"
+        return f"{estado} [{self.prioridad}] {self.titulo} ({self.fecha})"
+
+class GestorTareas:
+    def __init__(self):
+        self.tareas = []
+    
+    def agregar(self, tarea):
+        self.tareas.append(tarea)
+        return f"✓ Tarea '{tarea.titulo}' agregada"
+    
+    def listar(self):
+        if not self.tareas:
+            return "No hay tareas"
+        return "\\n".join(str(t) for t in self.tareas)
+    
+    def pendientes(self):
+        return len([t for t in self.tareas if not t.completada])
+
+# Usar el sistema
+gestor = GestorTareas()
+
+print(gestor.agregar(Tarea("Estudiar Python", "alta")))
+print(gestor.agregar(Tarea("Hacer ejercicio", "media")))
+print(gestor.agregar(Tarea("Leer libro", "baja")))
+
+print("\\n📋 Todas las tareas:")
+print(gestor.listar())
+
+gestor.tareas[0].completar()
+
+print(f"\\n✅ Tareas pendientes: {gestor.pendientes()}")
+print("\\n📋 Estado actualizado:")
+print(gestor.listar())\`, 'console-nivel-20');</script><p><strong>🎮 Desafío Final python_challenge4:</strong> Crea tu propio proyecto integrando POO, archivos, fechas y APIs.</p>` },
+            { title: "¡Felicidades!", content: `<h3>🎉 ¡Completaste el Curso de Python!</h3><p>Ahora dominas:</p><ul><li>✅ Fundamentos de Python</li><li>✅ Estructuras de datos</li><li>✅ Programación Orientada a Objetos</li><li>✅ Manejo de archivos</li><li>✅ Automatizaciones</li><li>✅ APIs y Web Scraping</li><li>✅ Proyectos reales</li></ul><p><strong>Próximos pasos:</strong></p><ul><li>Practica con proyectos personales</li><li>Explora frameworks (Django, Flask, FastAPI)</li><li>Aprende Data Science (pandas, numpy, matplotlib)</li><li>Contribuye a proyectos open source</li></ul><p><strong>¡Sigue programando! 🚀</strong></p>` }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué integra un proyecto completo?", options: ["Solo POO", "POO + archivos + APIs", "Solo APIs", "Solo archivos"], answer: "POO + archivos + APIs" },
+            { type: "multiple-choice", question: "¿Para qué sirve to_dict()?", options: ["Crear diccionario", "Serializar objeto", "Eliminar objeto", "Copiar objeto"], answer: "Serializar objeto" },
+            { type: "multiple-choice", question: "¿Qué permite la persistencia?", options: ["Ejecutar código", "Guardar datos permanentemente", "Crear objetos", "Eliminar archivos"], answer: "Guardar datos permanentemente" },
+            { type: "multiple-choice", question: "¿Cuál es un buen próximo paso?", options: ["Dejar de programar", "Practicar con proyectos", "Olvidar Python", "No hacer nada"], answer: "Practicar con proyectos" },
+            { type: "multiple-choice", question: "¿Qué aprendiste en este curso?", options: ["Nada", "Algo", "Mucho", "Todo lo necesario para empezar"], answer: "Todo lo necesario para empezar" }
         ]
     }
-]
+];
+
+
 
 // --- LÓGICA DE QUIZ MEJORADA ---
 let currentQuizType = "";
@@ -3640,6 +4647,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize error finding functionality
     initializeErrorFinding();
     initializeCodeCompletion();
+    
+    // Inicializar Pyodide después de 2 segundos para no bloquear la carga inicial
+    setTimeout(() => {
+        initPyodide();
+    }, 2000);
 });
 
 // Error finding functionality
@@ -4095,21 +5107,14 @@ function clearConsole(containerId) {
 
 // Función helper para agregar consola a lecciones
 function addInteractiveConsoleToLesson(code) {
+    const consoleId = `interactive-console-${Date.now()}`;
     return `
-        <div id="interactive-console-${Date.now()}"></div>
+        <div id="${consoleId}"></div>
         <script>
-            createInteractiveConsole(\`${code.replace(/`/g, '\\`')}\`, 'interactive-console-${Date.now()}');
+            createInteractiveConsole(\`${code.replace(/`/g, '\\`')}\`, '${consoleId}');
         <\/script>
     `;
 }
-
-// Inicializar Pyodide al cargar la página (en segundo plano)
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar Pyodide después de 2 segundos para no bloquear la carga inicial
-    setTimeout(() => {
-        initPyodide();
-    }, 2000);
-});
 
 </script>
 
