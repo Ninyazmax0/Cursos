@@ -3784,7 +3784,7 @@ async function saveProgress() {
         // Optimistic Cache Update
         currentUser.pythonProgress = progressPayload;
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        localStorage.setItem('pythonCourseProgress', JSON.stringify(progressPayload)); // Legacy cache
+        // localStorage.setItem('pythonCourseProgress', ...) -> Removed per user request (Strict Firebase)
         
         try {
             await window.updateCourseProgress(currentUser.id, 'pythonProgress', progressPayload);
@@ -5271,45 +5271,20 @@ function clearConsole(containerId) {
     }
 }
 
-// Función helper para agregar consola a lecciones
-// Function removed to prevent syntax errors
-// function addInteractiveConsoleToLesson(code) { ... }
+// Inicialización de herramientas auxiliares
+// La carga de datos y control principal reside en el listener de Firebase (arriba en el archivo)
 
-// Initialize the application
 document.addEventListener('DOMContentLoaded', async () => {
-    // Sync with Firestore first
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-        try {
-            const parsedUser = JSON.parse(savedUser);
-            if (window.getUserFromFirestore) {
-                const firestoreUser = await window.getUserFromFirestore(parsedUser.id);
-                if (firestoreUser && firestoreUser.pythonProgress) {
-                    // Update local storage with Firestore data
-                    localStorage.setItem('pythonCourseProgress', JSON.stringify(firestoreUser.pythonProgress));
-                    // Update user in local storage too
-                    parsedUser.pythonProgress = firestoreUser.pythonProgress;
-                    localStorage.setItem('currentUser', JSON.stringify(parsedUser));
-                    console.log('✅ Progreso de Python sincronizado desde Firestore');
-                }
-            }
-        } catch (error) {
-            console.error('❌ Error al sincronizar con Firestore:', error);
-        }
-    }
+    // Inicializar iconos visuales
+    if (window.lucide) lucide.createIcons();
 
-    loadProgress();
-    renderLevelSelection();
-    showPanel('levelSelection');
-    lucide.createIcons();
+    // Inicializar funcionalidades interactivas de las lecciones
+    if (typeof initializeErrorFinding === 'function') initializeErrorFinding();
+    if (typeof initializeCodeCompletion === 'function') initializeCodeCompletion();
 
-    // Initialize error finding functionality
-    initializeErrorFinding();
-    initializeCodeCompletion();
-
-    // Inicializar Pyodide después de 2 segundos para no bloquear la carga inicial
+    // Inicializar entorno Python (Pyodide) en segundo plano
     setTimeout(() => {
-        initPyodide();
+        if (typeof initPyodide === 'function') initPyodide();
     }, 2000);
 });
 
