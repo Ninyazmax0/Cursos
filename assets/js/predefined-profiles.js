@@ -20,7 +20,7 @@ const STEVEN_PROFILE = {
     isOnline: false,
     rank: 'Owner',
     xp: 9999,
-    achievements: [],
+    achievements: ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god'],
     registeredAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     // Desbloquear todo
@@ -44,7 +44,7 @@ const AMELIA_PROFILE = {
     isOnline: false,
     rank: 'Co-Owner',
     xp: 9999,
-    achievements: [],
+    achievements: ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol'],
     registeredAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     // Desbloquear todo

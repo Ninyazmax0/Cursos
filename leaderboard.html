@@ -253,10 +253,10 @@
 
             // Ensure Steven and Amelia are in the owner list
             if (!owners.find(u => u.name.toLowerCase().includes('steven'))) {
-                owners.push({ id: 'steven-founder', name: 'Steven', role: 'Founder', avatar: 'https://ui-avatars.com/api/?name=Steven&background=0D8ABC&color=fff', totalLevels: 0, xp: 99999 });
+                owners.push({ id: 'steven', name: 'Steven', role: 'Founder', avatar: 'https://i.ibb.co/9HGqpf0B/Captura-de-pantalla-2025-06-21-205156.png', totalLevels: 0, xp: 99999 });
             }
              if (!owners.find(u => u.name.toLowerCase().includes('amelia'))) {
-                owners.push({ id: 'amelia-founder', name: 'Amelia', role: 'Co-Founder', avatar: 'https://cdn.myanimelist.net/images/characters/8/239523.jpg', totalLevels: 0, xp: 99999 });
+                owners.push({ id: 'amelia', name: 'Amelia', role: 'Co-Founder', avatar: 'https://cdn.myanimelist.net/images/characters/8/239523.jpg', totalLevels: 0, xp: 99999 });
             }
 
             // Calculate XP for ranking users
@@ -288,7 +288,7 @@
                 const glowColor = isAmelia ? 'rgba(247, 118, 142, 0.2)' : 'rgba(59, 130, 246, 0.2)';
                 
                 container.innerHTML += `
-                    <div onclick="window.location.href='perfil_usuario.html?id=${isAmelia ? 'amelia-founder' : 'steven-founder'}'" class="glass-panel p-6 flex items-center gap-6 transform hover:scale-105 transition-all duration-300 cursor-pointer" style="border-left: 4px solid ${isAmelia ? '#f7768e' : '#3b82f6'}; box-shadow: 0 4px 20px ${glowColor}">
+                    <div onclick="window.location.href='perfil_usuario.html?id=${isAmelia ? 'amelia' : 'steven'}'" class="glass-panel p-6 flex items-center gap-6 transform hover:scale-105 transition-all duration-300 cursor-pointer" style="border-left: 4px solid ${isAmelia ? '#f7768e' : '#3b82f6'}; box-shadow: 0 4px 20px ${glowColor}">
                         <div class="relative">
                             <div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br ${isAmelia ? 'from-red-500 to-orange-500' : 'from-blue-500 to-cyan-500'}">
                                 <img src="${owner.avatar}" class="w-full h-full rounded-full object-cover border-2 border-white">

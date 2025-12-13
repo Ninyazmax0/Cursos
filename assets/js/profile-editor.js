@@ -9,143 +9,122 @@ import { doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.
 // Mostrar modal de edición
 export function openEditProfileModal(userData) {
     const modalHTML = `
-        <div id="edit-profile-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-card-background rounded-2xl border border-border max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                <div class="p-6 border-b border-border flex justify-between items-center sticky top-0 bg-card-background">
-                    <h2 class="text-2xl font-bold text-white">Editar Perfil</h2>
-                    <button onclick="closeEditProfileModal()" class="p-2 hover:bg-background rounded-lg">
+        <div id="edit-profile-modal" class="fixed inset-0 bg-[#0f1016]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+            <div class="bg-[#1a1b26]/90 border border-[#414868] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+                
+                <!-- Header with Glass Effect -->
+                <div class="sticky top-0 z-10 bg-[#1a1b26]/95 backdrop-blur-xl border-b border-[#414868] p-6 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+                        Editar Identidad
+                    </h2>
+                    <button onclick="closeEditProfileModal()" class="p-2 hover:bg-white/5 rounded-full text-gray-400 hover:text-white transition-colors">
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
                 
-                <form id="edit-profile-form" class="p-6 space-y-6">
-                    <!-- Bio -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Biografía</label>
-                        <textarea
-                            id="edit-bio"
-                            maxlength="200"
-                            rows="3"
-                            class="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground resize-none"
-                            placeholder="Cuéntanos sobre ti..."
-                        >${userData.bio || ''}</textarea>
-                        <p class="text-xs text-gray-500 mt-1"><span id="bio-count">0</span>/200 caracteres</p>
-                    </div>
-                    
-                    <!-- Tags -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Etiquetas (máx 5)</label>
-                        <div id="tags-container" class="flex flex-wrap gap-2 mb-2">
-                            ${(userData.tags || []).map(tag => `
-                                <span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm flex items-center gap-2">
-                                    ${tag}
-                                    <button type="button" onclick="removeTag('${tag}')" class="hover:text-red-400">
-                                        <i data-lucide="x" class="w-3 h-3"></i>
-                                    </button>
-                                </span>
-                            `).join('')}
-                        </div>
-                        <div class="flex gap-2">
-                            <input
-                                type="text"
-                                id="new-tag-input"
-                                maxlength="20"
-                                class="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground"
-                                placeholder="Ej: Frontend, Python..."
-                            >
-                            <button type="button" onclick="addTag()" class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-dark">
-                                Agregar
-                            </button>
+                <form id="edit-profile-form" class="p-8 space-y-8">
+                    <!-- Bio Section -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Tu Historia (Bio)</label>
+                        <div class="relative group">
+                            <textarea
+                                id="edit-bio"
+                                maxlength="200"
+                                rows="3"
+                                class="w-full px-5 py-4 bg-[#24283b] border border-[#414868] rounded-xl text-gray-200 resize-none focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all placeholder-gray-600"
+                                placeholder="Escribe algo legendario..."
+                            >${userData.bio || ''}</textarea>
+                            <div class="absolute bottom-3 right-3 text-xs text-gray-500 font-mono bg-[#1a1b26] px-2 py-1 rounded ml-auto">
+                                <span id="bio-count">0</span>/200
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Avatar URL (Solución CORS) -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">URL de Avatar Manual</label>
-                        <p class="text-xs text-gray-500 mb-2">Si la subida falla, pega aquí un link directo a tu imagen (ej: GitHub, Imgur)</p>
-                        <div class="flex items-center gap-2">
-                             <img id="avatar-preview-small" src="${userData.avatar}" class="w-10 h-10 rounded-full border border-border">
-                             <input
-                                type="url"
-                                id="edit-avatar-url"
-                                value="${userData.avatar && userData.avatar.startsWith('http') ? userData.avatar : ''}"
-                                class="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground"
-                                placeholder="https://ejemplo.com/mifoto.png"
-                            >
+                    <!-- Tags Section -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-end">
+                            <label class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Etiquetas</label>
+                            <span class="text-xs text-gray-500">Máx. 5 habilidades</span>
+                        </div>
+                        
+                        <div class="bg-[#24283b] border border-[#414868] rounded-xl p-4 transition-all focus-within:border-purple-500/50">
+                            <div id="tags-container" class="flex flex-wrap gap-2 mb-3 min-h-[32px]">
+                                <!-- Dynamic Tags Injected Here -->
+                            </div>
+                            <div class="flex gap-2">
+                                <input
+                                    type="text"
+                                    id="new-tag-input"
+                                    maxlength="20"
+                                    class="flex-1 bg-transparent border-none text-gray-200 placeholder-gray-600 focus:ring-0 p-0"
+                                    placeholder="Agrega una skill (ej. React, Python)..."
+                                >
+                                <button type="button" onclick="addTag()" class="text-purple-400 hover:text-purple-300 transition-colors font-medium text-sm">
+                                    + AGREGAR
+                                </button>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Social Links -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-3">Redes Sociales</label>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="github" class="w-5 h-5 text-gray-400"></i>
-                                <input
-                                    type="text"
-                                    id="edit-github"
-                                    value="${userData.socialLinks?.github || ''}"
-                                    class="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground"
-                                    placeholder="username"
-                                >
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="instagram" class="w-5 h-5 text-gray-400"></i>
-                                <input
-                                    type="text"
-                                    id="edit-instagram"
-                                    value="${userData.socialLinks?.instagram || ''}"
-                                    class="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground"
-                                    placeholder="username"
-                                >
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="twitter" class="w-5 h-5 text-gray-400"></i>
-                                <input
-                                    type="text"
-                                    id="edit-twitter"
-                                    value="${userData.socialLinks?.twitter || ''}"
-                                    class="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground"
-                                    placeholder="username"
-                                >
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="linkedin" class="w-5 h-5 text-gray-400"></i>
-                                <input
-                                    type="text"
-                                    id="edit-linkedin"
-                                    value="${userData.socialLinks?.linkedin || ''}"
-                                    class="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground"
-                                    placeholder="username"
-                                >
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="link" class="w-5 h-5 text-gray-400"></i>
+                    
+                    <!-- Visual Identity -->
+                    <div class="space-y-4">
+                        <label class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Identidad Visual</label>
+                        
+                        <!-- Avatar URL Override -->
+                        <div class="flex items-center gap-4 bg-[#24283b] p-4 rounded-xl border border-[#414868]">
+                            <img id="avatar-preview-small" src="${userData.avatar}" class="w-12 h-12 rounded-full object-cover border-2 border-purple-500/30">
+                            <div class="flex-1">
+                                <label class="text-xs text-gray-500 mb-1 block">URL de Imagen Personalizada</label>
                                 <input
                                     type="url"
-                                    id="edit-website"
-                                    value="${userData.socialLinks?.website || ''}"
-                                    class="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground"
+                                    id="edit-avatar-url"
+                                    value="${userData.avatar && userData.avatar.startsWith('http') ? userData.avatar : ''}"
+                                    class="w-full bg-transparent border-none text-sm text-gray-300 placeholder-gray-600 focus:ring-0 p-0"
                                     placeholder="https://..."
                                 >
                             </div>
                         </div>
                     </div>
+
+                    <!-- Social Grid -->
+                    <div class="space-y-4">
+                        <label class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Conexiones (Social)</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${Object.entries({
+                                github: 'github',
+                                instagram: 'instagram',
+                                twitter: 'twitter',
+                                linkedin: 'linkedin',
+                                website: 'link'
+                            }).map(([key, icon]) => `
+                                <div class="flex items-center gap-3 bg-[#24283b] p-3 rounded-lg border border-[#414868] focus-within:border-blue-500/50 transition-colors group">
+                                    <i data-lucide="${icon}" class="w-5 h-5 text-gray-500 group-focus-within:text-blue-400"></i>
+                                    <input
+                                        type="text"
+                                        id="edit-${key}"
+                                        value="${userData.socialLinks?.[key] || ''}"
+                                        class="w-full bg-transparent border-none text-sm text-gray-300 focus:ring-0 p-0 placeholder-gray-600"
+                                        placeholder="${key}"
+                                    >
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
                     
-                    <!-- Actions -->
-                    <div class="flex gap-3 pt-4">
-                        <button
-                            type="submit"
-                            class="flex-1 px-6 py-3 bg-accent text-white rounded-lg font-semibold hover:bg-accent-dark"
-                        >
-                            Guardar Cambios
-                        </button>
+                    <!-- Footer Actions -->
+                    <div class="flex gap-4 pt-6 mt-8 border-t border-[#414868]">
                         <button
                             type="button"
                             onclick="closeEditProfileModal()"
-                            class="px-6 py-3 bg-background text-gray-400 rounded-lg font-semibold hover:text-white"
+                            class="px-6 py-3 rounded-xl font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm"
                         >
-                            Cancelar
+                            CANCELAR
+                        </button>
+                        <button
+                            type="submit"
+                            class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-[1.02] transition-all text-sm tracking-wide"
+                        >
+                            GUARDAR CAMBIOS
                         </button>
                     </div>
                 </form>

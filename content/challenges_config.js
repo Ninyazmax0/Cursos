@@ -36,8 +36,23 @@ const challengesConfig = {
     </div>
 </body>
 </html>`,
-        prompt: "El usuario debe configurar la clase .box con width: 300px, padding: 20px, border: 5px solid blue (o cualquier color azul), y margin: 50px auto. Verifica que se vea centrado y con espacio interno. Si lo logra, da feedback positivo destacando la importancia del box model.",
-        language: "html"
+        prompt: "...",
+        language: "html",
+        validate: (code) => {
+            const checks = [
+                { pattern: /width:\s*300px/, msg: "Falta width: 300px" },
+                { pattern: /padding:\s*20px/, msg: "Falta padding: 20px" },
+                { pattern: /border:\s*5px\s+solid\s+blue/i, msg: "Falta border: 5px solid blue" },
+                { pattern: /margin:\s*50px\s+auto/, msg: "Falta margin: 50px auto" }
+            ];
+            const errors = checks.filter(c => !c.pattern.test(code)).map(c => c.msg);
+            const score = Math.max(0, 10 - (errors.length * 2.5));
+            return {
+                score: score,
+                isPass: score >= 8,
+                feedback: errors.length === 0 ? "¡Perfecto! Has dominado el modelo de caja." : "Te falta: " + errors.join(', ')
+            };
+        }
     },
 
     // NIVEL 6: JS Interactivo
@@ -80,8 +95,21 @@ const challengesConfig = {
     </script>
 </body>
 </html>`,
-        prompt: "El usuario debe usar document.getElementById para tomar el valor del input y mostrar un saludo en el div #resultado al hacer clic en el botón. Debe usar addEventListener. Verifica que funcione y que el código sea limpio.",
-        language: "html"
+        prompt: "...",
+        language: "html",
+        validate: (code) => {
+             const checks = [
+                { pattern: /document\.getElementById\(['"]nombreInput['"]\)\.value/, msg: "No obtuviste el valor del input" },
+                { pattern: /addEventListener\(['"]click['"]/, msg: "Debes usar addEventListener para el clic" },
+                { pattern: /innerHTML\s*=|innerText\s*=|textContent\s*=/, msg: "Falta mostrar el resultado" }
+            ];
+            const missing = checks.filter(c => !c.pattern.test(code));
+            return {
+                score: missing.length === 0 ? 10 : 5,
+                isPass: missing.length === 0,
+                feedback: missing.length === 0 ? "¡Excelente interactividad!" : missing.map(m => m.msg).join(". ")
+            };
+        }
     },
 
     // NIVEL 10: Flexbox Avanzado
@@ -128,8 +156,22 @@ const challengesConfig = {
     </div>
 </body>
 </html>`,
-        prompt: "El usuario debe usar display: flex, justify-content: center, align-items: center y gap: 20px en la clase .container. Verifica que las cajas estén centradas en pantalla.",
-        language: "html"
+        prompt: "...",
+        language: "html",
+        validate: (code) => {
+             const checks = [
+                { pattern: /display:\s*flex/, msg: "Falta display: flex" },
+                { pattern: /justify-content:\s*center/, msg: "Falta centrar horizontalmente (justify-content)" },
+                { pattern: /align-items:\s*center/, msg: "Falta centrar verticalmente (align-items)" },
+                { pattern: /gap:\s*20px/, msg: "Falta el gap de 20px" }
+            ];
+            const errors = checks.filter(c => !c.pattern.test(code));
+            return {
+                score: errors.length === 0 ? 10 : 4,
+                isPass: errors.length === 0,
+                feedback: errors.length === 0 ? "¡Flexbox dominado!" : "Revisa: " + errors.map(e => e.msg).join(', ')
+            };
+        }
     },
 
     // NIVEL 11: CSS Grid
@@ -172,8 +214,16 @@ const challengesConfig = {
     </div>
 </body>
 </html>`,
-        prompt: "El usuario debe aplicar display: grid, grid-template-columns: 1fr 1fr (o repeat(2, 1fr)) y gap: 15px. Verifica que se forme una cuadrícula 2x2.",
-        language: "html"
+        prompt: "...",
+        language: "html",
+         validate: (code) => {
+             const hasGrid = /display:\s*grid/.test(code);
+             const hasCols = /grid-template-columns:\s*(1fr\s*1fr|repeat\(2,\s*1fr\))/.test(code);
+             const hasGap = /gap:\s*15px/.test(code);
+             
+             if(hasGrid && hasCols && hasGap) return { score: 10, isPass: true, feedback: "¡Grid 2x2 correcto!" };
+             return { score: 4, isPass: false, feedback: "Asegúrate de usar display: grid, definir 2 columnas iguales y el gap correcto." };
+        }
     },
 
     // NIVEL 15: Diseño Responsivo (Media Queries)

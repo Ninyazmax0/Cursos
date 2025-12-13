@@ -83,6 +83,7 @@
         .rarity-common { border-color: var(--border); }
         .rarity-rare { border-color: var(--accent); box-shadow: 0 0 10px rgba(122, 162, 247, 0.1); }
         .rarity-epic { border-color: var(--yellow); box-shadow: 0 0 15px rgba(224, 175, 104, 0.2); }
+        .rarity-legendary { border-color: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.3); background: linear-gradient(135deg, rgba(244,63,94,0.1), transparent); }
 
     </style>
 </head>
@@ -143,11 +144,27 @@
             container.innerHTML = ''; // Clear loading
 
             // Stats
-            document.getElementById('unlocked-count').textContent = `${unlockedIds.length}/${achievements.length}`;
-            document.getElementById('completion-rate').textContent = `${Math.round((unlockedIds.length / achievements.length) * 100)}%`;
+            // Stats Calculation (Excluding Hidden Legendary)
+            const visibleAchievements = achievements.filter(a => a.rarity !== 'legendary' || unlockedIds.includes(a.id));
+            const totalVisible = achievements.filter(a => a.rarity !== 'legendary').length; // Base denominator is always normal achievs
+            
+            // Adjust count logic: user unlocked count vs total PUBLIC count
+            // Or should we include unlocked legendary in the denominator? 
+            // Better: Denominator = Public Achievements (25). Numerator = Unlocked Public Achievements. 
+            // Legendary are "Extra" / "Secret".
+            
+            const publicAchievements = achievements.filter(a => a.rarity !== 'legendary');
+            const unlockedPublic = unlockedIds.filter(id => publicAchievements.find(pa => pa.id === id));
+            
+            document.getElementById('unlocked-count').textContent = `${unlockedPublic.length}/${publicAchievements.length}`;
+            document.getElementById('completion-rate').textContent = `${Math.round((unlockedPublic.length / publicAchievements.length) * 100)}%`;
 
             achievements.forEach(ach => {
                 const isUnlocked = unlockedIds.includes(ach.id);
+                
+                // HIDE LEGENDARY/EXCLUSIVE IF NOT UNLOCKED
+                if (ach.rarity === 'legendary' && !isUnlocked) return;
+                
                 const card = document.createElement('div');
                 
                 // Styles based on state
@@ -158,6 +175,7 @@
                     if (ach.rarity === 'common') { bgClass = "bg-gray-800"; iconColor = "text-gray-300"; }
                     if (ach.rarity === 'rare') { bgClass = "bg-blue-900/30"; iconColor = "text-blue-400"; }
                     if (ach.rarity === 'epic') { bgClass = "bg-yellow-900/20"; iconColor = "text-yellow-400"; }
+                    if (ach.rarity === 'legendary') { bgClass = "bg-rose-900/20"; iconColor = "text-rose-400"; }
                 }
 
                 card.className = `achievement-card glass-panel p-6 border ${isUnlocked ? '' : 'achievement-locked'} rarity-${ach.rarity} ${bgClass} flex flex-col gap-4`;

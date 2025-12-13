@@ -776,15 +776,16 @@
     </div>
 
     <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-90 z-50 hidden items-center justify-center flex-col transition-opacity duration-300">
-        <div class="relative w-24 h-24 mb-4">
-            <div class="absolute inset-0 border-4 border-t-blue-500 border-r-transparent border-b-purple-500 border-l-transparent rounded-full animate-spin"></div>
-            <div class="absolute inset-2 border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-purple-400 rounded-full animate-spin-reverse"></div>
+    <!-- Loading Overlay (Visible by default) -->
+    <div id="loading-overlay" class="fixed inset-0 bg-[#1a1b26] z-[9999] flex items-center justify-center flex-col transition-all duration-500">
+        <div class="relative w-24 h-24 mb-6">
+            <div class="absolute inset-0 border-4 border-t-green-500 border-r-transparent border-b-blue-500 border-l-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-2 border-4 border-t-transparent border-r-green-400 border-b-transparent border-l-blue-400 rounded-full animate-spin-reverse"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="loader-2" class="w-8 h-8 text-white animate-pulse"></i>
+                <i data-lucide="database" class="w-10 h-10 text-white animate-pulse"></i>
             </div>
         </div>
-        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">CARGANDO BASE DE DATOS...</p>
+        <p id="loading-message" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 tracking-wider animate-pulse font-mono">CARGANDO EMPRESA...</p>
     </div>
 
     <div class="content-box">

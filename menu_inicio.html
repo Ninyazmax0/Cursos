@@ -14,11 +14,16 @@
     <script type="module" src="assets/js/data-cleanup.js"></script>
     <script type="module" src="assets/js/predefined-profiles.js"></script>
     <script type="module">
-        import { initAchievementListeners } from './assets/js/achievements.js';
+        import { initAchievementListeners, checkAchievement } from './assets/js/achievements.js';
+        
+        // Expose checkAchievement to window for inline usage if needed, or better, use it in initDashboard
+        window.checkAchievement = checkAchievement;
+
         document.addEventListener('DOMContentLoaded', () => {
             initAchievementListeners();
         });
     </script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
     <style>
         /* Tokyo Night Theme */
         :root {
@@ -247,22 +252,29 @@
     <!-- 1. LOGIN PANEL -->
     <!-- 1. LOGIN PANEL REMOVED -->
 
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-90 z-50 hidden items-center justify-center flex-col transition-opacity duration-300">
-        <div class="relative w-24 h-24 mb-4">
-            <div class="absolute inset-0 border-4 border-t-blue-500 border-r-transparent border-b-purple-500 border-l-transparent rounded-full animate-spin"></div>
-            <div class="absolute inset-2 border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-purple-400 rounded-full animate-spin-reverse"></div>
+    <!-- Loading Overlay (Visible by default to prevent FOUC) -->
+    <div id="loading-overlay" class="fixed inset-0 bg-[#0f1016] z-[9999] flex items-center justify-center flex-col transition-all duration-500">
+        <div class="relative w-32 h-32 mb-8">
+            <div class="absolute inset-0 border-4 border-t-purple-500 border-r-transparent border-b-blue-500 border-l-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-2 border-4 border-t-transparent border-r-pink-500 border-b-transparent border-l-cyan-500 rounded-full animate-spin-reverse"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="loader-2" class="w-8 h-8 text-white animate-pulse"></i>
+                <i data-lucide="loader-2" class="w-12 h-12 text-white animate-pulse"></i>
             </div>
         </div>
-        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">SINTONIZANDO...</p>
+        <p id="loading-message" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 tracking-wider animate-pulse font-mono">
+            SINTONIZANDO...
+        </p>
+        <p class="text-gray-500 text-sm mt-2 font-mono" id="loading-detail">Conectando a la Matrix</p>
     </div>
 
     <!-- 2. DASHBOARD VIEW -->
     <div id="dashboard-view" class="content-box hidden">
         
         <!-- Header Dashboard -->
+        <div class="mb-8 text-center cursor-help select-none">
+            <h1 class="main-title inline-block hover:scale-105 transition-transform" title="Keep Clicking...">Status Code 418</h1>
+        </div>
+
         <div class="flex justify-between items-center mb-12">
             <div class="flex items-center gap-4">
                 <!-- Logo Trigger for Achievement -->
@@ -321,6 +333,20 @@
                     <div>
                         <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">Bitácora Secreta</h3>
                         <p class="text-sm text-gray-400">Nuestra historia (Desbloqueable)</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right" class="text-gray-500 group-hover:text-white transition-colors"></i>
+            </a>
+
+            <!-- STORE CARD -->
+            <a href="tienda.html" class="group relative bg-card-background border border-purple-500/30 rounded-xl p-6 hover:border-purple-500 transition-all flex items-center justify-between hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">Tienda de Avatares</h3>
+                        <p class="text-sm text-gray-400">Personaliza tu estilo con Monedas</p>
                     </div>
                 </div>
                 <i data-lucide="arrow-right" class="text-gray-500 group-hover:text-white transition-colors"></i>
@@ -419,17 +445,30 @@
                 // 3. Render Dashboard
                 renderUserProfile(freshUser);
                 renderCourses();
-                
+
                 hideLoading();
                 dashboardView.classList.remove('hidden');
                 
                 // 4. Start Listeners
-                startRealTimeUpdates();
-                
-                // 5. Update Masterminds (Async background)
-                updateMasterminds();
+                if (typeof startRealTimeUpdates === 'function') startRealTimeUpdates();
 
-                // 6. Logout Listener (Strict Cleanup)
+                // 4.1 Check First Login Achievement
+                if (window.checkAchievement) {
+                    setTimeout(() => window.checkAchievement('first_login'), 1000);
+                }
+
+                // 4.2 Rage Clicker Achievement
+                const title = document.querySelector('.main-title');
+                if (title) {
+                    let clicks = 0;
+                    title.addEventListener('click', () => {
+                        clicks++;
+                        if (clicks === 10) {
+                            if (window.checkAchievement) window.checkAchievement('click_spammer');
+                            alert('🖱️ ¡Calma! ¿Estás estresado? (Logro Desbloqueado)');
+                        }
+                    });
+                }
                 const logoutBtn = document.getElementById('logout-btn');
                 if(logoutBtn) {
                      logoutBtn.onclick = () => {
@@ -533,7 +572,17 @@
             });
         }
 
-        window.addEventListener('load', initDashboard);
+        // Initialize fast
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDashboard);
+        } else {
+            initDashboard();
+        }
+
+        // Safety Timeout: If firebase hangs, force remove overlay after 8 seconds so user isn't stuck
+        setTimeout(() => {
+            hideLoading();
+        }, 8000);
 
         async function updateGlobalUsers(user) {
             // Actualizar localStorage (caché)

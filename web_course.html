@@ -311,6 +311,112 @@
         .token.function {
             color: #7aa2f7;
         }
+        /* Web Playground Premium */
+        .web-playground {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            background: rgba(30, 41, 59, 0.5); /* Glass dark */
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        @media (min-width: 768px) {
+            .web-playground {
+                flex-direction: row;
+                height: 500px;
+            }
+        }
+
+        .playground-editor, .playground-preview {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+        }
+
+        .playground-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .playground-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-editor-area {
+            flex: 1;
+            background: #0f172a; /* Slate 900 */
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            padding: 1rem;
+            border: none;
+            resize: none;
+            outline: none;
+        }
+
+        .preview-frame {
+            flex: 1;
+            background: white;
+            border: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .run-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        }
+
+        .run-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .run-btn:active {
+            transform: translateY(0);
+        }
+
+        .code-editor-area {
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+        }
+        iframe.playground-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
     </style>
 </head>
 <body>
@@ -498,9 +604,9 @@ const courseData = [
                     <div class="code-block"><pre><code class="language-html">&lt;!-- Esto es un comentario. El navegador no lo mostrará. --&gt;
 &lt;p&gt;Esto sí es visible.&lt;/p&gt;
 &lt;!-- &lt;p&gt;Este párrafo no aparecerá porque está comentado.&lt;/p&gt; --&gt;</code></pre></div>
-                    <p>Los comentarios comienzan con <code>&lt;!--</code> y terminan con <code>--&gt;</code>.</p>
                 `
             },
+
             {
                 title: "¡Listo para el Quiz!",
                 content: "<p>Has aprendido la estructura fundamental de una página web, qué son los elementos, las etiquetas y los atributos. ¡Ahora, a demostrar lo que sabes!</p>"
@@ -986,7 +1092,7 @@ miTitulo.style.color = "purple";</code></pre></div>
         ],
         quiz: [
             { question: "¿Para qué se utiliza principalmente JavaScript en el desarrollo web?", options: ["Para estructurar el contenido de la página", "Para dar estilos y colores a la página", "Para añadir interactividad y comportamiento a la página", "Para gestionar bases de datos"], answer: "Para añadir interactividad y comportamiento a la página" },
-            { question: "¿Dónde se recomienda colocar la etiqueta <script> para enlazar un archivo JS externo?", options: ["Dentro de la etiqueta <head>", "Justo después de la etiqueta <body>", "Justo antes de cerrar la etiqueta </body>", "Fuera de la etiqueta <html>"], answer: "Justo antes de cerrar la etiqueta </body>" },
+            { question: "¿Dónde se recomienda colocar la etiqueta &lt;script&gt; para enlazar un archivo JS externo?", options: ["Dentro de la etiqueta &lt;head&gt;", "Justo después de la etiqueta &lt;body&gt;", "Justo antes de cerrar la etiqueta &lt;/body&gt;", "Fuera de la etiqueta &lt;html&gt;"], answer: "Justo antes de cerrar la etiqueta &lt;/body&gt;" },
             { question: "Si necesitas guardar un valor que NUNCA va a cambiar, como el número Pi, ¿qué palabra clave deberías usar?", options: ["let", "var", "const", "static"], answer: "const" },
             { question: "Y si el valor de una variable SÍ puede cambiar, como la puntuación de un jugador, ¿qué palabra clave es la más adecuada?", options: ["let", "const", "fixed", "variable"], answer: "let" },
             { question: "¿Qué comando usarías para imprimir un mensaje o el valor de una variable en la consola del navegador?", options: ["document.write()", "alert()", "console.log()", "print()"], answer: "console.log()" },
@@ -2619,6 +2725,107 @@ function showLessonStep() {
     nextBtn.textContent = currentStep === levelData.lesson.length - 1 ? 'Ir al Quiz' : 'Siguiente';
     
     if (window.Prism) Prism.highlightAll();
+    if (window.Prism) Prism.highlightAll();
+
+    // Init Playgrounds
+    const placeholders = lessonContent.querySelectorAll('.web-playground-placeholder');
+    placeholders.forEach(ph => {
+        const base64Code = ph.getAttribute('data-code-base64');
+        const rawCode = ph.getAttribute('data-code');
+        
+        if (base64Code) {
+            createWebPlayground(ph, base64Code, true);
+        } else if (rawCode) {
+            createWebPlayground(ph, rawCode, false);
+        }
+    });
+}
+
+function createWebPlayground(container, initialCodeOrBase64, isBase64 = false) {
+    let initialCode = initialCodeOrBase64;
+    if (isBase64) {
+        try {
+            initialCode = atob(initialCodeOrBase64);
+        } catch (e) {
+            console.error("Error decoding Base64 code:", e);
+            initialCode = "<!-- Error cargando código base -->";
+        }
+    }
+
+    // Clean indentation if raw string (not needed for Base64 usually, but good practice)
+    if (!isBase64 && typeof initialCode === 'string') {
+        initialCode = initialCode.replace(/^\n/, '').replace(/^\s{20}/gm, '');
+    }
+
+    container.innerHTML = `
+        <div class="web-playground">
+            <div class="playground-editor">
+                <div class="playground-header">
+                    <div class="playground-title">
+                        <i data-lucide="code" class="w-4 h-4 text-blue-400"></i>
+                        <span>HTML & CSS</span>
+                    </div>
+                </div>
+                <!-- Spellcheck false is critical for code editors -->
+                <textarea class="code-editor-area" spellcheck="false">${initialCode}</textarea>
+            </div>
+            <div class="playground-preview">
+                <div class="playground-header">
+                    <div class="playground-title">
+                        <i data-lucide="eye" class="w-4 h-4 text-green-400"></i>
+                        <span>VISTA PREVIA</span>
+                    </div>
+                    <button class="run-btn">
+                        <i data-lucide="play" class="w-4 h-4"></i> EJECUTAR
+                    </button>
+                </div>
+                <iframe class="preview-frame"></iframe>
+            </div>
+        </div>
+    `;
+
+    lucide.createIcons();
+
+    const textarea = container.querySelector('textarea');
+    const iframe = container.querySelector('iframe');
+    const runBtn = container.querySelector('.run-btn');
+
+    function updatePreview() {
+        const code = textarea.value;
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write(code);
+        doc.close();
+    }
+
+    runBtn.addEventListener('click', () => {
+        const icon = runBtn.querySelector('i');
+        icon.setAttribute('data-lucide', 'loader');
+        runBtn.classList.add('opacity-75');
+        lucide.createIcons();
+        
+        updatePreview();
+        
+        // Mock loading effect
+        setTimeout(() => {
+            icon.setAttribute('data-lucide', 'play');
+            runBtn.classList.remove('opacity-75');
+            lucide.createIcons();
+        }, 300);
+    });
+
+    // Auto-run initially
+    updatePreview();
+
+    // Shortcut Ctrl+Enter
+    textarea.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            runBtn.click();
+        }
+    });
+
+    // Optional: Auto-run on type with debounce could be added here
 }
 
 function startQuiz() {

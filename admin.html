@@ -597,7 +597,8 @@
             document.getElementById('total-unlocked').textContent = totalUnlocked;
 
             renderUsersTable();
-            renderCodeEvaluations();
+            renderUsersTable();
+            renderCodeEvaluations(); // Now this will actually work!
         }
 
         function renderUsersTable() {
@@ -663,16 +664,95 @@
         }
 
         function renderCodeEvaluations() {
-            const evaluations = JSON.parse(localStorage.getItem('codeEvaluations') || '[]');
-            const evaluationsDiv = document.getElementById('code-evaluations');
+            const list = document.getElementById('submissions-list');
+            if (!list) return;
+            list.innerHTML = '';
             
-            // ... (código existente para evaluaciones, se mantiene igual visualmente)
-            // Nota: Podríamos mover las evaluaciones a Firestore también en el futuro
-            // Por ahora solo mostraremos un mensaje si está vacío
-            if (!evaluationsDiv) return; // Si no existe el div (en el HTML original parece faltar o estar más abajo)
+            const allSubmissions = [];
+            
+            // Recolectar evaluaciones de todos los usuarios y cursos
+            users.forEach(user => {
+                const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
+                courses.forEach(courseKey => {
+                    const progress = user[courseKey];
+                    if (progress && progress.codeEvaluations && Array.isArray(progress.codeEvaluations)) {
+                        progress.codeEvaluations.forEach(ev => {
+                            allSubmissions.push({
+                                ...ev,
+                                userName: user.name || 'Anónimo',
+                                userId: user.id,
+                                userAvatar: user.avatar,
+                                courseName: courseKey.replace('Progress', ''),
+                                originalDate: new Date(ev.date)
+                            });
+                        });
+                    }
+                });
+            });
 
-            // ... logica visual ...
+            // Ordenar por fecha (más reciente primero)
+            allSubmissions.sort((a, b) => b.originalDate - a.originalDate);
+
+            if (allSubmissions.length === 0) {
+                 list.innerHTML = '<p class="text-center text-gray-500 py-4">No hay envíos registrados.</p>';
+                 return;
+            }
+
+            allSubmissions.forEach(sub => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-card-background rounded border border-border hover:border-accent cursor-pointer transition flex justify-between items-start group';
+                item.style.backgroundColor = 'var(--card-background)';
+                item.style.borderColor = 'var(--border)';
+                
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img src="${sub.userAvatar || 'assets/default-avatar.png'}" class="w-10 h-10 rounded-full object-cover border border-border">
+                        <div>
+                            <p class="font-bold text-sm" style="color: var(--foreground);">${sub.userName}</p>
+                            <p class="text-xs capitalize" style="color: var(--accent);">${sub.courseName} <span class="text-gray-500">• Nivel ${sub.level}</span></p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                         <span class="block text-xs font-bold ${sub.score >= 7 ? 'text-green-400' : 'text-red-400'}">Nota: ${sub.score}</span>
+                         <span class="text-xs text-gray-500">${sub.originalDate.toLocaleDateString()}</span>
+                    </div>
+                `;
+                item.onclick = () => window.openReviewModal(sub);
+                list.appendChild(item);
+            });
         }
+
+        // --- REVIEW MODAL LOGIC ---
+        window.openReviewModal = (sub) => {
+            const modal = document.getElementById('review-modal');
+            document.getElementById('review-student-name').textContent = sub.userName;
+            document.getElementById('review-challenge-id').textContent = `Nivel ${sub.level}`;
+            document.getElementById('review-course-name').textContent = sub.courseName.toUpperCase();
+            document.getElementById('review-date').textContent = sub.originalDate.toLocaleString();
+            document.getElementById('review-code').textContent = sub.code || '// No code saved';
+            document.getElementById('review-score').value = sub.score;
+            document.getElementById('review-feedback').value = sub.feedback || '';
+            
+            // Colorize code if Prism exists (optional but nice)
+            // if(window.Prism) Prism.highlightElement(document.getElementById('review-code'));
+            
+            modal.classList.remove('hidden');
+
+            // Handle Review Actions
+            document.getElementById('approve-btn').onclick = () => {
+                alert(`¡Nota ${document.getElementById('review-score').value} guardada! (Simulación: Esto actualizaría Firebase)`);
+                // Aquí iría la lógica para actualizar la nota en el usuario
+                modal.classList.add('hidden');
+            };
+            document.getElementById('reject-btn').onclick = () => {
+                 alert('Rechazado. (Simulación)');
+                 modal.classList.add('hidden');
+            };
+        };
+
+        document.getElementById('close-review-modal').addEventListener('click', () => {
+            document.getElementById('review-modal').classList.add('hidden');
+        });
 
         // --- ACCIONES EXPORTADAS A GLOBAL (para onclick en HTML) ---
         

@@ -440,7 +440,28 @@
 
         // REFACTORED evaluateCode to use Firebase
         async function evaluateCode(code) {
-            // Sistema de Submissions - Guardar en Firestore
+            let result = {
+                score: 0,
+                isPass: false,
+                feedback: "Evaluación pendiente."
+            };
+
+            // 1. Client-Side Validation (Instant & Free)
+            if (currentConfig && typeof currentConfig.validate === 'function') {
+                try {
+                    result = currentConfig.validate(code);
+                    console.log("Local Validation Result:", result);
+                } catch (e) {
+                    console.error("Validation error:", e);
+                    result.feedback = "Error en la validación local: " + e.message;
+                }
+            } else {
+                // Fallback for challenges without strict validation defined yet
+                // We'll mark them as "Pending Review" status
+                result.feedback = "Tu código ha sido guardado. Un instructor (o la IA en modo batch) lo revisará pronto.";
+            }
+
+            // 2. Save Submission to Firebase (Historical Record + Admin Panel)
             const submission = {
                 userId: getCurrentUserId(),
                 userName: getCurrentUserName(),
@@ -448,44 +469,23 @@
                 courseName: getCourseNameFromId(challengeId),
                 code: code,
                 submittedAt: new Date().toISOString(),
-                status: 'pending',
-                score: null, 
-                feedback: '',
-                reviewedBy: null,
-                reviewedAt: null,
+                status: result.isPass ? 'approved' : 'pending',
+                score: result.score, 
+                feedback: result.feedback,
+                reviewedBy: 'Auto-Validator',
+                reviewedAt: new Date().toISOString(),
                 userAgent: navigator.userAgent
             };
             
-            // Guardar en Firestore
-            let submissionId = 'pending_sync';
             if (window.saveSubmission) {
                 try {
-                    submissionId = await window.saveSubmission(submission);
+                    await window.saveSubmission(submission);
                 } catch (e) {
-                    console.error("Error saving submission to Firestore:", e);
-                    // Fallback alert? No, we just log it, but user might lose data.
-                    // Strict mode implies we should probably fail?
-                    // But we return feedback below.
+                    console.error("Error saving submission:", e);
                 }
-            } else {
-                console.warn("window.saveSubmission not available");
             }
-            
-            // Retornar resultado (Simulación de "Pendiente de Revisión")
-            return {
-                score: 0,
-                isPass: false,
-                feedback: `<div class="text-center">
-                    <p class="text-lg font-bold text-blue-400 mb-2">✅ Código Enviado a la Nube</p>
-                    <p class="text-sm text-gray-300 mb-4">Tu código ha sido guardado exitosamente en la base de datos y está en cola de revisión.</p>
-                    <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-left">
-                        <p class="text-xs text-gray-400 mb-2"><strong>ID de Referencia:</strong> ${submissionId}</p>
-                        <p class="text-xs text-gray-400 mb-2"><strong>Estado:</strong> <span class="text-yellow-400">☁️ Guardado en Firestore</span></p>
-                        <p class="text-xs text-gray-400"><strong>Fecha:</strong> ${new Date().toLocaleString('es-ES')}</p>
-                    </div>
-                    <p class="text-xs text-gray-500 mt-4">Puedes continuar aprendiendo mientras procesamos tu solución.</p>
-                </div>`
-            };
+
+            return result;
         }
         
         // Funciones auxiliares

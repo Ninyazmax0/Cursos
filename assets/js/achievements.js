@@ -34,7 +34,21 @@ export const achievements = [
     { id: 'bug_hunter', name: '404 Hunter', desc: 'Intenta ir a una página que no existe.', hint: 'A veces perderse es encontrarse.', rarity: 'rare', icon: 'search' },
     { id: 'teapot', name: 'I\'m a Teapot', desc: 'Encuentra la referencia al error 418.', hint: 'Busca en la historia.', rarity: 'epic', icon: 'coffee' },
     { id: 'quiz_genius', name: 'Genio', desc: 'Obtén 10/10 en cualquier quiz.', hint: 'Perfección absoluta.', rarity: 'rare', icon: 'star' },
-    { id: 'veteran', name: 'Veterano', desc: 'Visita la plataforma 3 días seguidos.', hint: 'La constancia es clave.', rarity: 'rare', icon: 'calendar-check' }
+    { id: 'veteran', name: 'Veterano', desc: 'Visita la plataforma 3 días seguidos.', hint: 'La constancia es clave.', rarity: 'rare', icon: 'calendar-check' },
+
+    // --- STEVEN EXCLUSIVE (OWNER) ---
+    { id: 'pixel_perfect', name: 'Pixel Perfect', desc: 'Alinear cada div a la perfección.', hint: 'Obsesión por los detalles.', rarity: 'legendary', icon: 'layout' },
+    { id: 'dream_architect', name: 'Arquitecto de Sueños', desc: 'Imaginar Status Code 418.', hint: 'Todo empieza con una idea.', rarity: 'legendary', icon: 'cloud-rain' },
+    { id: 'coffee_overdose', name: 'Sobredosis de Cafeína', desc: 'El código es 90% café.', hint: 'Más espresso, menos depresso.', rarity: 'legendary', icon: 'coffee' },
+    { id: 'bug_lord', name: 'Señor de los Bugs', desc: 'No son bugs, son features sorpresas.', hint: 'Caos controlado.', rarity: 'legendary', icon: 'bug' },
+    { id: 'frontend_god', name: 'Dios del Frontend', desc: 'Dominar el DOM a voluntad.', hint: 'HTML, CSS y JS se inclinan ante ti.', rarity: 'legendary', icon: 'monitor' },
+
+    // --- AMELIA EXCLUSIVE (CO-OWNER) ---
+    { id: 'backend_queen', name: 'Reina del Backend', desc: 'Donde ocurre la magia real.', hint: 'Lo invisible es esencial.', rarity: 'legendary', icon: 'server' },
+    { id: 'database_keeper', name: 'Guardiana de Datos', desc: 'Ningún bit se pierde bajo su guardia.', hint: 'SELECT * FROM secrets.', rarity: 'legendary', icon: 'database' },
+    { id: 'logic_master', name: 'Maestra de la Lógica', desc: '0 y 1 son sus juguetes favoritos.', hint: 'If this, then amazing.', rarity: 'legendary', icon: 'cpu' },
+    { id: 'server_whisperer', name: 'Susurradora de Servidores', desc: 'Mantiene la nube flotando.', hint: 'Uptime: 99.999%.', rarity: 'legendary', icon: 'wifi' },
+    { id: 'security_protocol', name: 'Protocolo de Seguridad', desc: 'Hackearla es matemáticamente imposible.', hint: 'Access Denied.', rarity: 'legendary', icon: 'shield-check' }
 ];
 
 // === LOGIC ===
@@ -50,23 +64,38 @@ export async function checkAchievement(achievementId) {
     // Add to list
     userAchievements.push(achievementId);
     currentUser.achievements = userAchievements;
+
+    // AWARD COINS BASED ON RARITY
+    const ach = achievements.find(a => a.id === achievementId);
+    let reward = 100; // Default Common
+    if (ach) {
+        if (ach.rarity === 'rare') reward = 300;
+        if (ach.rarity === 'epic') reward = 500;
+        if (ach.rarity === 'legendary') reward = 1000;
+    }
+    
+    // Init coins if missing
+    if (!currentUser.coins) currentUser.coins = 0;
+    currentUser.coins += reward;
+
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
     // Show Notification
-    showToast(achievementId);
+    showToast(achievementId, reward);
 
     // Sync to Firestore
     try {
         const userRef = doc(db, 'users', currentUser.id);
         await updateDoc(userRef, {
-            achievements: userAchievements
+            achievements: userAchievements,
+            coins: currentUser.coins
         });
     } catch (e) {
         console.error("Error syncing achievement:", e);
     }
 }
 
-function showToast(achId) {
+function showToast(achId, reward) {
     const ach = achievements.find(a => a.id === achId);
     if (!ach) return;
 
@@ -79,7 +108,7 @@ function showToast(achId) {
         <div>
             <h4 class="font-bold text-sm text-yellow-400">¡Logro Desbloqueado!</h4>
             <p class="font-bold">${ach.name}</p>
-            <p class="text-xs text-gray-400">${ach.desc}</p>
+            <p class="text-xs text-gray-400">+${reward} Monedas</p>
         </div>
     `;
     

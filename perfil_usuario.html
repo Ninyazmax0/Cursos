@@ -298,6 +298,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             let userId = urlParams.get('user') || urlParams.get('id'); // Support both params
 
+            // Check Founder Stalker Achievement
+            if (userId && (userId.includes('steven') || userId.includes('amelia'))) {
+                import('./assets/js/achievements.js').then(m => m.checkAchievement('founder_stalker'));
+            }
+
             // If no userId in URL, show current user's own profile
             if (!userId) {
                 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -327,10 +332,13 @@
             }
 
             // FALLBACK PARA FUNDADORES (GOD MODE)
-            if (!user && (userId === 'steven-founder' || userId === 'amelia-founder')) {
-                const isAmelia = userId === 'amelia-founder';
+            // Checks for both legacy IDs and new canonical IDs
+            const isSteven = userId === 'steven' || userId === 'steven-founder' || userId.toLowerCase().includes('steven');
+            const isAmelia = userId === 'amelia' || userId === 'amelia-founder' || userId.toLowerCase().includes('amelia');
+
+            if (!user && (isSteven || isAmelia)) {
                 user = {
-                    id: userId,
+                    id: isAmelia ? 'amelia' : 'steven',
                     name: isAmelia ? 'Amelia' : 'Steven',
                     avatar: isAmelia ? 'https://cdn.myanimelist.net/images/characters/8/239523.jpg' : 'https://ui-avatars.com/api/?name=Steven&background=0D8ABC&color=fff',
                     rank: '👑 Owner',
@@ -343,7 +351,9 @@
                     pythonProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
                     rubyProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
                     databaseProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
-                    achievements: ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'speed_demon']
+                    achievements: isAmelia 
+                        ? ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol']
+                        : ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god']
                 };
             }
 
@@ -352,6 +362,39 @@
                 alert('Usuario no encontrado');
                 window.location.href = 'index.html';
                 return;
+            }
+
+            // FORCE LEGENDARY AND MASTER ACHIEVEMENTS FOR FOUNDERS
+            // This ensures they appear even if the database record is old/incomplete
+            const forcedSteven = ['pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god', 'web_master', 'python_master', 'ruby_master', 'db_master'];
+            const forcedAmelia = ['backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol', 'web_master', 'python_master', 'ruby_master', 'db_master'];
+
+            // Helper to generate full progress
+            const fullProgress = { completedLevels: Array.from({length: 20}, (_, i) => i + 1) };
+
+            if (user && (user.id === 'steven' || user.name === 'Steven' || user.id === 'steven-founder')) {
+                // Merge achievements
+                const current = new Set(user.achievements || []);
+                forcedSteven.forEach(id => current.add(id));
+                user.achievements = Array.from(current);
+
+                // Force Progress Stats
+                user.webProgress = { ...fullProgress };
+                user.pythonProgress = { ...fullProgress };
+                user.rubyProgress = { ...fullProgress };
+                user.databaseProgress = { ...fullProgress };
+            }
+            
+            if (user && (user.id === 'amelia' || user.name === 'Amelia' || user.id === 'amelia-founder')) {
+                const current = new Set(user.achievements || []);
+                forcedAmelia.forEach(id => current.add(id));
+                user.achievements = Array.from(current);
+
+                // Force Progress Stats
+                user.webProgress = { ...fullProgress };
+                user.pythonProgress = { ...fullProgress };
+                user.rubyProgress = { ...fullProgress };
+                user.databaseProgress = { ...fullProgress };
             }
 
             // Renderizar perfil
