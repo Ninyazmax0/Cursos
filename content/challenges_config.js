@@ -523,96 +523,224 @@ end
     // ==========================================
     
     "python_challenge1": {
-        title: "Desafío Python 1: Fundamentos",
-        subtitle: "Variables, listas y diccionarios",
+        title: "Desafío Python 1: Variables y Entrada",
+        subtitle: "Nivel 3: Domina las variables y la interacción básica.",
         instructions: `
-            <h2><i data-lucide="code-2" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
-            <p>Crea un programa Python con estructuras de datos básicas.</p>
+            <h2><i data-lucide="terminal" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Crea un programa que pregunte el nombre y la edad del usuario, y luego imprima un mensaje personalizado.</p>
             <div class="requirements">
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Variable con tu nombre</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Lista con 3 colores</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Diccionario con datos personales</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Imprime todo con print()</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Usa input() para pedir el nombre</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Usa input() para pedir la edad</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Imprime "Hola [nombre], tienes [edad] años"</span></div>
             </div>
         `,
-        initialCode: `# Desafío Python 1: Fundamentos
-# Escribe tu código aquí
-# 1. Variable con tu nombre
-# 2. Lista con 3 colores
-# 3. Diccionario con nombre y edad
-# 4. Imprime todo
+        initialCode: `# Desafío Nivel 3
+# Tu código aquí
+nombre = 
+edad = 
+print(...)
 `,
-        prompt: "Verifica: 1) Variable string, 2) Lista con al menos 3 elementos, 3) Diccionario con claves 'nombre' y 'edad', 4) Uso de print(). Sintaxis Python correcta.",
+        allowedCommands: ['print', 'input', '=', '(', ')', '"', "'", '+', ',', '#'],
+        prompt: "Verifica que use input() dos veces y print() con el formato correcto.",
         language: "python"
     },
     "python_challenge2": {
-        title: "Desafío Python 2: Funciones y Loops",
-        subtitle: "Crea funciones y usa bucles",
+        title: "Desafío Python 2: Lógica y Bucles",
+        subtitle: "Nivel 5: Control de flujo con if y for.",
         instructions: `
-            <h2><i data-lucide="repeat" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
-            <p>Demuestra el uso de funciones y bucles en Python.</p>
+            <h2><i data-lucide="git-branch" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Escribe un programa que cuente del 1 al 10 e imprima si cada número es par o impar.</p>
             <div class="requirements">
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Función que multiplique dos números</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Bucle for para iterar lista</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>List comprehension</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Bucle for con range(1, 11)</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Usa if/else y el operador módulo %</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Imprime "X es par" o "X es impar"</span></div>
             </div>
         `,
-        initialCode: `# Desafío Python 2: Funciones y Loops
-# 1. Función que multiplica
-def multiplicar(a, b):
-    # Tu código aquí
-    pass
-# 2. Lista de números
-numeros = [1, 2, 3, 4, 5]
-# 3. Bucle for
-# 4. List comprehension para duplicar
+        initialCode: `# Desafío Nivel 5
+# Bucle del 1 al 10
+for i in range(...):
+    if ...:
+        print(...)
+    else:
+        print(...)
 `,
-        prompt: "Verifica: 1) Función multiplicar que retorne a * b, 2) Bucle for que itere la lista, 3) List comprehension [x*2 for x in numeros] o similar. Sintaxis Python correcta.",
+        allowedCommands: ['for', 'in', 'range', 'if', 'else', 'elif', 'print', '%', '==', ':', '(', ')'],
+        prompt: "Verifica el uso de range(1, 11) o (1, 10), operador %, y estructura if/else dentro del for.",
         language: "python"
     },
     "python_challenge3": {
-        title: "Desafío Python 3: Clases y POO",
-        subtitle: "Programación orientada a objetos",
+        title: "Desafío Python 3: Colecciones",
+        subtitle: "Nivel 8: Listas y Diccionarios.",
         instructions: `
-            <h2><i data-lucide="package" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
-            <p>Crea una clase Estudiante con atributos y métodos.</p>
+            <h2><i data-lucide="list" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Crea una lista de compras y un diccionario de precios.</p>
             <div class="requirements">
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Clase Estudiante con __init__</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Atributos: nombre y nota</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Método aprobo() que retorne True/False</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Lista 'compras' con 3 items</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Diccionario 'precios' con los mismos items</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Calcula e imprime el total sumando precios</span></div>
             </div>
         `,
-        initialCode: `# Desafío Python 3: Clases
-# 1. Define la clase Estudiante
-class Estudiante:
-    # Tu código aquí
-    pass
-# 2. Crea una instancia
-# 3. Llama al método aprobo()
+        initialCode: `# Desafío Nivel 8
+compras = ["manzana", "pan", "leche"]
+precios = {"manzana": 10, "pan": 5, "leche": 15}
+
+total = 0
+# Tu lógica para sumar aquí...
+print("Total:", total)
 `,
-        prompt: "Verifica: 1) Clase con __init__(self, nombre, nota), 2) self.nombre y self.nota, 3) Método aprobo() que retorne self.nota >= 7 o similar, 4) Instancia creada. Sintaxis Python correcta.",
+        allowedCommands: ['list', 'dict', '[', ']', '{', '}', 'for', 'in', 'print', '+', '=', '+=', 'int', 'str'],
+        prompt: "Verifica creación de lista, diccionario y bucle para sumar valores.",
         language: "python"
     },
     "python_challenge4": {
-        title: "Desafío Python 4: Django/Flask",
-        subtitle: "Framework web de Python",
+        title: "Desafío Python 4: Archivos",
+        subtitle: "Nivel 10: Lectura y Escritura.",
         instructions: `
-            <h2><i data-lucide="server" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
-            <p>Crea una vista básica de Flask.</p>
+            <h2><i data-lucide="file-text" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Simula un sistema de logs escribiendo en un archivo.</p>
             <div class="requirements">
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Importa Flask</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Crea app = Flask(__name__)</span></div>
-                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Ruta / que retorne "Hola Mundo"</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Usa 'with open' en modo escritura ('w')</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Escribe 3 líneas de log</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Usa 'with open' en modo lectura ('r') para leerlo</span></div>
             </div>
         `,
-        initialCode: `# Desafío Python 4: Flask
-# Escribe tu código aquí
-# 1. Importa Flask
-# 2. Crea la app
-# 3. Define ruta /
-# 4. Run (opcional)
+        initialCode: `# Desafío Nivel 10
+# Escribir log
+with open("log.txt", "w") as f:
+    # Escribe aquí
+    pass
+
+# Leer log
+with open("log.txt", "r") as f:
+    print(f.read())
 `,
-        prompt: "Verifica: 1) from flask import Flask, 2) app = Flask(__name__), 3) @app.route('/') con función que retorne string. Sintaxis Flask correcta.",
+        allowedCommands: ['open', 'with', 'as', 'write', 'read', 'print', ':', '(', ')', '"', "'"],
+        prompt: "Verifica uso de context manager (with open) para escritura y lectura.",
+        language: "python"
+    },
+    "python_challenge5": {
+        title: "Desafío Python 5: Introducción a POO",
+        subtitle: "Nivel 13: Clases y Objetos.",
+        instructions: `
+            <h2><i data-lucide="box" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Define una clase <code>Robot</code>.</p>
+            <div class="requirements">
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Clase Robot con __init__(nombre)</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Método saludar() que diga "Hola, soy [nombre]"</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Instancia un robot y haz que salude</span></div>
+            </div>
+        `,
+        initialCode: `# Desafío Nivel 13
+class Robot:
+    def __init__(self, nombre):
+        # Tu código
+        pass
+    
+    def saludar(self):
+        # Tu código
+        pass
+
+r1 = Robot("R2D2")
+r1.saludar()
+`,
+        allowedCommands: ['class', 'def', '__init__', 'self', 'print', 'return', '=', '(', ')', '.', ':'],
+        prompt: "Verifica definición de clase, constructor __init__, uso de self y creación de instancia.",
+        language: "python"
+    },
+    "python_challenge6": {
+        title: "Desafío Python 6: Herencia",
+        subtitle: "Nivel 15: Superclases y Subclases.",
+        instructions: `
+            <h2><i data-lucide="git-merge" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Extiende la clase <code>Robot</code> del nivel anterior.</p>
+            <div class="requirements">
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Clase RobotVolador que herede de Robot</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Método volar() exclusivo de la subclase</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Sobrescribe saludar() para decir "Soy [nombre] y vuelo"</span></div>
+            </div>
+        `,
+        initialCode: `# Desafío Nivel 15
+class Robot:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    def saludar(self):
+        print(f"Soy {self.nombre}")
+
+class RobotVolador(Robot):
+    # Tu código aquí
+    pass
+
+rv = RobotVolador("Astro")
+rv.saludar()
+rv.volar()
+`,
+        allowedCommands: ['class', 'def', 'super', 'self', 'print', '(', ')', '.', ':', 'return'],
+        prompt: "Verifica herencia (class Sub(Super)), override de método y uso de super() opcional.",
+        language: "python"
+    },
+    "python_challenge7": {
+        title: "Desafío Python 7: APIs y JSON",
+        subtitle: "Nivel 18: Datos Externos.",
+        instructions: `
+            <h2><i data-lucide="globe" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Simula el consumo de uan API usando un diccionario JSON string.</p>
+            <div class="requirements">
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Importa json</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Parsea el string JSON dado a un diccionario</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Imprime el valor de 'status'</span></div>
+            </div>
+        `,
+        initialCode: `# Desafío Nivel 18
+import json
+
+respuesta_api = '{"status": "ok", "data": [1, 2, 3], "code": 200}'
+
+# 1. Parsea JSON
+datos = ...
+
+# 2. Imprime status
+print(...)
+`,
+        allowedCommands: ['import', 'json', 'loads', 'print', '=', '(', ')', '[', ']', '"', "'"],
+        prompt: "Verifica import json, uso de json.loads() y acceso a diccionario.",
+        language: "python"
+    },
+    "python_challenge8": {
+        title: "Desafío Final: Sistema Completo",
+        subtitle: "Nivel 20: Proyecto Integrador.",
+        instructions: `
+            <h2><i data-lucide="award" class="w-5 h-5 inline mr-2"></i>Instrucciones</h2>
+            <p>Crea un sistema de gestión de usuarios simple.</p>
+            <div class="requirements">
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Clase Usuario(nombre, email)</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Clase Sistema con lista de usuarios</span></div>
+                <div class="requirement-item"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Método registrar_usuario() y listar_usuarios()</span></div>
+            </div>
+        `,
+        initialCode: `# Desafío Final Nivel 20
+class Usuario:
+    def __init__(self, nombre, email):
+        self.nombre = nombre
+        self.email = email
+
+class Sistema:
+    def __init__(self):
+        self.usuarios = []
+    
+    def registrar(self, usuario):
+        # Agregar a lista
+        pass
+        
+    def listar(self):
+        # Mostrar todos
+        pass
+
+sis = Sistema()
+sis.registrar(Usuario("Steven", "s@test.com"))
+sis.listar()
+`,
+        allowedCommands: ['class', 'def', '__init__', 'self', 'append', 'print', 'for', 'in', '=', '(', ')', '.', ':', 'return'],
+        prompt: "Verifica estructura de 2 clases, manejo de lista de objetos y métodos funcionales.",
         language: "python"
     },
     // ==========================================

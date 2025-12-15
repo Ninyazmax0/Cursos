@@ -3001,7 +3001,7 @@ function renderLevelGrid() {
     courseData.forEach((level, index) => {
         const node = document.createElement('div');
         const isCompleted = userProgress.completedLevels.includes(index);
-        const isUnlocked = index === 0 || userProgress.completedLevels.includes(index - 1);
+        const isUnlocked = index === 0 || (userProgress.unlockedLevel && index < userProgress.unlockedLevel) || userProgress.completedLevels.includes(index - 1);
 
         node.className = `level-node ${isCompleted ? 'completed' : isUnlocked ? 'unlocked' : 'locked'}`;
         node.innerHTML = `

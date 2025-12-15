@@ -1142,7 +1142,7 @@
                 courses.forEach(course => {
                     if (!user[course]) user[course] = {};
                     user[course].unlockedLevel = 21; 
-                    user[course].completedLevels = Array.from({length: 20}, (_, i) => i + 1);
+                    user[course].completedLevels = Array.from({length: 20}, (_, i) => i);
                 });
                 
                 await syncUserToFirestore(user);

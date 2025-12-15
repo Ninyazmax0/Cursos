@@ -1434,14 +1434,9 @@
                     <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     Volver al Hub
                 </a>
-                <button id="chat-toggle-btn" class="p-2 rounded-full hover:bg-white/10 text-white transition-colors relative" title="Chat IA">
-                    <i data-lucide="message-square" class="w-5 h-5"></i>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                </button>
+<!-- Chat Button Removed -->
                 
-                <button onclick="document.getElementById('theme-store-modal').classList.remove('hidden'); window.themeManager.renderStore();" class="p-2 rounded-full hover:bg-white/10 text-yellow-400 transition-colors" title="Tienda de Temas">
-                    <i data-lucide="store" class="w-5 h-5"></i>
-                </button>
+<!-- Store Button Removed -->
 
                 <div class="w-px h-6 bg-white/20 mx-2"></div>
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/10 transition-colors">
@@ -1453,18 +1448,7 @@
         <p class="mb-8">Aprende Python, uno de los lenguajes de programación más populares y versátiles.</p>
         <div id="level-grid"></div>
 
-        <div class="mt-12 w-full max-w-6xl">
-            <h2 class="text-3xl font-bold mb-4 text-center" style="color: var(--accent);">Niveles de Práctica Opcionales</h2>
-            <p class="mb-8 text-center text-lg" style="color: var(--foreground-muted);">Ejercicios para practicar la resolución de problemas en un entorno de desarrollo.</p>
-            <div id="practice-level-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; width: 100%;">
-                <!-- Los niveles de práctica se generarán aquí -->
-            </div>
-        </div>
 
-
-        <div class="mt-4">
-            <button id="practice-btn" class="btn-primary hidden">Práctica</button>
-        </div>
     </div>
 
     <!-- Panel de Lección -->
@@ -1556,63 +1540,14 @@
     </div>
 
     <!-- Panel de Práctica -->
-    <div id="practice-panel" class="panel flex-col p-4">
-        <div class="flex-grow w-full max-w-4xl mx-auto flex flex-col">
-            <header class="flex items-center justify-between mb-4">
-                <h2 id="practice-title" class="text-2xl md:text-3xl font-bold"></h2>
-                <button id="close-practice-btn" class="p-2 rounded-full hover:bg-gray-700">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </header>
-            <div id="practice-content" class="flex-grow prose prose-invert max-w-none overflow-y-auto"></div>
-            <footer class="flex justify-between items-center mt-6">
-                <button id="prev-practice-btn" class="btn-primary" disabled>Anterior</button>
-                <span id="practice-step" class="font-mono">1 / 5</span>
-                <button id="next-practice-btn" class="btn-primary">Siguiente</button>
-            </footer>
-        </div>
-    </div>
+
 </div>
 
 <!-- Floating Chat Button -->
-<button id="chat-toggle-btn" class="fixed bottom-6 right-6 p-4 rounded-full shadow-xl z-50 transition-all duration-300 transform hover:scale-110" style="background-color: var(--yellow); color: var(--card-background);">
-    <i data-lucide="message-square" class="w-7 h-7"></i>
-</button>
+<!-- Floating Chat Button Removed -->
 
 <!-- Chat Modal -->
-<div id="chat-modal" class="fixed bottom-20 right-6 w-80 h-[450px] rounded-xl shadow-2xl z-50 flex flex-col hidden" style="background-color: var(--card-background); border: 1px solid var(--border);">
-    <!-- Chat Header -->
-    <header class="p-3 border-b flex items-center justify-between" style="border-color: var(--border);">
-        <div class="flex items-center">
-            <i data-lucide="sparkles" class="w-5 h-5 mr-2" style="color: var(--yellow);"></i>
-            <h3 class="font-semibold text-lg" style="color: var(--accent);">Asistente de Código</h3>
-        </div>
-        <button id="chat-close-btn" class="p-1 rounded-full hover:bg-gray-700">
-            <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-    </header>
-
-    <!-- Chat Messages Container -->
-    <div id="chat-messages" class="flex-grow p-3 overflow-y-auto space-y-3">
-        <!-- Mensaje de Bienvenida de la IA -->
-        <div class="flex justify-start">
-            <div class="ai-message chat-message-bubble">
-                Hola. Soy tu Asistente de Código. Pregunta sobre el contenido, la estructura o los conceptos de Python que hemos visto en el curso.
-            </div>
-        </div>
-    </div>
-
-    <!-- Chat Input Area -->
-    <div class="p-3 border-t" style="border-color: var(--border);">
-        <div class="flex gap-2">
-            <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." class="flex-grow p-2 rounded-lg text-sm focus:ring-0" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);" onkeydown="if(event.key === 'Enter') document.getElementById('chat-send-btn').click()">
-            <button id="chat-send-btn" class="p-2 rounded-lg transition-colors disabled:opacity-50" style="background-color: var(--accent); color: white;">
-                <i data-lucide="send" class="w-5 h-5"></i>
-            </button>
-        </div>
-        <p id="chat-loading" class="text-xs text-center mt-1 hidden" style="color: var(--yellow);">Analizando la estructura...</p>
-    </div>
-</div>
+<!-- Chat Modal Removed -->
 
 <script>
 // Datos de Práctica
@@ -3513,35 +3448,7 @@ def extraer_noticias(url):
         })
     
     return noticias</code></pre></div>` },
-            { title: "Consola Interactiva", content: `<div id="console-nivel-19"></div><script>createInteractiveConsole(\`# Simulación de web scraping (sin BeautifulSoup real)
-# En producción usarías: from bs4 import BeautifulSoup
-
-html_ejemplo = """
-<html>
-  <body>
-    <h1>Noticias del Día</h1>
-    <article>
-      <h2>Noticia 1</h2>
-      <p>Descripción de la primera noticia</p>
-    </article>
-    <article>
-      <h2>Noticia 2</h2>
-      <p>Descripción de la segunda noticia</p>
-    </article>
-  </body>
-</html>
-"""
-
-# Simulación simple de parsing
-import re
-
-titulos = re.findall(r'<h2>(.*?)</h2>', html_ejemplo)
-descripciones = re.findall(r'<p>(.*?)</p>', html_ejemplo)
-
-print("📰 Noticias extraídas:")
-for i, (titulo, desc) in enumerate(zip(titulos, descripciones), 1):
-    print("\\n{}. {}".format(i, titulo))
-    print("   {}".format(desc))\`, 'console-nivel-19');<\/script><p><strong>Caso real:</strong> Monitoreo de precios, agregadores de noticias, análisis de competencia.</p>` }
+            { title: "Consola Interactiva", content: `<p><strong>💡 Nota:</strong> El web scraping requiere librerías externas como BeautifulSoup. En un proyecto real, usarías <code>pip install beautifulsoup4 requests</code> y luego importarías estas librerías para analizar HTML de sitios web reales.</p><p><strong>Caso real:</strong> Monitoreo de precios, agregadores de noticias, análisis de competencia.</p>` }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es web scraping?", options: ["Crear sitios web", "Extraer datos de sitios web", "Diseñar páginas", "Hostear sitios"], answer: "Extraer datos de sitios web" },
@@ -3590,53 +3497,7 @@ class GestorTareas:
     def guardar(self, archivo="tareas.json"):
         with open(archivo, 'w') as f:
             json.dump([t.to_dict() for t in self.tareas], f)</code></pre></div>` },
-            { title: "Consola Interactiva - Proyecto Demo", content: `<div id="console-nivel-20"></div><script>createInteractiveConsole(\`from datetime import datetime
-
-class Tarea:
-    def __init__(self, titulo, prioridad="media"):
-        self.titulo = titulo
-        self.prioridad = prioridad
-        self.completada = False
-        self.fecha = datetime.now().strftime("%d/%m/%Y")
-    
-    def completar(self):
-        self.completada = True
-    
-    def __str__(self):
-        estado = "✓" if self.completada else "○"
-        return "{} [{}] {} ({})".format(estado, self.prioridad, self.titulo, self.fecha)
-
-class GestorTareas:
-    def __init__(self):
-        self.tareas = []
-    
-    def agregar(self, tarea):
-        self.tareas.append(tarea)
-        return "✓ Tarea '{}' agregada".format(tarea.titulo)
-    
-    def listar(self):
-        if not self.tareas:
-            return "No hay tareas"
-        return "\\n".join(str(t) for t in self.tareas)
-    
-    def pendientes(self):
-        return len([t for t in self.tareas if not t.completada])
-
-# Usar el sistema
-gestor = GestorTareas()
-
-print(gestor.agregar(Tarea("Estudiar Python", "alta")))
-print(gestor.agregar(Tarea("Hacer ejercicio", "media")))
-print(gestor.agregar(Tarea("Leer libro", "baja")))
-
-print("\\n📋 Todas las tareas:")
-print(gestor.listar())
-
-gestor.tareas[0].completar()
-
-print("\\n✅ Tareas pendientes: {}".format(gestor.pendientes()))
-print("\\n📋 Estado actualizado:")
-print(gestor.listar())\`, 'console-nivel-20');<\/script><p><strong>🎮 Desafío Final python_challenge4:</strong> Crea tu propio proyecto integrando POO, archivos, fechas y APIs.</p>` },
+            { title: "Consola Interactiva - Proyecto Demo", content: `<p><strong>🎮 Desafío Final python_challenge8:</strong> Crea tu propio proyecto integrando POO, archivos, fechas y APIs. Usa las clases <code>Tarea</code> y <code>GestorTareas</code> como base y expándelas con funcionalidades como:</p><ul><li>Guardar tareas en archivo JSON</li><li>Cargar tareas desde archivo</li><li>Filtrar por prioridad o fecha</li><li>Integrar con una API de tareas (opcional)</li></ul>` },
             { title: "¡Felicidades!", content: `<h3>🎉 ¡Completaste el Curso de Python!</h3><p>Ahora dominas:</p><ul><li>✅ Fundamentos de Python</li><li>✅ Estructuras de datos</li><li>✅ Programación Orientada a Objetos</li><li>✅ Manejo de archivos</li><li>✅ Automatizaciones</li><li>✅ APIs y Web Scraping</li><li>✅ Proyectos reales</li></ul><p><strong>Próximos pasos:</strong></p><ul><li>Practica con proyectos personales</li><li>Explora frameworks (Django, Flask, FastAPI)</li><li>Aprende Data Science (pandas, numpy, matplotlib)</li><li>Contribuye a proyectos open source</li></ul><p><strong>¡Sigue programando! 🚀</strong></p>` }
         ],
         quiz: [
@@ -3670,27 +3531,68 @@ let userProgress = { completedLevels: [], quizScores: {} };
 const COURSE_ID = 'python';
 
 const challengeMap = {
-    5: 'python_challenge1',
-    10: 'python_challenge2',
-    15: 'python_challenge3',
-    20: 'python_challenge4'
+    2: 'python_challenge1',  // Nivel 3
+    4: 'python_challenge2',  // Nivel 5
+    7: 'python_challenge3',  // Nivel 8
+    9: 'python_challenge4',  // Nivel 10
+    12: 'python_challenge5', // Nivel 13
+    14: 'python_challenge6', // Nivel 15
+    17: 'python_challenge7', // Nivel 18
+    19: 'python_challenge8'  // Nivel 20
 };
 
 // INIT (Strict)
 document.addEventListener('DOMContentLoaded', async () => {
-    // Rely on window globals from firebase-config module
-    const { showLoading, hideLoading, checkConnection, getUserFromFirestore } = window;
+    // Dynamic Import to ensure Firebase is loaded before proceeding
+    let firebaseTools;
+    try {
+        firebaseTools = await import('./assets/js/firebase-config.js');
+    } catch(e) {
+        console.error("Critical: Failed to load Firebase.", e);
+        // Intentar continuar sin Firebase en modo offline
+        console.warn('⚠️ Continuando en modo offline (sin sincronización con Firestore)');
+        
+        // Cargar datos desde localStorage
+        const localSession = JSON.parse(localStorage.getItem('currentUser'));
+        if (!localSession || !localSession.id) {
+            console.warn('⚠️ Sesión inválida en Python Course.');
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        // Cargar progreso desde localStorage
+        const savedProgress = localStorage.getItem('pythonCourseProgress');
+        if (savedProgress) {
+            try {
+                userProgress = JSON.parse(savedProgress);
+            } catch (e) {
+                console.error('❌ Error parsing saved progress:', e);
+                userProgress = { completedLevels: [], quizScores: {} };
+            }
+        } else {
+            console.log('🆕 Inicializando progreso Python vacío.');
+            userProgress = { completedLevels: [], quizScores: {} };
+        }
+        
+        // Renderizar interfaz
+        if (window.renderLevelSelection) renderLevelSelection();
+        if (window.showPanel) showPanel('levelSelection');
+        return;
+    }
+    
+    // Extract functions
+    const { showLoading, hideLoading, checkConnection, getUserFromFirestore } = firebaseTools;
     
     if (!checkConnection()) return;
     if (showLoading) showLoading('Sincronizando curso Python...');
-
+    
     const localSession = JSON.parse(localStorage.getItem('currentUser'));
     if (!localSession || !localSession.id) {
-        alert('Sesión no encontrada. Redirigiendo...');
+        console.warn('⚠️ Sesión inválida en Python Course.');
         window.location.href = 'index.html';
         return;
     }
-
+    
     try {
         if (getUserFromFirestore) {
             const firestoreUser = await getUserFromFirestore(localSession.id);
@@ -3703,8 +3605,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!userProgress.completedLevels) userProgress.completedLevels = [];
                 if (!userProgress.quizScores) userProgress.quizScores = {};
             } else {
-                 console.log('🆕 Inicializando progreso Python vacío.');
-                 userProgress = { completedLevels: [], quizScores: {} };
+                console.log('🆕 Inicializando progreso Python vacío.');
+                userProgress = { completedLevels: [], quizScores: {} };
             }
             
             // Update Session Cache
@@ -3713,23 +3615,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         
         // Initial Render
-        renderLevelSelection();
-        showPanel('levelSelection');
+        if (window.renderLevelSelection) renderLevelSelection();
+        if (window.showPanel) showPanel('levelSelection');
         
         // Check for Challenge Return
         const urlParams = new URLSearchParams(window.location.search);
         const challengeCompleted = urlParams.get('completed');
-        if (challengeCompleted === 'true') {
-             // Logic to handle challenge completion visualization if needed
-             // Usually challenges redirect back and we might want to unlock next level here if not done
-        }
         
         if (hideLoading) hideLoading();
-
+        
     } catch (e) {
         console.error('❌ Error Init Python:', e);
-        alert('Error cargando curso: ' + e.message);
-        window.location.href = 'menu_inicio.html';
+        
+        // Solo redirigir si es un error crítico (no de Pyodide/postMessage)
+        if (e.message && !e.message.includes('postMessage') && !e.message.includes('Pyodide')) {
+            alert('Error cargando curso: ' + e.message);
+            window.location.href = 'menu_inicio.html';
+        } else {
+            console.warn('⚠️ Error no crítico de Pyodide - continuando con la carga del curso');
+            // Intentar renderizar de todos modos
+            if (window.renderLevelSelection) renderLevelSelection();
+            if (window.showPanel) showPanel('levelSelection');
+            if (hideLoading) hideLoading();
+        }
     }
 });
 
@@ -3798,7 +3706,8 @@ const savedTheme = localStorage.getItem('theme') || 'dark';
 if (savedTheme === 'light') document.documentElement.classList.remove('dark');
 
 function showPanel(panelName) { 
-    Object.values(panels).forEach(p => p.classList.remove('active')); 
+    // Filtrar paneles null para evitar errores
+    Object.values(panels).filter(p => p !== null).forEach(p => p.classList.remove('active')); 
     if(panels[panelName]) panels[panelName].classList.add('active'); 
     lucide.createIcons(); 
 }
@@ -4467,8 +4376,8 @@ function showResults() {
     lucide.createIcons();
     showPanel('results');
     
-    // Desbloquear chat después del quiz
-    document.getElementById('chat-toggle-btn').style.display = 'block';
+    // Desbloquear chat después del quiz (Removed)
+    // document.getElementById('chat-toggle-btn').style.display = 'block';
 }
 
 // Render Level Selection Grid
@@ -4544,49 +4453,7 @@ function renderLevelSelection() {
         levelGrid.appendChild(levelNode);
     });
     
-    // Render practice levels grid
-    const practiceLevelGrid = document.getElementById('practice-level-grid');
-    if (practiceLevelGrid) {
-        practiceLevelGrid.innerHTML = '';
-        practiceData.forEach((practice, index) => {
-            const practiceNode = document.createElement('div');
-            practiceNode.className = 'level-node unlocked';
-            practiceNode.style.display = 'flex';
-            practiceNode.style.flexDirection = 'column';
-            practiceNode.style.alignItems = 'center';
-            practiceNode.style.cursor = 'pointer';
-            
-            const iconWrapper = document.createElement('div');
-            iconWrapper.className = 'level-icon-wrapper';
-            iconWrapper.style.width = '64px';
-            iconWrapper.style.height = '64px';
-            iconWrapper.style.borderRadius = '50%';
-            iconWrapper.style.display = 'flex';
-            iconWrapper.style.alignItems = 'center';
-            iconWrapper.style.justifyContent = 'center';
-            iconWrapper.style.border = '3px solid var(--yellow)';
-            iconWrapper.style.color = 'var(--yellow)';
-            
-            const icon = document.createElement('i');
-            icon.setAttribute('data-lucide', 'code-2');
-            icon.className = 'w-8 h-8';
-            iconWrapper.appendChild(icon);
-            
-            const practiceNumber = document.createElement('div');
-            practiceNumber.className = 'level-number';
-            practiceNumber.textContent = `Práctica ${index + 1}`;
-            practiceNumber.style.marginTop = '8px';
-            practiceNumber.style.fontWeight = '600';
-            practiceNumber.style.fontSize = '0.9rem';
-            
-            practiceNode.appendChild(iconWrapper);
-            practiceNode.appendChild(practiceNumber);
-            
-            practiceNode.addEventListener('click', () => startPractice(index));
-            
-            practiceLevelGrid.appendChild(practiceNode);
-        });
-    }
+
     
     lucide.createIcons();
 }
@@ -4624,43 +4491,13 @@ document.getElementById('next-level-btn').addEventListener('click', () => {
     }
 });
 
-function startPractice(practiceIndex) {
-    currentPracticeStep = practiceIndex;
-    renderPractice();
-    showPanel('practice');
-}
 
-function renderPractice() {
-    const practiceDataItem = practiceData[currentPracticeStep];
-    document.getElementById('practice-title').textContent = practiceDataItem.title;
-    document.getElementById('practice-content').innerHTML = practiceDataItem.content;
-    document.getElementById('practice-step').textContent = `${currentPracticeStep + 1} / ${practiceData.length}`;
-    const prevBtn = document.getElementById('prev-practice-btn');
-    prevBtn.disabled = currentPracticeStep === 0;
-    document.getElementById('next-practice-btn').textContent = (currentPracticeStep === practiceData.length - 1) ? 'Finalizar' : 'Siguiente';
-}
 
-document.getElementById('next-practice-btn').addEventListener('click', () => {
-    if (currentPracticeStep < practiceData.length - 1) {
-        currentPracticeStep++;
-        renderPractice();
-    } else {
-        renderLevelSelection();
-        showPanel('levelSelection');
-    }
-});
-
-document.getElementById('prev-practice-btn').addEventListener('click', () => {
-    if (currentPracticeStep > 0) {
-        currentPracticeStep--;
-        renderPractice();
-    }
-});
-
-document.getElementById('close-practice-btn').addEventListener('click', () => {
-    renderLevelSelection();
-    showPanel('levelSelection');
-});
+// Elemento 'close-practice-btn' no existe en el HTML - comentado para evitar error
+// document.getElementById('close-practice-btn').addEventListener('click', () => {
+//     renderLevelSelection();
+//     showPanel('levelSelection');
+// });
 
 // Theme toggle
 document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -4671,119 +4508,32 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
     lucide.createIcons();
 });
 
-// Chat functionality
-document.getElementById('chat-toggle-btn').addEventListener('click', () => {
-    const chatModal = document.getElementById('chat-modal');
-    chatModal.classList.toggle('hidden');
-});
-
-document.getElementById('chat-close-btn').addEventListener('click', () => {
-    document.getElementById('chat-modal').classList.add('hidden');
-});
-
-document.getElementById('chat-send-btn').addEventListener('click', sendMessage);
-
-function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const message = input.value.trim();
-    if (!message) return;
-
-    // Add user message
-    addMessageToChat(message, 'user');
-    input.value = '';
-
-    // Show loading
-    const loading = document.getElementById('chat-loading');
-    loading.classList.remove('hidden');
-
-    // Simulate AI response after a delay
-    setTimeout(() => {
-        loading.classList.add('hidden');
-        // Simple response logic - in a real app, this would call an API
-        const response = generateAIResponse(message);
-        addMessageToChat(response, 'ai');
-    }, 1000);
-}
-
-function addMessageToChat(message, sender) {
-    const messagesContainer = document.getElementById('chat-messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-    
-    const bubble = document.createElement('div');
-    bubble.className = `chat-message-bubble ${sender === 'user' ? 'user-message' : 'ai-message'}`;
-    bubble.textContent = message;
-    
-    messageDiv.appendChild(bubble);
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function generateAIResponse(message) {
-    // Enhanced AI tutor functionality
-    const lowerMessage = message.toLowerCase();
-
-    if (lowerMessage.includes('hola') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
-        return '¡Hola! Soy tu tutor de Python. Puedo ayudarte a entender conceptos, evaluar tu código o dar pistas. ¿Qué necesitas?';
-    } else if (lowerMessage.includes('nivel') || lowerMessage.includes('lección')) {
-        return 'Actualmente estás en el nivel ' + (currentLevel + 1) + '. ¿Necesitas ayuda con algún concepto específico?';
-    } else if (lowerMessage.includes('variable') || lowerMessage.includes('variables')) {
-        return 'Las variables en Python son contenedores para almacenar datos. Se crean simplemente asignando un valor: nombre = "Ana", edad = 25. No necesitas declarar el tipo.';
-    } else if (lowerMessage.includes('función') || lowerMessage.includes('funciones')) {
-        return 'Las funciones en Python se definen con "def". Pueden recibir parámetros y devolver valores con "return". Ejemplo: def suma(a, b): return a + b';
-    } else if (lowerMessage.includes('lista') || lowerMessage.includes('listas')) {
-        return 'Las listas en Python son colecciones ordenadas y mutables. Se crean con corchetes: frutas = ["manzana", "banana"]. Accede con índices: frutas[0]';
-    } else if (lowerMessage.includes('diccionario') || lowerMessage.includes('diccionarios')) {
-        return 'Los diccionarios almacenan pares clave-valor. Se crean con llaves: persona = {"nombre": "Ana", "edad": 25}. Accede con claves: persona["nombre"]';
-    } else if (lowerMessage.includes('error') || lowerMessage.includes('problema')) {
-        return 'Si tienes un error, revisa la sintaxis y asegúrate de que todas las variables estén definidas. ¿Puedes compartir el código con el error?';
-    } else if (lowerMessage.includes('evaluar') || lowerMessage.includes('revisar') || lowerMessage.includes('código')) {
-        return '¡Claro! Pega tu código aquí y te ayudaré a revisarlo. Puedo detectar errores comunes y sugerir mejoras.';
-    } else if (lowerMessage.includes('pista') || lowerMessage.includes('ayuda')) {
-        return 'Para el ejercicio actual, recuerda usar los comandos indicados. Si es un código con errores, busca sintaxis incorrecta. Si es completar código, piensa en qué función o estructura falta.';
-    } else if (lowerMessage.includes('input')) {
-        return 'input() lee entrada del usuario como string. Para números usa int(input()) o float(input()).';
-    } else if (lowerMessage.includes('print')) {
-        return 'print() muestra texto en pantalla. Usa f-strings para variables: print(f"Hola {nombre}")';
-    } else if (lowerMessage.includes('if') || lowerMessage.includes('condicional')) {
-        return 'Las condicionales usan if/elif/else. Recuerda los dos puntos (:) y la indentación. Ejemplo: if edad >= 18: print("Adulto")';
-    } else {
-        return 'Interesante pregunta sobre Python. ¿Podrías ser más específico? Puedo ayudarte con conceptos, código o ejercicios.';
-    }
-}
+// Chat functionality removed
 
 
 // Error finding functionality
 function initializeErrorFinding() {
-    // Make code clickable for error finding
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.code-block') && e.target.closest('#error-code-1, #error-code-2')) {
-            const codeBlock = e.target.closest('.code-block');
-            const codeElement = codeBlock.querySelector('code');
-            if (codeElement) {
-                const selection = window.getSelection();
-                const selectedText = selection.toString().trim();
-                if (selectedText) {
-                    // Check if selected text is an error
-                    const errors = getErrorsForBlock(codeBlock.id);
-                    if (errors.includes(selectedText)) {
-                        // Mark as found
-                        e.target.style.backgroundColor = 'rgba(158, 206, 106, 0.3)';
-                        e.target.style.borderRadius = '3px';
-                        checkAllErrorsFound(codeBlock.id);
-                    }
-                }
+    // Check if elements exist before adding event listeners
+    const giveUpBtn1 = document.getElementById('give-up-1');
+    const giveUpBtn2 = document.getElementById('give-up-2');
+    
+    if (giveUpBtn1) {
+        giveUpBtn1.addEventListener('click', () => {
+            const solution1 = document.getElementById('solution-1');
+            if (solution1) {
+                solution1.classList.remove('hidden');
             }
-        }
-    });
-
-    // Give up buttons
-    document.getElementById('give-up-1').addEventListener('click', () => {
-        document.getElementById('solution-1').classList.remove('hidden');
-    });
-    document.getElementById('give-up-2').addEventListener('click', () => {
-        document.getElementById('solution-2').classList.remove('hidden');
-    });
+        });
+    }
+    
+    if (giveUpBtn2) {
+        giveUpBtn2.addEventListener('click', () => {
+            const solution2 = document.getElementById('solution-2');
+            if (solution2) {
+                solution2.classList.remove('hidden');
+            }
+        });
+    }
 }
 
 function getErrorsForBlock(blockId) {
@@ -4827,9 +4577,6 @@ function updateCommandCounter(blockId) {
 
 // Code completion functionality
 function initializeCodeCompletion() {
-    document.getElementById('check-fill-1').addEventListener('click', () => checkFill(1));
-    document.getElementById('check-fill-2').addEventListener('click', () => checkFill(2));
-
     // Initialize click-to-place for fill exercises
     initializeClickToPlace();
 }

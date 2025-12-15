@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Enviar Mensaje
     function sendMessage() {
-        const message = chatInput.value.trim();
+        const message = chatInput.value.trim().substring(0, 200);
         if (!message) return;
 
         // Mostrar mensaje usuario
@@ -108,13 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
         if (input.includes('gracias')) 
             return '¡De nada! Aquí estoy si necesitas más ayuda. ☕';
-            
-        if (input.includes('steven')) 
-            return 'Steven es nuestro experto en Frontend y fundador. Le encanta el café y el diseño pixel-perfect.';
-            
-        if (input.includes('amelia')) 
-            return 'Amelia es la maga del Backend. Se encarga de que todo funcione rápido y seguro.';
 
-        return 'Interesante pregunta. Como soy una IA en entrenamiento, te sugiero revisar la documentación o preguntar a Steven/Amelia directamente.';
+        return 'Interesante pregunta. Como soy una IA en entrenamiento, te sugiero revisar la documentación o preguntar en la comunidad.';
     }
 });
