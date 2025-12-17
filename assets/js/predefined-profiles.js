@@ -103,28 +103,75 @@ export async function initializePredefinedProfiles() {
  * Mezcla los datos predefinidos con los datos del usuario
  * Asegura que Steven y Amelia siempre tengan sus badges y permisos
  */
+// === COSMÉTICOS DEFINIDOS ===
+// Ahora usamos "Auras" (CSS classes) en lugar de imágenes estáticas
+
+export const PROFILE_AURAS = [
+    // === TIER 1: COMMON (Cost: 500 Coins) ===
+    { id: 'aura-c-1', name: 'Iron Ring', cssClass: 'aura-c-1', price: 500, desc: 'Simple y resistente.' },
+    { id: 'aura-c-2', name: 'Steel Shadow', cssClass: 'aura-c-2', price: 500, desc: 'Sombra de acero.' },
+    { id: 'aura-c-3', name: 'Blue Tint', cssClass: 'aura-c-3', price: 500, desc: 'Un toque de color.' },
+    { id: 'aura-c-4', name: 'Green Dash', cssClass: 'aura-c-4', price: 500, desc: 'Estilo punteado.' },
+    { id: 'aura-c-5', name: 'Purple Double', cssClass: 'aura-c-5', price: 500, desc: 'Doble linea, doble estilo.' },
+
+    // === TIER 2: RARE (Cost: 2000 Coins) ===
+    { id: 'aura-r-1', name: 'Breathing Blue', cssClass: 'aura-r-1', price: 2000, desc: 'Respira contigo.' },
+    { id: 'aura-r-2', name: 'Spinning Gold', cssClass: 'aura-r-2', price: 2000, desc: 'Rotación lenta y elegante.' },
+    { id: 'aura-r-3', name: 'Green Pulse', cssClass: 'aura-r-3', price: 2000, desc: 'Energía vital pulsante.' },
+    { id: 'aura-r-4', name: 'Red Alert', cssClass: 'aura-r-4', price: 2000, desc: 'Advertencia de peligro.' },
+    { id: 'aura-r-5', name: 'Frozen Shards', cssClass: 'aura-r-5', price: 2000, desc: 'Fragmentos de hielo afilado.' },
+
+    // === TIER 3: EPIC (Cost: 5000 Coins) ===
+    { id: 'aura-e-1', name: 'Neon Orbit', cssClass: 'aura-e-1', price: 5000, desc: 'Luz de neón orbital.' },
+    { id: 'aura-e-2', name: 'Magma Core', cssClass: 'aura-e-2', price: 5000, desc: 'Núcleo volcánico.' },
+    { id: 'aura-e-3', name: 'Toxic Storm', cssClass: 'aura-e-3', price: 5000, desc: 'Tormenta radiactiva.' },
+    { id: 'aura-e-4', name: 'Electric Storm', cssClass: 'aura-e-4', price: 5000, desc: 'Alto voltaje.' },
+    { id: 'aura-e-5', name: 'Gravity Well', cssClass: 'aura-e-5', price: 5000, desc: 'Distorsión gravitacional.' },
+
+    // === TIER 4: LEGENDARY (Cost: 10000 Coins) ===
+    { id: 'aura-l-1', name: 'Timekeeper Nightmare', cssClass: 'aura-l-1', price: 10000, desc: 'El tiempo se distorsiona... tick tock.' },
+    { id: 'aura-l-2', name: 'Glitch King', cssClass: 'aura-l-2', price: 10000, desc: 'Error crítico en la realidad.' },
+    { id: 'aura-l-3', name: 'Divine Ascension', cssClass: 'aura-l-3', price: 10000, desc: 'Luz dorada celestial.' },
+    { id: 'aura-l-4', name: 'Event Horizon', cssClass: 'aura-l-4', price: 10000, desc: 'Nada escapa del agujero negro.' },
+    { id: 'aura-l-5', name: 'Dragon Emperor', cssClass: 'aura-l-5', price: 10000, desc: 'El aliento de los dragones.' },
+
+    // === TIER 5: COURSE EXCLUSIVES (Unlock: Completed Course) ===
+    { id: 'aura-course-web', name: 'Web Master', cssClass: 'aura-course-web', price: 0, unlockCondition: 'course_web_completed', desc: 'Maestro del HTML/CSS.' },
+    { id: 'aura-course-py', name: 'Python Charmer', cssClass: 'aura-course-py', price: 0, unlockCondition: 'course_python_completed', desc: 'Encantador de serpientes.' },
+    { id: 'aura-course-ruby', name: 'Ruby Keeper', cssClass: 'aura-course-ruby', price: 0, unlockCondition: 'course_ruby_completed', desc: 'Brillo de rubí.' },
+    { id: 'aura-course-db', name: 'Data Guardian', cssClass: 'aura-course-db', price: 0, unlockCondition: 'course_db_completed', desc: 'Guardián de los datos.' },
+    { id: 'aura-course-logic', name: 'Logic Brain', cssClass: 'aura-course-logic', price: 0, unlockCondition: 'course_logic_completed', desc: 'Mente puramente lógica.' },
+
+    // === TIER 6: ACHIEVEMENT EXCLUSIVES ===
+    { id: 'aura-ach-hunter', name: 'Trophy Hunter', cssClass: 'aura-ach-hunter', price: 0, unlockCondition: 'achievement_hunter', desc: 'Para quien lo quiere todo.' },
+    { id: 'aura-ach-perfect', name: 'Perfectionist', cssClass: 'aura-ach-perfect', price: 0, unlockCondition: 'achievement_perfect', desc: '100% o nada.' },
+
+    // === TIER 7: OWNER GOD-TIER ===
+    { id: 'aura-founder-steven', name: 'The Architect', cssClass: 'aura-founder-steven', price: 999999, unlockCondition: 'is_steven', desc: 'Creador del Universo.' },
+    { id: 'aura-founder-amelia', name: 'The Abyss', cssClass: 'aura-founder-amelia', price: 999999, unlockCondition: 'is_amelia', desc: 'Reina del Caos.' },
+
+    // === TIER 8: SECRET (Hidden Unlocks) ===
+    { id: 'aura-secret-nature', name: 'Life Cycle', cssClass: 'aura-secret-nature', price: 0, unlockCondition: 'secret_konami', desc: 'Hojas que caen eternamente.' },
+    { id: 'aura-secret-time', name: 'Chronos', cssClass: 'aura-secret-time', price: 0, unlockCondition: 'secret_time', desc: 'El tiempo es tuyo.' },
+    { id: 'aura-secret-fire', name: 'Eternal Flame', cssClass: 'aura-secret-fire', price: 0, unlockCondition: 'secret_fire', desc: 'Nunca se apaga.' },
+    { id: 'aura-secret-hacker', name: 'Zero Day', cssClass: 'aura-secret-hacker', price: 0, unlockCondition: 'secret_hack', desc: '01010101.' }
+];
+
+export const PREDEFINED_AVATARS = []; // Deprecated, keeping empty array to prevent breakages if imported
+
 export function applyAdminPrivileges(userData, username) {
     // Normalizar ID/Username para check
     const idToCheck = (userData.id || username).toLowerCase();
 
-    if (idToCheck === 'steven') {
-        return {
-            ...userData,
-            ...STEVEN_PROFILE,
-            id: 'steven',
-            // Preservar contraseña y datos "vivos" si se desea, 
-            // pero forzar los metadatos importantes.
-            password: userData.password || STEVEN_PROFILE.password 
-        };
+    if (idToCheck === 'steven' || idToCheck === 'steven-founder') {
+        const base = STEVEN_PROFILE;
+        // Merge but keep user password if changed
+        return { ...userData, ...base, password: userData.password || base.password, equippedAura: 'aura-founder-steven' };
     }
     
-    if (idToCheck === 'amelia') {
-        return {
-            ...userData,
-            ...AMELIA_PROFILE,
-            id: 'amelia',
-            password: userData.password || AMELIA_PROFILE.password
-        };
+    if (idToCheck === 'amelia' || idToCheck === 'amelia-founder') {
+        const base = AMELIA_PROFILE;
+        return { ...userData, ...base, password: userData.password || base.password, equippedAura: 'aura-founder-amelia' };
     }
 
     return userData;

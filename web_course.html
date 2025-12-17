@@ -9,6 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-dark.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.css">
+    <link rel="stylesheet" href="assets/css/auras.css">
+    <!-- Monaco Editor Loader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
     <!-- Firebase Modules -->
     <script type="module" src="assets/js/firebase-config.js"></script>
     <script type="module" src="assets/js/firebase-storage.js"></script>
@@ -2702,6 +2707,88 @@ let quizScore = 0;
 let userProgress = { completedLevels: [] };
 let codeEvaluations = [];
 
+// Monaco Initialization Vars
+let monacoRequireConfigured = false;
+let monacoEditors = {};
+
+function initializeCodeBlockMonaco() {
+    // Configurar RequireJS una sola vez
+    if (!monacoRequireConfigured) {
+        if (window.require) {
+            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+            monacoRequireConfigured = true;
+        } else {
+            return; // Esperar a que cargue loader
+        }
+    }
+
+    require(['vs/editor/editor.main'], function() {
+        if (window.themeManager) window.themeManager.defineCustomThemes();
+
+        document.querySelectorAll('.code-block').forEach((block) => {
+            if (block.getAttribute('data-monaco-initialized') === 'true') return;
+            
+            const codeElement = block.querySelector('code');
+            if (!codeElement) return;
+
+            // Detect language
+            let language = 'html'; // Default for web course
+            const classStr = codeElement.className || '';
+            if (classStr.includes('css')) language = 'css';
+            else if (classStr.includes('javascript') || classStr.includes('js')) language = 'javascript';
+            else if (classStr.includes('python')) language = 'python';
+
+            const code = codeElement.textContent;
+            let filename = 'example.' + (language === 'javascript' ? 'js' : language);
+
+            block.innerHTML = '';
+            block.style.height = 'auto';
+            block.setAttribute('data-monaco-initialized', 'true');
+            
+            const editorContainer = document.createElement('div');
+            editorContainer.style.width = '100%';
+            const lineCount = code.split('\n').length;
+            const height = Math.min(Math.max(lineCount * 21 + 20, 100), 500); 
+            editorContainer.style.height = `${height}px`;
+            editorContainer.className = 'monaco-static-block rounded-md overflow-hidden border border-gray-700 mt-4';
+            
+            const header = document.createElement('div');
+            header.className = 'flex items-center justify-between px-4 py-2 bg-[#1a1b26] border-b border-gray-800';
+            header.innerHTML = `
+                <div class="flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+                    <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+                    <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+                </div>
+                <div class="text-xs text-gray-400 font-mono">${filename}</div>
+            `;
+            
+            block.appendChild(header);
+            block.appendChild(editorContainer);
+
+            monaco.editor.create(editorContainer, {
+                value: code,
+                language: language,
+                theme: 'tokyo-night',
+                readOnly: true,
+                domReadOnly: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                fontSize: 14,
+                fontFamily: "'JetBrains Mono', monospace",
+                lineNumbers: 'off',
+                folding: false,
+                renderLineHighlight: 'none',
+                contextmenu: false,
+                scrollbar: { vertical: 'hidden', horizontal: 'auto', useShadows: false },
+                overviewRulerBorder: false,
+                hideCursorInOverviewRuler: true,
+                padding: { top: 10, bottom: 10 }
+            });
+        });
+    });
+}
+
 function showPanel(panelId) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.getElementById(panelId).classList.add('active');
@@ -2724,7 +2811,12 @@ function showLessonStep() {
     prevBtn.disabled = currentStep === 0;
     nextBtn.textContent = currentStep === levelData.lesson.length - 1 ? 'Ir al Quiz' : 'Siguiente';
     
-    if (window.Prism) Prism.highlightAll();
+    nextBtn.textContent = currentStep === levelData.lesson.length - 1 ? 'Ir al Quiz' : 'Siguiente';
+    
+    // Iniciar Monaco en lugar de Prism para code-blocks
+    setTimeout(initializeCodeBlockMonaco, 10);
+    
+    // Prism como fallback para inline codes <p><code>...</code></p>
     if (window.Prism) Prism.highlightAll();
 
     // Init Playgrounds

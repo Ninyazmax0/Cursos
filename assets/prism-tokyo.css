@@ -124,3 +124,21 @@ pre[class*="language-"] {
 .line-numbers-rows > span:before {
     color: #565f89;
 }
+
+/* Indentation guides */
+.code-block pre {
+  position: relative;
+  tab-size: 4;
+}
+.code-block pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-image: linear-gradient(to right, transparent 0%, transparent calc(var(--indent-size) - 1px), var(--border) calc(var(--indent-size) - 1px), var(--border) var(--indent-size));
+  background-size: var(--indent-size) 100%;
+  pointer-events: none;
+}
+:root { --indent-size: 1.5rem; }

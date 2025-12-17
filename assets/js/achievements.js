@@ -27,14 +27,14 @@ export const achievements = [
     { id: 'level_80', name: 'Leyenda', desc: 'Alcanza el nivel 80 global.', hint: 'Tocando el cielo.', rarity: 'epic', icon: 'crown' },
     
     // --- EASTER EGGS ---
-    { id: 'click_spammer', name: 'Rage Clicker', desc: 'Clickea el logo 10 veces rápido.', hint: 'A veces la violencia es la solución.', rarity: 'common', icon: 'mouse-pointer-click' },
     { id: 'konami_code', name: 'Retro Gamer', desc: 'Introduce el código Konami.', hint: '⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️BA', rarity: 'epic', icon: 'gamepad-2' },
     { id: 'founder_stalker', name: 'Stalker', desc: 'Visita los perfiles de Steven y Amelia.', hint: 'Conoce a tus creadores.', rarity: 'rare', icon: 'eye' },
     { id: 'social_butterfly', name: 'Social Butterfly', desc: 'Clickea en 5 enlaces sociales distintos.', hint: '¡Haz amigos!', rarity: 'common', icon: 'share-2' },
-    { id: 'bug_hunter', name: '404 Hunter', desc: 'Intenta ir a una página que no existe.', hint: 'A veces perderse es encontrarse.', rarity: 'rare', icon: 'search' },
     { id: 'teapot', name: 'I\'m a Teapot', desc: 'Encuentra la referencia al error 418.', hint: 'Busca en la historia.', rarity: 'epic', icon: 'coffee' },
     { id: 'quiz_genius', name: 'Genio', desc: 'Obtén 10/10 en cualquier quiz.', hint: 'Perfección absoluta.', rarity: 'rare', icon: 'star' },
     { id: 'veteran', name: 'Veterano', desc: 'Visita la plataforma 3 días seguidos.', hint: 'La constancia es clave.', rarity: 'rare', icon: 'calendar-check' },
+    { id: 'streak_3', name: 'Racha de Fuego', desc: 'Mantén una racha de 3 días.', hint: 'No rompas la cadena.', rarity: 'rare', icon: 'flame' },
+    { id: 'python_apprentice', name: 'Encantador de Serpientes', desc: 'Completa el nivel 5 de Python.', hint: 'Tus primeros pasos.', rarity: 'common', icon: 'code' },
 
     // --- STEVEN EXCLUSIVE (OWNER) ---
     { id: 'pixel_perfect', name: 'Pixel Perfect', desc: 'Alinear cada div a la perfección.', hint: 'Obsesión por los detalles.', rarity: 'legendary', icon: 'layout' },

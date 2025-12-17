@@ -11,6 +11,7 @@
     <script type="module" src="assets/js/firebase-config.js"></script>
     <script type="module" src="assets/js/firebase-storage.js"></script>
     <script type="module" src="assets/js/profile-editor.js"></script>
+    <link rel="stylesheet" href="assets/css/auras.css">
     <style>
         /* Tokyo Night Theme */
         :root {
@@ -162,9 +163,11 @@
         <div class="profile-card mb-8">
             <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                 <!-- Avatar -->
-                <div class="relative">
-                    <img id="user-avatar" src="" alt="Avatar" class="w-32 h-32 rounded-full border-4 border-accent object-cover">
-                    <div id="online-indicator" class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 border-4 border-card-background rounded-full"></div>
+                <div class="relative flex justify-center items-center">
+                    <div id="avatar-container" class="avatar-aura-container">
+                        <img id="user-avatar" src="" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+                    </div>
+                    <div id="online-indicator" class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 border-4 border-card-background rounded-full z-20"></div>
                 </div>
 
                 <!-- Información Básica -->
@@ -402,22 +405,24 @@
         }
 
         function renderProfile(user) {
-            // Apply Avatar Frames if user has one equipped
-            const avatarContainer = document.querySelector('#user-avatar').parentElement;
-            
-            // Limpiar frames anteriores
-            avatarContainer.classList.remove('frame-steven', 'frame-amelia', 'frame-gold');
-            
-            // Lógica de Frames Específicos
-            if (user.id === 'steven-founder') {
-                 avatarContainer.classList.add('frame-steven');
-            } else if (user.id === 'amelia-founder') {
-                 avatarContainer.classList.add('frame-amelia');
-            }
-            // Future compatibility for equipped frames
-            else if (user.equippedFrame) {
-                 avatarContainer.classList.add(user.equippedFrame);
-            }
+            // Apply Avatar Frames/Auras logic
+            import('./assets/js/predefined-profiles.js').then(({ PROFILE_AURAS }) => {
+                const auraId = user.equippedAura || 'aura-none';
+                
+                // Special handling for founders if no manual aura equipped
+                let finalAuraId = auraId;
+                if (!user.equippedAura && (user.id === 'steven-founder' || user.id === 'steven')) finalAuraId = 'aura-founder-steven';
+                if (!user.equippedAura && (user.id === 'amelia-founder' || user.id === 'amelia')) finalAuraId = 'aura-founder-amelia';
+
+                const auraData = PROFILE_AURAS.find(a => a.id === finalAuraId);
+                const container = document.getElementById('avatar-container');
+                
+                // Reset classes
+                container.className = 'avatar-aura-container';
+                if (auraData && auraData.cssClass) {
+                    container.classList.add(auraData.cssClass);
+                }
+            });
 
             // Actualizar elementos
             document.getElementById('user-name').textContent = user.name || 'Estudiante';

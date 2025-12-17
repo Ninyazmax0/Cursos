@@ -70,11 +70,15 @@ export function openEditProfileModal(userData) {
                     <div class="space-y-4">
                         <label class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Identidad Visual</label>
                         
-                        <!-- Avatar URL Override -->
-                        <div class="flex items-center gap-4 bg-[#24283b] p-4 rounded-xl border border-[#414868]">
-                            <img id="avatar-preview-small" src="${userData.avatar}" class="w-12 h-12 rounded-full object-cover border-2 border-purple-500/30">
-                            <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">URL de Imagen Personalizada</label>
+                        <!-- Avatar Selection -->
+                        <div class="bg-[#24283b] p-4 rounded-xl border border-[#414868]">
+                            <label class="text-xs text-gray-500 mb-2 block">Seleccionar Avatar</label>
+                            <div class="flex gap-2 overflow-x-auto pb-2 mb-3" id="avatar-selector">
+                                <!-- Injected via JS -->
+                            </div>
+                            
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-gray-500 whitespace-nowrap">O URL propia:</span>
                                 <input
                                     type="url"
                                     id="edit-avatar-url"
@@ -83,6 +87,16 @@ export function openEditProfileModal(userData) {
                                     placeholder="https://..."
                                 >
                             </div>
+                        </div>
+
+                         <!-- Frame Selection -->
+                        <div class="bg-[#24283b] p-4 rounded-xl border border-[#414868]">
+                            <label class="text-xs text-gray-500 mb-2 block">Marco de Perfil</label>
+                            
+                            <div class="flex flex-wrap gap-2" id="frame-selector">
+                                <!-- Dynamic Injection -->
+                            </div>
+                            <input type="hidden" id="edit-frame-input" value="${userData.equippedAura || ''}">
                         </div>
                     </div>
 
@@ -132,7 +146,61 @@ export function openEditProfileModal(userData) {
         </div>
     `;
     
+    // Populate Avatar Selector
+    import('./predefined-profiles.js').then(({ PREDEFINED_AVATARS, PROFILE_FRAMES }) => {
+        // Avatars
+        const avatarSelector = document.getElementById('avatar-selector');
+        if(avatarSelector) {
+            avatarSelector.innerHTML = PREDEFINED_AVATARS.map(av => `
+                <img src="${av.url}" title="${av.name}" onclick="selectAvatar('${av.url}')" 
+                     class="w-10 h-10 rounded-full cursor-pointer hover:scale-110 transition-transform border-2 border-transparent hover:border-purple-500">
+            `).join('');
+            
+            window.selectAvatar = (url) => {
+                document.getElementById('edit-avatar-url').value = url;
+            };
+        }
+
+        // Frames
+        const frameSelector = document.getElementById('frame-selector');
+        if (frameSelector && PROFILE_FRAMES) {
+            frameSelector.innerHTML = PROFILE_FRAMES.map(frame => {
+                if(frame.id === 'frame-none') {
+                     return `
+                        <div onclick="selectFrame('${frame.id}')" 
+                             class="group relative w-16 h-16 rounded-xl border border-gray-700 hover:border-purple-500 cursor-pointer flex flex-col items-center justify-center gap-1 transition-all ${userData.equippedFrame === frame.id ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}"
+                             id="frame-option-${frame.id}">
+                            <i data-lucide="ban" class="w-6 h-6 text-gray-500"></i>
+                            <span class="text-[10px] text-gray-400">Sin Marco</span>
+                        </div>`;
+                }
+                return `
+                <div onclick="selectFrame('${frame.id}')" 
+                     class="group relative w-16 h-16 rounded-xl border border-gray-700 hover:border-purple-500 cursor-pointer flex flex-col items-center justify-center gap-1 transition-all ${userData.equippedFrame === frame.id ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}"
+                     id="frame-option-${frame.id}">
+                    <img src="${frame.img}" class="w-12 h-12 object-contain" alt="${frame.name}">
+                    <span class="text-[10px] text-gray-400 group-hover:text-white truncate max-w-full px-1">${frame.name}</span>
+                </div>
+            `}).join('');
+
+            // Helper for frames
+            window.selectFrame = (id) => {
+                // Update Hidden Input for saving
+                const input = document.getElementById('edit-frame-input');
+                if(input) input.value = id;
+
+                // Visual Feedback
+                document.querySelectorAll('[id^="frame-option-"]').forEach(el => {
+                    el.classList.remove('ring-2', 'ring-purple-500', 'bg-purple-500/20');
+                });
+                const selected = document.getElementById(`frame-option-${id}`);
+                if(selected) selected.classList.add('ring-2', 'ring-purple-500', 'bg-purple-500/20');
+            };
+        }
+    });
+
     document.body.insertAdjacentHTML('beforeend', modalHTML);
+
     
     // Contador de bio
     const bioTextarea = document.getElementById('edit-bio');
@@ -226,6 +294,7 @@ export async function saveProfileChanges(userId) {
             linkedin,
             website
         },
+        equippedAura: document.getElementById('edit-frame-input').value,
         // Si hay URL de avatar manual, actualizar también
         ...(avatarUrl ? { avatar: avatarUrl } : {})
     };

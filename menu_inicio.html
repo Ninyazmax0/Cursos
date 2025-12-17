@@ -24,6 +24,8 @@
         });
     </script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/auras.css">
     <style>
         /* Tokyo Night Theme */
         :root {
@@ -279,9 +281,9 @@
             <div class="flex items-center gap-4">
                 <!-- Logo Trigger for Achievement -->
                 <div class="logo-trigger">
-                    <div class="w-16 h-16 rounded-full bg-gray-700 overflow-hidden relative group cursor-pointer" id="dashboard-avatar-container" title="Cambiar Avatar">
-                            <img id="user-avatar-display" src="" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="w-16 h-16 rounded-full bg-gray-700 relative group cursor-pointer flex items-center justify-center avatar-aura-container" id="dashboard-avatar-container" title="Cambiar Avatar">
+                            <img id="user-avatar-display" src="" class="w-14 h-14 rounded-full object-cover z-20">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-30 rounded-full">
                                 <i data-lucide="camera" class="text-white w-6 h-6"></i>
                             </div>
                     </div>
@@ -495,6 +497,32 @@
             const avatarImg = document.getElementById('user-avatar-display');
             if (avatarImg) avatarImg.src = user.avatar || 'assets/default_avatar.png';
             
+            // Renderizar datos básicos
+            const userNameEl = document.getElementById('user-name');
+            const userRankEl = document.getElementById('user-rank');
+            const sidebarAvatar = document.getElementById('sidebar-user-avatar');
+            
+            if(userNameEl) userNameEl.textContent = user.name || 'Estudiante';
+            if(userRankEl) userRankEl.textContent = user.rank || 'Novato';
+            
+            if(sidebarAvatar) {
+                sidebarAvatar.src = user.avatar || 'https://ui-avatars.com/api/?name=' + (user.name || 'User');
+                
+                // Apply Aura
+                import('./assets/js/predefined-profiles.js').then(({ PROFILE_AURAS }) => {
+                    const auraId = user.equippedAura || 'aura-none';
+                    const auraData = PROFILE_AURAS.find(f => f.id === auraId);
+                    
+                    const container = document.getElementById('dashboard-avatar-container');
+                    if (container) {
+                         // Reset classes
+                         container.className = 'w-16 h-16 rounded-full bg-gray-700 relative group cursor-pointer flex items-center justify-center avatar-aura-container';
+                         if (auraData && auraData.cssClass) {
+                             container.classList.add(auraData.cssClass);
+                         }
+                    }
+                });
+            }
             // Show rank badge
             const rankBadge = document.getElementById('user-rank-badge');
             if (rankBadge && user.rank) {
@@ -535,10 +563,20 @@
             if (!grid) return;
             
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const otherUsers = users.filter(u => u.id !== currentUser?.id);
+            const now = new Date();
+            
+            // Filter inactive users (lastSeen > 5 mins ago)
+            const activeUsers = users.filter(u => {
+                if(!u.lastSeen) return false; // Legacy users without lastSeen are offline
+                const lastSeen = new Date(u.lastSeen);
+                const diffMins = (now - lastSeen) / 1000 / 60;
+                return diffMins < 5;
+            });
+
+            const otherUsers = activeUsers.filter(u => u.id !== currentUser?.id);
             
             if (otherUsers.length === 0) {
-                grid.innerHTML = '<p class="text-gray-500 text-sm">No hay compañeros online en este momento.</p>';
+                grid.innerHTML = '<p class="text-gray-500 text-sm">No hay compañeros online recientes.</p>';
                 return;
             }
             
@@ -546,12 +584,12 @@
                 <div onclick="window.location.href='perfil_usuario.html?user=${encodeURIComponent(user.id)}'" 
                      class="flex items-center gap-3 bg-background/50 border border-border rounded-lg p-3 hover:border-accent transition-colors cursor-pointer">
                     <img src="${user.avatar || 'https://ui-avatars.com/api/?name=' + user.name}" 
-                         class="w-10 h-10 rounded-full object-cover border-2 ${user.isOnline ? 'border-green-400' : 'border-gray-600'}">
+                         class="w-10 h-10 rounded-full object-cover border-2 border-green-400 animate-pulse">
                     <div class="flex-1">
                         <p class="font-semibold text-sm text-white">${user.name}</p>
                         <p class="text-xs text-gray-400">${user.rank || 'Estudiante'}</p>
                     </div>
-                    ${user.isOnline ? '<div class="w-2 h-2 bg-green-400 rounded-full"></div>' : ''}
+                    <div class="w-2 h-2 bg-green-400 rounded-full shadow-[0_0_10px_#4ade80]"></div>
                 </div>
             `).join('');
             
@@ -584,6 +622,14 @@
             hideLoading();
         }, 8000);
 
+        // Autoupdate Heartbeat
+        setInterval(() => {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if(user && user.id && window.updateHeartbeat) {
+                window.updateHeartbeat(user.id);
+            }
+        }, 60000); // Every 1 minute
+
         async function updateGlobalUsers(user) {
             // Actualizar localStorage (caché)
             let allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
@@ -595,6 +641,7 @@
             // Sincronizar con Firebase
             try {
                 await syncUserToFirestore(user);
+                if(window.updateHeartbeat) await window.updateHeartbeat(user.id);
             } catch(err) {
                 console.error('Error updating Firebase:', err);
             }

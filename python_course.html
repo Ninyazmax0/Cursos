@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.css">
+    <link rel="stylesheet" href="assets/css/auras.css">
     <!-- Firebase Modules -->
     <script type="module" src="assets/js/firebase-config.js"></script>
     <script type="module" src="assets/js/firebase-storage.js"></script>
@@ -229,20 +230,23 @@
      }
 
      .code-block {
-         background-color: #1e1e2e;
+         background-color: #1a1b26;
          border: 1px solid var(--border);
          color: #c0caf5;
          font-family: var(--font-mono);
-         border-radius: 8px;
+         border-radius: 12px;
          margin-top: 1rem;
+         overflow: hidden;
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
      }
 
      .code-block-header {
-         background-color: var(--border);
-         padding: 0.5rem 1rem;
+         background: linear-gradient(135deg, #24283b 0%, #1a1b26 100%);
+         padding: 0.75rem 1rem;
          display: flex;
          align-items: center;
          gap: 0.5rem;
+         border-bottom: 1px solid var(--border);
      }
 
      .code-block-header span {
@@ -251,16 +255,99 @@
          border-radius: 50%;
      }
 
-     .code-block-header .bg-red-500 { background-color: var(--red); }
-     .code-block-header .bg-yellow-500 { background-color: var(--yellow); }
-     .code-block-header .bg-green-500 { background-color: var(--green); }
+     .code-block-header .bg-red-500 { background-color: #ff5f56; }
+     .code-block-header .bg-yellow-500 { background-color: #ffbd2e; }
+     .code-block-header .bg-green-500 { background-color: #27c93f; }
 
-     pre {
+     /* Estilos mejorados para el código con guías de indentación */
+     .code-block pre {
          margin: 0;
-         padding: 1rem;
-         white-space: pre-wrap;
-         word-wrap: break-word;
+         padding: 1rem 1.25rem;
+         white-space: pre;
+         overflow-x: auto;
+         background: #1a1b26;
+         position: relative;
      }
+
+     .code-block pre code {
+         font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+         font-size: 0.9rem;
+         line-height: 1.7;
+         tab-size: 4;
+         display: block;
+         position: relative;
+         color: #c0caf5;
+     }
+
+     /* Guías de indentación estilo VSCode */
+     .code-block pre code::before {
+         content: '';
+         position: absolute;
+         left: 0;
+         top: 0;
+         bottom: 0;
+         width: 100%;
+         pointer-events: none;
+         background-image: 
+             repeating-linear-gradient(
+                 90deg,
+                 transparent 0px,
+                 transparent 2rem,
+                 rgba(122, 162, 247, 0.08) 2rem,
+                 rgba(122, 162, 247, 0.08) calc(2rem + 1px),
+                 transparent calc(2rem + 1px),
+                 transparent 4rem,
+                 rgba(255, 158, 100, 0.08) 4rem,
+                 rgba(255, 158, 100, 0.08) calc(4rem + 1px),
+                 transparent calc(4rem + 1px),
+                 transparent 6rem,
+                 rgba(158, 206, 106, 0.08) 6rem,
+                 rgba(158, 206, 106, 0.08) calc(6rem + 1px),
+                 transparent calc(6rem + 1px),
+                 transparent 8rem,
+                 rgba(187, 154, 247, 0.08) 8rem,
+                 rgba(187, 154, 247, 0.08) calc(8rem + 1px),
+                 transparent calc(8rem + 1px),
+                 transparent 10rem
+             );
+     }
+
+     /* Números de línea para los bloques de código */
+     .code-block.with-line-numbers pre {
+         padding-left: 3.5rem;
+         counter-reset: line;
+     }
+
+     .code-block.with-line-numbers pre code .line::before {
+         counter-increment: line;
+         content: counter(line);
+         position: absolute;
+         left: -2.5rem;
+         width: 2rem;
+         text-align: right;
+         color: #565f89;
+         font-size: 0.8rem;
+     }
+
+     /* Scrollbar personalizado para el código */
+     .code-block pre::-webkit-scrollbar {
+         height: 8px;
+     }
+
+     .code-block pre::-webkit-scrollbar-track {
+         background: #1a1b26;
+         border-radius: 4px;
+     }
+
+     .code-block pre::-webkit-scrollbar-thumb {
+         background: #414868;
+         border-radius: 4px;
+     }
+
+     .code-block pre::-webkit-scrollbar-thumb:hover {
+         background: #565f89;
+     }
+
 
      .code-block .language-html .tag,
      .code-block .language-css .at-rule,
@@ -3531,13 +3618,13 @@ let userProgress = { completedLevels: [], quizScores: {} };
 const COURSE_ID = 'python';
 
 const challengeMap = {
-    2: 'python_challenge1',  // Nivel 3
-    4: 'python_challenge2',  // Nivel 5
-    7: 'python_challenge3',  // Nivel 8
-    9: 'python_challenge4',  // Nivel 10
-    12: 'python_challenge5', // Nivel 13
-    14: 'python_challenge6', // Nivel 15
-    17: 'python_challenge7', // Nivel 18
+    4: 'python_challenge1',  // Nivel 5
+    5: 'python_challenge2',  // Nivel 6
+    9: 'python_challenge3',  // Nivel 10
+    10: 'python_challenge4', // Nivel 11
+    14: 'python_challenge5', // Nivel 15
+    15: 'python_challenge6', // Nivel 16
+    18: 'python_challenge7', // Nivel 19
     19: 'python_challenge8'  // Nivel 20
 };
 
@@ -3845,7 +3932,14 @@ function renderLesson() {
     const stepData = levelData.lesson[currentLessonStep];
     document.getElementById('lesson-title').textContent = `Nivel ${currentLevel + 1}: ${stepData.title}`;
     document.getElementById('lesson-content').innerHTML = stepData.content;
+    
+    // Inicializar Monaco para bloques estáticos inmediatamente
     setTimeout(() => {
+        initializeCodeBlockMonaco();
+        Prism.highlightAll(); // Fallback para otros elementos Prism si los hay
+    }, 50);
+
+    // Inicializar Consolas Interactivas
     setTimeout(() => {
         const consoles = document.querySelectorAll('#lesson-content [data-code-base64], #lesson-content [data-code]');
         consoles.forEach(div => {
@@ -3856,7 +3950,7 @@ function renderLesson() {
             }
         });
     }, 100);
-    }, 100);
+    
     document.getElementById('lesson-step').textContent = `${currentLessonStep + 1} / ${levelData.lesson.length}`;
     const progress = ((currentLessonStep + 1) / levelData.lesson.length) * 100;
     document.getElementById('lesson-progress').style.width = `${progress}%`;
@@ -3866,7 +3960,7 @@ function renderLesson() {
 
     // Re-initialize drag and drop after content change
     setTimeout(() => {
-        initializeClickToPlace();
+        if(window.initializeClickToPlace) initializeClickToPlace();
     }, 100);
 }
 
@@ -4842,17 +4936,30 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
     // Setup input handler
     const inputField = document.getElementById(`${containerId}-input`);
     if (inputField) {
+        // Evitar duplicados usando flag en dataset en lugar de clonar
+        if (inputField.dataset.listenerAttached === 'true') {
+            return;
+        }
+        
         inputField.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const value = inputField.value;
-                if (currentInputResolver) {
-                    currentInputResolver(value);
-                    currentInputResolver = null;
+                console.log(`[Python Console] Input submitted for ${containerId}: "${value}"`);
+                
+                // Usar resolver específico del contenedor
+                if (window.consoleInputResolvers && window.consoleInputResolvers[containerId]) {
+                    window.consoleInputResolvers[containerId](value);
+                    delete window.consoleInputResolvers[containerId];
+                } else {
+                    console.warn(`[Python Console] No resolver found for ${containerId}. Input ignored.`);
                 }
+                
                 inputField.value = '';
                 document.getElementById(`${containerId}-input-prompt`).classList.add('hidden');
             }
         });
+        
+        inputField.dataset.listenerAttached = 'true';
     }
 
     // Inicializar Monaco Editor
@@ -4890,6 +4997,75 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
 }
 
 // Ejecutar código Python desde Monaco
+// Función para inicializar Monaco Editor en bloques de código estáticos (Ejemplos)
+function initializeCodeBlockMonaco() {
+    if (!window.monaco) return;
+
+    document.querySelectorAll('.code-block').forEach((block, index) => {
+        // Verificar si ya fue inicializado para evitar duplicados
+        if (block.getAttribute('data-monaco-initialized') === 'true') return;
+        
+        const codeElement = block.querySelector('code');
+        if (!codeElement) return;
+
+        const language = 'python'; // Por defecto para este curso
+        const code = codeElement.textContent;
+
+        // Limpiar el contenido original pero mantener el contenedor
+        block.innerHTML = '';
+        block.style.height = 'auto'; // Permitir que se ajuste
+        block.setAttribute('data-monaco-initialized', 'true');
+        
+        // Crear contenedor para el editor
+        const editorContainer = document.createElement('div');
+        editorContainer.style.width = '100%';
+        // Calcular altura basada en líneas (aprox 20px por línea) + padding
+        const lineCount = code.split('\n').length;
+        const height = Math.min(Math.max(lineCount * 21 + 20, 100), 500); // Min 100px, Max 500px, 21px line height
+        editorContainer.style.height = `${height}px`;
+        editorContainer.className = 'monaco-static-block rounded-md overflow-hidden border border-gray-700 mt-4';
+        
+        // Header estilo macOS/Tokyo Night
+        const header = document.createElement('div');
+        header.className = 'flex items-center justify-between px-4 py-2 bg-[#1a1b26] border-b border-gray-800';
+        header.innerHTML = `
+            <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+                <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+                <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+            </div>
+            <div class="text-xs text-gray-400 font-mono">example.py</div>
+        `;
+        
+        block.appendChild(header);
+        block.appendChild(editorContainer);
+
+        monaco.editor.create(editorContainer, {
+            value: code,
+            language: language,
+            theme: 'tokyo-night', // Usar nuestro tema personalizado
+            readOnly: true,
+            domReadOnly: true,
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            fontSize: 14,
+            fontFamily: "'JetBrains Mono', monospace",
+            lineNumbers: 'off', // Ocultar números de línea para ejemplos simples si se prefiere, o 'on'
+            folding: false,
+            renderLineHighlight: 'none',
+            contextmenu: false,
+            scrollbar: {
+                vertical: 'hidden',
+                horizontal: 'auto',
+                useShadows: false
+            },
+            overviewRulerBorder: false,
+            hideCursorInOverviewRuler: true,
+            padding: { top: 10, bottom: 10 }
+        });
+    });
+}
+
 async function runPythonCode(containerId) {
     const outputDiv = document.getElementById(`${containerId}-output`);
     const runBtn = document.querySelector(`#${containerId} .console-btn-run`);
@@ -4917,34 +5093,7 @@ async function runPythonCode(containerId) {
 
     try {
         // Configurar funciones de I/O personalizadas
-        let outputBuffer = [];
         
-        pyodide.globals.set('custom_input', async (prompt) => {
-            return await getUserInput(containerId, prompt);
-        });
-
-        pyodide.runPython(`
-import sys
-from js import custom_input
-
-class CustomStdout:
-    def write(self, text):
-        if text.strip():
-            print_output(text)
-    def flush(self):
-        pass
-
-sys.stdout = CustomStdout()
-
-# Override input function
-def input(prompt=''):
-    print_output(prompt, is_prompt=True)
-    result = custom_input(prompt)
-    return result
-
-__builtins__.input = input
-        `);
-
         // Función para mostrar output
         pyodide.globals.set('print_output', (text, is_prompt = false) => {
             const line = document.createElement('div');
@@ -4954,8 +5103,54 @@ __builtins__.input = input
             outputDiv.scrollTop = outputDiv.scrollHeight;
         });
 
+        // Función para obtener input - ahora es async y devuelve una Promise correctamente
+        pyodide.globals.set('js_get_input', (prompt) => {
+            return getUserInput(containerId, prompt);
+        });
+
+        // Configurar el entorno Python con input asíncrono correcto
+        await pyodide.runPythonAsync(`
+import sys
+import asyncio
+from pyodide.ffi import to_js
+
+# Custom stdout que captura los prints
+class CustomStdout:
+    def write(self, text):
+        if text.strip():
+            print_output(text)
+    def flush(self):
+        pass
+
+sys.stdout = CustomStdout()
+sys.stderr = CustomStdout()
+
+# Función input asíncrona que espera correctamente
+async def async_input(prompt=''):
+    if prompt:
+        print_output(prompt, True)
+    result = await js_get_input(prompt)
+    return result
+
+# Guardar referencia global
+_async_input = async_input
+        `);
+
+        // Preprocesar el código para convertir input() en await async_input()
+        let processedCode = code;
+        
+        // Envolver en función async y ejecutar
+        const asyncCode = `
+import asyncio
+
+async def __main__():
+${code.split('\n').map(line => '    ' + line).join('\n')}
+
+asyncio.get_event_loop().run_until_complete(__main__())
+        `.replace(/input\(/g, 'await _async_input(');
+
         // Ejecutar el código del usuario
-        await pyodide.runPythonAsync(code);
+        await pyodide.runPythonAsync(asyncCode);
         
         // Mensaje de finalización
         const doneLine = document.createElement('div');
@@ -4974,19 +5169,34 @@ __builtins__.input = input
 }
 
 // Obtener input del usuario
+// Mapa global de resolvers para inputs concurrentes/secuenciales
+window.consoleInputResolvers = window.consoleInputResolvers || {};
+
+// Obtener input del usuario
 function getUserInput(containerId, prompt) {
+    console.log(`[Python Console] Requesting input for ${containerId}`);
     return new Promise((resolve) => {
         const inputPrompt = document.getElementById(`${containerId}-input-prompt`);
         const inputField = document.getElementById(`${containerId}-input`);
         
         if (!inputPrompt || !inputField) {
+            console.error(`[Python Console] CRITICAL: Input elements not found for ${containerId}`);
             resolve('');
             return;
         }
 
         inputPrompt.classList.remove('hidden');
-        inputField.focus();
-        currentInputResolver = resolve;
+        inputPrompt.style.display = 'flex'; // Forzar display
+        
+        // Asegurar foco y scroll
+        setTimeout(() => {
+            inputField.focus();
+            const outputDiv = document.getElementById(`${containerId}-output`);
+            if (outputDiv) outputDiv.scrollTop = outputDiv.scrollHeight;
+        }, 50);
+        
+        // Guardar resolver específico
+        window.consoleInputResolvers[containerId] = resolve;
     });
 }
 
@@ -5015,6 +5225,172 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 2000);
 });
 
+// ========================================
+// FUNCIÓN PARA BLOQUES DE CÓDIGO DE EJEMPLO (Monaco Readonly)
+// Convierte los .code-block en editores Monaco con tema Tokyo Night
+// ========================================
+
+let codeBlockMonacoInstances = [];
+let codeBlockCounter = 0;
+
+function initializeCodeBlockMonaco() {
+    // Esperar a que Monaco esté disponible
+    if (!monacoRequireConfigured) {
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        monacoRequireConfigured = true;
+    }
+
+    require(['vs/editor/editor.main'], function() {
+        // Definir tema Tokyo Night personalizado si no existe
+        try {
+            monaco.editor.defineTheme('tokyo-night', {
+                base: 'vs-dark',
+                inherit: true,
+                rules: [
+                    { token: 'comment', foreground: '565f89', fontStyle: 'italic' },
+                    { token: 'keyword', foreground: 'bb9af7', fontStyle: 'bold' },
+                    { token: 'string', foreground: '9ece6a' },
+                    { token: 'number', foreground: 'ff9e64' },
+                    { token: 'function', foreground: '7aa2f7' },
+                    { token: 'variable', foreground: 'c0caf5' },
+                    { token: 'type', foreground: '2ac3de' },
+                    { token: 'operator', foreground: '89ddff' },
+                    { token: 'delimiter', foreground: 'a9b1d6' },
+                    { token: 'identifier', foreground: 'c0caf5' },
+                ],
+                colors: {
+                    'editor.background': '#1a1b26',
+                    'editor.foreground': '#c0caf5',
+                    'editor.lineHighlightBackground': '#24283b',
+                    'editor.selectionBackground': '#364A82',
+                    'editorCursor.foreground': '#c0caf5',
+                    'editorWhitespace.foreground': '#3b4261',
+                    'editorIndentGuide.background': '#3b4261',
+                    'editorIndentGuide.activeBackground': '#7aa2f7',
+                    'editor.lineHighlightBorder': '#00000000',
+                    'editorLineNumber.foreground': '#565f89',
+                    'editorLineNumber.activeForeground': '#7aa2f7',
+                }
+            });
+        } catch(e) { /* Theme already defined */ }
+
+        // Obtener todos los bloques de código en la lección actual
+        const codeBlocks = document.querySelectorAll('#lesson-content .code-block');
+        
+        codeBlocks.forEach((block, index) => {
+            // Obtener el código del pre/code
+            const codeElement = block.querySelector('pre code');
+            if (!codeElement) return;
+            
+            const codeText = codeElement.textContent || codeElement.innerText;
+            if (!codeText.trim()) return;
+
+            // Detectar lenguaje
+            let language = 'python';
+            if (codeElement.className.includes('language-html')) language = 'html';
+            else if (codeElement.className.includes('language-css')) language = 'css';
+            else if (codeElement.className.includes('language-javascript')) language = 'javascript';
+
+            // Crear ID único
+            const uniqueId = `code-block-monaco-${codeBlockCounter++}`;
+            
+            // Calcular altura basada en líneas de código
+
+            const lines = codeText.split('\n').length;
+            const height = Math.min(Math.max(lines * 22 + 20, 100), 400);
+
+            // Crear nuevo contenedor Monaco
+            const monacoContainer = document.createElement('div');
+            monacoContainer.id = uniqueId;
+            monacoContainer.style.cssText = `width: 100%; height: ${height}px; border-radius: 0 0 12px 12px; overflow: hidden;`;
+
+            // Mantener el header existente (con los puntitos)
+            const header = block.querySelector('.code-block-header');
+            const newBlock = document.createElement('div');
+            newBlock.className = 'code-block-monaco';
+            newBlock.style.cssText = 'border-radius: 12px; overflow: hidden; margin-top: 1rem; border: 1px solid #414868; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+
+            // Recrear header mejorado
+            const newHeader = document.createElement('div');
+            newHeader.className = 'code-block-header';
+            newHeader.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full" style="background: #ff5f56;"></span>
+                    <span class="w-3 h-3 rounded-full" style="background: #ffbd2e;"></span>
+                    <span class="w-3 h-3 rounded-full" style="background: #27c93f;"></span>
+                    <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'python' ? 'example.py' : language === 'html' ? 'index.html' : 'code.' + language}</span>
+                </div>
+                <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
+            `;
+            newHeader.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: linear-gradient(135deg, #24283b 0%, #1a1b26 100%); border-bottom: 1px solid #414868;';
+
+            newBlock.appendChild(newHeader);
+            newBlock.appendChild(monacoContainer);
+
+            // Reemplazar el bloque original
+            block.parentNode.replaceChild(newBlock, block);
+
+            // Crear editor Monaco
+            const editor = monaco.editor.create(monacoContainer, {
+                value: codeText.trim(),
+                language: language,
+                theme: 'tokyo-night',
+                automaticLayout: true,
+                minimap: { enabled: false },
+                fontSize: 14,
+                fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+                lineNumbers: 'on',
+                renderIndentGuides: true,
+                guides: { 
+                    indentation: true,
+                    bracketPairs: true,
+                    highlightActiveIndentation: true
+                },
+                scrollBeyondLastLine: false,
+                roundedSelection: true,
+                padding: { top: 10, bottom: 10 },
+                readOnly: true,
+                domReadOnly: true,
+                cursorStyle: 'line',
+                renderLineHighlight: 'all',
+                scrollbar: {
+                    vertical: 'auto',
+                    horizontal: 'auto',
+                    verticalScrollbarSize: 8,
+                    horizontalScrollbarSize: 8
+                },
+                folding: true,
+                foldingHighlight: true,
+                matchBrackets: 'always',
+                bracketPairColorization: { enabled: true }
+            });
+
+            codeBlockMonacoInstances.push(editor);
+        });
+    });
+}
+
+// Re-inicializar los bloques de código cuando se cambia de paso en la lección
+const originalRenderLesson = typeof renderLesson === 'function' ? renderLesson : null;
+if (originalRenderLesson) {
+    window.renderLesson = function() {
+        // Limpiar instancias anteriores
+        codeBlockMonacoInstances.forEach(editor => {
+            if (editor && typeof editor.dispose === 'function') {
+                editor.dispose();
+            }
+        });
+        codeBlockMonacoInstances = [];
+        
+        // Llamar a la función original
+        originalRenderLesson.apply(this, arguments);
+        
+        // Inicializar Monaco después de un pequeño delay
+        setTimeout(initializeCodeBlockMonaco, 100);
+    };
+}
+
+
 </script>
 
 <!-- Prism.js core and languages -->
@@ -5024,6 +5400,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js"></script>
 </body>
 </html>

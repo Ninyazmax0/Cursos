@@ -8,16 +8,10 @@ import { getFirestore, collection, doc, setDoc, getDoc, getDocs, onSnapshot, upd
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
+import { ENV } from './env.js';
+
 // Configuración de Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyDp-D_lQHCmaZzxclHhgEPj8tfbLMPPT1Y",
-    authDomain: "status-code-418.firebaseapp.com",
-    projectId: "status-code-418",
-    storageBucket: "status-code-418.firebasestorage.app",
-    messagingSenderId: "108910520136",
-    appId: "1:108910520136:web:7617759f815a18d29af57d",
-    measurementId: "G-4ZPE1TCDBE"
-};
+const firebaseConfig = ENV.FIREBASE_CONFIG;
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
@@ -147,6 +141,23 @@ async function updateCourseProgress(userId, courseKey, progressData) {
 }
 
 /**
+ * Actualiza el timestamp de última conexión del usuario (Heartbeat)
+ * @param {string} userId - ID del usuario
+ */
+async function updateHeartbeat(userId) {
+    try {
+        const userRef = doc(db, 'users', userId);
+        await updateDoc(userRef, {
+            lastSeen: new Date().toISOString(),
+            isOnline: true
+        });
+        // Console log removed to avoid spam
+    } catch (error) {
+        // Silent fail for heartbeat
+    }
+}
+
+/**
  * Elimina un usuario de Firestore
  * @param {string} userId - ID del usuario a eliminar
  */
@@ -231,6 +242,7 @@ window.getUserFromFirestore = getUserFromFirestore;
 window.getAllUsersFromFirestore = getAllUsersFromFirestore;
 window.listenToUsers = listenToUsers;
 window.updateCourseProgress = updateCourseProgress;
+window.updateHeartbeat = updateHeartbeat;
 window.deleteUserFromFirestore = deleteUserFromFirestore;
 
 export {
@@ -239,6 +251,7 @@ export {
     getAllUsersFromFirestore,
     listenToUsers,
     updateCourseProgress,
+    updateHeartbeat,
     deleteUserFromFirestore,
     showLoading,
     hideLoading,

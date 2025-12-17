@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Marcos - Status Code 418</title>
+    <title>Tienda de Auras - Status Code 418</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <!-- Firebase Modules -->
     <script type="module" src="assets/js/firebase-config.js"></script>
     <script type="module" src="assets/js/firebase-storage.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/auras.css">
     <style>
         /* Tokyo Night Theme */
         :root {
@@ -37,35 +39,6 @@
             border-radius: 20px;
         }
 
-        /* Frame Previews */
-        .frame-preview {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto;
-        }
-        
-        .frame-preview img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        /* Define Frames CSS directly here for preview */
-        .frame-gold { box-shadow: 0 0 0 4px #e0af68, 0 0 20px rgba(224, 175, 104, 0.5); }
-        .frame-neon { box-shadow: 0 0 0 4px #7aa2f7, 0 0 20px #7aa2f7, inset 0 0 10px #7aa2f7; }
-        .frame-glitch { box-shadow: 3px 0 0 #f7768e, -3px 0 0 #7aa2f7; animation: glitch 1s infinite alternate; }
-        .frame-fire { box-shadow: 0 0 0 4px #ff9f43, 0 -5px 15px #ff6b6b; animation: burn 1.5s infinite alternate; }
-        .frame-matrix { box-shadow: 0 0 0 4px #9ece6a, 0 0 15px #9ece6a; border: 2px dashed #000; }
-        
-        /* Founder Frames (Not meant to be bought, but maybe shown as unavailable?) */
-        .frame-steven { box-shadow: 0 0 0 4px #3b82f6, 0 0 30px rgba(59, 130, 246, 0.8); }
-        .frame-amelia { box-shadow: 0 0 0 4px #f7768e, 0 0 30px rgba(247, 118, 142, 0.8); }
-
-        @keyframes glitch { 0% { transform: skew(0deg); } 20% { transform: skew(-2deg); } 40% { transform: skew(2deg); } }
-        @keyframes burn { 0% { box-shadow: 0 0 0 4px #ff9f43, 0 -5px 15px #ff6b6b; } 100% { box-shadow: 0 0 0 4px #ff9f43, 0 -2px 5px #ff6b6b; } }
-
         .xp-display {
             background: linear-gradient(135deg, var(--card-background), #1f2335);
             border: 1px solid var(--accent);
@@ -75,7 +48,7 @@
 </head>
 <body class="p-6 md:p-12">
     
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <header class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
             <div class="flex items-center gap-4">
@@ -84,45 +57,44 @@
                 </a>
                 <div>
                     <h1 class="text-4xl font-bold text-white flex items-center gap-3">
-                        <i data-lucide="shopping-bag" class="text-accent"></i> Tienda de Marcos
+                        <i data-lucide="sparkles" class="text-accent"></i> Tienda de Auras
                     </h1>
-                    <p class="text-gray-400">Gasta tu XP ganada con sudor y código.</p>
+                    <p class="text-gray-400">Personaliza tu perfil con efectos visuales de alta calidad.</p>
                 </div>
             </div>
 
             <div class="xp-display px-8 py-4 rounded-2xl flex items-center gap-4">
                 <div class="text-right">
-                    <p class="text-sm text-gray-400 uppercase tracking-widest">Tu Saldo</p>
-                    <p class="text-3xl font-bold text-accent font-mono" id="user-xp">0 XP</p>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest">Saldo Actual</p>
+                    <p class="text-3xl font-bold text-yellow font-mono" id="user-coins">0 🪙</p>
                 </div>
                 <i data-lucide="coins" class="w-10 h-10 text-yellow"></i>
             </div>
         </header>
 
-        <!-- Grid -->
-        <div id="frames-grid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <!-- Cargando... -->
+        <!-- Auras Section -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-accent border-b border-gray-700 pb-2 flex items-center gap-2">
+                <i data-lucide="zap"></i> Catálogo de Auras
+            </h2>
+            <div id="auras-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Cargando... -->
+                <div class="col-span-full text-center text-gray-500 animate-pulse">Cargando auras del sistema...</div>
+            </div>
         </div>
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-4 right-4 bg-green-900 border border-green-500 text-white px-6 py-4 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
-        <i data-lucide="check-circle"></i>
-        <span id="toast-msg">Compra exitosa</span>
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 border border-accent text-white px-6 py-4 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i data-lucide="check-circle" class="text-green-400"></i>
+        <span id="toast-msg">Acción completada</span>
     </div>
 
     <script type="module">
         import { doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
         import { db } from './assets/js/firebase-config.js';
-
-        // DEFINICIÓN DE PRODUCTOS
-        const FRAMES = [
-            { id: 'frame-gold', name: 'Aura Dorada', price: 500, desc: 'Brilla como el oro puro.', class: 'frame-gold' },
-            { id: 'frame-neon', name: 'Cyber Neon', price: 1000, desc: 'Estilo high-tech.', class: 'frame-neon' },
-            { id: 'frame-glitch', name: 'Error 418', price: 2000, desc: 'Un glitch en la matrix.', class: 'frame-glitch' },
-            { id: 'frame-fire', name: 'Fuego', price: 3000, desc: '¡Estás en racha!', class: 'frame-fire' },
-            { id: 'frame-matrix', name: 'Matrix', price: 5000, desc: 'Bienvenido al mundo real.', class: 'frame-matrix' }
-        ];
+        // Import unified data
+        import { PROFILE_AURAS } from './assets/js/predefined-profiles.js';
 
         let currentUser = null;
         let currentCoins = 0;
@@ -146,113 +118,202 @@
                 currentUser = localUser;
             }
 
-            // Init coins if not present
-            if (!currentUser.coins) currentUser.coins = 0;
+            // Init coins/inventory if not present
+            if (currentUser.coins === undefined) currentUser.coins = 0;
+            if (!currentUser.inventory) currentUser.inventory = { auras: [] };
+            if (!currentUser.inventory.auras) currentUser.inventory.auras = [];
+
             currentCoins = currentUser.coins;
 
-            document.getElementById('user-xp').textContent = `${currentCoins}`;
-            document.querySelector('.xp-display p:first-child').textContent = "Tus Monedas";
+            updateCoinDisplay();
         }
 
-        // Removed calculateXP as it's no longer used for currency
+        function updateCoinDisplay() {
+            document.getElementById('user-coins').textContent = `${currentCoins} 🪙`;
+        }
 
         function renderStore() {
-            const grid = document.getElementById('frames-grid');
-            grid.innerHTML = '';
-            
-            // Normalize inventory
-            const inventory = currentUser.inventory || { frames: [] };
-            const ownedFrames = inventory.frames || [];
-            const equipped = currentUser.equippedFrame;
-
-            FRAMES.forEach(frame => {
-                const isOwned = ownedFrames.includes(frame.id);
-                const isEquipped = equipped === frame.class;
-                const canAfford = currentCoins >= frame.price;
-
-                const card = document.createElement('div');
-                card.className = `glass-panel p-6 flex flex-col items-center text-center transition-all hover:-translate-y-2 ${isOwned ? 'border-accent' : canAfford ? 'border-gray-600' : 'border-red-900 opacity-60'}`;
-                
-                let btnHtml = '';
-                if (isEquipped) {
-                    btnHtml = `<button class="w-full py-2 bg-green-600/20 text-green-400 border border-green-500 rounded-lg font-bold cursor-default">Equipado</button>`;
-                } else if (isOwned) {
-                    btnHtml = `<button onclick="window.equipFrame('${frame.id}', '${frame.class}')" class="w-full py-2 bg-accent text-white rounded-lg font-bold hover:bg-accent-dark transition">Equipar</button>`;
-                } else {
-                    if (canAfford) {
-                        btnHtml = `<button onclick="window.buyFrame('${frame.id}', ${frame.price})" class="w-full py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-lg font-bold transition flex justify-center items-center gap-2"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Comprar</button>`;
-                    } else {
-                         btnHtml = `<button disabled class="w-full py-2 bg-gray-700 text-gray-400 rounded-lg font-bold cursor-not-allowed">Insuficiente</button>`;
-                    }
-                }
-
-                card.innerHTML = `
-                    <div class="frame-preview mb-4">
-                        <img src="${currentUser.avatar || 'assets/default-avatar.png'}" class="${frame.class}">
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-1">${frame.name}</h3>
-                    <p class="text-sm text-gray-400 mb-4 h-10">${frame.desc}</p>
-                    <div class="text-yellow-400 font-mono font-bold text-lg mb-6">${frame.price} 🪙</div>
-                    <div class="mt-auto w-full">
-                        ${btnHtml}
-                    </div>
-                `;
-                
-                grid.appendChild(card);
-            });
+            renderAuras();
             lucide.createIcons();
         }
 
-        window.buyFrame = async (frameId, price) => {
-            if (currentCoins < price) return;
-
-            if(!confirm(`¿Gastar ${price} Monedas en este marco?`)) return;
-
-            const inventory = currentUser.inventory || { frames: [] };
-            inventory.frames = inventory.frames || [];
+        function renderAuras() {
+            const grid = document.getElementById('auras-grid');
+            grid.innerHTML = '';
             
-            if (inventory.frames.includes(frameId)) return;
+            const inventory = currentUser.inventory?.auras || [];
+            const equipped = currentUser.equippedAura;
+            const achievements = currentUser.achievements || [];
 
-            // Buy - Deduct Coins
+            // Grouping Logic
+            const tiers = {
+                'Tier 1: Común (500 🪙)': [],
+                'Tier 2: Raro (2000 🪙)': [],
+                'Tier 3: Épico (5000 🪙)': [],
+                'Tier 4: Legendario (10000 🪙)': [],
+                'Exclusivos de Curso (Nivel 20)': [],
+                'Logros': [],
+                'Secretos (???)': [],
+                'Fundadores (God Tier)': []
+            };
+
+            PROFILE_AURAS.forEach(aura => {
+                if (aura.id.startsWith('aura-c-')) tiers['Tier 1: Común (500 🪙)'].push(aura);
+                else if (aura.id.startsWith('aura-r-')) tiers['Tier 2: Raro (2000 🪙)'].push(aura);
+                else if (aura.id.startsWith('aura-e-')) tiers['Tier 3: Épico (5000 🪙)'].push(aura);
+                else if (aura.id.startsWith('aura-l-')) tiers['Tier 4: Legendario (10000 🪙)'].push(aura);
+                else if (aura.id.startsWith('aura-course-')) tiers['Exclusivos de Curso (Nivel 20)'].push(aura);
+                else if (aura.id.startsWith('aura-ach-')) tiers['Logros'].push(aura);
+                else if (aura.id.startsWith('aura-secret-')) tiers['Secretos (???)'].push(aura);
+                else if (aura.id.startsWith('aura-founder-')) tiers['Fundadores (God Tier)'].push(aura);
+                else tiers['Tier 1: Común (500 🪙)'].push(aura); // Fallback
+            });
+
+            // Render Groups
+            for (const [tierName, auras] of Object.entries(tiers)) {
+                if(auras.length === 0) continue;
+
+                // Section Header
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'col-span-full mt-8 mb-4 border-b border-gray-700 pb-2';
+                sectionHeader.innerHTML = `<h3 class="text-xl font-bold text-gray-300 uppercase tracking-wider">${tierName}</h3>`;
+                grid.appendChild(sectionHeader);
+
+                // Cards
+                auras.forEach(aura => {
+                    const isOwned = inventory.includes(aura.id);
+                    const isEquipped = equipped === aura.id;
+                    const price = aura.price;
+                    const canAfford = currentCoins >= price;
+
+                    // Unlock Condition Check
+                    let isLocked = false;
+                    let lockedReason = '';
+
+                    if (aura.unlockCondition) {
+                        if (aura.unlockCondition === 'is_steven') {
+                            if (!currentUser.id.includes('steven') && !achievements.includes('founder_badge')) {
+                                isLocked = true;
+                                lockedReason = 'Exclusivo Fundador';
+                            }
+                        } else if (aura.unlockCondition === 'is_amelia') {
+                            if (!currentUser.id.includes('amelia')) {
+                                isLocked = true;
+                                lockedReason = 'Exclusivo Co-Fundador';
+                            }
+                        } else if (aura.unlockCondition.startsWith('course_')) {
+                             if (!isOwned) {
+                                 // Check achievement badge for course
+                                 // We assume there's a badge like 'badge_web_master' etc.
+                                 // For now, if they don't own the aura, we lock it telling them to finish the course.
+                                 isLocked = true;
+                                 lockedReason = 'Completa el Curso (Nvl 20)';
+                             }
+                        } else if (aura.unlockCondition.startsWith('secret_')) {
+                            if (!isOwned && !achievements.includes(aura.unlockCondition)) { // Assuming secret unlocks give an achievement or flag with same name
+                                isLocked = true;
+                                lockedReason = '??? (Secreto)';
+                            }
+                        } else if (!achievements.includes(aura.unlockCondition)) {
+                            isLocked = true;
+                            lockedReason = 'Logro Requerido';
+                        }
+                    }
+
+                    if (isOwned) isLocked = false;
+
+                    const card = document.createElement('div');
+                    card.className = `glass-panel p-6 flex flex-col items-center text-center transition-all hover:-translate-y-2 relative overflow-hidden ${isOwned ? 'border-accent shadow-[0_0_15px_rgba(122,162,247,0.3)]' : canAfford && !isLocked ? 'border-gray-600' : 'border-red-900/50 opacity-80'}`;
+                    
+                    // Button Logic
+                    let btnHtml = '';
+                    if (isEquipped) {
+                        btnHtml = `<button class="w-full py-2 bg-green-600/20 text-green-400 border border-green-500 rounded-lg font-bold cursor-default flex justify-center items-center gap-2"><i data-lucide="check"></i> Equipado</button>`;
+                    } else if (isOwned) {
+                        btnHtml = `<button onclick="window.equipAura('${aura.id}')" class="w-full py-2 bg-accent text-white rounded-lg font-bold hover:bg-accent-dark transition shadow-lg shadow-accent/20">Equipar</button>`;
+                    } else if (isLocked) {
+                        btnHtml = `<button disabled class="w-full py-2 bg-gray-800 text-gray-500 border border-gray-700 rounded-lg font-bold cursor-not-allowed text-xs flex flex-col items-center justify-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> ${lockedReason}</button>`;
+                    } else if (canAfford) {
+                        btnHtml = `<button onclick="window.buyAura('${aura.id}', ${price})" class="w-full py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-lg font-bold transition flex justify-center items-center gap-2 shadow-lg shadow-yellow-600/20"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Comprar</button>`;
+                    } else {
+                         btnHtml = `<button disabled class="w-full py-2 bg-gray-700 text-gray-400 rounded-lg font-bold cursor-not-allowed">Insuficiente</button>`;
+                    }
+
+                    // Price Badge
+                    let priceDisplay = '';
+                    if (price === 0 && !isOwned) priceDisplay = '<span class="text-green-400 font-bold">RECOMPENSA</span>';
+                    else if (price === 0 && isOwned) priceDisplay = '<span class="text-gray-400 font-bold">ADQUIRIDO</span>';
+                    else priceDisplay = `<span class="text-yellow-400 font-bold">${price} 🪙</span>`;
+
+                    card.innerHTML = `
+                        <div class="mb-6 mt-2 relative w-24 h-24 flex items-center justify-center mx-auto">
+                            <div class="avatar-aura-container ${aura.cssClass}">
+                                <img src="${currentUser.avatar || 'assets/default-avatar.png'}" class="w-20 h-20 rounded-full object-cover">
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-bold text-white mb-1">${aura.name}</h3>
+                        <p class="text-xs text-gray-400 mb-4 h-8 flex items-center justify-center">${aura.desc}</p>
+                        
+                        <div class="font-mono text-lg mb-6 bg-black/30 px-4 py-1 rounded-full border border-white/10">
+                            ${priceDisplay}
+                        </div>
+                        
+                        <div class="mt-auto w-full">
+                            ${btnHtml}
+                        </div>
+                    `;
+                    
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // --- ACTIONS ---
+
+        window.buyAura = async (auraId, price) => {
+             if (currentCoins < price) return;
+            if(!confirm(`¿Comprar esta aura por ${price} Monedas?`)) return;
+
+            const inventory = currentUser.inventory || { auras: [] };
+            if (!inventory.auras) inventory.auras = [];
+            
+            if (inventory.auras.includes(auraId)) return;
+
+            // Buy
             currentUser.coins = currentCoins - price;
-            inventory.frames.push(frameId);
+            inventory.auras.push(auraId);
 
             // Save
             currentUser.inventory = inventory;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            // Sync Firebase
-            try {
-                const userRef = doc(db, 'users', currentUser.id);
-                await updateDoc(userRef, {
-                    inventory: inventory,
-                    coins: currentUser.coins
-                });
-            } catch(e) { console.error(e); }
+            await saveUser(currentUser);
 
-            showToast('¡Marco comprado!');
-            
-            // Update UI
-            currentCoins = currentUser.coins;
-            document.getElementById('user-xp').textContent = `${currentCoins}`;
+            showToast(`¡Aura adquirida!`);
+            currentCoins = currentUser.coins; // update local var
+            updateCoinDisplay();
             renderStore();
         };
 
-        window.equipFrame = async (frameId, frameClass) => {
-            currentUser.equippedFrame = frameClass;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-             // Sync Firebase
-            try {
-                const userRef = doc(db, 'users', currentUser.id);
-                await updateDoc(userRef, {
-                    equippedFrame: frameClass
-                });
-            } catch(e) { console.error(e); }
-
-            showToast('¡Marco equipado!');
+        window.equipAura = async (auraId) => {
+            currentUser.equippedAura = auraId;
+            await saveUser(currentUser);
+            showToast('¡Aura equipada!');
             renderStore();
         };
+
+        async function saveUser(user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+             try {
+                const userRef = doc(db, 'users', user.id);
+                // Clean undefined
+                const safeUser = JSON.parse(JSON.stringify(user));
+                await updateDoc(userRef, {
+                    coins: safeUser.coins,
+                    inventory: safeUser.inventory,
+                    equippedAura: safeUser.equippedAura
+                });
+            } catch(e) { console.error('Error saving to Firebase:', e); }
+        }
 
         function showToast(msg) {
             const t = document.getElementById('toast');
@@ -260,7 +321,7 @@
             t.classList.remove('opacity-0', 'translate-y-20');
             setTimeout(() => {
                 t.classList.add('opacity-0', 'translate-y-20');
-            }, 2000);
+            }, 3000);
         }
 
     </script>
