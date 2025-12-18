@@ -315,6 +315,10 @@
                     </h3>
                     <div class="space-y-4 mb-6">
                         <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Gemini API Key (Manual)</label>
+                            <input type="password" id="manual-gemini-key" placeholder="Pega tu llave aquí..." 
+                                   class="w-full bg-[#1a1b26] border border-gray-700 rounded p-3 text-sm focus:border-purple-500 focus:outline-none transition mb-3" style="background-color: var(--background); color: var(--foreground);">
+                            
                             <label class="block text-xs font-mono text-gray-400 mb-1">Target Topic</label>
                             <input type="text" id="ai-topic" placeholder="e.g. Python Loops, CSS Flexbox" 
                                    class="w-full bg-[#1a1b26] border border-gray-700 rounded p-3 text-sm focus:border-purple-500 focus:outline-none transition" style="background-color: var(--background); color: var(--foreground);">
@@ -351,6 +355,14 @@
                             <div class="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin mb-2"></div>
                             <span class="text-purple-500 text-[10px] animate-pulse">Consulting Gemini...</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Eventos Activos / Historial -->
+                <div class="admin-card">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--accent);">📅 Eventos Activos</h3>
+                    <div id="active-events-list" class="space-y-3">
+                        <p class="text-xs text-gray-500 italic text-center py-4">Cargando retos activos...</p>
                     </div>
                 </div>
 
@@ -632,6 +644,51 @@
 
             // Initialize AI Logic
             initGeminiLogic();
+            fetchActiveEvents();
+        }
+
+        async function fetchActiveEvents() {
+            const container = document.getElementById('active-events-list');
+            try {
+                const { collection, getDocs, orderBy, query } = await import("https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js");
+                const q = query(collection(db, "daily_challenges"), orderBy("id", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    container.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">No hay eventos publicados.</p>';
+                    return;
+                }
+
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const isToday = doc.id === 'today';
+                    html += `
+                        <div class="bg-tokyo-dark/50 border border-gray-800 p-3 rounded-lg flex justify-between items-center ${isToday ? 'ring-1 ring-tokyo-green/30' : ''}">
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-200">${data.title} ${isToday ? '<span class="text-[10px] bg-tokyo-green/20 text-tokyo-green px-1 rounded ml-1">HOY</span>' : ''}</h4>
+                                <p class="text-[10px] text-gray-500">${data.language.toUpperCase()} • Diff: ${data.difficulty}/5 • ID: ${doc.id}</p>
+                            </div>
+                            <button onclick="deleteEvent('${doc.id}')" class="text-tokyo-red hover:bg-tokyo-red/10 p-1 rounded transition">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+                lucide.createIcons();
+            } catch (e) {
+                container.innerHTML = `<p class="text-xs text-red-500">Error: ${e.message}</p>`;
+            }
+        }
+
+        window.deleteEvent = async (id) => {
+            if (!confirm('¿Seguro que deseas eliminar este evento?')) return;
+            try {
+                const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js");
+                await deleteDoc(doc(db, "daily_challenges", id));
+                fetchActiveEvents();
+            } catch (e) { alert('Error: ' + e.message); }
         }
 
         async function initGeminiLogic() {
@@ -642,36 +699,37 @@
             
             let lastGeneratedChallenge = null;
 
-            // Fetch ENV from firebase-config if exposed or import it
-            let GEMINI_KEY = '';
-            try {
-                const { ENV } = await import('./assets/js/env.js');
-                GEMINI_KEY = ENV.GEMINI_API_KEY;
-            } catch(e) { 
-                GEMINI_KEY = window.GEMINI_API_KEY || ''; 
-            }
-
             btnGenerate.addEventListener('click', async () => {
                 const topic = document.getElementById('ai-topic').value || "Coding Logic";
                 const diff = document.getElementById('ai-diff').value;
+                const manualKey = document.getElementById('manual-gemini-key').value;
+
+                if (!manualKey) {
+                    alert("Por favor, ingresa tu Gemini API Key manualmente.");
+                    return;
+                }
 
                 loader.classList.remove('hidden');
                 btnPublish.classList.add('hidden');
-                consoleOut.textContent = "// Generating on: " + topic + "...";
+                consoleOut.textContent = "// Consultando oráculo con llave manual...";
 
                 const prompt = `Create a Coding Challenge in JSON. Topic: ${topic}, Diff: ${diff}/5. Output ONLY valid JSON structure: {id, title, description, storyContext, language, difficulty, xp, coins, starterCode, testCode, template, hints:[]}. Japanese/Cyberpunk theme flavor.`;
 
                 try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_KEY}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${manualKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                     });
+                    
                     const data = await response.json();
+                    if (data.error) throw new Error(data.error.message);
+
                     let rawText = data.candidates[0].content.parts[0].text;
                     rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
                     lastGeneratedChallenge = JSON.parse(rawText);
                     lastGeneratedChallenge.id = new Date().toISOString().split('T')[0];
+                    
                     consoleOut.textContent = JSON.stringify(lastGeneratedChallenge, null, 2);
                     btnPublish.classList.remove('hidden');
                 } catch (err) {

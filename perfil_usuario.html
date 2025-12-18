@@ -460,8 +460,9 @@
                 `);
             }
             
-            // Si es admin, mostrar botón Panel Admin
-            if (user.isAdmin && currentUser && currentUser.id === user.id) {
+            // Si es admin (Solo Steven o Amelia), mostrar botón Panel Admin
+            const isGod = currentUser && (currentUser.id === 'steven' || currentUser.id === 'amelia');
+            if (isGod && currentUser.id === user.id) {
                 buttons.push(`
                     <a href="admin.html" class="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:opacity-80 transition flex items-center gap-2">
                         <i data-lucide="shield" class="w-4 h-4"></i>

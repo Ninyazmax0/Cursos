@@ -846,26 +846,54 @@
         let dailyEditor;
         let currentChallenge;
 
-        function openDailyChallenge() {
+        async function openDailyChallenge() {
             const modal = document.getElementById('daily-challenge-modal');
             modal.classList.remove('hidden');
             
-            // Get Challenge
-            const user = JSON.parse(localStorage.getItem('currentUser')) || {};
-            const level = user.level || 1;
-            currentChallenge = window.dailyChallengeSystem.getChallengeForUser(level);
+            // Get Challenge from Firestore first
+            try {
+                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js");
+                const docSnap = await getDoc(doc(window.firebaseDb, "daily_challenges", "today"));
+                
+                if (docSnap.exists()) {
+                    currentChallenge = docSnap.data();
+                } else {
+                    // Fallback to local
+                    const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+                    const level = user.level || 1;
+                    currentChallenge = window.dailyChallengeSystem.getChallengeForUser(level);
+                }
+            } catch (e) {
+                console.warn('Error fetching custom challenge, using local:', e);
+                const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+                const level = user.level || 1;
+                currentChallenge = window.dailyChallengeSystem.getChallengeForUser(level);
+            }
             
+            // Set values in Monaco logic...
+            renderDailyChallengeUI();
+        }
+
+        function renderDailyChallengeUI() {
+            if (!currentChallenge) return;
+
             // Render Info
             document.getElementById('daily-title').textContent = currentChallenge.title;
             document.getElementById('daily-description').textContent = currentChallenge.description;
-            
+            // Dificultad
+            const diffSpan = document.getElementById('daily-difficulty');
+            if (diffSpan) {
+                const stars = '⭐'.repeat(currentChallenge.difficulty || 1);
+                diffSpan.textContent = `Dificultad: ${stars}`;
+            }
+
             // Init Monaco if not exists
             if (!dailyEditor) {
                 require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
                 require(['vs/editor/editor.main'], function() {
                     dailyEditor = monaco.editor.create(document.getElementById('daily-monaco-container'), {
-                        value: currentChallenge.template,
-                        language: 'python',
+                        value: currentChallenge.template || currentChallenge.starterCode || '',
+                        language: currentChallenge.language || 'python',
                         theme: 'vs-dark',
                         automaticLayout: true,
                         minimap: { enabled: false },
@@ -873,7 +901,9 @@
                     });
                 });
             } else {
-                dailyEditor.setValue(currentChallenge.template);
+                dailyEditor.setValue(currentChallenge.template || currentChallenge.starterCode || '');
+                const model = dailyEditor.getModel();
+                if (model) monaco.editor.setModelLanguage(model, currentChallenge.language || 'python');
             }
         }
 

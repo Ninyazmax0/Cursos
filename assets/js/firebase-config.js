@@ -8,21 +8,10 @@ import { getFirestore, collection, doc, setDoc, getDoc, getDocs, onSnapshot, upd
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
-// Configuración de Firebase - Fallback si env.js no existe o falla
-let ENV_LOCAL = {};
-try {
-    // Usamos import dinámico para evitar que el script muera si el archivo no existe
-    const module = await import('./env.js');
-    ENV_LOCAL = module.ENV;
-} catch (e) {
-    console.warn('⚠️ Archivo env.js no encontrado o error al cargar. Usando fallbacks.');
-    ENV_LOCAL = {
-        FIREBASE_CONFIG: window.FIREBASE_CONFIG || {},
-        GEMINI_API_KEY: window.GEMINI_API_KEY || ''
-    };
-}
+import { ENV } from './env.js';
 
-const firebaseConfig = ENV_LOCAL.FIREBASE_CONFIG;
+// Configuración de Firebase
+const firebaseConfig = ENV.FIREBASE_CONFIG;
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
