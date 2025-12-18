@@ -32,44 +32,15 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* Fondo animado - Mismo que index.html */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            transition: opacity 0.5s ease;
-        }
-
         .background-day, .background-night {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1s ease;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1s ease;
         }
 
-        .background-day {
-            background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
-        }
-
-        .background-night {
-            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
-        }
-
-        .dark .background-night {
-            opacity: 1;
-        }
-
-        :not(.dark) .background-day {
-            opacity: 1;
-        }
+        .dark .background-night { opacity: 1; }
+        :not(.dark) .background-day { opacity: 1; }
 
         .profile-card {
             background: linear-gradient(135deg, var(--card-background) 0%, rgba(65, 72, 104, 0.5) 100%);
@@ -142,12 +113,17 @@
         }
     </style>
 </head>
-<body>
-    <!-- Fondo Animado - Mismo que index.html -->
-    <div class="background-container">
+<body class="min-h-screen">
+    <!-- Capas de Fondo -->
+    <div class="background-container fixed inset-0 -z-10">
         <div class="background-day"></div>
         <div class="background-night"></div>
     </div>
+
+    <!-- TOGGLE TEMA -->
+    <button id="theme-toggle" class="fixed top-4 right-4 p-2 rounded-full bg-card-background border border-border z-50 text-foreground hover:text-white transition-colors shadow-lg">
+        <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+    </button>
 
     <!-- Contenedor Principal -->
     <div class="container mx-auto px-4 py-8 max-w-6xl relative z-10">
@@ -751,6 +727,28 @@
 
         // Cargar perfil al iniciar
         loadUserProfile();
+
+        // --- LÓGICA DE TEMA (Día/Noche) ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function updateTheme(theme) {
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            if (themeIcon) themeIcon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+            localStorage.setItem('theme', theme);
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Initialize theme on load
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        updateTheme(savedTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                updateTheme(isDark ? 'light' : 'dark');
+            });
+        }
     </script>
 </body>
 </html>

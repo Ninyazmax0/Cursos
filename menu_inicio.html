@@ -32,17 +32,34 @@
                  }, 2000);
 
                  // Update Steven's pre-rendered rank and aura
-                 // This part assumes 'user' is the current user object being displayed/processed
-                 // and modifies it for display purposes or before saving back to localStorage.
-                 // If this logic is meant to modify the STEVEN_PROFILE definition itself,
-                 // it should be done in predefined-profiles.js or a dedicated profile management function.
-                 // For the purpose of this edit, we'll assume it's a runtime modification of the current user's profile.
                  user = { 
                     ...user, 
                     rank: 'Mi Prometido', 
                     equippedAura: 'aura-bride-time' 
                  };
-                 localStorage.setItem('currentUser', JSON.stringify(user)); // Save updated user back to localStorage
+                 localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+
+            // --- LÓGICA DE TEMA (Día/Noche) ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+
+            function updateTheme(theme) {
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+                if (themeIcon) themeIcon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+                localStorage.setItem('theme', theme);
+                if (window.lucide) lucide.createIcons();
+            }
+
+            // Initialize theme on load
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            updateTheme(savedTheme);
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    updateTheme(isDark ? 'light' : 'dark');
+                });
             }
         });
     </script>

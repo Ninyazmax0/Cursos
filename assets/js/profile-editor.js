@@ -89,14 +89,9 @@ export function openEditProfileModal(userData) {
                             </div>
                         </div>
 
-                         <!-- Frame Selection -->
-                        <div class="bg-[#24283b] p-4 rounded-xl border border-[#414868]">
-                            <label class="text-xs text-gray-500 mb-2 block">Marco de Perfil</label>
-                            
-                            <div class="flex flex-wrap gap-2" id="frame-selector">
-                                <!-- Dynamic Injection -->
-                            </div>
-                            <input type="hidden" id="edit-frame-input" value="${userData.equippedAura || ''}">
+                        <div class="p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl flex items-center justify-between">
+                            <span class="text-xs text-purple-300">Los marcos se cambian desde el botón "Mis Marcos" en tu perfil.</span>
+                            <i data-lucide="info" class="w-4 h-4 text-purple-400"></i>
                         </div>
                     </div>
 
