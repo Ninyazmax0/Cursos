@@ -21,8 +21,32 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initAchievementListeners();
+            
+            // --- THE SURPRISE ---
+            let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (user.id === 'steven' || user.id === 'steven-founder') {
+                 // Grant the Divine Moon/Marriage achievements
+                 setTimeout(() => {
+                     checkAchievement('steven_moon');
+                     checkAchievement('marriage_contract');
+                 }, 2000);
+
+                 // Update Steven's pre-rendered rank and aura
+                 // This part assumes 'user' is the current user object being displayed/processed
+                 // and modifies it for display purposes or before saving back to localStorage.
+                 // If this logic is meant to modify the STEVEN_PROFILE definition itself,
+                 // it should be done in predefined-profiles.js or a dedicated profile management function.
+                 // For the purpose of this edit, we'll assume it's a runtime modification of the current user's profile.
+                 user = { 
+                    ...user, 
+                    rank: 'Mi Prometido', 
+                    equippedAura: 'aura-bride-time' 
+                 };
+                 localStorage.setItem('currentUser', JSON.stringify(user)); // Save updated user back to localStorage
+            }
         });
     </script>
+    <script src="assets/js/cosmetic-effects.js"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/auras.css">
@@ -566,12 +590,27 @@
             const now = new Date();
             
             // Filter inactive users (lastSeen > 5 mins ago)
-            const activeUsers = users.filter(u => {
-                if(!u.lastSeen) return false; // Legacy users without lastSeen are offline
+            let activeUsers = users.filter(u => {
+                if(!u.lastSeen) return false;
                 const lastSeen = new Date(u.lastSeen);
                 const diffMins = (now - lastSeen) / 1000 / 60;
                 return diffMins < 5;
             });
+
+            // --- AMELIA SIEMPRE ACTIVA ---
+            const ameliaId = 'amelia';
+            const isAmeliaInList = activeUsers.some(u => u.id === ameliaId);
+            if (!isAmeliaInList && currentUser?.id !== ameliaId) {
+                activeUsers.push({
+                    id: ameliaId,
+                    name: 'Amelia',
+                    avatar: 'https://cdn.myanimelist.net/images/characters/8/239523.jpg',
+                    rank: 'Co-Owner',
+                    isOnline: true,
+                    lastSeen: new Date().toISOString()
+                });
+            }
+            // -----------------------------
 
             const otherUsers = activeUsers.filter(u => u.id !== currentUser?.id);
             

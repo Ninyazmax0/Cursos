@@ -48,7 +48,17 @@ export const achievements = [
     { id: 'database_keeper', name: 'Guardiana de Datos', desc: 'Ningún bit se pierde bajo su guardia.', hint: 'SELECT * FROM secrets.', rarity: 'legendary', icon: 'database' },
     { id: 'logic_master', name: 'Maestra de la Lógica', desc: '0 y 1 son sus juguetes favoritos.', hint: 'If this, then amazing.', rarity: 'legendary', icon: 'cpu' },
     { id: 'server_whisperer', name: 'Susurradora de Servidores', desc: 'Mantiene la nube flotando.', hint: 'Uptime: 99.999%.', rarity: 'legendary', icon: 'wifi' },
-    { id: 'security_protocol', name: 'Protocolo de Seguridad', desc: 'Hackearla es matemáticamente imposible.', hint: 'Access Denied.', rarity: 'legendary', icon: 'shield-check' }
+    { id: 'security_protocol', name: 'Protocolo de Seguridad', desc: 'Hackearla es matemáticamente imposible.', hint: 'Access Denied.', rarity: 'legendary', icon: 'shield-check' },
+
+    // --- NEW SECRET ACHIEVEMENTS ---
+    { id: 'secret_konami', name: 'Life Cycle', desc: 'Hojas que caen eternamente.', hint: 'El viejo truco de los 90...', rarity: 'legendary', icon: 'leaf' },
+    { id: 'secret_time', name: 'Chronos', desc: 'El tiempo es tuyo.', hint: 'El desafío de la medianoche.', rarity: 'legendary', icon: 'clock' },
+    { id: 'secret_fire', name: 'Eternal Flame', desc: 'Nunca se apaga.', hint: 'La constancia de una semana entera.', rarity: 'legendary', icon: 'flame' },
+    { id: 'secret_hack', name: 'Zero Day', desc: '01010101.', hint: 'Un mensaje en el vacío del código.', rarity: 'legendary', icon: 'binary' },
+    
+    // --- DIVINE ACHIEVEMENTS ---
+    { id: 'steven_moon', name: 'Mi Luna', desc: 'Solo hay una luna en este cielo...', hint: 'Una recompensa por un momento especial.', rarity: 'legendary', icon: 'moon-star' },
+    { id: 'marriage_contract', name: 'Mi Prometido', desc: 'Un juramento que el tiempo no podrá borrar.', hint: 'Para el dueño de mis latidos.', rarity: 'legendary', icon: 'heart' }
 ];
 
 // === LOGIC ===
@@ -153,13 +163,43 @@ export function initAchievementListeners() {
         if (e.key === konami[currentPos]) {
             currentPos++;
             if (currentPos === konami.length) {
-                checkAchievement('konami_code');
+                checkAchievement('secret_konami'); // Reemplazamos konami_code por secret_konami para el aura
                 currentPos = 0;
             }
         } else {
             currentPos = 0;
         }
     });
+
+    // 4. CHRONOS (Medianoche + Desafío)
+    // Esta se llama desde el motor de desafíos al ganar, pero podemos poner un chequeo aquí también
+    const checkMidnight = () => {
+        const now = new Date();
+        if (now.getHours() === 0) {
+            // Si está en un desafío, esto se activará
+            if (window.location.href.includes('challenges/')) {
+                // El motor de desafíos llamará a checkAchievement('secret_time') al ganar
+            }
+        }
+    };
+    setInterval(checkMidnight, 60000);
+
+    // 5. ETERNAL FLAME (Racha de 7 días)
+    const checkStreak7 = () => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.streak >= 7) {
+            checkAchievement('secret_fire');
+        }
+    };
+    checkStreak7();
+
+    // 6. ZERO DAY (Consola Log Secret)
+    // Si el usuario escribe 'unlock_zero_day' en la consola
+    window.unlock_secrets = () => {
+        console.log("%c[SYSTEM] %cIntentas hackear el sistema? %cInteresante...", "color: #0f0; font-weight: bold", "color: #fff", "color: #f0f");
+        checkAchievement('secret_hack');
+        return "Acceso concedido.";
+    };
 
     // 4. FOUNDER STALKER CHECK
     if (window.location.href.includes('perfil_usuario.html')) {

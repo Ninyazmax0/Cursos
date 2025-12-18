@@ -12,6 +12,7 @@
     <script type="module" src="assets/js/firebase-storage.js"></script>
     <script type="module" src="assets/js/profile-editor.js"></script>
     <link rel="stylesheet" href="assets/css/auras.css">
+    <script src="assets/js/cosmetic-effects.js"></script>
     <style>
         /* Tokyo Night Theme */
         :root {
@@ -474,10 +475,17 @@
                         Editar Perfil
                     </button>
                 `);
+                
+                buttons.push(`
+                    <button onclick="openMarcosModal()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition flex items-center gap-2 shadow-lg shadow-purple-500/20">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        Mis Marcos
+                    </button>
+                `);
             }
             
             // Si es admin, mostrar botón Panel Admin
-            if (user.isAdmin) {
+            if (user.isAdmin && currentUser && currentUser.id === user.id) {
                 buttons.push(`
                     <a href="admin.html" class="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:opacity-80 transition flex items-center gap-2">
                         <i data-lucide="shield" class="w-4 h-4"></i>
@@ -627,6 +635,93 @@
             const { openEditProfileModal, initializeModalTags } = await import('./assets/js/profile-editor.js');
             initializeModalTags(currentUser.tags || []);
             openEditProfileModal(currentUser);
+        };
+
+        // --- MODAL DE MARCOS ---
+        window.openMarcosModal = async function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+
+            const { PROFILE_AURAS } = await import('./assets/js/predefined-profiles.js');
+            const inventory = currentUser.inventory?.auras || [];
+            
+            // Re-fetch equipped from memory just in case
+            const equippedId = currentUser.equippedAura || 'aura-none';
+
+            const modalHTML = `
+                <div id="marcos-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+                    <div class="bg-[#1a1b26] border border-accent/30 rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl">
+                        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-accent/10">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i data-lucide="sparkles" class="text-yellow-400"></i> Tus Marcos de Avatar
+                            </h3>
+                            <button onclick="document.getElementById('marcos-modal').remove()" class="text-gray-400 hover:text-white">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="p-8 max-h-[60vh] overflow-y-auto">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-6" id="marcos-grid-selection">
+                                <!-- Sin Marco -->
+                                <div onclick="selectAndEquipFrame('aura-none')" 
+                                     class="group p-4 bg-white/5 border-2 ${equippedId === 'aura-none' ? 'border-accent bg-accent/10' : 'border-transparent'} rounded-2xl flex flex-col items-center gap-3 cursor-pointer hover:bg-white/10 transition-all">
+                                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-gray-600 flex items-center justify-center">
+                                        <i data-lucide="ban" class="text-gray-600"></i>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-400">Sin Marco</span>
+                                </div>
+
+                                ${PROFILE_AURAS.map(aura => {
+                                    const isOwned = inventory.includes(aura.id) || aura.price === 0;
+                                    if (!isOwned) return '';
+
+                                    return `
+                                        <div onclick="selectAndEquipFrame('${aura.id}')" 
+                                             class="group p-4 bg-white/5 border-2 ${equippedId === aura.id ? 'border-accent bg-accent/10' : 'border-transparent'} rounded-2xl flex flex-col items-center gap-3 cursor-pointer hover:bg-white/10 transition-all">
+                                            <div class="w-16 h-16 rounded-full flex items-center justify-center avatar-aura-container ${aura.cssClass}">
+                                                <img src="${currentUser.avatar || 'assets/default-avatar.png'}" class="w-12 h-12 rounded-full object-cover">
+                                            </div>
+                                            <span class="text-xs font-bold text-white truncate w-full text-center">${aura.name}</span>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-black/20 text-center text-[10px] text-gray-500 italic">
+                            Los marcos se guardan automáticamente al seleccionarlos.
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            lucide.createIcons();
+
+            window.selectAndEquipFrame = async (id) => {
+                const user = JSON.parse(localStorage.getItem('currentUser'));
+                user.equippedAura = id;
+                
+                // Save locally
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Save to Firestore
+                const { db } = await import('./assets/js/firebase-config.js');
+                const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js');
+                
+                try {
+                    const userRef = doc(db, 'users', user.id);
+                    await updateDoc(userRef, { equippedAura: id });
+                    console.log('✅ Marco actualizado en la nube');
+                    
+                    // Close and Refresh Profile View
+                    document.getElementById('marcos-modal').remove();
+                    renderProfile(user); // Force re-render of the page content
+                } catch(e) {
+                    console.error('Error saving frame:', e);
+                    alert('Error al guardar el marco.');
+                }
+            };
         };
 
         function renderBadges(web, python, ruby, database) {

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="assets/css/auras.css">
     <!-- Monaco Editor Loader -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <script src="assets/js/course_system.js"></script>
     <script src="assets/js/theme-manager.js"></script>
     <!-- Firebase Modules -->
     <script type="module" src="assets/js/firebase-config.js"></script>
@@ -2632,46 +2633,14 @@ sessionStorage.setItem('clave', 'valor');</code></pre>
 // --- MAPEO DE DESAFÍOS (NIVELES ESPECÍFICOS) ---
 // Key = Index del nivel (Nivel 1 = 0)
 const challengeMap = {
-    4: { // Nivel 5
-        file: 'challenges/engine.html?id=level5',
-        title: "Desafío: Modelo de Caja",
-        requiredScore: 7
-    },
-    5: { // Nivel 6
-        file: 'challenges/engine.html?id=level6',
-        title: "Desafío: JS Interactivo",
-        requiredScore: 7
-    },
-    9: { // Nivel 10
-        file: 'challenges/engine.html?id=level10',
-        title: "Desafío: Flexbox Avanzado",
-        requiredScore: 7
-    },
-    10: { // Nivel 11
-        file: 'challenges/engine.html?id=level11',
-        title: "Desafío: Grid Básico",
-        requiredScore: 7
-    },
-    14: { // Nivel 15
-        file: 'challenges/engine.html?id=level15',
-        title: "Desafío: Diseño Responsivo",
-        requiredScore: 7
-    },
-    15: { // Nivel 16
-        file: 'challenges/engine.html?id=level16',
-        title: "Desafío: Fetch API",
-        requiredScore: 7
-    },
-    18: { // Nivel 19
-        file: 'challenges/engine.html?id=level19',
-        title: "Desafío: Galería Interactiva",
-        requiredScore: 7
-    },
-    19: { // Nivel 20
-        file: 'challenges/engine.html?id=level20',
-        title: "Examen Final: Landing Page",
-        requiredScore: 7
-    }
+    4: { id: 'level5', title: "Desafío: Modelo de Caja" },
+    5: { id: 'level6', title: "Desafío: JS Interactivo" },
+    9: { id: 'level10', title: "Desafío: Flexbox Avanzado" },
+    10: { id: 'level11', title: "Desafío: Grid Básico" },
+    14: { id: 'level15', title: "Desafío: Diseño Responsivo" },
+    15: { id: 'level16', title: "Desafío: Fetch API" },
+    18: { id: 'level19', title: "Desafío: Galería Interactiva" },
+    19: { id: 'level20', title: "Desafío Final: Landing Page" }
 };
 
 // --- LÓGICA DE LA APLICACIÓN ---
@@ -2969,55 +2938,42 @@ function showResults() {
     const levelData = courseData[currentLevel];
     const totalQuestions = levelData.quiz.length;
     const percentage = Math.round((quizScore / totalQuestions) * 100);
+    const passed = percentage >= 70;
 
     // --- LOGIC FOR LEADERBOARD (XP) ---
-    // Initialize quizScores map if not exists
     if (!userProgress.quizScores) userProgress.quizScores = {};
 
-    // Only save score if it's the FIRST time passing or attempting this level's quiz
-    // Actually, to prevent "retrying until 100%", we should record the First Attempt ever.
-    // However, if they fail, they must retry to pass. 
-    // The user requested: "deve ser el primer resultado". 
-    // So we record the very first attempt score, even if failed? 
-    // Ideally, we award XP based on the *passing* grade, but if they retried, we maybe cap it?
-    // Let's implement: Record the score of the FIRST successful pass. Subsequent tries don't update it.
-    // OR: Record the absolute first try. If they fail (score 2/10), they get 20 points recorded. 
-    // They still need to retry to unlock next level, but the XP remains 20.
-    // Let's go with: Record the score of the FIRST ATTEMPT that triggers "showResults".
-    
-    // Check if we already have a score for this level
-    if (userProgress.quizScores[currentLevel] === undefined) {
+    // Record the score of the FIRST successful pass or update if higher
+    if (userProgress.quizScores[currentLevel] === undefined || quizScore > userProgress.quizScores[currentLevel]) {
         userProgress.quizScores[currentLevel] = quizScore;
         saveProgress();
+        
+        // Sincronizar con el sistema de puntuación universal
+        saveQuizScore(quizScore, totalQuestions, 'web', currentLevel + 1);
+        
+        // Verificar y mostrar desafío si corresponde
+        checkAndShowChallenge(currentLevel, challengeMap);
     }
-    // ----------------------------------
 
-    if (percentage >= 70) {
+    resultsScore.textContent = `Puntuación: ${quizScore}/${totalQuestions} (${percentage}%)`;
+
+    if (passed) {
         resultsTitle.textContent = '¡Felicidades!';
-        resultsScore.textContent = `Puntuación: ${quizScore}/${totalQuestions} (${percentage}%)`;
         resultsMessage.textContent = 'Has aprobado el cuestionario.';
         resultsIcon.setAttribute('data-lucide', 'award');
+        resultsIcon.style.color = 'var(--green)';
 
-        // VERIFICAR MAPEO DE DESAFÍO
-        const challenge = challengeMap[currentLevel];
-
-        if (challenge) {
-            document.getElementById('code-challenge-btn').classList.remove('hidden');
-            document.getElementById('code-challenge-btn').innerHTML = `<i data-lucide="code"></i> Ir al ${challenge.title}`;
-            lucide.createIcons();
-
-            nextLevelBtn.classList.add('hidden'); 
-        } else {
-            // Si NO hay desafío, completamos el nivel directamente
+        // La lógica de checkAndShowChallenge en course_system.js se encarga del botón
+        if (!challengeMap[currentLevel]) {
             markLevelCompleted(currentLevel);
             nextLevelBtn.classList.remove('hidden');
             document.getElementById('code-challenge-btn').classList.add('hidden');
         }
     } else {
         resultsTitle.textContent = '¡Inténtalo de nuevo!';
-        resultsScore.textContent = `Puntuación: ${quizScore}/${totalQuestions} (${percentage}%)`;
         resultsMessage.textContent = 'Necesitas al menos 70% para aprobar.';
         resultsIcon.setAttribute('data-lucide', 'refresh-cw');
+        resultsIcon.style.color = 'var(--red)';
         nextLevelBtn.classList.add('hidden');
         document.getElementById('code-challenge-btn').classList.add('hidden');
     }

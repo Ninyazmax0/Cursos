@@ -147,7 +147,7 @@ export function openEditProfileModal(userData) {
     `;
     
     // Populate Avatar Selector
-    import('./predefined-profiles.js').then(({ PREDEFINED_AVATARS, PROFILE_FRAMES }) => {
+    import('./predefined-profiles.js').then(({ PREDEFINED_AVATARS, PROFILE_AURAS }) => {
         // Avatars
         const avatarSelector = document.getElementById('avatar-selector');
         if(avatarSelector) {
@@ -161,25 +161,33 @@ export function openEditProfileModal(userData) {
             };
         }
 
-        // Frames
+        // Auras/Frames
         const frameSelector = document.getElementById('frame-selector');
-        if (frameSelector && PROFILE_FRAMES) {
-            frameSelector.innerHTML = PROFILE_FRAMES.map(frame => {
-                if(frame.id === 'frame-none') {
+        if (frameSelector && PROFILE_AURAS) {
+            // Solo mostrar marcos que el usuario POSEE
+            const inventory = userData.inventory?.auras || [];
+            
+            frameSelector.innerHTML = PROFILE_AURAS.map(aura => {
+                const isOwned = inventory.includes(aura.id) || aura.price === 0; // 0 price are usually achievements/defaults
+                if (!isOwned && aura.id !== 'aura-none') return '';
+
+                if(aura.id === 'aura-none') {
                      return `
-                        <div onclick="selectFrame('${frame.id}')" 
-                             class="group relative w-16 h-16 rounded-xl border border-gray-700 hover:border-purple-500 cursor-pointer flex flex-col items-center justify-center gap-1 transition-all ${userData.equippedFrame === frame.id ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}"
-                             id="frame-option-${frame.id}">
+                        <div onclick="selectFrame('${aura.id}')" 
+                             class="group relative w-16 h-16 rounded-xl border border-gray-700 hover:border-purple-500 cursor-pointer flex flex-col items-center justify-center gap-1 transition-all ${userData.equippedAura === aura.id ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}"
+                             id="frame-option-${aura.id}">
                             <i data-lucide="ban" class="w-6 h-6 text-gray-500"></i>
                             <span class="text-[10px] text-gray-400">Sin Marco</span>
                         </div>`;
                 }
                 return `
-                <div onclick="selectFrame('${frame.id}')" 
-                     class="group relative w-16 h-16 rounded-xl border border-gray-700 hover:border-purple-500 cursor-pointer flex flex-col items-center justify-center gap-1 transition-all ${userData.equippedFrame === frame.id ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}"
-                     id="frame-option-${frame.id}">
-                    <img src="${frame.img}" class="w-12 h-12 object-contain" alt="${frame.name}">
-                    <span class="text-[10px] text-gray-400 group-hover:text-white truncate max-w-full px-1">${frame.name}</span>
+                <div onclick="selectFrame('${aura.id}')" 
+                     class="group relative w-16 h-16 rounded-xl border border-gray-700 hover:border-purple-500 cursor-pointer flex flex-col items-center justify-center gap-1 transition-all ${userData.equippedAura === aura.id ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}"
+                     id="frame-option-${aura.id}">
+                    <div class="w-8 h-8 rounded-full border-2 border-gray-500 flex items-center justify-center overflow-hidden avatar-aura-container ${aura.cssClass}">
+                        <div class="w-4 h-4 bg-gray-600 rounded-full"></div>
+                    </div>
+                    <span class="text-[10px] text-gray-400 group-hover:text-white truncate max-w-full px-1">${aura.name}</span>
                 </div>
             `}).join('');
 

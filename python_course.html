@@ -3618,14 +3618,14 @@ let userProgress = { completedLevels: [], quizScores: {} };
 const COURSE_ID = 'python';
 
 const challengeMap = {
-    4: 'python_challenge1',  // Nivel 5
-    5: 'python_challenge2',  // Nivel 6
-    9: 'python_challenge3',  // Nivel 10
-    10: 'python_challenge4', // Nivel 11
-    14: 'python_challenge5', // Nivel 15
-    15: 'python_challenge6', // Nivel 16
-    18: 'python_challenge7', // Nivel 19
-    19: 'python_challenge8'  // Nivel 20
+    4: { id: 'python_challenge1', title: 'Desafío: Variables' },
+    5: { id: 'python_challenge2', title: 'Desafío: Control' },
+    9: { id: 'python_challenge3', title: 'Desafío: Funciones' },
+    10: { id: 'python_challenge4', title: 'Desafío: Diccionarios' },
+    14: { id: 'python_challenge5', title: 'Desafío: POO Básica' },
+    15: { id: 'python_challenge6', title: 'Desafío: Excepciones' },
+    18: { id: 'python_challenge7', title: 'Desafío: Datos' },
+    19: { id: 'python_challenge8', title: 'Desafío Final: Integración' }
 };
 
 // INIT (Strict)
@@ -4426,7 +4426,7 @@ function showResults() {
         // Guardar quizScores para leaderboard
         saveQuizScore(score, courseData[currentLevel].quiz.length, COURSE_ID, currentLevel + 1);
         // Mostrar challenge si corresponde
-        checkAndShowChallenge(currentLevel + 1, challengeMap);
+        checkAndShowChallenge(currentLevel, challengeMap);
     }
 
     const resultsTitle = document.getElementById('results-title');
@@ -4444,15 +4444,8 @@ function showResults() {
         resultsIcon.setAttribute('data-lucide', 'award');
         resultsIcon.style.color = 'var(--green)';
 
-        // Verificar si hay desafío
-        const challenge = challengeMap[currentLevel];
-        
-        if (challenge) {
-            challengeBtn.classList.remove('hidden');
-            challengeBtn.href = challenge.file;
-            challengeBtn.innerHTML = `<i data-lucide="code"></i> ${challenge.title}`;
-            nextLevelBtn.classList.add('hidden');
-        } else {
+        // La lógica de checkAndShowChallenge en course_system.js se encarga del botón
+        if (!challengeMap[currentLevel]) {
             challengeBtn.classList.add('hidden');
             nextLevelBtn.classList.remove('hidden');
             markLevelCompleted(currentLevel);
@@ -4998,72 +4991,99 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
 
 // Ejecutar código Python desde Monaco
 // Función para inicializar Monaco Editor en bloques de código estáticos (Ejemplos)
+// Convierte los .code-block en editores Monaco con tema Tokyo Night
+let codeBlockMonacoInstances = [];
+let codeBlockCounter = 0;
+
 function initializeCodeBlockMonaco() {
     if (!window.monaco) return;
 
-    document.querySelectorAll('.code-block').forEach((block, index) => {
-        // Verificar si ya fue inicializado para evitar duplicados
-        if (block.getAttribute('data-monaco-initialized') === 'true') return;
-        
-        const codeElement = block.querySelector('code');
+    // Obtener todos los bloques de código en la lección actual (los que aún no tienen editor)
+    const codeBlocks = document.querySelectorAll('#lesson-content .code-block:not([data-monaco-initialized])');
+    
+    codeBlocks.forEach((block) => {
+        const codeElement = block.querySelector('pre code');
         if (!codeElement) return;
+        
+        const codeText = codeElement.textContent || codeElement.innerText;
+        if (!codeText.trim()) return;
 
-        const language = 'python'; // Por defecto para este curso
-        const code = codeElement.textContent;
-
-        // Limpiar el contenido original pero mantener el contenedor
-        block.innerHTML = '';
-        block.style.height = 'auto'; // Permitir que se ajuste
         block.setAttribute('data-monaco-initialized', 'true');
-        
-        // Crear contenedor para el editor
-        const editorContainer = document.createElement('div');
-        editorContainer.style.width = '100%';
-        // Calcular altura basada en líneas (aprox 20px por línea) + padding
-        const lineCount = code.split('\n').length;
-        const height = Math.min(Math.max(lineCount * 21 + 20, 100), 500); // Min 100px, Max 500px, 21px line height
-        editorContainer.style.height = `${height}px`;
-        editorContainer.className = 'monaco-static-block rounded-md overflow-hidden border border-gray-700 mt-4';
-        
-        // Header estilo macOS/Tokyo Night
-        const header = document.createElement('div');
-        header.className = 'flex items-center justify-between px-4 py-2 bg-[#1a1b26] border-b border-gray-800';
-        header.innerHTML = `
-            <div class="flex gap-2">
-                <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-                <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-                <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-            </div>
-            <div class="text-xs text-gray-400 font-mono">example.py</div>
-        `;
-        
-        block.appendChild(header);
-        block.appendChild(editorContainer);
 
-        monaco.editor.create(editorContainer, {
-            value: code,
+        // Detectar lenguaje
+        let language = 'python';
+        if (codeElement.className.includes('language-html')) language = 'html';
+        else if (codeElement.className.includes('language-css')) language = 'css';
+        else if (codeElement.className.includes('language-javascript')) language = 'javascript';
+
+        // Crear ID único
+        const uniqueId = `code-block-monaco-${codeBlockCounter++}`;
+        
+        // Calcular altura basada en líneas
+        const lines = codeText.split('\n').length;
+        const height = Math.min(Math.max(lines * 22 + 20, 100), 500);
+
+        // Limpiar contenedor pero mantener referencia
+        block.innerHTML = '';
+        
+        // Contenedor principal estilizado
+        const container = document.createElement('div');
+        container.className = 'code-block-monaco-wrapper';
+        container.style.cssText = 'border-radius: 12px; overflow: hidden; margin-top: 1rem; border: 1px solid #414868; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+
+        // Header estilo Tokyo Night
+        const header = document.createElement('div');
+        header.className = 'code-block-header';
+        header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: linear-gradient(135deg, #24283b 0%, #1a1b26 100%); border-bottom: 1px solid #414868;';
+        header.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+                <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'python' ? 'example.py' : language === 'html' ? 'index.html' : 'code.' + language}</span>
+            </div>
+            <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
+        `;
+
+        const monacoContainer = document.createElement('div');
+        monacoContainer.id = uniqueId;
+        monacoContainer.style.cssText = `width: 100%; height: ${height}px;`;
+
+        container.appendChild(header);
+        container.appendChild(monacoContainer);
+        block.appendChild(container);
+
+        const editor = monaco.editor.create(monacoContainer, {
+            value: codeText.trim(),
             language: language,
-            theme: 'tokyo-night', // Usar nuestro tema personalizado
+            theme: 'tokyo-night',
             readOnly: true,
             domReadOnly: true,
             minimap: { enabled: false },
-            scrollBeyondLastLine: false,
             fontSize: 14,
             fontFamily: "'JetBrains Mono', monospace",
-            lineNumbers: 'off', // Ocultar números de línea para ejemplos simples si se prefiere, o 'on'
-            folding: false,
-            renderLineHighlight: 'none',
-            contextmenu: false,
-            scrollbar: {
-                vertical: 'hidden',
-                horizontal: 'auto',
-                useShadows: false
-            },
-            overviewRulerBorder: false,
-            hideCursorInOverviewRuler: true,
+            lineNumbers: 'on',
+            scrollBeyondLastLine: false,
             padding: { top: 10, bottom: 10 }
         });
+
+        codeBlockMonacoInstances.push(editor);
     });
+}
+
+// Re-inicializar los bloques de código cuando se cambia de paso
+const originalRenderLesson = typeof renderLesson === 'function' ? renderLesson : null;
+if (originalRenderLesson) {
+    window.renderLesson = function() {
+        // Limpiar instancias anteriores para liberar memoria
+        codeBlockMonacoInstances.forEach(editor => {
+            if (editor && typeof editor.dispose === 'function') editor.dispose();
+        });
+        codeBlockMonacoInstances = [];
+        
+        originalRenderLesson.apply(this, arguments);
+        setTimeout(initializeCodeBlockMonaco, 100);
+    };
 }
 
 async function runPythonCode(containerId) {
@@ -5072,29 +5092,21 @@ async function runPythonCode(containerId) {
     
     if (!outputDiv || !runBtn) return;
 
-    // Inicializar Pyodide si no está listo
     if (!pyodideReady) {
-        outputDiv.innerHTML = '<div class="console-loading"><div class="spinner"></div> Cargando intérprete de Python (primera vez, ~6MB)...</div>';
+        outputDiv.innerHTML = '<div class="console-loading"><div class="spinner"></div> Cargando...</div>';
         runBtn.disabled = true;
         await initPyodide();
         runBtn.disabled = false;
     }
 
-    // Obtener el código desde Monaco
     const editor = window.monacoEditors[containerId];
-    if (!editor) {
-        console.error("Editor no encontrado para", containerId);
-        return;
-    }
+    if (!editor) return;
     const code = editor.getValue();
 
-    // Limpiar consola
     outputDiv.innerHTML = '<div class="console-line info">🚀 Ejecutando...</div>';
 
     try {
-        // Configurar funciones de I/O personalizadas
-        
-        // Función para mostrar output
+        // Setup output redirect
         pyodide.globals.set('print_output', (text, is_prompt = false) => {
             const line = document.createElement('div');
             line.className = `console-line ${is_prompt ? 'input' : 'output'}`;
@@ -5103,56 +5115,35 @@ async function runPythonCode(containerId) {
             outputDiv.scrollTop = outputDiv.scrollHeight;
         });
 
-        // Función para obtener input - ahora es async y devuelve una Promise correctamente
+        // Setup input resolver
         pyodide.globals.set('js_get_input', (prompt) => {
             return getUserInput(containerId, prompt);
         });
 
-        // Configurar el entorno Python con input asíncrono correcto
+        // Pre-configure Python environment
         await pyodide.runPythonAsync(`
 import sys
-import asyncio
-from pyodide.ffi import to_js
+import builtins
 
-# Custom stdout que captura los prints
 class CustomStdout:
     def write(self, text):
-        if text.strip():
-            print_output(text)
-    def flush(self):
-        pass
+        if text.strip(): print_output(text)
+    def flush(self): pass
 
 sys.stdout = CustomStdout()
 sys.stderr = CustomStdout()
 
-# Función input asíncrona que espera correctamente
 async def async_input(prompt=''):
-    if prompt:
-        print_output(prompt, True)
-    result = await js_get_input(prompt)
-    return result
+    if prompt: print_output(prompt, True)
+    return await js_get_input(prompt)
 
-# Guardar referencia global
-_async_input = async_input
+builtins.input = async_input
         `);
 
-        // Preprocesar el código para convertir input() en await async_input()
-        let processedCode = code;
+        // Transform user code to be async-safe
+        // We wrap it in a function if it contains 'input' to allow top-level await behavior
+        await pyodide.runPythonAsync(code.replace(/\binput\s*\(/g, 'await input('));
         
-        // Envolver en función async y ejecutar
-        const asyncCode = `
-import asyncio
-
-async def __main__():
-${code.split('\n').map(line => '    ' + line).join('\n')}
-
-asyncio.get_event_loop().run_until_complete(__main__())
-        `.replace(/input\(/g, 'await _async_input(');
-
-        // Ejecutar el código del usuario
-        await pyodide.runPythonAsync(asyncCode);
-        
-        // Mensaje de finalización
         const doneLine = document.createElement('div');
         doneLine.className = 'console-line info';
         doneLine.textContent = '✅ Ejecución completada';
@@ -5164,231 +5155,36 @@ asyncio.get_event_loop().run_until_complete(__main__())
         errorLine.textContent = `❌ Error: ${error.message}`;
         outputDiv.appendChild(errorLine);
     }
-
     outputDiv.scrollTop = outputDiv.scrollHeight;
 }
 
 // Obtener input del usuario
-// Mapa global de resolvers para inputs concurrentes/secuenciales
 window.consoleInputResolvers = window.consoleInputResolvers || {};
 
-// Obtener input del usuario
 function getUserInput(containerId, prompt) {
-    console.log(`[Python Console] Requesting input for ${containerId}`);
     return new Promise((resolve) => {
         const inputPrompt = document.getElementById(`${containerId}-input-prompt`);
         const inputField = document.getElementById(`${containerId}-input`);
         
         if (!inputPrompt || !inputField) {
-            console.error(`[Python Console] CRITICAL: Input elements not found for ${containerId}`);
             resolve('');
             return;
         }
 
         inputPrompt.classList.remove('hidden');
-        inputPrompt.style.display = 'flex'; // Forzar display
+        inputPrompt.style.display = 'flex';
         
-        // Asegurar foco y scroll
         setTimeout(() => {
             inputField.focus();
             const outputDiv = document.getElementById(`${containerId}-output`);
             if (outputDiv) outputDiv.scrollTop = outputDiv.scrollHeight;
         }, 50);
         
-        // Guardar resolver específico
         window.consoleInputResolvers[containerId] = resolve;
     });
 }
 
-// Limpiar consola
-function clearConsole(containerId) {
-    const outputDiv = document.getElementById(`${containerId}-output`);
-    if (outputDiv) {
-        outputDiv.innerHTML = '<div class="console-line info">🧹 Consola limpiada</div>';
-    }
-}
-
-// Inicialización de herramientas auxiliares
-// La carga de datos y control principal reside en el listener de Firebase (arriba en el archivo)
-
-document.addEventListener('DOMContentLoaded', async () => {
-    // Inicializar iconos visuales
-    if (window.lucide) lucide.createIcons();
-
-    // Inicializar funcionalidades interactivas de las lecciones
-    if (typeof initializeErrorFinding === 'function') initializeErrorFinding();
-    if (typeof initializeCodeCompletion === 'function') initializeCodeCompletion();
-
-    // Inicializar entorno Python (Pyodide) en segundo plano
-    setTimeout(() => {
-        if (typeof initPyodide === 'function') initPyodide();
-    }, 2000);
-});
-
-// ========================================
-// FUNCIÓN PARA BLOQUES DE CÓDIGO DE EJEMPLO (Monaco Readonly)
-// Convierte los .code-block en editores Monaco con tema Tokyo Night
-// ========================================
-
-let codeBlockMonacoInstances = [];
-let codeBlockCounter = 0;
-
-function initializeCodeBlockMonaco() {
-    // Esperar a que Monaco esté disponible
-    if (!monacoRequireConfigured) {
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
-        monacoRequireConfigured = true;
-    }
-
-    require(['vs/editor/editor.main'], function() {
-        // Definir tema Tokyo Night personalizado si no existe
-        try {
-            monaco.editor.defineTheme('tokyo-night', {
-                base: 'vs-dark',
-                inherit: true,
-                rules: [
-                    { token: 'comment', foreground: '565f89', fontStyle: 'italic' },
-                    { token: 'keyword', foreground: 'bb9af7', fontStyle: 'bold' },
-                    { token: 'string', foreground: '9ece6a' },
-                    { token: 'number', foreground: 'ff9e64' },
-                    { token: 'function', foreground: '7aa2f7' },
-                    { token: 'variable', foreground: 'c0caf5' },
-                    { token: 'type', foreground: '2ac3de' },
-                    { token: 'operator', foreground: '89ddff' },
-                    { token: 'delimiter', foreground: 'a9b1d6' },
-                    { token: 'identifier', foreground: 'c0caf5' },
-                ],
-                colors: {
-                    'editor.background': '#1a1b26',
-                    'editor.foreground': '#c0caf5',
-                    'editor.lineHighlightBackground': '#24283b',
-                    'editor.selectionBackground': '#364A82',
-                    'editorCursor.foreground': '#c0caf5',
-                    'editorWhitespace.foreground': '#3b4261',
-                    'editorIndentGuide.background': '#3b4261',
-                    'editorIndentGuide.activeBackground': '#7aa2f7',
-                    'editor.lineHighlightBorder': '#00000000',
-                    'editorLineNumber.foreground': '#565f89',
-                    'editorLineNumber.activeForeground': '#7aa2f7',
-                }
-            });
-        } catch(e) { /* Theme already defined */ }
-
-        // Obtener todos los bloques de código en la lección actual
-        const codeBlocks = document.querySelectorAll('#lesson-content .code-block');
-        
-        codeBlocks.forEach((block, index) => {
-            // Obtener el código del pre/code
-            const codeElement = block.querySelector('pre code');
-            if (!codeElement) return;
-            
-            const codeText = codeElement.textContent || codeElement.innerText;
-            if (!codeText.trim()) return;
-
-            // Detectar lenguaje
-            let language = 'python';
-            if (codeElement.className.includes('language-html')) language = 'html';
-            else if (codeElement.className.includes('language-css')) language = 'css';
-            else if (codeElement.className.includes('language-javascript')) language = 'javascript';
-
-            // Crear ID único
-            const uniqueId = `code-block-monaco-${codeBlockCounter++}`;
-            
-            // Calcular altura basada en líneas de código
-
-            const lines = codeText.split('\n').length;
-            const height = Math.min(Math.max(lines * 22 + 20, 100), 400);
-
-            // Crear nuevo contenedor Monaco
-            const monacoContainer = document.createElement('div');
-            monacoContainer.id = uniqueId;
-            monacoContainer.style.cssText = `width: 100%; height: ${height}px; border-radius: 0 0 12px 12px; overflow: hidden;`;
-
-            // Mantener el header existente (con los puntitos)
-            const header = block.querySelector('.code-block-header');
-            const newBlock = document.createElement('div');
-            newBlock.className = 'code-block-monaco';
-            newBlock.style.cssText = 'border-radius: 12px; overflow: hidden; margin-top: 1rem; border: 1px solid #414868; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
-
-            // Recrear header mejorado
-            const newHeader = document.createElement('div');
-            newHeader.className = 'code-block-header';
-            newHeader.innerHTML = `
-                <div class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full" style="background: #ff5f56;"></span>
-                    <span class="w-3 h-3 rounded-full" style="background: #ffbd2e;"></span>
-                    <span class="w-3 h-3 rounded-full" style="background: #27c93f;"></span>
-                    <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'python' ? 'example.py' : language === 'html' ? 'index.html' : 'code.' + language}</span>
-                </div>
-                <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
-            `;
-            newHeader.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: linear-gradient(135deg, #24283b 0%, #1a1b26 100%); border-bottom: 1px solid #414868;';
-
-            newBlock.appendChild(newHeader);
-            newBlock.appendChild(monacoContainer);
-
-            // Reemplazar el bloque original
-            block.parentNode.replaceChild(newBlock, block);
-
-            // Crear editor Monaco
-            const editor = monaco.editor.create(monacoContainer, {
-                value: codeText.trim(),
-                language: language,
-                theme: 'tokyo-night',
-                automaticLayout: true,
-                minimap: { enabled: false },
-                fontSize: 14,
-                fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
-                lineNumbers: 'on',
-                renderIndentGuides: true,
-                guides: { 
-                    indentation: true,
-                    bracketPairs: true,
-                    highlightActiveIndentation: true
-                },
-                scrollBeyondLastLine: false,
-                roundedSelection: true,
-                padding: { top: 10, bottom: 10 },
-                readOnly: true,
-                domReadOnly: true,
-                cursorStyle: 'line',
-                renderLineHighlight: 'all',
-                scrollbar: {
-                    vertical: 'auto',
-                    horizontal: 'auto',
-                    verticalScrollbarSize: 8,
-                    horizontalScrollbarSize: 8
-                },
-                folding: true,
-                foldingHighlight: true,
-                matchBrackets: 'always',
-                bracketPairColorization: { enabled: true }
-            });
-
-            codeBlockMonacoInstances.push(editor);
-        });
-    });
-}
-
-// Re-inicializar los bloques de código cuando se cambia de paso en la lección
-const originalRenderLesson = typeof renderLesson === 'function' ? renderLesson : null;
-if (originalRenderLesson) {
-    window.renderLesson = function() {
-        // Limpiar instancias anteriores
-        codeBlockMonacoInstances.forEach(editor => {
-            if (editor && typeof editor.dispose === 'function') {
-                editor.dispose();
-            }
-        });
-        codeBlockMonacoInstances = [];
-        
-        // Llamar a la función original
-        originalRenderLesson.apply(this, arguments);
-        
-        // Inicializar Monaco después de un pequeño delay
-        setTimeout(initializeCodeBlockMonaco, 100);
-    };
-}
+// Fin de la lógica de Monaco y Python
 
 
 </script>

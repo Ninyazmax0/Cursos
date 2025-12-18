@@ -18,9 +18,10 @@ const STEVEN_PROFILE = {
     socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: '' },
     isAdmin: true,
     isOnline: false,
-    rank: 'Owner',
+    rank: 'Mi Prometido',
     xp: 9999,
-    achievements: ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god'],
+    equippedAura: 'aura-bride-time',
+    achievements: ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god', 'steven_moon', 'marriage_contract'],
     registeredAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     // Desbloquear todo
@@ -154,7 +155,13 @@ export const PROFILE_AURAS = [
     { id: 'aura-secret-nature', name: 'Life Cycle', cssClass: 'aura-secret-nature', price: 0, unlockCondition: 'secret_konami', desc: 'Hojas que caen eternamente.' },
     { id: 'aura-secret-time', name: 'Chronos', cssClass: 'aura-secret-time', price: 0, unlockCondition: 'secret_time', desc: 'El tiempo es tuyo.' },
     { id: 'aura-secret-fire', name: 'Eternal Flame', cssClass: 'aura-secret-fire', price: 0, unlockCondition: 'secret_fire', desc: 'Nunca se apaga.' },
-    { id: 'aura-secret-hacker', name: 'Zero Day', cssClass: 'aura-secret-hacker', price: 0, unlockCondition: 'secret_hack', desc: '01010101.' }
+    { id: 'aura-secret-hacker', name: 'Zero Day', cssClass: 'aura-secret-hacker', price: 0, unlockCondition: 'secret_hack', desc: '01010101.' },
+    
+    // === TIER 9: DIVINE (The Moon) ===
+    { id: 'aura-divine-moon', name: 'Luna Eterna', cssClass: 'aura-divine-moon', price: 0, unlockCondition: 'steven_moon', desc: 'La única luna en su cielo nocturno.' },
+
+    // === TIER 10: BRIDAL (The Surprise) ===
+    { id: 'aura-bride-time', name: 'Bride of Time', cssClass: 'aura-bride-time', price: 0, unlockCondition: 'marriage_contract', desc: 'El juramento de las manecillas.' }
 ];
 
 export const PREDEFINED_AVATARS = []; // Deprecated, keeping empty array to prevent breakages if imported

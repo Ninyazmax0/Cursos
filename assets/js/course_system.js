@@ -1,9 +1,8 @@
 // ==========================================
 // SISTEMA DE QUIZSCORES Y CHALLENGEMAP
-// Para Ruby Course
+// Sistema Universal para todos los cursos
 // ==========================================
 
-// Guardar puntuación del quiz
 // Guardar puntuación del quiz en Firestore (Historial por intento)
 async function saveQuizScore(score, total, courseId, levelNumber) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -18,68 +17,76 @@ async function saveQuizScore(score, total, courseId, levelNumber) {
         date: new Date().toISOString()
     };
 
+    // Intentar usar las funciones globales de Firebase si están disponibles
     if (window.getUserFromFirestore && window.updateCourseProgress) {
         try {
-            // 1. Obtener historial actual de Firestore (SSOT)
             const userDoc = await window.getUserFromFirestore(currentUser.id);
             let history = userDoc.quizHistory || [];
-            
-            // 2. Agregar nuevo intento
             history.push(newEntry);
-            
-            // 3. Guardar en Firestore
-            // Usamos updateCourseProgress como un helper genérico para actualizar un campo del usuario
-            // En este caso el 'courseKey' es 'quizHistory'
             await window.updateCourseProgress(currentUser.id, 'quizHistory', history);
-            console.log('✅ Quiz Score saved to Firestore History');
-            
+            console.log(`✅ Quiz Score saved for ${courseId} Lvl ${levelNumber}`);
         } catch (e) {
-            console.error('❌ Error saving quiz history to Firestore:', e);
+            console.error('❌ Error saving quiz history:', e);
         }
-    } else {
-        console.warn('⚠️ Firebase helpers not found. Quiz history not saved.');
     }
 }
 
 // Mostrar botón de challenge
-function showChallengeButton(challengeId, resultsMessageElement) {
-    // Verificar si ya existe un botón de challenge
+function showChallengeButton(challengeData, resultsMessageElement) {
+    // Si challengeData es un string, lo tratamos como ID. Si es objeto, extraemos id y title.
+    const challengeId = typeof challengeData === 'string' ? challengeData : challengeData.id;
+    const challengeTitle = (typeof challengeData === 'object' && challengeData.title) ? challengeData.title : "¡Ir al Desafío!";
+
+    // Verificar si ya existe un botón
     const existingBtn = document.querySelector('.challenge-btn');
     if (existingBtn) existingBtn.remove();
     
-    // Detectar el curso actual desde la URL del archivo
+    // Detectar el curso actual
     const currentPage = window.location.pathname;
-    let courseParam = 'web'; // Default
-    let engineFile = 'engine.html'; // Default para web
+    let courseParam = 'web';
+    let engineFile = 'engine.html';
     
     if (currentPage.includes('python_course')) {
         courseParam = 'python';
         engineFile = 'python_engine.html';
     } else if (currentPage.includes('ruby_course')) {
         courseParam = 'ruby';
+        engineFile = 'engine.html'; // Usamos el engine estándar para Ruby/Web/DB
     } else if (currentPage.includes('database_course')) {
         courseParam = 'database';
+        engineFile = 'engine.html';
     }
     
     const challengeBtn = document.createElement('button');
-    challengeBtn.className = 'btn-primary mt-4 challenge-btn';
-    challengeBtn.innerHTML = '<i data-lucide="zap"></i> ¡Ir al Desafío!';
-    challengeBtn.onclick = () => window.location.href = `challenges/${engineFile}?id=${challengeId}&course=${courseParam}`;
+    challengeBtn.className = 'btn-primary mt-4 challenge-btn flex items-center gap-2 mx-auto justify-center';
+    challengeBtn.innerHTML = `<i data-lucide="zap"></i> ${challengeTitle}`;
+    challengeBtn.onclick = () => {
+        window.location.href = `challenges/${engineFile}?id=${challengeId}&course=${courseParam}`;
+    };
     
-    resultsMessageElement.insertAdjacentElement('afterend', challengeBtn);
-    
-    // Reinicializar iconos de Lucide
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+    // Si el elemento es un botón de ID 'code-challenge-btn' (el original), lo usamos o lo reemplazamos
+    const originalBtn = document.getElementById('code-challenge-btn');
+    if (originalBtn) {
+        originalBtn.classList.remove('hidden');
+        originalBtn.innerHTML = `<i data-lucide="zap"></i> ${challengeTitle}`;
+        originalBtn.onclick = challengeBtn.onclick;
+        // Si hay nextLevelBtn, lo ocultamos
+        const nextBtn = document.getElementById('next-level-btn');
+        if (nextBtn) nextBtn.classList.add('hidden');
+    } else {
+        resultsMessageElement.insertAdjacentElement('afterend', challengeBtn);
     }
+    
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 // Verificar y mostrar challenge si corresponde
-function checkAndShowChallenge(levelNumber, challengeMap) {
-    if (challengeMap[levelNumber]) {
+function checkAndShowChallenge(levelIndex, challengeMap) {
+    const challenge = challengeMap[levelIndex];
+    if (challenge) {
         const resultsMessage = document.getElementById('results-message');
         if (resultsMessage) {
-            showChallengeButton(challengeMap[levelNumber], resultsMessage);
+            showChallengeButton(challenge, resultsMessage);
         }
     }
 }
