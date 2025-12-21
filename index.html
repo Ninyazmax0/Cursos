@@ -1,117 +1,167 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Code 418 - Una Pausa en el Tiempo</title>
+    <title>Status Code 418 - Archivando Sueños</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #1a1b26;
-            --fg: #a9b1d6;
+            --background: #1a1b26;
+            --foreground: #a9b1d6;
             --accent: #7aa2f7;
-            --red: #f7768e;
-            --purple: #bb9af7;
+            --pink: #f7768e;
+            --card: rgba(26, 27, 38, 0.8);
+            --border: rgba(65, 72, 104, 0.5);
         }
+
         body {
-            background-color: var(--bg);
-            color: var(--fg);
+            background-color: var(--background);
+            color: var(--foreground);
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            margin: 0;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
-        .stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
+
+        .stars-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1f2335 0%, #1a1b26 100%);
         }
+
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
             opacity: 0.3;
-            animation: twinkle var(--d) infinite ease-in-out;
+            animation: twinkle var(--duration) infinite ease-in-out;
         }
+
         @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
+            0%, 100% { opacity: 0.2; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(1.2); }
         }
-        .glass {
-            background: rgba(36, 40, 59, 0.4);
+
+        .glass-card {
+            background: var(--card);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(65, 72, 104, 0.3);
+            border: 1px solid var(--border);
             border-radius: 24px;
             padding: 3rem;
             max-width: 500px;
+            width: 90%;
             text-align: center;
-            z-index: 10;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1.5s ease-out;
+            animation: fadeInScale 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
+
         .teapot-icon {
-            color: var(--purple);
-            filter: drop-shadow(0 0 15px rgba(187, 154, 247, 0.4));
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
             animation: float 4s infinite ease-in-out;
+            color: var(--pink);
         }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(5deg); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .status-code {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(to right, #7aa2f7, #bb9af7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 0.2rem;
+        }
+
+        .message {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #a9b1d6;
+        }
+
+        .sub-message {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #565f89;
+            font-style: italic;
+        }
+
+        .glow {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            filter: blur(120px);
+            opacity: 0.1;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="starfield"></div>
+    <div class="stars-container" id="stars"></div>
+    <div class="glow" style="top: 20%; left: 30%;"></div>
+    <div class="glow" style="bottom: 20%; right: 30%;"></div>
 
-    <div class="glass">
-        <div class="flex justify-center mb-6">
-            <i data-lucide="coffee" class="teapot-icon w-16 h-16"></i>
+    <div class="glass-card">
+        <div class="teapot-icon">
+            <i data-lucide="coffee"></i>
         </div>
+        <div class="status-code">STATUS CODE 418</div>
+        <h1 class="text-2xl font-bold text-white mt-4">I'm a teapot.</h1>
         
-        <h1 class="text-2xl font-bold text-white mb-2 font-mono">Status Code 418</h1>
-        <p class="text-sm text-purple-400 mb-6 tracking-widest uppercase font-semibold">I'm a Teapot</p>
-        
-        <div class="space-y-4 text-gray-400 leading-relaxed text-sm">
-            <p>
-                A veces, los hilos del tiempo necesitan detenerse para que el arquitecto pueda soñar con nuevos mundos.
-            </p>
-            <p>
-                La academia ha cerrado sus puertas por ahora. No es un adiós, sino un agradecimiento por el viaje, los bugs y cada línea de código compartida.
-            </p>
-            <p class="italic text-gray-500 pt-4 border-t border-gray-800">
-                "Todo gran proyecto comienza con un silencio."
-            </p>
-        </div>
+        <p class="message">
+            La academia ha entrado en un sueño profundo. 
+            <br>
+            Los servidores han sido archivados y el tiempo se ha detenido entre estas líneas de código.
+        </p>
 
-        <div class="mt-8 flex justify-center gap-4">
-            <div class="w-2 h-2 rounded-full bg-red-500/50 animate-pulse"></div>
-            <div class="w-2 h-2 rounded-full bg-purple-500/50 animate-pulse" style="animation-delay: 0.2s"></div>
-            <div class="w-2 h-2 rounded-full bg-blue-500/50 animate-pulse" style="animation-delay: 0.4s"></div>
+        <p class="message text-sm opacity-80 mt-4">
+            Gracias por haber sido parte de este breve destello. 
+            Nos vemos en la siguiente versión de la realidad.
+        </p>
+
+        <div class="sub-message">
+            — El Arquitecto —
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        
-        const stars = document.getElementById('starfield');
-        for (let i = 0; i < 100; i++) {
+
+        const starsContainer = document.getElementById('stars');
+        const count = 100;
+        for (let i = 0; i < count; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            const size = Math.random() * 2;
-            star.style.width = star.style.height = `${size}px`;
+            const size = Math.random() * 3;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
             star.style.left = `${Math.random() * 100}%`;
             star.style.top = `${Math.random() * 100}%`;
-            star.style.setProperty('--d', `${2 + Math.random() * 4}s`);
-            stars.appendChild(star);
+            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+            starsContainer.appendChild(star);
         }
     </script>
 </body>
