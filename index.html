@@ -1,675 +1,118 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Code 418 - Aprende Programación</title>
+    <title>Status Code 418 - Una Pausa en el Tiempo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Firebase Modules -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
-    <script type="module" src="assets/js/firebase-config.js"></script>
-    <script type="module" src="assets/js/firebase-storage.js"></script>
-    <script type="module" src="assets/js/data-cleanup.js"></script>
-    <script type="module" src="assets/js/predefined-profiles.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <style>
-        /* Tokyo Night Theme */
         :root {
-            --background: #1a1b26;
-            --foreground: #a9b1d6;
-            --card-background: #24283b;
-            --border: #414868;
+            --bg: #1a1b26;
+            --fg: #a9b1d6;
             --accent: #7aa2f7;
-            --accent-dark: #3d59a1;
-            --green: #9ece6a;
-            --yellow: #e0af68;
             --red: #f7768e;
-            --font-sans: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --purple: #bb9af7;
         }
-
         body {
-            color: var(--foreground);
-            font-family: var(--font-sans);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            background-color: var(--background);
-        }
-
-        /* --- FONDO ANIMADO --- */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            transition: opacity 0.5s ease;
-        }
-
-        .background-day, .background-night {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .background-day {
-            background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
-        }
-
-        .background-night {
-            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
-        }
-
-        .dark .background-night { opacity: 1; }
-        :not(.dark) .background-day { opacity: 1; }
-
-        /* Typography */
-        .main-title {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(to right, #7aa2f7, #bb9af7);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(122, 162, 247, 0.3);
-            margin-bottom: 0.5rem;
-        }
-
-        @keyframes glitch {
-            0% { text-shadow: 2px 2px 0px #f7768e, -2px -2px 0px #7aa2f7; }
-            25% { text-shadow: -2px 2px 0px #f7768e, 2px -2px 0px #7aa2f7; }
-            50% { text-shadow: 2px -2px 0px #f7768e, -2px 2px 0px #7aa2f7; }
-            75% { text-shadow: -2px -2px 0px #f7768e, 2px 2px 0px #7aa2f7; }
-            100% { text-shadow: 2px 2px 0px #f7768e, -2px -2px 0px #7aa2f7; }
-        }
-        .glitch:hover {
-            animation: glitch 0.3s infinite;
-            cursor: help;
-        }
-        
-        /* Unified Content Box Style */
-        .content-box {
-            background-color: rgba(36, 40, 59, 0.85);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            max-width: 1200px;
-            margin: 2rem auto;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Legacy Panel support */
-        .panel {
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
-            position: relative; 
-            z-index: 10;
         }
-
-        /* Glassmorphism Input */
-        .glass-input {
-            background: rgba(26, 27, 38, 0.6);
-            border: 1px solid var(--border);
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            width: 100%;
-            transition: all 0.3s ease;
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
-        .glass-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(122, 162, 247, 0.2);
-            background: rgba(26, 27, 38, 0.9);
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle var(--d) infinite ease-in-out;
         }
-
-        .btn-action {
-            background-color: var(--accent);
-            width: 100%;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
         }
-        
-        .rank-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        
-        /* Hover effects para elementos clickeables */
-        .classmate-card {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .classmate-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-            background: rgba(122, 162, 247, 0.05);
-        }
-        
-        .classmate-card:hover img {
-            /* ring-color no es estándar, usamos box-shadow para el glow */
-            box-shadow: 0 0 0 2px var(--accent), 0 0 15px rgba(122, 162, 247, 0.3);
-        }
-        .btn-action:hover {
-            background-color: var(--accent-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(122, 162, 247, 0.3);
-        }
-
-        /* Dashboard specific */
-        .dashboard-view {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .course-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            width: 100%;
-            margin-bottom: 4rem;
-        }
-
-        .course-card {
-            background: var(--card-background);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
+        .glass {
+            background: rgba(36, 40, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(65, 72, 104, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 500px;
             text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            z-index: 10;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-out;
         }
-        .course-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--foreground);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .teapot-icon {
+            color: var(--purple);
+            filter: drop-shadow(0 0 15px rgba(187, 154, 247, 0.4));
+            animation: float 4s infinite ease-in-out;
         }
-        .btn-secondary:hover {
-            border-color: var(--foreground);
-            background: rgba(255,255,255,0.05);
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
         }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--background); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
     </style>
 </head>
-<body class="min-h-screen">
-    <!-- FONDO ANIMADO -->
-    <div class="background-container fixed inset-0 -z-10">
-        <div class="background-day"></div>
-        <div class="background-night"></div>
-    </div>
+<body>
+    <div class="stars" id="starfield"></div>
 
-    <!-- TOGGLE TEMA -->
-    <button id="theme-toggle" class="fixed top-4 right-4 p-2 rounded-full bg-card-background border border-border z-50 text-foreground hover:text-white transition-colors">
-        <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
-    </button>
+    <div class="glass">
+        <div class="flex justify-center mb-6">
+            <i data-lucide="coffee" class="teapot-icon w-16 h-16"></i>
+        </div>
+        
+        <h1 class="text-2xl font-bold text-white mb-2 font-mono">Status Code 418</h1>
+        <p class="text-sm text-purple-400 mb-6 tracking-widest uppercase font-semibold">I'm a Teapot</p>
+        
+        <div class="space-y-4 text-gray-400 leading-relaxed text-sm">
+            <p>
+                A veces, los hilos del tiempo necesitan detenerse para que el arquitecto pueda soñar con nuevos mundos.
+            </p>
+            <p>
+                La academia ha cerrado sus puertas por ahora. No es un adiós, sino un agradecimiento por el viaje, los bugs y cada línea de código compartida.
+            </p>
+            <p class="italic text-gray-500 pt-4 border-t border-gray-800">
+                "Todo gran proyecto comienza con un silencio."
+            </p>
+        </div>
 
-    <!-- WRAPPER PRINCIPAL (GRID / SPLIT VIEW) -->
-    <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-            
-            <!-- 1. LEFT PANEL: BIENVENIDA & FUNDADORES -->
-            <div class="bg-[#1a1b26]/95 backdrop-blur-xl border border-border/50 rounded-3xl p-8 flex flex-col justify-between animate-fade-in-up shdaow-2xl">
-                
-                <div class="text-center md:text-left mb-8">
-                    <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
-                        <i data-lucide="code-2" class="w-10 h-10 text-accent filter drop-shadow-lg"></i>
-                        <h1 class="text-4xl font-extrabold text-white tracking-tight drop-shadow-lg">
-                            Status Code <span class="text-accent">418</span>
-                        </h1>
-                    </div>
-                    <p class="text-gray-300 text-lg leading-relaxed font-medium">
-                        Bienvenido a la academia donde los bugs son características y el café es obligatorio. 
-                        Aprende, compite y domina el código.
-                    </p>
-                </div>
-
-                <!-- Información de la Plataforma -->
-                <div>
-                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 text-center md:text-left">Sobre Status Code 418</h3>
-                     <div class="bg-background/50 border border-border p-4 rounded-xl text-center md:text-left">
-                        <p class="text-sm text-gray-300 leading-relaxed">
-                            Una plataforma de programación con cursos interactivos, desafíos y un sistema de logros.
-                            Diseñada para aprender de forma divertida y competitiva.
-                        </p>
-                     </div>
-                </div>
-
-                <div class="mt-8 text-center md:text-left text-xs text-gray-600">
-                    <p>&copy; 2025 Status Code 418. Hecho con ❤️ y mucha cafeína.</p>
-                </div>
-            </div>
-
-            <!-- 2. RIGHT PANEL: AUTH FORM -->
-            <div id="auth-panel" class="bg-[#1a1b26]/95 backdrop-blur-xl border border-border/50 rounded-3xl p-8 shadow-2xl flex flex-col justify-center relative overflow-hidden">
-                <!-- Decorative Glow -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
-
-                <div class="relative z-10">
-                    <h2 id="form-title" class="text-2xl font-bold text-white mb-2 text-center">¡Únete a nosotros!</h2>
-                    <p id="form-subtitle" class="text-gray-400 text-sm mb-6 text-center">Crea tu cuenta para guardar tu progreso.</p>
-
-                    <form id="auth-form" class="space-y-4">
-                        <!-- Avatar Upload (Solo Registro) -->
-                        <div id="avatar-section" class="transition-all duration-300 overflow-hidden max-h-40">
-                            <div class="flex justify-center mb-2">
-                                <div id="avatar-drop-zone" class="relative group cursor-pointer w-full flex justify-center">
-                                    <div class="w-24 h-24 rounded-full border-4 border-dashed border-gray-600 group-hover:border-accent bg-black/20 flex items-center justify-center transition-all duration-300 overflow-hidden relative">
-                                        <img id="avatar-preview" class="w-full h-full object-cover hidden absolute inset-0 z-10">
-                                        <div class="flex flex-col items-center justify-center z-0 group-hover:scale-110 transition-transform">
-                                            <i id="avatar-icon" data-lucide="camera" class="w-8 h-8 text-gray-400 group-hover:text-accent mb-1"></i>
-                                            <span class="text-[9px] text-gray-400 uppercase font-bold">Subir</span>
-                                        </div>
-                                    </div>
-                                    <input type="file" id="avatar-upload" class="hidden" accept="image/*">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1 ml-1">NOMBRE DE USUARIO</label>
-                            <input type="text" id="username" class="glass-input" placeholder="Ej: CodeMaster99" required autocomplete="username">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1 ml-1">CONTRASEÑA</label>
-                            <input type="password" id="password" class="glass-input" placeholder="••••••••" required autocomplete="current-password">
-                        </div>
-                        
-                        <p id="auth-error" class="text-red-400 text-xs text-center hidden bg-red-400/10 p-2 rounded"></p>
-
-                        <button type="submit" id="submit-btn" class="btn-action mt-2">
-                            Registrarse <i data-lucide="arrow-right" class="inline w-4 h-4 ml-1"></i>
-                        </button>
-                    </form>
-
-                    <div class="mt-6 text-center">
-                        <p class="text-sm text-gray-400">
-                            <span id="toggle-text">¿Ya tienes cuenta?</span>
-                            <button id="toggle-auth-btn" class="text-accent font-bold hover:underline ml-1">Inicia Sesión</button>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
+        <div class="mt-8 flex justify-center gap-4">
+            <div class="w-2 h-2 rounded-full bg-red-500/50 animate-pulse"></div>
+            <div class="w-2 h-2 rounded-full bg-purple-500/50 animate-pulse" style="animation-delay: 0.2s"></div>
+            <div class="w-2 h-2 rounded-full bg-blue-500/50 animate-pulse" style="animation-delay: 0.4s"></div>
         </div>
     </div>
 
-    <!-- JS LOGIC -->
-    <script type="module">
+    <script>
         lucide.createIcons();
-        import { 
-            syncUserToFirestore, 
-            getUserFromFirestore, 
-            getAllUsersFromFirestore
-        } from './assets/js/firebase-config.js';
-
-        import { initializePredefinedProfiles, isSteven, isAmelia, getPredefinedProfile } from './assets/js/predefined-profiles.js';
-        import { checkAchievement } from './assets/js/achievements.js';
-        import { uploadWithProgress } from './assets/js/firebase-storage.js';
-
-        // --- AUTH & UI STATE ---
-        let isLoginMode = false; // Default: Register
-
-        // Elements
-        const authForm = document.getElementById('auth-form');
-        const formTitle = document.getElementById('form-title');
-        const formSubtitle = document.getElementById('form-subtitle');
-        const submitBtn = document.getElementById('submit-btn');
-        const toggleBtn = document.getElementById('toggle-auth-btn');
-        const toggleText = document.getElementById('toggle-text');
-        const avatarSection = document.getElementById('avatar-section');
-        const authError = document.getElementById('auth-error');
         
-        // --- AVATAR LOGIC ---
-        const avatarDropZone = document.getElementById('avatar-drop-zone');
-        const avatarUpload = document.getElementById('avatar-upload');
-        const avatarPreview = document.getElementById('avatar-preview');
-        const avatarIcon = document.getElementById('avatar-icon');
-        let uploadedAvatar = null; // Para la preview (base64)
-        let selectedAvatarFile = null; // Para la subida real (File object)
-
-        avatarDropZone.addEventListener('click', (e) => {
-            if(e.target === avatarUpload) return; // Prevent infinite loop
-            avatarUpload.click();
-        });
-        avatarUpload.addEventListener('click', (e) => e.stopPropagation()); // Stop bubbling from input
-        
-        avatarUpload.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) handleAvatarFile(file);
-        });
-
-        function handleAvatarFile(file) {
-            if (file.size > 5 * 1024 * 1024) {
-                alert('La imagen es muy grande. Máximo 5MB.');
-                return;
-            }
-            selectedAvatarFile = file; // Guardamos el archivo para subirlo después
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedAvatar = e.target.result;
-                avatarPreview.src = uploadedAvatar;
-                avatarPreview.classList.remove('hidden');
-                avatarIcon.classList.add('hidden');
-            };
-            reader.readAsDataURL(file);
+        const stars = document.getElementById('starfield');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2;
+            star.style.width = star.style.height = `${size}px`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.setProperty('--d', `${2 + Math.random() * 4}s`);
+            stars.appendChild(star);
         }
-
-        // --- CHECK EXISTING SESSION ---
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser) {
-            window.location.href = 'menu_inicio.html';
-        }
-
-        // --- AUTO-INITIALIZE FOUNDER PROFILES ---
-        // This ensures Steven and Amelia are always in the database
-        initializePredefinedProfiles().then(() => {
-            console.log('✅ Perfiles de fundadores verificados');
-        }).catch(err => {
-            console.warn('⚠️ No se pudieron inicializar perfiles predefinidos:', err);
-        });
-
-        // --- TOGGLE MODE ---
-        toggleBtn.addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            updateAuthUI();
-        });
-
-        function updateAuthUI() {
-            authError.classList.add('hidden');
-            if (isLoginMode) {
-                // Login Mode
-                formTitle.textContent = "¡Bienvenido de nuevo!";
-                formSubtitle.textContent = "Ingresa tus credenciales para continuar.";
-                submitBtn.innerHTML = `Iniciar Sesión <i data-lucide="log-in" class="inline w-4 h-4 ml-1"></i>`;
-                toggleText.textContent = "¿No tienes cuenta?";
-                toggleBtn.textContent = "Regístrate";
-                
-                // Hide Avatar
-                avatarSection.style.maxHeight = '0px';
-                avatarSection.style.opacity = '0';
-            } else {
-                // Register Mode
-                formTitle.textContent = "¡Únete a nosotros!";
-                formSubtitle.textContent = "Crea tu cuenta para guardar tu progreso.";
-                submitBtn.innerHTML = `Registrarse <i data-lucide="arrow-right" class="inline w-4 h-4 ml-1"></i>`;
-                toggleText.textContent = "¿Ya tienes cuenta?";
-                toggleBtn.textContent = "Inicia Sesión";
-                
-                // Show Avatar
-                avatarSection.style.maxHeight = '160px'; // Approx height
-                avatarSection.style.opacity = '1';
-            }
-            lucide.createIcons();
-        }
-
-        // --- MAIN SUBMIT HANDLER ---
-        authForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-            const userId = username.toLowerCase().replace(/\s+/g, '_');
-
-            // 1. Basic Validation
-            if (username.length < 3) return showError("El nombre debe tener al menos 3 caracteres.");
-            if (password.length < 4) return showError("La contraseña es muy corta.");
-
-            setLoading(true);
-
-            try {
-                // Pre-verify Admin Names
-                const isFounder = (userId === 'steven' || userId === 'amelia');
-                if (isFounder && password !== 'admin123') {
-                     throw new Error("⛔ Contraseña incorrecta para cuenta de Fundador.");
-                }
-
-                // 2. Check if user exists (Firebase -> Local)
-                let existingUser = await fetchUser(userId);
-
-                if (isLoginMode) {
-                    // --- LOGIN FLOW ---
-                    if (!existingUser) {
-                        // Special check: maybe user exists locally but not in firebase?
-                        const localUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
-                        existingUser = localUsers.find(u => u.id === userId);
-                    }
-
-                    if (!existingUser) {
-                        // Suggest registering
-                        setLoading(false);
-                        const doRegister = confirm("El usuario no existe. ¿Quieres crearlo?");
-                        if(doRegister) {
-                             isLoginMode = false;
-                             updateAuthUI();
-                        }
-                        return;
-                    }
-
-                    // Verify password logic would go here (simplified for this app as we don't strict-hash yet, except founders)
-                    if (existingUser.password && existingUser.password !== password) {
-                         if (!isFounder) throw new Error("Contraseña incorrecta."); 
-                         // Founders handled above
-                    }
-                    
-                    // Update Session
-                    loginUser(existingUser);
-
-                } else {
-                    // --- REGISTER FLOW ---
-                    if (existingUser) {
-                        setLoading(false);
-                        const doLogin = confirm("¡Este usuario ya existe! ¿Quieres iniciar sesión?");
-                        if(doLogin) {
-                             isLoginMode = true;
-                             updateAuthUI();
-                             document.getElementById('password').focus();
-                        }
-                        return;
-                    }
-
-                    // Create New User
-                    let avatarUrl = 'https://ui-avatars.com/api/?name='+username+'&background=random';
-
-                    // Si hay avatar seleccionado, subirlo primero
-                    if (selectedAvatarFile) {
-                        try {
-                            avatarUrl = await uploadWithProgress(selectedAvatarFile, (status) => {
-                                submitBtn.innerHTML = `${status} <i data-lucide="loader" class="inline w-4 h-4 ml-1 animate-spin"></i>`;
-                            });
-                        } catch (uploadErr) {
-                            console.error("Error subiendo avatar:", uploadErr);
-                            // Fallback silencioso o alertar user?
-                            // Vamos a seguir con el avatar default si falla, o mostrar error.
-                            // Decisión: Mostrar error es mejor para feedback.
-                            throw new Error("Error al subir la imagen. Intenta con otra o ninguna.");
-                        }
-                    }
-
-                    const newUser = {
-                        id: userId,
-                        name: username,
-                        password: password,
-                        avatar: avatarUrl,
-                        isOnline: true,
-                        rank: 'Novato',
-                        xp: 0,
-                        completedLevels: [],
-                        achievements: [],
-                        // Initialize empty progress containers for strict mode
-                        webProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
-                        pythonProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
-                        rubyProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
-                        databaseProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
-                        quizHistory: [],
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    if (isFounder) {
-                        // Force Founder data just in case
-                        newUser.rank = (username.toLowerCase() === 'steven') ? 'Owner' : 'Co-Owner';
-                        // Keep avatar if uploaded (which is now avatarUrl), else default
-                    }
-
-                    // Save Global
-                    await saveNewUser(newUser);
-                    
-                    // Login
-                    loginUser(newUser);
-                }
-
-            } catch (err) {
-                console.error(err);
-                showError(err.message);
-                setLoading(false);
-            }
-        });
-
-        // --- HELPERS ---
-        async function fetchUser(userId) {
-            try {
-                return await getUserFromFirestore(userId);
-            } catch (e) {
-                console.warn('Firebase fetch fail', e);
-                return null;
-            }
-        }
-
-        async function saveNewUser(user) {
-            // 1. Firebase Save FIRST (Strict Mode)
-            try {
-                await syncUserToFirestore(user);
-                
-                // 2. Local Cache Update only after success
-                let allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
-                allUsers.push(user);
-                localStorage.setItem('allUsers', JSON.stringify(allUsers));
-                
-            } catch(e) {
-                console.error('Initial sync failed', e);
-                // Throw error to stop login process
-                throw new Error('No se pudo crear el usuario en la nube. Verifica tu conexión.');
-            }
-        }
-
-        function loginUser(user) {
-            // --- STREAK LOGIC ---
-            const now = new Date();
-            const lastSeenStr = user.lastSeen;
-            
-            if (lastSeenStr) {
-                const lastSeen = new Date(lastSeenStr);
-                const diffTime = now.getTime() - lastSeen.getTime();
-                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                
-                if (diffDays === 1) {
-                    user.streak = (user.streak || 1) + 1;
-                } else if (diffDays > 1) {
-                    user.streak = 1;
-                }
-                // Si diffDays === 0, mantenemos la racha actual
-            } else {
-                user.streak = 1;
-            }
-            // --------------------
-
-            user.isOnline = true;
-            user.lastSeen = now.toISOString();
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            
-            // Background update status
-            syncUserToFirestore(user).catch(e=>{});
-            
-            window.location.href = 'menu_inicio.html';
-        }
-
-        function showError(msg) {
-            authError.textContent = msg;
-            authError.classList.remove('hidden');
-        }
-
-        function setLoading(isLoading) {
-            if (isLoading) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = `Procesando... <i data-lucide="loader" class="inline w-4 h-4 ml-1 animate-spin"></i>`;
-            } else {
-                submitBtn.disabled = false;
-                updateAuthUI(); // Reset text
-            }
-            lucide.createIcons();
-        }
-
-        // --- THEME ---
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-
-        function updateTheme(theme) {
-            document.documentElement.classList.toggle('dark', theme === 'dark');
-            if (themeIcon) themeIcon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
-            localStorage.setItem('theme', theme);
-            if (window.lucide) lucide.createIcons();
-        }
-
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        updateTheme(savedTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            updateTheme(isDark ? 'light' : 'dark');
-        });
     </script>
-
-
-
-
 </body>
 </html>
