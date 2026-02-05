@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Status Code 418</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script type="module" src="assets/js/firebase-config.js"></script>
+    <script type="module" src="assets/js/firebase-storage.js"></script>
+    <script type="module" src="assets/js/profile-editor.js"></script>
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/auras.css">
+    <script src="assets/js/cosmetic-effects.js"></script>
+    <style>
+        :root {
+            --bg: #0f1016;
+            --bg-secondary: #1a1b26;
+            --accent: #7aa2f7;
+            --accent-purple: #bb9af7;
+            --success: #9ece6a;
+            --gold: #e0af68;
+            --border: #414868;
+        }
+
+        body {
+            background: var(--bg);
+            color: #c0caf5;
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Background */
+        .background-container {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+
+        .background-night {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+            background-size: cover;
+            background-position: center;
+            opacity: 1;
+        }
+
+        /* Main Glass Panel */
+        .main-glass-panel {
+            position: fixed;
+            inset: 1.5rem;
+            background: rgba(26, 27, 38, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(122, 162, 247, 0.2);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            overflow-y: auto;
+            padding: 3rem;
+        }
+
+        .main-glass-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .main-glass-panel::-webkit-scrollbar-track {
+            background: rgba(65, 72, 104, 0.2);
+            border-radius: 4px;
+        }
+
+        .main-glass-panel::-webkit-scrollbar-thumb {
+            background: rgba(122, 162, 247, 0.5);
+            border-radius: 4px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: rgba(36, 40, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(65, 72, 104, 0.5);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(36, 40, 59, 0.6);
+            border: 1px solid rgba(65, 72, 104, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(122, 162, 247, 0.2);
+        }
+
+        .rank-badge {
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+
+        .course-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+
+        .badge-completed {
+            background-color: rgba(158, 206, 106, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .badge-in-progress {
+            background-color: rgba(224, 175, 104, 0.2);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+
+        .glass-button {
+            background: rgba(122, 162, 247, 0.1);
+            border: 1px solid rgba(122, 162, 247, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .glass-button:hover {
+            background: rgba(122, 162, 247, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="background-container">
+        <div class="background-night"></div>
+    </div>
+
+    <!-- Main Glass Panel -->
+    <div class="main-glass-panel">
+        <!-- Header with Back Button -->
+        <div class="flex items-center justify-between mb-6">
+            <a href="menu_inicio.html" class="flex items-center gap-2 text-accent hover:underline">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Volver al Hub
+            </a>
+            <button id="theme-toggle" class="glass-button">
+                <i data-lucide="moon" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- User Profile -->
+        <div class="profile-card">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                <!-- Avatar -->
+                <div class="relative flex justify-center items-center">
+                    <div id="avatar-container" class="avatar-aura-container">
+                        <img id="user-avatar" src="" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+                    </div>
+                    <div id="online-indicator" class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 border-4 border-card-background rounded-full z-20"></div>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="flex-1 text-center md:text-left">
+                    <h1 id="user-name" class="text-4xl font-bold text-accent mb-2"></h1>
+                    <div id="user-rank" class="rank-badge mb-2"></div>
+                    
+                    <!-- Bio -->
+                    <p id="user-bio" class="text-foreground opacity-80 mb-3 italic max-w-2xl">Sin biografía</p>
+                    
+                    <!-- Tags -->
+                    <div id="user-tags" class="flex flex-wrap gap-2 mb-4 justify-center md:justify-start"></div>
+                    
+                    <!-- Social Links -->
+                    <div id="user-social-links" class="flex gap-3 mb-4 justify-center md:justify-start"></div>
+                    
+                    <!-- Action Buttons -->
+                    <div id="action-buttons" class="flex gap-2 justify-center md:justify-start mt-4"></div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-4">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-green" id="total-xp">0</p>
+                            <p class="text-sm text-gray-400">XP Total</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-yellow" id="total-levels">0</p>
+                            <p class="text-sm text-gray-400">Niveles</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-accent" id="total-courses">0</p>
+                            <p class="text-sm text-gray-400">Cursos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="profile-card">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <i data-lucide="trophy" class="w-6 h-6 text-yellow-400"></i>
+                Logros Desbloqueados
+            </h3>
+            <div id="achievements-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
+                <div class="col-span-full text-center py-8 text-gray-500 italic">
+                    Cargando medallas...
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Progress -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Web -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="code" class="w-8 h-8 text-accent"></i>
+                        <h3 class="text-xl font-bold">Desarrollo Web</h3>
+                    </div>
+                    <span id="web-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="web-progress-bar" class="h-3 rounded-full bg-accent transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Python -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="code-2" class="w-8 h-8 text-green"></i>
+                        <h3 class="text-xl font-bold">Python</h3>
+                    </div>
+                    <span id="python-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="python-progress-bar" class="h-3 rounded-full bg-green transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Ruby -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="gem" class="w-8 h-8 text-red"></i>
+                        <h3 class="text-xl font-bold">Ruby</h3>
+                    </div>
+                    <span id="ruby-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="ruby-progress-bar" class="h-3 rounded-full bg-red transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Database -->
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="database" class="w-8 h-8 text-yellow"></i>
+                        <h3 class="text-xl font-bold">Bases de Datos</h3>
+                    </div>
+                    <span id="database-progress-text" class="text-sm text-gray-400">0/20</span>
+                </div>
+                <div class="w-full bg-border rounded-full h-3">
+                    <div id="database-progress-bar" class="h-3 rounded-full bg-yellow transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Badges -->
+        <div class="profile-card">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <i data-lucide="trophy" class="w-6 h-6 text-yellow"></i>
+                Cursos Completados
+            </h2>
+            <div id="badges-container" class="flex flex-wrap gap-2"></div>
+            <p id="no-badges" class="text-gray-400 italic hidden">Aún no ha completado ningún curso.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { showGlobalToast } from './assets/js/ui-utils.js';
+        
+        lucide.createIcons();
+
+        // Load user profile
+        async function loadUserProfile() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let userId = urlParams.get('user') || urlParams.get('id');
+
+            // Check Founder Stalker Achievement
+            if (userId && (userId.includes('steven') || userId.includes('amelia'))) {
+                import('./assets/js/achievements.js').then(m => m.checkAchievement('founder_stalker'));
+            }
+
+            // If no userId in URL, show current user's own profile
+            if (!userId) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (!currentUser) {
+                    showGlobalToast('Acceso Denegado', 'Debes iniciar sesión primero.', 'warning');
+                    window.location.href = 'index.html';
+                    return;
+                }
+                userId = currentUser.id;
+            }
+
+            // Try to get from Firebase
+            let user = null;
+            if (window.getUserFromFirestore) {
+                try {
+                    user = await getUserFromFirestore(userId);
+                    console.log('🔥 Usuario obtenido desde Firebase');
+                } catch(err) {
+                    console.warn('Firebase no disponible');
+                }
+            }
+
+            // Fallback: search in localStorage
+            if (!user) {
+                const allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+                user = allUsers.find(u => u.id === userId || u.name === userId);
+            }
+
+            // FALLBACK FOR FOUNDERS (GOD MODE)
+            const isSteven = userId === 'steven' || userId === 'steven-founder' || userId.toLowerCase().includes('steven');
+            const isAmelia = userId === 'amelia' || userId === 'amelia-founder' || userId.toLowerCase().includes('amelia');
+
+            if (!user && (isSteven || isAmelia)) {
+                user = {
+                    id: isAmelia ? 'amelia' : 'steven',
+                    name: isAmelia ? 'Amelia' : 'Steven',
+                    avatar: isAmelia ? 'https://cdn.myanimelist.net/images/characters/8/239523.jpg' : 'https://ui-avatars.com/api/?name=Steven&background=0D8ABC&color=fff',
+                    rank: '👑 Owner',
+                    bio: isAmelia ? 'Co-Founder & CTO. "El código es arte."' : 'Founder & CEO. "Hacemos lo imposible."',
+                    tags: ['Founder', 'Visionary', 'FullStack'],
+                    socialLinks: { github: isAmelia ? 'amelia-dev' : 'steven-ceo', twitter: isAmelia ? 'amelia_code' : 'steven_tech' },
+                    isAdmin: true,
+                    webProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    pythonProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    rubyProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    databaseProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
+                    achievements: isAmelia 
+                        ? ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol']
+                        : ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god']
+                };
+            }
+
+            if (!user) {
+                showGlobalToast('Error 404', 'Usuario no encontrado en la base de datos.', 'error');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // FORCE LEGENDARY AND MASTER ACHIEVEMENTS FOR FOUNDERS
+            const forcedSteven = ['pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god', 'web_master', 'python_master', 'ruby_master', 'db_master'];
+            const forcedAmelia = ['backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol', 'web_master', 'python_master', 'ruby_master', 'db_master'];
+
+            const fullProgress = { completedLevels: Array.from({length: 20}, (_, i) => i + 1) };
+
+            if (user && (user.id === 'steven' || user.name === 'Steven' || user.id === 'steven-founder')) {
+                const current = new Set(user.achievements || []);
+                forcedSteven.forEach(id => current.add(id));
+                user.achievements = Array.from(current);
+
+                user.webProgress = { ...fullProgress };
+                user.pythonProgress = { ...fullProgress };
+                user.rubyProgress = { ...fullProgress };
+                user.databaseProgress = { ...fullProgress };
+            }
+            
+            if (user && (user.id === 'amelia' || user.name === 'Amelia' || user.id === 'amelia-founder')) {
+                const current = new Set(user.achievements || []);
+                forcedAmelia.forEach(id => current.add(id));
+                user.achievements = Array.from(current);
+
+                user.webProgress = { ...fullProgress };
+                user.pythonProgress = { ...fullProgress };
+                user.rubyProgress = { ...fullProgress };
+                user.databaseProgress = { ...fullProgress };
+            }
+
+            renderProfile(user);
+        }
+
+        function renderProfile(user) {
+            // Apply Avatar Frames/Auras
+            import('./assets/js/predefined-profiles.js').then(({ PROFILE_AURAS }) => {
+                const auraId = user.equippedAura || 'aura-none';
+                
+                let finalAuraId = auraId;
+                if (!user.equippedAura && (user.id === 'steven-founder' || user.id === 'steven')) finalAuraId = 'aura-founder-steven';
+                if (!user.equippedAura && (user.id === 'amelia-founder' || user.id === 'amelia')) finalAuraId = 'aura-founder-amelia';
+
+                const auraData = PROFILE_AURAS.find(a => a.id === finalAuraId);
+                const container = document.getElementById('avatar-container');
+                
+                container.className = 'avatar-aura-container';
+                if (auraData && auraData.cssClass) {
+                    container.classList.add(auraData.cssClass);
+                }
+            });
+
+            // Basic info
+            document.getElementById('user-name').textContent = user.name || 'Estudiante';
+            document.getElementById('user-avatar').src = user.avatar || 'https://ui-avatars.com/api/?name=' + user.name;
+            document.getElementById('user-rank').textContent = user.rank || 'Novato';
+
+            // Bio
+            const bioEl = document.getElementById('user-bio');
+            bioEl.textContent = user.bio || 'Sin biografía';
+            
+            // Tags
+            const tagsEl = document.getElementById('user-tags');
+            if (user.tags && user.tags.length > 0) {
+                tagsEl.innerHTML = user.tags.map(tag => 
+                    `<span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm">${tag}</span>`
+                ).join('');
+            } else {
+                tagsEl.innerHTML = '';
+            }
+            
+            // Social Links
+            const socialEl = document.getElementById('user-social-links');
+            if (user.socialLinks) {
+                const links = [];
+                if (user.socialLinks.github) links.push(`<a href="https://github.com/${user.socialLinks.github}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="github" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.instagram) links.push(`<a href="https://instagram.com/${user.socialLinks.instagram}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.twitter) links.push(`<a href="https://twitter.com/${user.socialLinks.twitter}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.linkedin) links.push(`<a href="https://linkedin.com/in/${user.socialLinks.linkedin}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>`);
+                if (user.socialLinks.website) links.push(`<a href="${user.socialLinks.website}" target="_blank" class="text-gray-400 hover:text-white transition"><i data-lucide="link" class="w-5 h-5"></i></a>`);
+                socialEl.innerHTML = links.join('');
+            } else {
+                socialEl.innerHTML = '';
+            }
+            
+            // Action buttons
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const actionButtonsEl = document.getElementById('action-buttons');
+            const buttons = [];
+            
+            if (currentUser && currentUser.id === user.id) {
+                buttons.push(`
+                    <button onclick="editProfile()" class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/80 transition flex items-center gap-2">
+                        <i data-lucide="edit" class="w-4 h-4"></i>
+                        Editar Perfil
+                    </button>
+                `);
+                
+                buttons.push(`
+                    <button onclick="openMarcosModal()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition flex items-center gap-2 shadow-lg shadow-purple-500/20">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        Mis Marcos
+                    </button>
+                `);
+            }
+            
+            const isGod = currentUser && (currentUser.id === 'steven' || currentUser.id === 'amelia');
+            if (isGod && currentUser.id === user.id) {
+                buttons.push(`
+                    <a href="admin.html" class="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:opacity-80 transition flex items-center gap-2">
+                        <i data-lucide="shield" class="w-4 h-4"></i>
+                        Panel Admin
+                    </a>
+                `);
+            }
+            
+            // Render Achievements
+            import('./assets/js/achievements.js').then(({ achievements }) => {
+                const grid = document.getElementById('achievements-grid');
+                const userAchievements = user.achievements || [];
+                
+                grid.className = 'grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4';
+                
+                if (userAchievements.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">Aún no has desbloqueado logros. ¡Sigue explorando!</div>';
+                    return;
+                }
+
+                grid.innerHTML = userAchievements.map(id => {
+                    const ach = achievements.find(a => a.id === id);
+                    if (!ach) return '';
+                    
+                    const styles = {
+                        common: {
+                            bg: 'bg-gradient-to-br from-gray-700 to-gray-900',
+                            border: 'border-gray-500',
+                            icon: 'text-gray-300',
+                            shadow: 'shadow-gray-900/50'
+                        },
+                        rare: {
+                            bg: 'bg-gradient-to-br from-blue-900 to-slate-900',
+                            border: 'border-blue-400',
+                            icon: 'text-blue-300',
+                            shadow: 'shadow-blue-900/50'
+                        },
+                        epic: {
+                            bg: 'bg-gradient-to-br from-yellow-700 to-amber-900',
+                            border: 'border-yellow-400',
+                            icon: 'text-yellow-300',
+                            shadow: 'shadow-yellow-900/50'
+                        },
+                        legendary: {
+                             bg: 'bg-gradient-to-br from-purple-700 to-pink-900',
+                             border: 'border-pink-400',
+                             icon: 'text-pink-300',
+                             shadow: 'shadow-purple-900/50'
+                        }
+                    };
+
+                    const style = styles[ach.rarity] || styles.common;
+
+                    return `
+                        <div class="group relative flex flex-col items-center cursor-help">
+                            <!-- Badge Circle -->
+                            <div class="w-16 h-16 rounded-full ${style.bg} border-2 ${style.border} flex items-center justify-center shadow-lg ${style.shadow} transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                                <i data-lucide="${ach.icon}" class="w-8 h-8 ${style.icon}"></i>
+                            </div>
+                            
+                            <!-- Name Label -->
+                            <span class="mt-2 text-[10px] font-bold text-center opacity-80 group-hover:opacity-100 group-hover:text-accent transition-colors truncate w-full px-1">
+                                ${ach.name}
+                            </span>
+
+                            <!-- Tooltip -->
+                            <div class="absolute bottom-full mb-2 w-48 p-3 rounded-lg bg-gray-900 border border-gray-700 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 text-center pointer-events-none transform translate-y-2 group-hover:translate-y-0">
+                                <h5 class="font-bold text-sm ${style.icon} mb-1">${ach.name}</h5>
+                                <p class="text-xs text-gray-300">${ach.desc}</p>
+                                ${ach.hint ? `<p class="text-[10px] text-gray-500 mt-1 italic">"${ach.hint}"</p>` : ''}
+                                <div class="absolute top-100 left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                lucide.createIcons();
+            });
+
+            actionButtonsEl.innerHTML = buttons.join('');
+
+            // Calculate XP and levels
+            const webLevels = (user.webProgress?.completedLevels || []).length;
+            const pythonLevels = (user.pythonProgress?.completedLevels || []).length;
+            const rubyLevels = (user.rubyProgress?.completedLevels || []).length;
+            const databaseLevels = (user.databaseProgress?.completedLevels || []).length;
+            
+            const totalLevels = webLevels + pythonLevels + rubyLevels + databaseLevels;
+            const totalXP = totalLevels * 10;
+            
+            let coursesStarted = 0;
+            if (webLevels > 0) coursesStarted++;
+            if (pythonLevels > 0) coursesStarted++;
+            if (rubyLevels > 0) coursesStarted++;
+            if (databaseLevels > 0) coursesStarted++;
+
+            document.getElementById('total-xp').textContent = totalXP;
+            document.getElementById('total-levels').textContent = totalLevels;
+            document.getElementById('total-courses').textContent = coursesStarted;
+
+            // Course progress
+            updateCourseProgress('web', webLevels, 20);
+            updateCourseProgress('python', pythonLevels, 20);
+            updateCourseProgress('ruby', rubyLevels, 20);
+            updateCourseProgress('database', databaseLevels, 20);
+
+            // Badges
+            renderBadges(webLevels, pythonLevels, rubyLevels, databaseLevels);
+
+            lucide.createIcons();
+        }
+
+        function updateCourseProgress(courseId, completed, total) {
+            const percentage = (completed / total) * 100;
+            document.getElementById(`${courseId}-progress-text`).textContent = `${completed}/${total}`;
+            document.getElementById(`${courseId}-progress-bar`).style.width = `${percentage}%`;
+        }
+
+        window.editProfile = async function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                showGlobalToast('Acceso Restringido', 'Inicia sesión para editar.', 'warning');
+                return;
+            }
+            
+            const { openEditProfileModal, initializeModalTags } = await import('./assets/js/profile-editor.js');
+            initializeModalTags(currentUser.tags || []);
+            openEditProfileModal(currentUser);
+        };
+
+        window.openMarcosModal = async function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+
+            const { PROFILE_AURAS } = await import('./assets/js/predefined-profiles.js');
+            const inventory = currentUser.inventory?.auras || [];
+            
+            const equippedId = currentUser.equippedAura || 'aura-none';
+
+            const modalHTML = `
+                <div id="marcos-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+                    <div class="bg-[#1a1b26] border border-accent/30 rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl">
+                        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-accent/10">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i data-lucide="sparkles" class="text-yellow-400"></i> Tus Marcos de Avatar
+                            </h3>
+                            <button onclick="document.getElementById('marcos-modal').remove()" class="text-gray-400 hover:text-white">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="p-8 max-h-[60vh] overflow-y-auto">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-6" id="marcos-grid-selection">
+                                <!-- Sin Marco -->
+                                <div onclick="selectAndEquipFrame('aura-none')" 
+                                     class="group p-4 bg-white/5 border-2 ${equippedId === 'aura-none' ? 'border-accent bg-accent/10' : 'border-transparent'} rounded-2xl flex flex-col items-center gap-3 cursor-pointer hover:bg-white/10 transition-all">
+                                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-gray-600 flex items-center justify-center">
+                                        <i data-lucide="ban" class="text-gray-600"></i>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-400">Sin Marco</span>
+                                </div>
+
+                                ${PROFILE_AURAS.map(aura => {
+                                    const isOwned = inventory.includes(aura.id) || aura.price === 0;
+                                    if (!isOwned) return '';
+
+                                    return `
+                                        <div onclick="selectAndEquipFrame('${aura.id}')" 
+                                             class="group p-4 bg-white/5 border-2 ${equippedId === aura.id ? 'border-accent bg-accent/10' : 'border-transparent'} rounded-2xl flex flex-col items-center gap-3 cursor-pointer hover:bg-white/10 transition-all">
+                                            <div class="w-16 h-16 rounded-full flex items-center justify-center avatar-aura-container ${aura.cssClass}">
+                                                <img src="${currentUser.avatar || 'assets/default-avatar.png'}" class="w-12 h-12 rounded-full object-cover">
+                                            </div>
+                                            <span class="text-xs font-bold text-white truncate w-full text-center">${aura.name}</span>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-black/20 text-center text-[10px] text-gray-500 italic">
+                            Los marcos se guardan automáticamente al seleccionarlos.
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            lucide.createIcons();
+
+            window.selectAndEquipFrame = async (id) => {
+                const user = JSON.parse(localStorage.getItem('currentUser'));
+                user.equippedAura = id;
+                
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                const { db } = await import('./assets/js/firebase-config.js');
+                const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js');
+                
+                try {
+                    const userRef = doc(db, 'users', user.id);
+                    await updateDoc(userRef, { equippedAura: id });
+                    console.log('✅ Marco actualizado en la nube');
+                    
+                    document.getElementById('marcos-modal').remove();
+                    renderProfile(user);
+                } catch(e) {
+                    console.error('Error saving frame:', e);
+                    showGlobalToast('Error', 'No se pudo guardar el marco. Intenta de nuevo.', 'error');
+                }
+            };
+        };
+
+        function renderBadges(web, python, ruby, database) {
+            const container = document.getElementById('badges-container');
+            const noBadges = document.getElementById('no-badges');
+            const badges = [];
+
+            if (web >= 20) badges.push('<span class="course-badge badge-completed">🌐 Desarrollo Web Maestro</span>');
+            else if (web > 0) badges.push('<span class="course-badge badge-in-progress">🌐 Desarrollo Web en progreso</span>');
+
+            if (python >= 20) badges.push('<span class="course-badge badge-completed">🐍 Python Maestro</span>');
+            else if (python > 0) badges.push('<span class="course-badge badge-in-progress">🐍 Python en progreso</span>');
+
+            if (ruby >= 20) badges.push('<span class="course-badge badge-completed">💎 Ruby Maestro</span>');
+            else if (ruby > 0) badges.push('<span class="course-badge badge-in-progress">💎 Ruby en progreso</span>');
+
+            if (database >= 20) badges.push('<span class="course-badge badge-completed">🗄️ Database Maestro</span>');
+            else if (database > 0) badges.push('<span class="course-badge badge-in-progress">🗄️ Database en progreso</span>');
+
+            if (badges.length === 0) {
+                noBadges.classList.remove('hidden');
+            } else {
+                container.innerHTML = badges.join('');
+                noBadges.classList.add('hidden');
+            }
+        }
+
+        loadUserProfile();
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                lucide.createIcons();
+            });
+        }
+    </script>
+</body>
+</html>
