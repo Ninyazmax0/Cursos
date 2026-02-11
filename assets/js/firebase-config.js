@@ -287,6 +287,8 @@ export {
     listenToUsers,
     updateCourseProgress,
     updateHeartbeat,
+    setOffline,
+    isUserOnline,
     deleteUserFromFirestore,
     showLoading,
     hideLoading,

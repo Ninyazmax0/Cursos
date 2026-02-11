@@ -18,7 +18,7 @@ const STEVEN_PROFILE = {
     socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: '' },
     isAdmin: true,
     isOnline: false,
-    rank: 'Mi Prometido',
+    rank: 'Owner',
     xp: 9999,
     equippedAura: 'aura-bride-time',
     achievements: ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god', 'steven_moon', 'marriage_contract'],

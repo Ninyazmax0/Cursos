@@ -37,7 +37,7 @@
                  window.startKurumiTour = () => module.initKurumiGuide(true);
              });
 
-            initAcheievementListeners();
+            initAchievementListeners();
             
             // Steven's achievements
             let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -46,7 +46,7 @@
                      checkAchievement('steven_moon');
                      checkAchievement('marriage_contract');
                  }, 2000);
-                 user = { ...user, rank: 'Mi Prometido', equippedAura: 'aura-bride-time' };
+                 user = { ...user, rank: 'Owner', equippedAura: 'aura-bride-time' };
                  localStorage.setItem('currentUser', JSON.stringify(user));
             }
 
@@ -721,6 +721,7 @@
         function startRealTimeUpdates() {
             listenToUsers((users) => {
                 const classmatesGrid = document.getElementById('classmates-grid');
+                if (!classmatesGrid) return;
                 classmatesGrid.innerHTML = '';
                 
                 const onlineUsers = users.filter(u => u.isOnline).slice(0, 7);

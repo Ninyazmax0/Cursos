@@ -2983,25 +2983,7 @@ def dias_hasta(fecha_objetivo):
     return diferencia.days
 
 navidad = datetime(2024, 12, 25)
-print("Días hasta Navidad: {}".format(dias_hasta(navidad)))</code></pre></div>` },
-
-# Fecha actual
-ahora = datetime.now()
-print("Hoy: {}".format(ahora.strftime('%d/%m/%Y %H:%M')))
-
-# Operaciones
-mañana = ahora + timedelta(days=1)
-print("Mañana: {}".format(mañana.strftime('%d/%m/%Y')))
-
-# Calcular edad
-nacimiento = datetime(2000, 1, 1)
-edad = (ahora - nacimiento).days // 365
-print("\\nSi naciste el 01/01/2000, tienes {} años".format(edad))
-
-# Días hasta fin de año
-fin_año = datetime(ahora.year, 12, 31)
-dias = (fin_año - ahora).days
-print("Días hasta fin de año: {}".format(dias))\`, 'console-nivel-17');<\/script><p><strong>Caso real:</strong> Sistemas de reservas, recordatorios, análisis temporal.</p>` }
+print("Días hasta Navidad: {}".format(dias_hasta(navidad)))</code></pre></div><p><strong>Caso real:</strong> Sistemas de reservas, recordatorios, análisis temporal.</p>` }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué módulo maneja fechas?", options: ["time", "datetime", "date", "calendar"], answer: "datetime" },

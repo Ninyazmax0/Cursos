@@ -29,6 +29,7 @@
             overflow: hidden;
         }
 
+        /* Fondo Animado de Estrellas/Partículas */
         .stars-container {
             position: absolute;
             top: 0;
@@ -52,6 +53,7 @@
             50% { opacity: 0.8; transform: scale(1.2); }
         }
 
+        /* Glassmorphism Card */
         .glass-card {
             background: var(--card);
             backdrop-filter: blur(12px);
@@ -148,8 +150,10 @@
     </div>
 
     <script>
+        // Inicializar iconos
         lucide.createIcons();
 
+        // Generar estrellas aleatorias
         const starsContainer = document.getElementById('stars');
         const count = 100;
         for (let i = 0; i < count; i++) {
