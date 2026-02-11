@@ -529,7 +529,7 @@
                 const medals = ['🥇', '🥈', '🥉'];
                 
                 return `
-                    <div class="podium-place rank-${rank}">
+                    <div class="podium-place rank-${rank}" onclick="window.location.href='perfil_usuario.html?id=${user.id}'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                         <div class="podium-avatar avatar-aura-container ${user.equippedAura || ''}">
                             <img src="${user.avatar || 'https://ui-avatars.com/api/?name=' + user.name}" alt="${user.name}">
                         </div>
@@ -558,7 +558,7 @@
                 const isCurrentUser = currentUser && user.id === currentUser.id;
                 
                 return `
-                    <div class="leaderboard-item ${isCurrentUser ? 'border-accent' : ''}">
+                    <div class="leaderboard-item ${isCurrentUser ? 'border-accent' : ''}" onclick="window.location.href='perfil_usuario.html?id=${user.id}'" style="cursor: pointer;">
                         <div class="rank-number">${rank}</div>
                         <div class="user-avatar avatar-aura-container ${user.equippedAura || ''}">
                             <img src="${user.avatar || 'https://ui-avatars.com/api/?name=' + user.name}" alt="${user.name}">

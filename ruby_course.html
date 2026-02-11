@@ -14,6 +14,15 @@
     <!-- Monaco Editor Loader -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
     <script src="assets/js/theme-manager.js"></script>
+
+    <!-- Theme Init (Prevent Flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+        })();
+    </script>
     <style>
      :root {
          --background: #1a1b26;
@@ -1784,9 +1793,13 @@ function initializeCodeBlockMonaco() {
 
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-            updateTheme(currentTheme === 'dark' ? 'light' : 'dark');
+             const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+             updateTheme(currentTheme === 'dark' ? 'light' : 'dark');
         });
+        
+        // Sync UI state
+        const saved = localStorage.getItem('theme') || 'dark';
+        if (saved === 'dark' && themeIcon) themeIcon.setAttribute('data-lucide', 'sun'); 
     }
 
     // Inicialización de la aplicación
@@ -1854,15 +1867,12 @@ function initializeCodeBlockMonaco() {
             window.location.href = 'menu_inicio.html';
         }
 
-        // Carga el tema guardado
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        updateTheme(savedTheme);
+    });
 
         // Inicializar iconos
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
-    });
     </script>
     <!-- Sistema de quizScores y challengeMap -->
     <script src="assets/js/course_system.js"></script>

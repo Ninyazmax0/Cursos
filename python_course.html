@@ -1933,17 +1933,6 @@ edad = int(input("¿Tu edad? "))
 
 print(f"Hola {nombre}, tienes {edad} años")</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Prueba el Código</h3>
-                <div id="console-nivel-1" data-code="nombre = input(&quot;¿Cómo te llamas? &quot;)
-edad = int(input(&quot;¿Cuántos años tienes? &quot;))
-
-print(&quot;\\nHola {}!&quot;.format(nombre))
-año_nacimiento = 2025 - edad
-print(&quot;Naciste en {}&quot;.format(año_nacimiento))
-print(&quot;Has vivido {} meses&quot;.format(edad * 12))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué función muestra información?", options: ["input()", "print()", "show()", "display()"], answer: "print()" },
@@ -1976,22 +1965,6 @@ resultado = (2 + 3) * 4  # 20
 
 precio = (100 * 0.85) * 1.21  # Con descuento e IVA</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Calculadora</h3>
-                <div id="console-nivel-2" data-code="num1 = float(input(&quot;Primer número: &quot;))
-num2 = float(input(&quot;Segundo número: &quot;))
-
-print(f&quot;\\n{num1} + {num2} = {num1 + num2}&quot;)
-print(f&quot;{num1} - {num2} = {num1 - num2}&quot;)
-print(f&quot;{num1} * {num2} = {num1 * num2}&quot;)
-
-if num2 != 0:
-    print(f&quot;{num1} / {num2} = {num1 / num2:.2f}&quot;)
-    print(f&quot;{num1} // {num2} = {num1 // num2}&quot;)
-else:
-    print(&quot;No se puede dividir por cero&quot;)"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Resultado de 10 // 3?", options: ["3.33", "3", "4", "3.0"], answer: "3" },
@@ -2033,28 +2006,6 @@ es_fin_semana = dia == "sábado" or dia == "domingo"
 # not - invierte el valor
 no_es_menor = not (edad < 18)  # True</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Verificador de Condiciones</h3>
-                <div id="console-nivel-3" data-code="edad = int(input(&quot;¿Cuántos años tienes? &quot;))
-nota = float(input(&quot;¿Qué nota sacaste? &quot;))
-
-if edad &gt;= 18:
-    categoria = &quot;adulto&quot;
-elif edad &gt;= 13:
-    categoria = &quot;adolescente&quot;
-else:
-    categoria = &quot;niño&quot;
-
-aprobado = nota &gt;= 70
-
-print(&quot;\\nEres {}&quot;.format(categoria))
-print(&quot;Nota: {}&quot;.format(nota))
-if aprobado:
-    print(&quot;¡Aprobaste!&quot;)
-else:
-    print(&quot;Necesitas estudiar más&quot;)"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué devuelve 5 == 5?", options: ["5", "True", "False", "Error"], answer: "True" },
@@ -2088,26 +2039,6 @@ elif calificacion >= 70:
 else:
     print("Necesitas mejorar")</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Clasificador de Edad</h3>
-                <div id="console-nivel-4" data-code="edad = int(input(&quot;¿Cuántos años tienes? &quot;))
-
-if edad &lt; 13:
-    print(&quot;Eres un niño&quot;)
-    actividad = &quot;jugar&quot;
-elif edad &lt; 18:
-    print(&quot;Eres adolescente&quot;)
-    actividad = &quot;estudiar&quot;
-elif edad &lt; 60:
-    print(&quot;Eres adulto&quot;)
-    actividad = &quot;trabajar&quot;
-else:
-    print(&quot;Eres adulto mayor&quot;)
-    actividad = &quot;disfrutar&quot;
-
-print(&quot;Actividad: {}&quot;.format(actividad))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Palabra clave para condicionales?", options: ["when", "if", "switch", "case"], answer: "if" },
@@ -2148,18 +2079,6 @@ while contador < 5:
         continue
     print(i)</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Suma de Números</h3>
-                <div id="console-nivel-5" data-code="n = int(input(&quot;¿Hasta qué número sumar? &quot;))
-
-suma = 0
-for i in range(1, n + 1):
-    suma += i
-    print(&quot;{} → suma: {}&quot;.format(i, suma))
-
-print(&quot;\\nResultado: {}&quot;.format(suma))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Bucle para iterar secuencias?", options: ["while", "for", "if", "loop"], answer: "for" },
@@ -2188,21 +2107,6 @@ saludar()  # Llamar la función</code></pre></div>`
 
 resultado = sumar(3, 5)  # 8</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Calculadora con Funciones</h3>
-                <div id="console-nivel-6" data-code="def sumar(a, b):
-    return a + b
-
-def restar(a, b):
-    return a - b
-
-num1 = float(input(&quot;Primer número: &quot;))
-num2 = float(input(&quot;Segundo número: &quot;))
-
-print(&quot;\\nSuma: {}&quot;.format(sumar(num1, num2)))
-print(&quot;Resta: {}&quot;.format(restar(num1, num2)))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Cómo definir función?", options: ["function", "def", "func", "define"], answer: "def" },
@@ -2230,19 +2134,6 @@ numeros.append(4)      # [1, 2, 3, 4]
 numeros.insert(0, 0)   # [0, 1, 2, 3, 4]
 numeros.remove(2)      # [0, 1, 3, 4]</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Gestor de Tareas</h3>
-                <div id="console-nivel-7" data-code="tareas = []
-
-for i in range(3):
-    tarea = input(&quot;Tarea {}: &quot;.format(i+1))
-    tareas.append(tarea)
-
-print(&quot;\\nTus tareas:&quot;)
-for i, tarea in enumerate(tareas, 1):
-    print(&quot;{}. {}&quot;.format(i, tarea))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Agregar al final?", options: ["insert()", "add()", "append()", "extend()"], answer: "append()" },
@@ -2272,20 +2163,6 @@ print(persona["nombre"])  # Ana</code></pre></div>`
 persona.values()  # Valores
 persona.items()   # Pares clave-valor</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Agenda de Contactos</h3>
-                <div id="console-nivel-8" data-code="contactos = {}
-
-for i in range(2):
-    nombre = input(&quot;Nombre {}: &quot;.format(i+1))
-    telefono = input(&quot;Teléfono: &quot;)
-    contactos[nombre] = telefono
-
-print(&quot;\\nContactos:&quot;)
-for nombre, tel in contactos.items():
-    print(&quot;{}: {}&quot;.format(nombre, tel))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué almacenan diccionarios?", options: ["Solo valores", "Pares clave-valor", "Solo claves", "Números"], answer: "Pares clave-valor" },
@@ -2316,19 +2193,6 @@ print(numeros)  # {1, 2, 3}
 numeros.add(4)
 numeros.remove(1)</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Eliminar Duplicados</h3>
-                <div id="console-nivel-9" data-code="numeros = []
-
-for i in range(5):
-    num = int(input(&quot;Número {}: &quot;.format(i+1)))
-    numeros.append(num)
-
-print(&quot;\\nCon duplicados: {}&quot;.format(numeros))
-sin_duplicados = list(set(numeros))
-print(&quot;Sin duplicados: {}&quot;.format(sin_duplicados))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Tuplas son mutables?", options: ["Verdadero", "Falso"], answer: "Falso" },
@@ -2355,22 +2219,6 @@ print(&quot;Sin duplicados: {}&quot;.format(sin_duplicados))"></div>`
     f.write("Hola Mundo")
     f.write("\\nSegunda línea")</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Simulador de Archivo</h3>
-                <div id="console-nivel-10" data-code="# Simulación de escritura
-contenido = []
-
-for i in range(3):
-    linea = input(&quot;Línea {}: &quot;.format(i+1))
-    contenido.append(linea)
-
-print(&quot;\\nContenido del archivo:&quot;)
-for i, linea in enumerate(contenido, 1):
-    print(&quot;{}: {}&quot;.format(i, linea))
-
-print(&quot;\\nTotal de líneas: {}&quot;.format(len(contenido)))"></div>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Abrir para leer?", options: ["'r'", "'w'", "'a'", "'x'"], answer: "'r'" },
@@ -2512,57 +2360,6 @@ print(cuenta.retirar(200))       # Retiro exitoso. Nuevo saldo: $1300</code></pr
                     <li>Se llaman con notación de punto: <code>objeto.metodo()</code></li>
                 </ul>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Sistema de Gestión de Productos</h3>
-                <p>Este ejemplo muestra una clase completa con múltiples atributos y métodos trabajando juntos:</p>
-                
-                <div id="console-nivel-11" data-code="class Producto:
-    def __init__(self, nombre, precio, stock):
-        self.nombre = nombre
-        self.precio = precio
-        self.stock = stock
-    
-    def vender(self, cantidad):
-        if cantidad &gt; self.stock:
-            return &quot;Error: Solo hay {} unidades&quot;.format(self.stock)
-        self.stock -= cantidad
-        total = cantidad * self.precio
-        return &quot;Venta exitosa. Total: \${}. Stock restante: {}&quot;.format(total, self.stock)
-    
-    def reabastecer(self, cantidad):
-        self.stock += cantidad
-        return &quot;Stock actualizado: {} unidades&quot;.format(self.stock)
-    
-    def aplicar_descuento(self, porcentaje):
-        descuento = self.precio * (porcentaje / 100)
-        self.precio -= descuento
-        return &quot;Nuevo precio con {}% descuento: \${:.2f}&quot;.format(porcentaje, self.precio)
-    
-    def info(self):
-        return &quot;{} - \${} - Stock: {}&quot;.format(self.nombre, self.precio, self.stock)
-
-# Crear producto
-laptop = Producto(&quot;Laptop Dell&quot;, 800, 10)
-print(laptop.info())
-
-# Realizar operaciones
-print(laptop.vender(3))
-print(laptop.reabastecer(5))
-print(laptop.aplicar_descuento(10))
-print(laptop.info())"></div>
-                
-                <h3>Conceptos Aplicados</h3>
-                <ul>
-                    <li><code>__init__</code> - Inicializa los atributos del producto</li>
-                    <li><code>self.nombre, self.precio, self.stock</code> - Atributos de instancia</li>
-                    <li><code>vender(), reabastecer(), aplicar_descuento()</code> - Métodos que modifican el estado</li>
-                    <li><code>info()</code> - Método que devuelve información del objeto</li>
-                </ul>
-                
-                <h3>Caso de Uso Real</h3>
-                <p>Este tipo de clases se usan en sistemas de inventario de tiendas, e-commerce, y aplicaciones de punto de venta. Cada producto es un objeto con su propio estado (precio, stock) y comportamientos (vender, reabastecer).</p>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es una clase en POO?", options: ["Un objeto específico", "Una plantilla para crear objetos", "Una función", "Una variable"], answer: "Una plantilla para crear objetos" },
@@ -2738,69 +2535,6 @@ print(isinstance(gerente, Persona))   # True</code></pre></div>
 print(issubclass(Gerente, Persona))   # True
 print(issubclass(Empleado, Gerente))  # False</code></pre></div>`
             },
-            { 
-                title: "Código Completo y Consola Interactiva", 
-                content: `<h3>Sistema de Empleados con Herencia</h3>
-                <p>Este ejemplo muestra una jerarquía completa de clases para un sistema de recursos humanos:</p>
-                
-                <div id="console-nivel-12" data-code="class Empleado:
-    def __init__(self, nombre, salario_base):
-        self.nombre = nombre
-        self.salario_base = salario_base
-    
-    def calcular_salario(self):
-        return self.salario_base
-    
-    def info(self):
-        return &quot;{} - Salario: \${}&quot;.format(self.nombre, self.calcular_salario())
-
-class EmpleadoTiempoCompleto(Empleado):
-    def __init__(self, nombre, salario_base, bono_anual):
-        super().__init__(nombre, salario_base)
-        self.bono_anual = bono_anual
-    
-    def calcular_salario(self):
-        # Salario base + bono mensual
-        return self.salario_base + (self.bono_anual / 12)
-
-class EmpleadoPorHoras(Empleado):
-    def __init__(self, nombre, tarifa_hora, horas_trabajadas):
-        # No tiene salario base fijo
-        super().__init__(nombre, 0)
-        self.tarifa_hora = tarifa_hora
-        self.horas_trabajadas = horas_trabajadas
-    
-    def calcular_salario(self):
-        salario = self.tarifa_hora * self.horas_trabajadas
-        # Pago extra por horas extras (más de 160 horas/mes)
-        if self.horas_trabajadas &gt; 160:
-            horas_extra = self.horas_trabajadas - 160
-            salario += horas_extra * self.tarifa_hora * 0.5
-        return salario
-
-# Crear empleados
-emp1 = EmpleadoTiempoCompleto(&quot;Ana García&quot;, 3000, 12000)
-emp2 = EmpleadoPorHoras(&quot;Carlos López&quot;, 20, 180)
-
-print(emp1.info())
-print(emp2.info())
-
-# Calcular nómina total
-empleados = [emp1, emp2]
-total_nomina = sum(emp.calcular_salario() for emp in empleados)
-print(&quot;\\nNómina total: \${:.2f}&quot;.format(total_nomina))"></div>
-                
-                <h3>Conceptos Aplicados</h3>
-                <ul>
-                    <li><code>Empleado</code> - Clase base con funcionalidad común</li>
-                    <li><code>EmpleadoTiempoCompleto</code> y <code>EmpleadoPorHoras</code> - Clases hijas especializadas</li>
-                    <li><code>calcular_salario()</code> - Método sobrescrito en cada clase hija</li>
-                    <li><code>super().__init__()</code> - Reutilización del constructor padre</li>
-                </ul>
-                
-                <h3>Caso de Uso Real</h3>
-                <p>Este patrón se usa en sistemas de nómina, ERP, y aplicaciones de recursos humanos donde diferentes tipos de empleados tienen reglas de cálculo de salario distintas pero comparten atributos comunes.</p>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es la herencia en POO?", options: ["Copiar código", "Crear clase basada en otra", "Eliminar una clase", "Modificar una clase"], answer: "Crear clase basada en otra" },
@@ -2972,81 +2706,6 @@ print(calc.ver_historial())  # Lista de operaciones
                     <li>Métodos que podrían cambiar en futuras versiones</li>
                 </ul>`
             },
-            {
-                title: "Código Completo y Consola Interactiva",
-                content: `<h3>Sistema de Cuenta Bancaria con Encapsulamiento</h3>
-                <p>Este ejemplo muestra un sistema bancario completo con validación y control de acceso:</p>
-                
-                <div id="console-nivel-13" data-code="class CuentaBancaria:
-    def __init__(self, titular, saldo_inicial, limite_retiro=1000):
-        self.__titular = titular
-        self.__saldo = saldo_inicial
-        self.__limite_retiro = limite_retiro
-        self.__transacciones = []
-    
-    @property
-    def saldo(self):
-        &quot;&quot;&quot;Consultar saldo (solo lectura desde fuera)&quot;&quot;&quot;
-        return self.__saldo
-    
-    @property
-    def titular(self):
-        return self.__titular
-    
-    def __registrar_transaccion(self, tipo, monto):
-        &quot;&quot;&quot;Método privado para registro interno&quot;&quot;&quot;
-        self.__transacciones.append({
-            'tipo': tipo,
-            'monto': monto,
-            'saldo_resultante': self.__saldo
-        })
-    
-    def depositar(self, cantidad):
-        if cantidad &lt;= 0:
-            return &quot;Error: Cantidad debe ser positiva&quot;
-        self.__saldo += cantidad
-        self.__registrar_transaccion('depósito', cantidad)
-        return &quot;Depósito exitoso. Nuevo saldo: \${}&quot;.format(self.__saldo)
-    
-    def retirar(self, cantidad):
-        if cantidad &lt;= 0:
-            return &quot;Error: Cantidad debe ser positiva&quot;
-        if cantidad &gt; self.__limite_retiro:
-            return &quot;Error: Límite de retiro es \${}&quot;.format(self.__limite_retiro)
-        if cantidad &gt; self.__saldo:
-            return &quot;Error: Fondos insuficientes&quot;
-        self.__saldo -= cantidad
-        self.__registrar_transaccion('retiro', cantidad)
-        return &quot;Retiro exitoso. Nuevo saldo: \${}&quot;.format(self.__saldo)
-    
-    def ver_transacciones(self):
-        return self.__transacciones.copy()
-
-# Crear cuenta
-cuenta = CuentaBancaria(&quot;Ana García&quot;, 5000, limite_retiro=2000)
-
-# Operaciones
-print(&quot;Titular: {}&quot;.format(cuenta.titular))
-print(&quot;Saldo inicial: \${}&quot;.format(cuenta.saldo))
-print(cuenta.depositar(1000))
-print(cuenta.retirar(500))
-print(cuenta.retirar(3000))  # Excede límite
-print(&quot;\\nTransacciones:&quot;)
-for t in cuenta.ver_transacciones():
-    print(&quot;  {}: \${} -&gt; Saldo: \${}&quot;.format(t['tipo'], t['monto'], t['saldo_resultante']))"></div>
-                
-                <h3>Conceptos Aplicados</h3>
-                <ul>
-                    <li><code>__saldo, __titular, __transacciones</code> - Atributos privados</li>
-                    <li><code>@property</code> - Getters para acceso controlado</li>
-                    <li><code>__registrar_transaccion()</code> - Método privado interno</li>
-                    <li>Validación en métodos públicos</li>
-                    <li><code>.copy()</code> - Devolver copia para proteger datos internos</li>
-                </ul>
-                
-                <h3>Caso de Uso Real</h3>
-                <p>Este patrón se usa en aplicaciones bancarias, sistemas de pago, y cualquier aplicación que maneje datos sensibles que requieren validación y control de acceso estricto.</p>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es el encapsulamiento?", options: ["Ocultar código", "Proteger y controlar acceso a datos", "Copiar objetos", "Eliminar atributos"], answer: "Proteger y controlar acceso a datos" },
@@ -3220,83 +2879,6 @@ print(v5)  # Vector(6, 8)</code></pre></div>
                     <li><code>__and__</code> (&), <code>__or__</code> (|), <code>__xor__</code> (^)</li>
                 </ul>`
             },
-            {
-                title: "Código Completo y Consola Interactiva",
-                content: `<h3>Sistema de Carrito de Compras con Polimorfismo</h3>
-                <p>Este ejemplo muestra polimorfismo y métodos especiales en un sistema de e-commerce:</p>
-                
-                <div id="console-nivel-14" data-code="class Producto:
-    def __init__(self, nombre, precio):
-        self.nombre = nombre
-        self.precio = precio
-    
-    def __str__(self):
-        return &quot;{}: \${}&quot;.format(self.nombre, self.precio)
-    
-    def __repr__(self):
-        return &quot;Producto('{}', {})&quot;.format(self.nombre, self.precio)
-
-class CarritoCompras:
-    def __init__(self):
-        self.productos = []
-    
-    def __len__(self):
-        # len(carrito) devuelve cantidad de productos
-        return len(self.productos)
-    
-    def __getitem__(self, index):
-        # carrito[0] accede a productos
-        return self.productos[index]
-    
-    def __add__(self, producto):
-        # carrito + producto agrega al carrito
-        nuevo_carrito = CarritoCompras()
-        nuevo_carrito.productos = self.productos.copy()
-        nuevo_carrito.productos.append(producto)
-        return nuevo_carrito
-    
-    def agregar(self, producto):
-        self.productos.append(producto)
-    
-    def total(self):
-        return sum(p.precio for p in self.productos)
-    
-    def __str__(self):
-        if not self.productos:
-            return &quot;Carrito vacío&quot;
-        items = &quot;\\n&quot;.join(&quot;  - {}&quot;.format(p) for p in self.productos)
-        return &quot;Carrito ({} productos):\\n{}\\nTotal: \${}&quot;.format(len(self), items, self.total())
-
-# Crear productos
-p1 = Producto(&quot;Laptop&quot;, 800)
-p2 = Producto(&quot;Mouse&quot;, 25)
-p3 = Producto(&quot;Teclado&quot;, 60)
-
-# Crear carrito
-carrito = CarritoCompras()
-carrito.agregar(p1)
-carrito.agregar(p2)
-
-# Usar métodos especiales
-print(&quot;Productos en carrito: {}&quot;.format(len(carrito)))
-print(&quot;Primer producto: {}&quot;.format(carrito[0]))
-
-# Usar operador +
-carrito = carrito + p3
-print(&quot;\\n&quot; + str(carrito))"></div>
-                
-                <h3>Conceptos Aplicados</h3>
-                <ul>
-                    <li><code>__str__</code> y <code>__repr__</code> - Representaciones del objeto</li>
-                    <li><code>__len__</code> - Soporte para <code>len()</code></li>
-                    <li><code>__getitem__</code> - Acceso con corchetes</li>
-                    <li><code>__add__</code> - Sobrecarga del operador +</li>
-                    <li>Polimorfismo con diferentes productos</li>
-                </ul>
-                
-                <h3>Caso de Uso Real</h3>
-                <p>Este patrón se usa en plataformas de e-commerce, sistemas de punto de venta, y aplicaciones de gestión de inventario donde diferentes tipos de productos comparten una interfaz común.</p>`
-            }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es el polimorfismo?", options: ["Copiar objetos", "Múltiples formas de un método", "Eliminar clases", "Crear objetos"], answer: "Múltiples formas de un método" },
@@ -3323,7 +2905,6 @@ print(&quot;\\n&quot; + str(carrito))"></div>
     
     def devolver(self):
         self.disponible = True</code></pre></div>` },
-            { title: "Consola Interactiva", content: `<div id="console-nivel-15" data-code-base64="Y2xhc3MgTGlicm86CiAgICBkZWYgX19pbml0X18oc2VsZiwgaXNibiwgdGl0dWxvKToKICAgICAgICBzZWxmLmlzYm4gPSBpc2JuCiAgICAgICAgc2VsZi50aXR1bG8gPSB0aXR1bG8KICAgICAgICBzZWxmLmRpc3BvbmlibGUgPSBUcnVlCgpjbGFzcyBCaWJsaW90ZWNhOgogICAgZGVmIF9faW5pdF9fKHNlbGYpOgogICAgICAgIHNlbGYubGlicm9zID0ge30KICAgIAogICAgZGVmIGFncmVnYXJfbGlicm8oc2VsZiwgbGlicm8pOgogICAgICAgIHNlbGYubGlicm9zW2xpYnJvLmlzYm5dID0gbGlicm8KICAgICAgICByZXR1cm4gIuKckyAne30nIGFncmVnYWRvIi5mb3JtYXQobGlicm8udGl0dWxvKQogICAgCiAgICBkZWYgbGlzdGFyX2Rpc3BvbmlibGVzKHNlbGYpOgogICAgICAgIHJldHVybiBbbC50aXR1bG8gZm9yIGwgaW4gc2VsZi5saWJyb3MudmFsdWVzKCkgaWYgbC5kaXNwb25pYmxlXQoKYmliID0gQmlibGlvdGVjYSgpCnByaW50KGJpYi5hZ3JlZ2FyX2xpYnJvKExpYnJvKCIwMDEiLCAiMTk4NCIpKSkKcHJpbnQoYmliLmFncmVnYXJfbGlicm8oTGlicm8oIjAwMiIsICJFbCBQcmluY2lwaXRvIikpKQpwcmludCgiRGlzcG9uaWJsZXM6IiwgYmliLmxpc3Rhcl9kaXNwb25pYmxlcygpKQ=="></div><p><strong>🎮 Desafío python_challenge3:</strong> Implementa sistema completo con persistencia JSON.</p>` }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es composición en POO?", options: ["Herencia múltiple", "Una clase contiene objetos de otras", "Copiar clases", "Eliminar objetos"], answer: "Una clase contiene objetos de otras" },
@@ -3366,7 +2947,6 @@ for archivo in os.listdir('.'):
             os.makedirs(categoria, exist_ok=True)
             # shutil.move(archivo, "{}/{}".format(categoria, archivo))
             print("Mover {} a {}".format(archivo, categoria))</code></pre></div>` },
-            { title: "Consola Interactiva", content: `<div id="console-nivel-16" data-code-base64="aW1wb3J0IG9zCgojIFNpbXVsYXIgb3JnYW5pemFjacOzbiBkZSBhcmNoaXZvcwphcmNoaXZvcyA9IFsiZm90by5qcGciLCAiZG9jdW1lbnRvLnBkZiIsICJ2aWRlby5tcDQiLCAiaW1hZ2VuLnBuZyJdCgpjYXRlZ29yaWFzID0gewogICAgJ0RvY3VtZW50b3MnOiBbJy5wZGYnLCAnLmRvY3gnXSwKICAgICdJbcOhZ2VuZXMnOiBbJy5qcGcnLCAnLnBuZyddLAogICAgJ1ZpZGVvcyc6IFsnLm1wNCddCn0KCmZvciBhcmNoaXZvIGluIGFyY2hpdm9zOgogICAgZXh0ID0gb3MucGF0aC5zcGxpdGV4dChhcmNoaXZvKVsxXQogICAgZm9yIGNhdGVnb3JpYSwgZXh0ZW5zaW9uZXMgaW4gY2F0ZWdvcmlhcy5pdGVtcygpOgogICAgICAgIGlmIGV4dCBpbiBleHRlbnNpb25lczoKICAgICAgICAgICAgcHJpbnQoIvCfk4Ege30g4oaSIHt9LyIuZm9ybWF0KGFyY2hpdm8sIGNhdGVnb3JpYSkpCiAgICAgICAgICAgIGJyZWFr"></div><p><strong>Caso real:</strong> Organizar automáticamente carpeta de Descargas.</p>` }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué módulo mueve archivos?", options: ["os", "shutil", "move", "file"], answer: "shutil" },
@@ -3404,7 +2984,6 @@ def dias_hasta(fecha_objetivo):
 
 navidad = datetime(2024, 12, 25)
 print("Días hasta Navidad: {}".format(dias_hasta(navidad)))</code></pre></div>` },
-            { title: "Consola Interactiva", content: `<div id="console-nivel-17"></div><script>createInteractiveConsole(\`from datetime import datetime, timedelta
 
 # Fecha actual
 ahora = datetime.now()
@@ -3467,31 +3046,6 @@ def obtener_clima(ciudad):
         'temperatura': datos['main']['temp'],
         'descripcion': datos['weather'][0]['description']
     }</code></pre></div>` },
-            { title: "Consola Interactiva", content: `<div id="console-nivel-18"></div><script>createInteractiveConsole(\`# Simulación de API (sin requests real)
-# En producción usarías: import requests
-
-class APISimulada:
-    def get(self, url):
-        # Simular respuesta de API
-        return {
-            'status_code': 200,
-            'json': lambda: {
-                'ciudad': 'Madrid',
-                'temperatura': 22,
-                'descripcion': 'Soleado',
-                'humedad': 45
-            }
-        }
-
-api = APISimulada()
-respuesta = api.get("https://api.clima.com/madrid")
-
-if respuesta['status_code'] == 200:
-    datos = respuesta['json']()
-    print("🌡️ Clima en {}:".format(datos['ciudad']))
-    print("   Temperatura: {}°C".format(datos['temperatura']))
-    print("   Condición: {}".format(datos['descripcion']))
-    print("   Humedad: {}%".format(datos['humedad']))\`, 'console-nivel-18');<\/script><p><strong>Caso real:</strong> Integración con servicios externos (clima, mapas, redes sociales, pagos).</p>` }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es una API REST?", options: ["Base de datos", "Interfaz para comunicación HTTP", "Lenguaje de programación", "Framework"], answer: "Interfaz para comunicación HTTP" },
@@ -3541,7 +3095,6 @@ def extraer_noticias(url):
         })
     
     return noticias</code></pre></div>` },
-            { title: "Consola Interactiva", content: `<p><strong>💡 Nota:</strong> El web scraping requiere librerías externas como BeautifulSoup. En un proyecto real, usarías <code>pip install beautifulsoup4 requests</code> y luego importarías estas librerías para analizar HTML de sitios web reales.</p><p><strong>Caso real:</strong> Monitoreo de precios, agregadores de noticias, análisis de competencia.</p>` }
         ],
         quiz: [
             { type: "multiple-choice", question: "¿Qué es web scraping?", options: ["Crear sitios web", "Extraer datos de sitios web", "Diseñar páginas", "Hostear sitios"], answer: "Extraer datos de sitios web" },
@@ -3590,7 +3143,6 @@ class GestorTareas:
     def guardar(self, archivo="tareas.json"):
         with open(archivo, 'w') as f:
             json.dump([t.to_dict() for t in self.tareas], f)</code></pre></div>` },
-            { title: "Consola Interactiva - Proyecto Demo", content: `<p><strong>🎮 Desafío Final python_challenge8:</strong> Crea tu propio proyecto integrando POO, archivos, fechas y APIs. Usa las clases <code>Tarea</code> y <code>GestorTareas</code> como base y expándelas con funcionalidades como:</p><ul><li>Guardar tareas en archivo JSON</li><li>Cargar tareas desde archivo</li><li>Filtrar por prioridad o fecha</li><li>Integrar con una API de tareas (opcional)</li></ul>` },
             { title: "¡Felicidades!", content: `<h3>🎉 ¡Completaste el Curso de Python!</h3><p>Ahora dominas:</p><ul><li>✅ Fundamentos de Python</li><li>✅ Estructuras de datos</li><li>✅ Programación Orientada a Objetos</li><li>✅ Manejo de archivos</li><li>✅ Automatizaciones</li><li>✅ APIs y Web Scraping</li><li>✅ Proyectos reales</li></ul><p><strong>Próximos pasos:</strong></p><ul><li>Practica con proyectos personales</li><li>Explora frameworks (Django, Flask, FastAPI)</li><li>Aprende Data Science (pandas, numpy, matplotlib)</li><li>Contribuye a proyectos open source</li></ul><p><strong>¡Sigue programando! 🚀</strong></p>` }
         ],
         quiz: [

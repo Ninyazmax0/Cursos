@@ -35,7 +35,12 @@ export const achievements = [
     { id: 'veteran', name: 'Veterano', desc: 'Visita la plataforma 3 días seguidos.', hint: 'La constancia es clave.', rarity: 'rare', icon: 'calendar-check' },
     { id: 'streak_3', name: 'Racha de Fuego', desc: 'Mantén una racha de 3 días.', hint: 'No rompas la cadena.', rarity: 'rare', icon: 'flame' },
     { id: 'python_apprentice', name: 'Encantador de Serpientes', desc: 'Completa el nivel 5 de Python.', hint: 'Tus primeros pasos.', rarity: 'common', icon: 'code' },
-
+    
+    { id: 'secret_konami', name: 'Life Cycle', desc: 'Hojas que caen eternamente.', hint: 'El viejo truco de los 90...', rarity: 'legendary', icon: 'leaf' },
+    { id: 'secret_time', name: 'Chronos', desc: 'El tiempo es tuyo.', hint: 'El desafío de la medianoche.', rarity: 'legendary', icon: 'clock' },
+    { id: 'secret_fire', name: 'Eternal Flame', desc: 'Nunca se apaga.', hint: 'La constancia de una semana entera.', rarity: 'legendary', icon: 'flame' },
+    { id: 'secret_hack', name: 'Zero Day', desc: '01010101.', hint: 'Un mensaje en el vacío del código.', rarity: 'legendary', icon: 'binary' },
+    
     // --- STEVEN EXCLUSIVE (OWNER) ---
     { id: 'pixel_perfect', name: 'Pixel Perfect', desc: 'Alinear cada div a la perfección.', hint: 'Obsesión por los detalles.', rarity: 'legendary', icon: 'layout' },
     { id: 'dream_architect', name: 'Arquitecto de Sueños', desc: 'Imaginar Status Code 418.', hint: 'Todo empieza con una idea.', rarity: 'legendary', icon: 'cloud-rain' },
@@ -50,12 +55,6 @@ export const achievements = [
     { id: 'server_whisperer', name: 'Susurradora de Servidores', desc: 'Mantiene la nube flotando.', hint: 'Uptime: 99.999%.', rarity: 'legendary', icon: 'wifi' },
     { id: 'security_protocol', name: 'Protocolo de Seguridad', desc: 'Hackearla es matemáticamente imposible.', hint: 'Access Denied.', rarity: 'legendary', icon: 'shield-check' },
 
-    // --- NEW SECRET ACHIEVEMENTS ---
-    { id: 'secret_konami', name: 'Life Cycle', desc: 'Hojas que caen eternamente.', hint: 'El viejo truco de los 90...', rarity: 'legendary', icon: 'leaf' },
-    { id: 'secret_time', name: 'Chronos', desc: 'El tiempo es tuyo.', hint: 'El desafío de la medianoche.', rarity: 'legendary', icon: 'clock' },
-    { id: 'secret_fire', name: 'Eternal Flame', desc: 'Nunca se apaga.', hint: 'La constancia de una semana entera.', rarity: 'legendary', icon: 'flame' },
-    { id: 'secret_hack', name: 'Zero Day', desc: '01010101.', hint: 'Un mensaje en el vacío del código.', rarity: 'legendary', icon: 'binary' },
-    
     // --- DIVINE ACHIEVEMENTS ---
     { id: 'steven_moon', name: 'Mi Luna', desc: 'Solo hay una luna en este cielo...', hint: 'Una recompensa por un momento especial.', rarity: 'legendary', icon: 'moon-star' },
     { id: 'marriage_contract', name: 'Mi Prometido', desc: 'Un juramento que el tiempo no podrá borrar.', hint: 'Para el dueño de mis latidos.', rarity: 'legendary', icon: 'heart' }

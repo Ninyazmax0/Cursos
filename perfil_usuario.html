@@ -315,91 +315,17 @@
                 import('./assets/js/achievements.js').then(m => m.checkAchievement('founder_stalker'));
             }
 
-            // If no userId in URL, show current user's own profile
-            if (!userId) {
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                if (!currentUser) {
-                    showGlobalToast('Acceso Denegado', 'Debes iniciar sesión primero.', 'warning');
-                    window.location.href = 'index.html';
-                    return;
-                }
-                userId = currentUser.id;
+            // NEW: Use Profile Viewer to load user (supports URL params)
+            const { initProfileViewer } = await import('./assets/js/profile-viewer.js');
+            const viewResult = await initProfileViewer();
+
+            if (!viewResult || !viewResult.user) {
+                return; // Error handled in initProfileViewer
             }
 
-            // Try to get from Firebase
-            let user = null;
-            if (window.getUserFromFirestore) {
-                try {
-                    user = await getUserFromFirestore(userId);
-                    console.log('🔥 Usuario obtenido desde Firebase');
-                } catch(err) {
-                    console.warn('Firebase no disponible');
-                }
-            }
+            let { user } = viewResult;
 
-            // Fallback: search in localStorage
-            if (!user) {
-                const allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
-                user = allUsers.find(u => u.id === userId || u.name === userId);
-            }
-
-            // FALLBACK FOR FOUNDERS (GOD MODE)
-            const isSteven = userId === 'steven' || userId === 'steven-founder' || userId.toLowerCase().includes('steven');
-            const isAmelia = userId === 'amelia' || userId === 'amelia-founder' || userId.toLowerCase().includes('amelia');
-
-            if (!user && (isSteven || isAmelia)) {
-                user = {
-                    id: isAmelia ? 'amelia' : 'steven',
-                    name: isAmelia ? 'Amelia' : 'Steven',
-                    avatar: isAmelia ? 'https://cdn.myanimelist.net/images/characters/8/239523.jpg' : 'https://ui-avatars.com/api/?name=Steven&background=0D8ABC&color=fff',
-                    rank: '👑 Owner',
-                    bio: isAmelia ? 'Co-Founder & CTO. "El código es arte."' : 'Founder & CEO. "Hacemos lo imposible."',
-                    tags: ['Founder', 'Visionary', 'FullStack'],
-                    socialLinks: { github: isAmelia ? 'amelia-dev' : 'steven-ceo', twitter: isAmelia ? 'amelia_code' : 'steven_tech' },
-                    isAdmin: true,
-                    webProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
-                    pythonProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
-                    rubyProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
-                    databaseProgress: { completedLevels: Array.from({length:20}, (_, i) => i+1) },
-                    achievements: isAmelia 
-                        ? ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol']
-                        : ['first_login', 'web_master', 'python_master', 'ruby_master', 'db_master', 'pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god']
-                };
-            }
-
-            if (!user) {
-                showGlobalToast('Error 404', 'Usuario no encontrado en la base de datos.', 'error');
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // FORCE LEGENDARY AND MASTER ACHIEVEMENTS FOR FOUNDERS
-            const forcedSteven = ['pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god', 'web_master', 'python_master', 'ruby_master', 'db_master'];
-            const forcedAmelia = ['backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol', 'web_master', 'python_master', 'ruby_master', 'db_master'];
-
-            const fullProgress = { completedLevels: Array.from({length: 20}, (_, i) => i + 1) };
-
-            if (user && (user.id === 'steven' || user.name === 'Steven' || user.id === 'steven-founder')) {
-                const current = new Set(user.achievements || []);
-                forcedSteven.forEach(id => current.add(id));
-                user.achievements = Array.from(current);
-
-                user.webProgress = { ...fullProgress };
-                user.pythonProgress = { ...fullProgress };
-                user.rubyProgress = { ...fullProgress };
-                user.databaseProgress = { ...fullProgress };
-            }
-            
-            if (user && (user.id === 'amelia' || user.name === 'Amelia' || user.id === 'amelia-founder')) {
-                const current = new Set(user.achievements || []);
-                forcedAmelia.forEach(id => current.add(id));
-                user.achievements = Array.from(current);
-
-                user.webProgress = { ...fullProgress };
-                user.pythonProgress = { ...fullProgress };
-                user.rubyProgress = { ...fullProgress };
-                user.databaseProgress = { ...fullProgress };
-            }
+            // FORCE LEGENDARY AND MASTER ACHIEVEMENTS REMOVED - Handled by predefined-profiles.js
 
             renderProfile(user);
         }
@@ -410,8 +336,6 @@
                 const auraId = user.equippedAura || 'aura-none';
                 
                 let finalAuraId = auraId;
-                if (!user.equippedAura && (user.id === 'steven-founder' || user.id === 'steven')) finalAuraId = 'aura-founder-steven';
-                if (!user.equippedAura && (user.id === 'amelia-founder' || user.id === 'amelia')) finalAuraId = 'aura-founder-amelia';
 
                 const auraData = PROFILE_AURAS.find(a => a.id === finalAuraId);
                 const container = document.getElementById('avatar-container');

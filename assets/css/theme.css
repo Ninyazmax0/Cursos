@@ -11,6 +11,10 @@
     --red: #f7768e;
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+
+    /* Background images - set by background-manager.js */
+    --bg-day: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
+    --bg-night: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
 }
 
 body {
@@ -31,6 +35,7 @@ body {
     height: 100%;
     z-index: -1;
     pointer-events: none;
+    background-color: var(--background);
 }
 
 .background-day, .background-night {
@@ -41,16 +46,27 @@ body {
     height: 100%;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     opacity: 0;
-    transition: opacity 1s ease;
+    transition: opacity 0.5s ease;
+    will-change: opacity;
 }
 
-/* Default Backgrounds (Can be overridden) */
-.background-day { background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif'); }
-.background-night { background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif'); }
+/* Color de fondo sólido inicial para evitar parpadeo */
+.background-day { background-color: #f8fafc; }
+.background-night { background-color: #1a1b26; }
 
-.dark .background-night { opacity: 1; }
-:not(.dark) .background-day { opacity: 1; }
+/* Default Backgrounds (Can be overridden) */
+.background-day { background-image: var(--bg-day); }
+.background-night { background-image: var(--bg-night); }
+
+/* Por defecto, mostrar el fondo de noche (modo oscuro es el más común) */
+html:not(.dark) .background-day { opacity: 1; }
+html.dark .background-night { opacity: 1; }
+
+/* Evitar parpadeo inicial - el fondo de noche se muestra por defecto */
+.background-night { opacity: 1; }
+html:not(.dark) .background-night { opacity: 0; }
 
 /* Common UI Components */
 .glass-panel {

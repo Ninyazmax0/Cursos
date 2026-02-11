@@ -7,6 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Initialize CSS variables immediately to prevent flicker -->
+    <script>
+        (function() {
+            const bgNight = 'https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif';
+            document.documentElement.style.setProperty('--bg-night', `url('${bgNight}')`);
+        })();
+    </script>
+
     <style>
         :root {
             --background: #1a1b26;
@@ -39,10 +48,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+            background-color: #1a1b26;
+            background-image: var(--bg-night, url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif'));
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             opacity: 0.15;
+            will-change: opacity;
+            transition: opacity 0.3s ease;
         }
 
         /* Efecto de partículas sutiles */
@@ -411,7 +424,7 @@
                         <span class="text-yellow-400 font-mono text-sm tracking-widest uppercase">La Evolución</span>
                         <h2 class="text-2xl font-bold text-white mt-2 mb-4">Llevándolo a la nube.</h2>
                         <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Octubre, 2024
+                            Octubre, 2025
                         </div>
                         <p class="mt-4 text-gray-300 leading-relaxed">
                             La academia funcionaba, pero todo el progreso se guardaba localmente. Si alguien cambiaba de dispositivo, perdía todo. Eso no podía seguir así.
@@ -436,7 +449,7 @@
                         <span class="text-purple-400 font-mono text-sm tracking-widest uppercase">La Magia</span>
                         <h2 class="text-2xl font-bold text-white mt-2 mb-4">Todo en vivo.</h2>
                         <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Noviembre, 2024
+                            Noviembre, 2025
                         </div>
                         <p class="mt-4 text-gray-300 leading-relaxed">
                             Amelia implementó sincronización en tiempo real. Abrió dos ventanas del navegador, completó un nivel en una y, casi al instante, la tabla de posiciones en la otra se actualizó sola. Sin refrescar. Sin recargar.
@@ -461,7 +474,7 @@
                         <span class="text-orange-400 font-mono text-sm tracking-widest uppercase">La Crisis</span>
                         <h2 class="text-2xl font-bold text-white mt-2 mb-4">Cuando todo dejó de funcionar.</h2>
                         <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Finales de Noviembre, 2024
+                            Finales de Noviembre, 2025
                         </div>
                         <p class="mt-4 text-gray-300 leading-relaxed">
                             Después de migrar todo a la nube, algo salió mal. El mapa de niveles no aparecía, los perfiles no cargaban, y había errores por todas partes.
@@ -489,7 +502,7 @@
                         <span class="text-pink-400 font-mono text-sm tracking-widest uppercase">Hoy</span>
                         <h2 class="text-2xl font-bold text-white mt-2 mb-4">Status Code 418: En vivo.</h2>
                         <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            14 de Diciembre, 2024
+                            14 de Diciembre, 2025
                         </div>
                         <p class="mt-4 text-gray-300 leading-relaxed">
                             Han pasado poco más de cuatro meses desde que empecé con aquella primera "Academia" que terminó en la basura. Hoy, Status Code 418 es una plataforma completa con perfiles de usuario, leaderboards en tiempo real, 4 cursos interactivos, sistema de challenges, y una obsesión poco sana con el modo oscuro.
@@ -499,9 +512,11 @@
                             <ul class="space-y-2 text-gray-300 text-sm">
                                 <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>4 Cursos Maestros: Web, Python, Ruby, Database</span></li>
                                 <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Infraestructura Real con Firebase Firestore</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Sala de Trofeos con 20 logros ocultos</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Sistema de Challenges con validación automática</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Diseño Tokyo Night para cuidado visual</span></li>
+                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Sistema de Logros con 60 recompensas desbloqueables</span></li>
+                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>9 Challenges con validación automática</span></li>
+                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Sistema de Chat en tiempo real entre usuarios</span></li>
+                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Tienda de Auras y efectos cosméticos</span></li>
+                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Fondos personalizados y Tokyo Night theme</span></li>
                             </ul>
                         </div>
                     </div>

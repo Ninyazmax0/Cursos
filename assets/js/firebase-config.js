@@ -4,7 +4,7 @@
  */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getFirestore, collection, doc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, deleteDoc, query, orderBy, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import { getFirestore, collection, doc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, deleteDoc, query, orderBy, addDoc, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
@@ -158,6 +158,35 @@ async function updateHeartbeat(userId) {
 }
 
 /**
+ * Marca al usuario como offline
+ * @param {string} userId - ID del usuario
+ */
+async function setOffline(userId) {
+    try {
+        const userRef = doc(db, 'users', userId);
+        await updateDoc(userRef, {
+            isOnline: false
+        });
+    } catch (error) {
+        // Silent fail
+    }
+}
+
+/**
+ * Verifica si un usuario está online basado en su lastSeen timestamp
+ * @param {Object} user - Objeto usuario
+ * @param {number} timeoutMinutes - Tiempo en minutos para considerar offline (default: 5)
+ * @returns {boolean}
+ */
+function isUserOnline(user, timeoutMinutes = 5) {
+    if (!user.lastSeen) return false;
+    const lastSeen = new Date(user.lastSeen);
+    const now = new Date();
+    const diffMinutes = (now - lastSeen) / (1000 * 60);
+    return diffMinutes < timeoutMinutes;
+}
+
+/**
  * Elimina un usuario de Firestore
  * @param {string} userId - ID del usuario a eliminar
  */
@@ -247,6 +276,8 @@ window.getAllUsersFromFirestore = getAllUsersFromFirestore;
 window.listenToUsers = listenToUsers;
 window.updateCourseProgress = updateCourseProgress;
 window.updateHeartbeat = updateHeartbeat;
+window.setOffline = setOffline;
+window.isUserOnline = isUserOnline;
 window.deleteUserFromFirestore = deleteUserFromFirestore;
 
 export {
@@ -260,10 +291,24 @@ export {
     showLoading,
     hideLoading,
     checkConnection,
-    checkFirestoreConnection, // Nueva función exportada
+    checkFirestoreConnection,
     db,       // Exportar instancia de Firestore
     app,      // Exportar app
-    storage   // Exportar storage
+    storage,  // Exportar storage
+    // Funciones de Firebase Firestore
+    collection,
+    doc,
+    setDoc,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    updateDoc,
+    deleteDoc,
+    query,
+    orderBy,
+    addDoc,
+    serverTimestamp,
+    where
 };
 
 /**

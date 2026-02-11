@@ -510,6 +510,7 @@
         // Importar configuración centralizada y UI Utils
         import { showGlobalToast } from './assets/js/ui-utils.js';
         import { listenToUsers, deleteUserFromFirestore, syncUserToFirestore, checkFirestoreConnection, db } from './assets/js/firebase-config.js';
+        import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
         // --- CLEANUP SCRIPT (Local fallbacks) ---
         (function cleanupUsers() {
@@ -899,6 +900,32 @@
              }
         };
 
+        // --- FUNCIONES GLOBALES DEFINIDAS ---
+        window.handleEditUser = (userId) => {
+            const index = users.findIndex(u => u.id === userId);
+            if (index !== -1) {
+                openModal(index);
+            } else {
+                alert('Usuario no encontrado');
+            }
+        };
+
+        window.handleDeleteUser = async (userId) => {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            if (!confirm(`¿Estás seguro de que quieres eliminar a ${user.name}? Esta acción no se puede deshacer.`)) return;
+
+            try {
+                await deleteUserFromFirestore(userId);
+                // La lista se actualizará automáticamente gracias al listener
+                showGlobalToast('Éxito', 'Usuario eliminado correctamente', 'success');
+            } catch (error) {
+                console.error('Error eliminando usuario:', error);
+                alert('Error al eliminar usuario: ' + error.message);
+            }
+        };
+
         window.handleUnlockAll = async (userId) => {
              if(!confirm('¿Desbloquear TODOS los niveles para este usuario?')) return;
              try {
@@ -1033,7 +1060,6 @@
         // ==========================================
         // SISTEMA DE REVISIÓN DE SUBMISSIONS (FIRESTORE)
         // ==========================================
-        import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         let submissions = [];
 

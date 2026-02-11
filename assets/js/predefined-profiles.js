@@ -59,11 +59,11 @@ const AMELIA_PROFILE = {
 // === FUNCIONES EXPORTADAS ===
 
 export function isSteven(username) {
-    return username && username.toLowerCase() === 'steven';
+    return username && (username.toLowerCase() === 'steven' || username.toLowerCase() === 'steven-founder');
 }
 
 export function isAmelia(username) {
-    return username && username.toLowerCase() === 'amelia';
+    return username && (username.toLowerCase() === 'amelia' || username.toLowerCase() === 'amelia-founder');
 }
 
 export function getPredefinedProfile(username) {
