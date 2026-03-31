@@ -1,0 +1,114 @@
+const courseData = [
+let nombreUsuario = "Ana";
+const PI = 3.1416;
+let edad = 25; // Números
+let mensaje = "¡Hola, mundo!"; // Cadenas de texto (Strings)
+let esMayorDeEdad = true; // Booleanos (true o false)</code></pre></div>
+<div class="code-block"><pre><code class="language-javascript">let saludo = "Bie
+let a = 10;
+let b = 20;
+const miTitulo = document.getElementById("titulo");
+{ question: "Después de seleccionar un elemento con `const el = document.getElem
+let miFuncion = function() {
+const funcionFlecha = () => {
+<li><strong>Expresión de función</strong> - <code>const nombre = function() {}</
+<li><strong>Función flecha</strong> - <code>const nombre = () => {}</code></li>
+let despedir = function(nombre) {
+let multiplicar = (a, b) => a * b;
+let esMayor = (edad) => {
+let global = "Soy global";
+let local = "Soy local";
+let bloque = "Soy de bloque";
+const boton = document.getElementById('miBoton');
+<pre class="p-4"><code class="language-javascript">const boton = document.getEle
+let tareas = [];
+const input = document.getElementById('input-tarea');
+const texto = input.value.trim();
+const lista = document.getElementById('lista-tareas');
+const li = document.createElement('li');
+<pre class="p-4"><code class="language-javascript">let tareas = ["Comprar leche"
+<pre class="p-4"><code class="language-javascript">let tareas = ["Comprar leche"
+const valor = document.getElementById('input').value;
+const valor = localStorage.getItem('miDato');
+<pre class="p-4"><code class="language-javascript">const valor = localStorage.ge
+const levelGrid = document.getElementById('level-grid');
+const lessonPanel = document.getElementById('lesson-panel');
+const levelSelectionPanel = document.getElementById('level-selection-panel');
+const quizPanel = document.getElementById('quiz-panel');
+const resultsPanel = document.getElementById('results-panel');
+const lessonTitle = document.getElementById('lesson-title');
+const lessonContent = document.getElementById('lesson-content');
+const lessonStep = document.getElementById('lesson-step');
+const lessonProgress = document.getElementById('lesson-progress');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const closeLessonBtn = document.getElementById('close-lesson-btn');
+const quizLevelTitle = document.getElementById('quiz-level-title');
+const quizQuestion = document.getElementById('quiz-question');
+const quizOptions = document.getElementById('quiz-options');
+const quizProgress = document.getElementById('quiz-progress');
+const resultsTitle = document.getElementById('results-title');
+const resultsScore = document.getElementById('results-score');
+const resultsMessage = document.getElementById('results-message');
+const resultsIcon = document.getElementById('results-icon');
+const retryLessonBtn = document.getElementById('retry-lesson-btn');
+const nextLevelBtn = document.getElementById('next-level-btn');
+let currentLevel = 0;
+let currentStep = 0;
+let currentQuizQuestion = 0;
+let quizScore = 0;
+let userProgress = { completedLevels: [] };
+let codeEvaluations = [];
+let monacoRequireConfigured = false;
+let monacoEditors = {};
+const codeElement = block.querySelector('code');
+let language = 'html'; // Default for web course
+const classStr = codeElement.className || '';
+const code = codeElement.textContent;
+let filename = 'example.' + (language === 'javascript' ? 'js' : language);
+const editorContainer = document.createElement('div');
+const lineCount = code.split('\n').length;
+const height = Math.min(Math.max(lineCount * 21 + 20, 100), 500);
+const header = document.createElement('div');
+const levelData = courseData[currentLevel];
+const lesson = levelData.lesson[currentStep];
+const placeholders = lessonContent.querySelectorAll('.web-playground-placeholder
+const base64Code = ph.getAttribute('data-code-base64');
+const rawCode = ph.getAttribute('data-code');
+let initialCode = initialCodeOrBase64;
+const textarea = container.querySelector('textarea');
+const iframe = container.querySelector('iframe');
+const runBtn = container.querySelector('.run-btn');
+const code = textarea.value;
+const doc = iframe.contentDocument || iframe.contentWindow.document;
+const icon = runBtn.querySelector('i');
+const levelData = courseData[currentLevel];
+const question = levelData.quiz[currentQuizQuestion];
+const optionElement = document.createElement('div');
+const levelData = courseData[currentLevel];
+const question = levelData.quiz[currentQuizQuestion];
+const isCorrect = selectedOption === question.answer;
+const levelData = courseData[currentLevel];
+const totalQuestions = levelData.quiz.length;
+const percentage = Math.round((quizScore / totalQuestions) * 100);
+const passed = percentage >= 70;
+const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+const allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+const idx = allUsers.findIndex(u => u.id === currentUser.id);
+const savedProgress = localStorage.getItem('webCourseProgress');
+const savedEvaluations = localStorage.getItem('codeEvaluations');
+const node = document.createElement('div');
+const isCompleted = userProgress.completedLevels.includes(index);
+const isUnlocked = index === 0 || (userProgress.unlockedLevel && index < userPro
+const MIN_SCORE = 7;
+const passed = score >= MIN_SCORE;
+const icon = document.getElementById('code-results-icon');
+const recordsList = document.getElementById('records-list');
+const recordDiv = document.createElement('div');
+const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+const freshUser = await window.getUserFromFirestore(currentUser.id);
+const levelData = courseData[currentLevel];
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+const htmlEl = document.documentElement;
+const isDark = htmlEl.classList.contains('dark');

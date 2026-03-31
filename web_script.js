@@ -1,1642 +1,3 @@
-<!DOCTYPE html>
-<html lang="es" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database - Status Code 418</title>
-    <link rel="stylesheet" href="assets/css/tailwind.min.css">
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.css">
-    <link rel="stylesheet" href="assets/css/auras.css">
-    <!-- Firebase Modules -->
-    <script type="module" src="assets/js/firebase-config.js"></script>
-    <script type="module" src="assets/js/firebase-storage.js"></script>
-
-    <script src="assets/js/course_system.js"></script>
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-    <!-- Monaco Editor Loader -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
-    <!-- Theme Manager -->
-    <script src="assets/js/theme-manager.js"></script>
-    <style>
-     :root {
-         --background: #1a1b26;
-         --foreground: #a9b1d6;
-         --card-background: #24283b;
-         --border: #414868;
-         --accent: #7aa2f7;
-         --accent-dark: #5a7edb;
-         --green: #9ece6a;
-         --yellow: #e0af68;
-         --red: #f7768e;
-         --font-sans: 'Inter', sans-serif;
-         --font-mono: 'JetBrains Mono', monospace;
-     }
-
-     body {
-         color: var(--foreground);
-         font-family: var(--font-sans);
-         margin: 0;
-         padding: 0;
-         position: relative;
-         overflow-x: hidden;
-     }
-
-     /* Fondo animado */
-     .background-container {
-         position: fixed;
-         top: 0;
-         left: 0;
-         width: 100%;
-         height: 100%;
-         z-index: -1;
-         transition: opacity 0.5s ease;
-     }
-
-     .background-day, .background-night {
-         position: absolute;
-         top: 0;
-         left: 0;
-         width: 100%;
-         height: 100%;
-         background-size: cover;
-         background-position: center;
-         opacity: 0;
-         transition: opacity 1s ease;
-     }
-
-     .background-day {
-         background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
-     }
-
-     .background-night {
-         background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
-     }
-
-     .dark .background-night {
-         opacity: 1;
-     }
-
-     .background-day {
-         opacity: 1;
-     }
-
-     .content-box {
-         background-color: rgba(36, 40, 59, 0.85);
-         border: 1px solid var(--border);
-         border-radius: 15px;
-         padding: 2rem;
-         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-         backdrop-filter: blur(10px);
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         min-height: calc(100vh - 4rem);
-         margin: 2rem;
-     }
-
-     /* Index Page Styles */
-     .main-container {
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
-         min-height: calc(100vh - 4rem);
-         text-align: center;
-     }
-
-     .main-title {
-         font-size: 5rem;
-         font-weight: bold;
-         color: var(--accent);
-         text-shadow: 0 0 15px var(--accent);
-         margin-bottom: 1rem;
-     }
-
-     .main-subtitle {
-         font-size: 1.5rem;
-         margin-bottom: 3rem;
-         max-width: 600px;
-     }
-
-     .course-grid {
-         display: grid;
-         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-         gap: 2.5rem;
-         width: 100%;
-         max-width: 1400px;
-         padding: 2rem 0;
-         justify-items: center;
-     }
-
-     .course-card-link {
-         text-decoration: none;
-     }
-
-     .course-card {
-         background: linear-gradient(135deg, var(--card-background) 0%, rgba(65, 72, 104, 0.5) 100%);
-         border: 1px solid var(--border);
-         border-radius: 20px;
-         padding: 2.5rem;
-         transition: all 0.4s ease;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         gap: 1.5rem;
-         position: relative;
-         overflow: hidden;
-     }
-
-     .course-card::before {
-         content: '';
-         position: absolute;
-         top: 0;
-         left: 0;
-         right: 0;
-         bottom: 0;
-         background: linear-gradient(135deg, rgba(122, 162, 247, 0.1) 0%, rgba(158, 206, 106, 0.1) 100%);
-         opacity: 0;
-         transition: opacity 0.4s ease;
-         border-radius: 20px;
-     }
-
-     .course-card:hover {
-         transform: translateY(-15px) scale(1.05);
-         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(122, 162, 247, 0.3);
-         border-color: var(--accent);
-     }
-
-     .course-card:hover::before {
-         opacity: 1;
-     }
-
-     .course-icon {
-         font-size: 4rem;
-         color: var(--accent);
-         transition: transform 0.3s ease, color 0.3s ease;
-         z-index: 1;
-     }
-
-     .course-card:hover .course-icon {
-         transform: scale(1.1);
-         color: var(--yellow);
-     }
-
-     .course-title {
-         font-size: 1.5rem;
-         font-weight: 600;
-         color: var(--foreground);
-         z-index: 1;
-         transition: color 0.3s ease;
-     }
-
-     .course-card:hover .course-title {
-         color: var(--yellow);
-     }
-
-     .course-description {
-         color: var(--foreground);
-         opacity: 0.7;
-         z-index: 1;
-         transition: opacity 0.3s ease;
-     }
-
-     .course-card:hover .course-description {
-         opacity: 1;
-     }
-
-     /* Course Page Styles */
-     .panel {
-         display: none;
-         animation: fadeIn 0.5s ease;
-         width: 100%;
-     }
-
-     .panel.active {
-         display: flex;
-     }
-
-     @keyframes fadeIn {
-         from {
-             opacity: 0;
-             transform: scale(0.98);
-         }
-         to {
-             opacity: 1;
-             transform: scale(1);
-         }
-     }
-
-     .code-block {
-         background-color: #1a1b26;
-         border: 1px solid var(--border);
-         color: #c0caf5;
-         font-family: var(--font-mono);
-         border-radius: 12px;
-         margin-top: 1rem;
-         overflow: hidden;
-         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-     }
-
-     .code-block-header {
-         background: linear-gradient(135deg, #24283b 0%, #1a1b26 100%);
-         padding: 0.75rem 1rem;
-         display: flex;
-         align-items: center;
-         gap: 0.5rem;
-         border-bottom: 1px solid var(--border);
-     }
-
-     .code-block-header span {
-         width: 12px;
-         height: 12px;
-         border-radius: 50%;
-     }
-
-     .code-block-header .bg-red-500 { background-color: #ff5f56; }
-     .code-block-header .bg-yellow-500 { background-color: #ffbd2e; }
-     .code-block-header .bg-green-500 { background-color: #27c93f; }
-
-     /* Estilos mejorados para el código con guías de indentación */
-     .code-block pre {
-         margin: 0;
-         padding: 1rem 1.25rem;
-         white-space: pre;
-         overflow-x: auto;
-         background: #1a1b26;
-         position: relative;
-     }
-
-     .code-block pre code {
-         font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-         font-size: 0.9rem;
-         line-height: 1.7;
-         tab-size: 4;
-         display: block;
-         position: relative;
-         color: #c0caf5;
-     }
-
-     /* Guías de indentación estilo VSCode */
-     .code-block pre code::before {
-         content: '';
-         position: absolute;
-         left: 0;
-         top: 0;
-         bottom: 0;
-         width: 100%;
-         pointer-events: none;
-         background-image: 
-             repeating-linear-gradient(
-                 90deg,
-                 transparent 0px,
-                 transparent 2rem,
-                 rgba(122, 162, 247, 0.08) 2rem,
-                 rgba(122, 162, 247, 0.08) calc(2rem + 1px),
-                 transparent calc(2rem + 1px),
-                 transparent 4rem,
-                 rgba(255, 158, 100, 0.08) 4rem,
-                 rgba(255, 158, 100, 0.08) calc(4rem + 1px),
-                 transparent calc(4rem + 1px),
-                 transparent 6rem,
-                 rgba(158, 206, 106, 0.08) 6rem,
-                 rgba(158, 206, 106, 0.08) calc(6rem + 1px),
-                 transparent calc(6rem + 1px),
-                 transparent 8rem,
-                 rgba(187, 154, 247, 0.08) 8rem,
-                 rgba(187, 154, 247, 0.08) calc(8rem + 1px),
-                 transparent calc(8rem + 1px),
-                 transparent 10rem
-             );
-     }
-
-     /* Números de línea para los bloques de código */
-     .code-block.with-line-numbers pre {
-         padding-left: 3.5rem;
-         counter-reset: line;
-     }
-
-     .code-block.with-line-numbers pre code .line::before {
-         counter-increment: line;
-         content: counter(line);
-         position: absolute;
-         left: -2.5rem;
-         width: 2rem;
-         text-align: right;
-         color: #565f89;
-         font-size: 0.8rem;
-     }
-
-     /* Scrollbar personalizado para el código */
-     .code-block pre::-webkit-scrollbar {
-         height: 8px;
-     }
-
-     .code-block pre::-webkit-scrollbar-track {
-         background: #1a1b26;
-         border-radius: 4px;
-     }
-
-     .code-block pre::-webkit-scrollbar-thumb {
-         background: #414868;
-         border-radius: 4px;
-     }
-
-     .code-block pre::-webkit-scrollbar-thumb:hover {
-         background: #565f89;
-     }
-
-
-     .code-block .language-html .tag,
-     .code-block .language-css .at-rule,
-     .code-block .language-javascript .keyword {
-         color: var(--accent);
-     }
-
-     .code-block .language-html .string,
-     .code-block .language-css .string,
-     .code-block .language-javascript .string {
-         color: var(--green);
-     }
-
-     .code-block .language-css .property,
-     .code-block .language-javascript .property {
-         color: var(--yellow);
-     }
-
-     .code-block .language-html .comment,
-     .code-block .language-css .comment,
-     .code-block .language-javascript .comment {
-         color: #5c6370;
-     }
-
-     .btn-primary {
-         background-color: var(--accent);
-         color: white;
-         padding: 0.75rem 1.5rem;
-         border-radius: 8px;
-         font-weight: 600;
-         border: none;
-         cursor: pointer;
-         transition: background-color 0.2s;
-     }
-
-     .btn-primary:hover {
-         background-color: var(--accent-dark);
-     }
-
-     .btn-primary:disabled {
-         opacity: 0.5;
-         cursor: not-allowed;
-     }
-
-     .quiz-option {
-         border: 2px solid var(--border);
-         background-color: transparent;
-         color: var(--foreground);
-         padding: 1rem;
-         border-radius: 8px;
-         cursor: pointer;
-         transition: all 0.2s;
-         text-align: left;
-         width: 100%;
-         user-select: none;
-         -webkit-user-select: none;
-         -moz-user-select: none;
-         -ms-user-select: none;
-     }
-
-     .quiz-option:hover:not(.disabled) {
-         border-color: var(--accent);
-         background-color: rgba(122, 162, 247, 0.1);
-     }
-
-     .quiz-option.correct {
-         border-color: var(--green);
-         background-color: rgba(158, 206, 106, 0.1);
-         color: var(--green);
-     }
-
-     .quiz-option.incorrect {
-         border-color: var(--red);
-         background-color: rgba(247, 118, 142, 0.1);
-         color: var(--red);
-     }
-
-     .quiz-option.disabled {
-         pointer-events: none;
-         opacity: 0.7;
-     }
-
-     .level-node {
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         position: relative;
-         cursor: pointer;
-     }
-
-     .level-icon-wrapper {
-         width: 64px;
-         height: 64px;
-         border-radius: 50%;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         border: 3px solid;
-         transition: all 0.3s ease;
-     }
-
-     .level-number {
-         margin-top: 8px;
-         font-weight: 600;
-         font-size: 0.9rem;
-     }
-
-     .level-node.locked .level-icon-wrapper {
-         border-color: var(--border);
-         color: var(--border);
-         background-color: transparent;
-     }
-
-     .level-node.unlocked .level-icon-wrapper {
-         border-color: var(--accent);
-         color: var(--accent);
-     }
-
-     .level-node.unlocked:hover .level-icon-wrapper {
-         background-color: var(--accent);
-         color: var(--card-background);
-         transform: scale(1.1);
-     }
-
-     .level-node.completed .level-icon-wrapper {
-         border-color: var(--green);
-         background-color: var(--green);
-         color: var(--card-background);
-     }
-
-     #level-grid {
-         display: grid;
-         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-         gap: 32px 16px;
-         width: 100%;
-         max-width: 60rem;
-         margin: 0 auto;
-     }
-
-     .progress-bar-bg {
-         background-color: var(--border);
-         border-radius: 9999px;
-         height: 0.625rem;
-     }
-
-     .progress-bar-fill {
-         background-color: var(--accent);
-         height: 0.625rem;
-         border-radius: 9999px;
-     }
-
-     .hidden {
-         display: none;
-     }
-
-     /* Estilos para el contenido de la lección */
-     .lesson-content h3 {
-         color: var(--accent);
-         margin-top: 1.5rem;
-         margin-bottom: 0.5rem;
-     }
-
-     .lesson-content ul, .lesson-content ol {
-         margin-left: 1.5rem;
-         margin-bottom: 1rem;
-     }
-
-     .lesson-content li {
-         margin-bottom: 0.5rem;
-     }
-
-     .lesson-content code {
-         background-color: rgba(122, 162, 247, 0.1);
-         color: var(--accent);
-         padding: 0.2rem 0.4rem;
-         border-radius: 4px;
-         font-family: var(--font-mono);
-         font-size: 0.9em;
-     }
-
-     .lesson-content strong {
-         color: var(--yellow);
-     }
-
-     .lesson-content p {
-         margin-bottom: 1rem;
-         line-height: 1.6;
-     }
-
-     /* Nuevos estilos para tipos de preguntas */
-     .quiz-type-indicator {
-         background-color: var(--accent);
-         color: white;
-         padding: 0.5rem 1rem;
-         border-radius: 20px;
-         font-size: 0.875rem;
-         font-weight: 600;
-         margin-bottom: 1rem;
-         display: inline-block;
-     }
-
-     .code-completion-input {
-         background-color: rgba(122, 162, 247, 0.1);
-         border: 1px solid var(--accent);
-         color: var(--foreground);
-         padding: 0.5rem;
-         border-radius: 4px;
-         font-family: var(--font-mono);
-         width: 100px;
-         margin: 0 0.25rem;
-     }
-
-     .drag-drop-container {
-         display: flex;
-         flex-direction: column;
-         gap: 1rem;
-         margin: 1.5rem 0;
-     }
-
-     .drag-drop-options {
-         display: flex;
-         flex-wrap: wrap;
-         gap: 0.5rem;
-         margin-bottom: 1rem;
-     }
-
-     .drag-option {
-         background-color: var(--accent);
-         color: white;
-         padding: 0.5rem 1rem;
-         border-radius: 6px;
-         cursor: grab;
-         user-select: none;
-     }
-
-     .drag-option:active {
-         cursor: grabbing;
-     }
-
-     .drag-drop-targets {
-         display: flex;
-         flex-direction: column;
-         gap: 0.5rem;
-     }
-
-     .drag-target {
-         background-color: rgba(122, 162, 247, 0.1);
-         border: 2px dashed var(--accent);
-         border-radius: 6px;
-         padding: 1rem;
-         min-height: 50px;
-         display: flex;
-         align-items: center;
-         gap: 0.5rem;
-     }
-
-     .drag-target.occupied {
-         border-style: solid;
-         background-color: rgba(158, 206, 106, 0.1);
-     }
-
-     .matching-container {
-         display: grid;
-         grid-template-columns: 1fr 1fr;
-         gap: 1rem;
-         margin: 1.5rem 0;
-     }
-
-     .matching-item {
-         background-color: rgba(122, 162, 247, 0.1);
-         border: 1px solid var(--accent);
-         border-radius: 6px;
-         padding: 1rem;
-         cursor: pointer;
-         transition: all 0.2s;
-     }
-
-     .matching-item.selected {
-         background-color: var(--accent);
-         color: white;
-     }
-
-     .matching-item.matched {
-         background-color: rgba(158, 206, 106, 0.2);
-         border-color: var(--green);
-     }
-
-     .ordering-container {
-         display: flex;
-         flex-direction: column;
-         gap: 0.5rem;
-         margin: 1.5rem 0;
-     }
-
-     .ordering-item {
-         background-color: rgba(122, 162, 247, 0.1);
-         border: 1px solid var(--accent);
-         border-radius: 6px;
-         padding: 1rem;
-         cursor: grab;
-         user-select: none;
-         display: flex;
-         align-items: center;
-         gap: 0.5rem;
-     }
-
-     .ordering-item:active {
-         cursor: grabbing;
-     }
-
-     .ordering-handle {
-         color: var(--accent);
-     }
-
-     .error-finding-container {
-         position: relative;
-         margin: 1.5rem 0;
-     }
-
-     .error-code {
-         position: relative;
-     }
-
-     .error-spot {
-         position: absolute;
-         background-color: rgba(247, 118, 142, 0.3);
-         border-radius: 3px;
-         cursor: pointer;
-         transition: background-color 0.2s;
-     }
-
-     .error-spot:hover {
-         background-color: rgba(247, 118, 142, 0.5);
-     }
-
-     .error-spot.found {
-         background-color: rgba(158, 206, 106, 0.3);
-     }
-
-     .quiz-feedback {
-         margin-top: 1rem;
-         padding: 1rem;
-         border-radius: 6px;
-         font-weight: 600;
-     }
-
-     .quiz-feedback.correct {
-         background-color: rgba(158, 206, 106, 0.1);
-         color: var(--green);
-         border: 1px solid var(--green);
-     }
-
-     .quiz-feedback.incorrect {
-         background-color: rgba(247, 118, 142, 0.1);
-         color: var(--red);
-         border: 1px solid var(--red);
-     }
-
-     /* Chat Styles */
-     #chat-toggle-btn {
-         background-color: var(--yellow) !important;
-         color: var(--card-background) !important;
-         border: none !important;
-         box-shadow: 0 4px 12px rgba(224, 175, 104, 0.3) !important;
-     }
-
-     #chat-toggle-btn:hover {
-         background-color: var(--accent) !important;
-         transform: scale(1.1) !important;
-         box-shadow: 0 6px 16px rgba(224, 175, 104, 0.4) !important;
-     }
-
-     #chat-modal {
-         background-color: var(--card-background) !important;
-         border: 1px solid var(--border) !important;
-         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-     }
-
-     #chat-messages {
-         scrollbar-width: thin;
-         scrollbar-color: var(--border) transparent;
-     }
-
-     #chat-messages::-webkit-scrollbar {
-         width: 6px;
-     }
-
-     #chat-messages::-webkit-scrollbar-track {
-         background: transparent;
-     }
-
-     #chat-messages::-webkit-scrollbar-thumb {
-         background-color: var(--border);
-         border-radius: 3px;
-     }
-
-     #chat-messages::-webkit-scrollbar-thumb:hover {
-         background-color: var(--accent);
-     }
-
-     #chat-input {
-         background-color: var(--background) !important;
-         border: 1px solid var(--border) !important;
-         color: var(--foreground) !important;
-     }
-
-     #chat-input:focus {
-         outline: none !important;
-         border-color: var(--accent) !important;
-         box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.2) !important;
-     }
-
-     #chat-send-btn {
-         background-color: var(--accent) !important;
-         border: none !important;
-     }
-
-     #chat-send-btn:hover:not(:disabled) {
-         background-color: var(--accent-dark) !important;
-     }
-
-     #chat-loading {
-         color: var(--yellow) !important;
-     }
-
-     .chat-message-bubble {
-         max-width: 85% !important;
-         padding: 0.75rem !important;
-         border-radius: 12px !important;
-         font-size: 0.875rem !important;
-         line-height: 1.4 !important;
-         word-wrap: break-word !important;
-     }
-
-     .user-message {
-         background-color: var(--accent) !important;
-         color: white !important;
-         margin-left: auto !important;
-     }
-
-     .ai-message {
-         background-color: var(--border) !important;
-         color: var(--foreground) !important;
-         margin-right: auto !important;
-     }
-
-     /* Responsive Chat */
-     @media (max-width: 640px) {
-         #chat-modal {
-             width: 95% !important;
-             height: 400px !important;
-             bottom: 80px !important;
-             right: 2.5% !important;
-             left: 2.5% !important;
-         }
-
-         .chat-message-bubble {
-             max-width: 90% !important;
-             font-size: 0.8rem !important;
-         }
-     }
-
-     @media (min-width: 641px) {
-         #chat-modal {
-             width: 320px !important;
-             height: 450px !important;
-             bottom: 80px !important;
-             right: 24px !important;
-         }
-     }
-
-     /* Asegurar que el modal se oculte correctamente */
-     #chat-modal.hidden {
-         display: none !important;
-     }
-
-     /* Mejorar la funcionalidad del botón de cierre */
-     #chat-close-btn {
-         cursor: pointer !important;
-         padding: 8px !important;
-         border-radius: 6px !important;
-         transition: all 0.2s ease !important;
-         color: var(--foreground) !important;
-     }
-
-     #chat-close-btn:hover {
-         background-color: rgba(255, 255, 255, 0.1) !important;
-         transform: scale(1.1) !important;
-     }
-
-     /* Header del chat mejorado */
-     #chat-modal header {
-         background-color: rgba(26, 27, 38, 0.9) !important;
-         backdrop-filter: blur(10px) !important;
-     }
-
-         /* Prism.js Tokyo Night inspired theme */
-        /* Base from Prism default, colors adapted to Tokyo Night */
-        code[class*="language-"], pre[class*="language-"] {
-            color: #c0caf5;
-            background: #1a1b26;
-            text-shadow: none;
-            font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            direction: ltr;
-            text-align: left;
-            white-space: pre;
-            word-spacing: normal;
-            word-break: normal;
-            tab-size: 2;
-            hyphens: none;
-        }
-    
-        pre[class*="language-"] {
-            padding: 1rem;
-            margin: 0;
-            overflow: auto;
-            border-radius: 10px;
-            border: 1px solid #414868;
-            background: #1e1e2e;
-        }
-    
-        :not(pre) > code[class*="language-"] {
-            padding: .15rem .35rem;
-            border-radius: .35rem;
-            background: rgba(122,162,247,.12);
-            color: #7aa2f7;
-            border: 1px solid #414868;
-        }
-    
-        .token.comment,
-        .token.prolog,
-        .token.doctype,
-        .token.cdata {
-            color: #565f89;
-            font-style: italic;
-        }
-    
-        .token.punctuation { color: #c0caf5; }
-    
-        .token.property,
-        .token.tag,
-        .token.boolean,
-        .token.number,
-        .token.constant,
-        .token.symbol,
-        .token.deleted {
-            color: #ff9e64;
-            font-weight: bold;
-        }
-    
-        .token.selector,
-        .token.attr-name,
-        .token.string,
-        .token.char,
-        .token.builtin,
-        .token.inserted {
-            color: #9ece6a;
-        }
-    
-        .token.operator,
-        .token.entity,
-        .token.url,
-        .language-css .token.string,
-        .style .token.string {
-            color: #c0caf5;
-            font-weight: bold;
-        }
-    
-        .token.atrule,
-        .token.attr-value,
-        .token.keyword {
-            color: #bb9af7;
-            font-weight: bold;
-        }
-    
-        .token.function,
-        .token.class-name {
-            color: #7aa2f7;
-            font-weight: bold;
-        }
-    
-        .token.regex,
-        .token.important,
-        .token.variable {
-            color: #e0af68;
-            font-style: italic;
-        }
-    
-        /* Enhanced Python-specific highlighting */
-        .language-python .token.keyword {
-            color: #bb9af7;
-            font-weight: bold;
-        }
-    
-        .language-python .token.function {
-            color: #7aa2f7;
-        }
-    
-        .language-python .token.string {
-            color: #9ece6a;
-        }
-    
-        .language-python .token.number {
-            color: #ff9e64;
-        }
-    
-        .language-python .token.operator {
-            color: #c0caf5;
-            font-weight: bold;
-        }
-    
-        .language-python .token.punctuation {
-            color: #c0caf5;
-        }
-    
-        .token.bold { font-weight: bold; }
-        .token.italic { font-style: italic; }
-    
-        .token.entity { cursor: help; }
-    
-        /***** Line numbers plugin *****/
-        pre.line-numbers {
-            position: relative;
-            padding-left: 3.2em;
-            counter-reset: linenumber;
-        }
-        pre.line-numbers > code { position: relative; }
-    
-        .line-numbers .line-numbers-rows {
-            position: absolute;
-            pointer-events: none;
-            top: 0; left: 0;
-            width: 3em;
-            border-right: 1px solid #2b3050;
-            background: #1a1b26;
-            user-select: none;
-        }
-    
-        .line-numbers-rows > span {
-            display: block;
-            counter-increment: linenumber;
-        }
-    
-        .line-numbers-rows > span:before {
-            content: counter(linenumber);
-            display: block;
-            padding: 0 .8em 0 .6em;
-            color: #565f89;
-            text-align: right;
-        }
-    
-        /***** Toolbar plugin *****/
-        .prism-toolbar {
-            position: absolute;
-            top: .4rem;
-            right: .4rem;
-        }
-        .prism-toolbar button, .prism-toolbar span {
-            background: #24283b;
-            color: #a9b1d6;
-            border: 1px solid #414868;
-            border-radius: 6px;
-            padding: .25rem .5rem;
-            font-size: .75rem;
-        }
-        .prism-toolbar button:hover { background: #2b3050; }
-            /* Nuevos estilos para tipos de preguntas */
-            .quiz-type-indicator {
-                background-color: var(--accent);
-                color: white;
-                padding: 0.5rem 1rem;
-                border-radius: 20px;
-                font-size: 0.875rem;
-                font-weight: 600;
-                margin-bottom: 1rem;
-                display: inline-block;
-            }
-            
-            .code-completion-input {
-                background-color: rgba(122, 162, 247, 0.1);
-                border: 1px solid var(--accent);
-                color: var(--foreground);
-                padding: 0.5rem;
-                border-radius: 4px;
-                font-family: var(--font-mono);
-                width: 100px;
-                margin: 0 0.25rem;
-            }
-            
-            .drag-drop-container {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-                margin: 1.5rem 0;
-            }
-            
-            .drag-drop-options {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-                margin-bottom: 1rem;
-            }
-            
-            .drag-option {
-                background-color: var(--accent);
-                color: white;
-                padding: 0.5rem 1rem;
-                border-radius: 6px;
-                cursor: grab;
-                user-select: none;
-            }
-            
-            .drag-option:active {
-                cursor: grabbing;
-            }
-            
-            .drag-drop-targets {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .drag-target {
-                background-color: rgba(122, 162, 247, 0.1);
-                border: 2px dashed var(--accent);
-                border-radius: 6px;
-                padding: 1rem;
-                min-height: 50px;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            
-            .drag-target.occupied {
-                border-style: solid;
-                background-color: rgba(158, 206, 106, 0.1);
-            }
-            
-            .matching-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-                margin: 1.5rem 0;
-            }
-            
-            .matching-item {
-                background-color: rgba(122, 162, 247, 0.1);
-                border: 1px solid var(--accent);
-                border-radius: 6px;
-                padding: 1rem;
-                cursor: pointer;
-                transition: all 0.2s;
-            }
-            
-            .matching-item.selected {
-                background-color: var(--accent);
-                color: white;
-            }
-            
-            .matching-item.matched {
-                background-color: rgba(158, 206, 106, 0.2);
-                border-color: var(--green);
-            }
-            
-            .ordering-container {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-                margin: 1.5rem 0;
-            }
-            
-            .ordering-item {
-                background-color: rgba(122, 162, 247, 0.1);
-                border: 1px solid var(--accent);
-                border-radius: 6px;
-                padding: 1rem;
-                cursor: grab;
-                user-select: none;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            
-            .ordering-item:active {
-                cursor: grabbing;
-            }
-            
-            .ordering-handle {
-                color: var(--accent);
-            }
-            
-            .error-finding-container {
-                position: relative;
-                margin: 1.5rem 0;
-            }
-            
-            .error-code {
-                position: relative;
-            }
-            
-            .error-spot {
-                position: absolute;
-                background-color: rgba(247, 118, 142, 0.3);
-                border-radius: 3px;
-                cursor: pointer;
-                transition: background-color 0.2s;
-            }
-            
-            .error-spot:hover {
-                background-color: rgba(247, 118, 142, 0.5);
-            }
-            
-            .error-spot.found {
-                background-color: rgba(158, 206, 106, 0.3);
-            }
-            
-            .quiz-feedback {
-                margin-top: 1rem;
-                padding: 1rem;
-                border-radius: 6px;
-                font-weight: 600;
-            }
-            
-            .quiz-feedback.correct {
-                background-color: rgba(158, 206, 106, 0.1);
-                color: var(--green);
-                border: 1px solid var(--green);
-            }
-            
-            .quiz-feedback.incorrect {
-                background-color: rgba(247, 118, 142, 0.1);
-                color: var(--red);
-                border: 1px solid var(--red);
-            }
-
-            /* Estilos para la Consola Interactiva de Python */
-            .python-interactive-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1.5rem;
-                margin: 2rem 0;
-            }
-
-            @media (max-width: 768px) {
-                .python-interactive-container {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            .code-display-panel {
-                background-color: #1e1e2e;
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .code-display-header {
-                background-color: var(--border);
-                padding: 0.75rem 1rem;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .code-display-header .dots {
-                display: flex;
-                gap: 0.5rem;
-            }
-
-            .code-display-header .dot {
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-            }
-
-            .code-display-body {
-                padding: 1rem;
-                overflow-x: auto;
-                flex-grow: 1;
-            }
-
-            .code-display-body pre {
-                margin: 0;
-                font-family: var(--font-mono);
-                font-size: 0.9rem;
-                line-height: 1.6;
-                color: #c0caf5;
-            }
-
-            .console-panel {
-                background-color: #1a1a1a;
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .console-header {
-                background-color: var(--border);
-                padding: 0.75rem 1rem;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .console-header .title {
-                font-weight: 600;
-                color: var(--foreground);
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .console-controls {
-                display: flex;
-                gap: 0.5rem;
-            }
-
-            .console-btn {
-                padding: 0.4rem 0.8rem;
-                border-radius: 6px;
-                font-size: 0.85rem;
-                font-weight: 600;
-                border: none;
-                cursor: pointer;
-                transition: all 0.2s;
-                display: flex;
-                align-items: center;
-                gap: 0.3rem;
-            }
-
-            .console-btn-run {
-                background-color: var(--green);
-                color: var(--background);
-            }
-
-            .console-btn-run:hover {
-                background-color: #b4f481;
-            }
-
-            .console-btn-run:disabled {
-                background-color: var(--border);
-                cursor: not-allowed;
-                opacity: 0.5;
-            }
-
-            .console-btn-clear {
-                background-color: var(--red);
-                color: white;
-            }
-
-            .console-btn-clear:hover {
-                background-color: #ff8fa3;
-            }
-
-            .console-output {
-                padding: 1rem;
-                min-height: 200px;
-                max-height: 400px;
-                overflow-y: auto;
-                font-family: var(--font-mono);
-                font-size: 0.9rem;
-                line-height: 1.6;
-                color: #c0caf5;
-                flex-grow: 1;
-            }
-
-            .console-output::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            .console-output::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            .console-output::-webkit-scrollbar-thumb {
-                background-color: var(--border);
-                border-radius: 4px;
-            }
-
-            .console-line {
-                margin-bottom: 0.5rem;
-            }
-
-            .console-line.output {
-                color: #9ece6a;
-            }
-
-            .console-line.error {
-                color: var(--red);
-            }
-
-            .console-line.input {
-                color: var(--yellow);
-            }
-
-            .console-line.info {
-                color: var(--accent);
-            }
-
-            .console-input-prompt {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                padding: 0.5rem 1rem;
-                background-color: rgba(122, 162, 247, 0.1);
-                border-top: 1px solid var(--border);
-            }
-
-            .console-input-field {
-                flex-grow: 1;
-                background-color: transparent;
-                border: none;
-                color: var(--foreground);
-                font-family: var(--font-mono);
-                font-size: 0.9rem;
-                outline: none;
-            }
-
-            .console-loading {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                color: var(--yellow);
-            }
-
-            .console-loading .spinner {
-                width: 16px;
-                height: 16px;
-                border: 2px solid var(--border);
-                border-top-color: var(--yellow);
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-            }
-
-            @keyframes spin {
-                to { transform: rotate(360deg); }
-            }
-
-            /* Rainbow Indentation para Código Python */
-            .code-display-body pre code,
-            .code-block pre code {
-                position: relative;
-                display: block;
-            }
-
-            /* Indent Rainbow - Niveles de indentación con colores */
-            .code-display-body pre code .indent-level-1,
-            .code-block pre code .indent-level-1 {
-                border-left: 2px solid rgba(255, 85, 85, 0.3);
-                padding-left: 1rem;
-            }
-
-            .code-display-body pre code .indent-level-2,
-            .code-block pre code .indent-level-2 {
-                border-left: 2px solid rgba(255, 170, 85, 0.3);
-                padding-left: 1rem;
-            }
-
-            .code-display-body pre code .indent-level-3,
-            .code-block pre code .indent-level-3 {
-                border-left: 2px solid rgba(255, 255, 85, 0.3);
-                padding-left: 1rem;
-            }
-
-            .code-display-body pre code .indent-level-4,
-            .code-block pre code .indent-level-4 {
-                border-left: 2px solid rgba(85, 255, 85, 0.3);
-                padding-left: 1rem;
-            }
-
-            .code-display-body pre code .indent-level-5,
-            .code-block pre code .indent-level-5 {
-                border-left: 2px solid rgba(85, 170, 255, 0.3);
-                padding-left: 1rem;
-            }
-
-            .code-display-body pre code .indent-level-6,
-            .code-block pre code .indent-level-6 {
-                border-left: 2px solid rgba(170, 85, 255, 0.3);
-                padding-left: 1rem;
-            }
-
-            /* Mejoras visuales para la consola de código */
-            .code-display-panel pre,
-            .code-block pre {
-                background-color: #1e1e2e !important;
-                border-radius: 8px;
-                position: relative;
-            }
-
-            .code-display-panel pre code,
-            .code-block pre code {
-                font-family: var(--font-mono);
-                font-size: 0.9rem;
-                line-height: 1.7;
-                color: #c0caf5;
-            }
-
-            /* Colores de sintaxis mejorados para Python */
-            .code-block pre code.language-python .token.keyword {
-                color: #bb9af7;
-                font-weight: 600;
-            }
-
-            .code-block pre code.language-python .token.string {
-                color: #9ece6a;
-            }
-
-            .code-block pre code.language-python .token.number {
-                color: #ff9e64;
-            }
-
-            .code-block pre code.language-python .token.comment {
-                color: #565f89;
-                font-style: italic;
-            }
-
-            .code-block pre code.language-python .token.function {
-                color: #7aa2f7;
-            }
-
-            .code-block pre code.language-python .token.operator {
-                color: #89ddff;
-            }
-
-            .code-block pre code.language-python .token.punctuation {
-                color: #a9b1d6;
-            }
-
-            .code-block pre code.language-python .token.boolean {
-                color: #ff9e64;
-                font-weight: 600;
-            }
-        </style></head>
-<body>
-    <div class="background-container">
-    <div class="background-day"></div>
-    <div class="background-night"></div>
-</div>
-
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-90 z-50 hidden items-center justify-center flex-col transition-opacity duration-300">
-        <div class="relative w-24 h-24 mb-4">
-            <div class="absolute inset-0 border-4 border-t-blue-500 border-r-transparent border-b-purple-500 border-l-transparent rounded-full animate-spin"></div>
-            <div class="absolute inset-2 border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-purple-400 rounded-full animate-spin-reverse"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="loader-2" class="w-8 h-8 text-white animate-pulse"></i>
-            </div>
-        </div>
-        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">CARGANDO PYTHON...</p>
-    </div>
-
-<div class="content-box">
-    <!-- Panel de Selección de Nivel -->
-    <div id="level-selection-panel" class="panel active flex-col items-center justify-center p-4 relative">
-        
-        <!-- HEADER / NAVBAR SIMPLIFICADO -->
-        <div class="w-full flex justify-between items-center mb-8">
-            <a href="menu_inicio.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity" title="Volver al Menú Principal">
-                <i data-lucide="terminal" class="w-8 h-8 text-blue-400"></i>
-                <span class="font-bold text-xl text-blue-100">Status Code 418</span>
-            </a>
-            <div class="flex items-center gap-4">
-                <a href="menu_inicio.html" class="hidden md:flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors border border-gray-700 rounded-lg px-3 py-1.5 hover:border-accent">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    Volver al Hub
-                </a>
-<!-- Chat Button Removed -->
-                
-<!-- Store Button Removed -->
-
-                <div class="w-px h-6 bg-white/20 mx-2"></div>
-                <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/10 transition-colors">
-                    <i id="theme-icon" data-lucide="sun" class="w-5 h-5 text-gray-300"></i>
-                </button>
-            </div>
-        </div>
-        <h1 class="text-4xl font-bold mb-2" style="color: var(--accent);">Curso de Python</h1>
-        <p class="mb-8">Aprende Python, uno de los lenguajes de programación más populares y versátiles.</p>
-        <div id="level-grid"></div>
-
-
-    </div>
-
-    <!-- Panel de Lección -->
-    <div id="lesson-panel" class="panel flex-col p-4 md:p-8">
-        <div class="flex-grow w-full max-w-4xl mx-auto flex flex-col">
-            <header class="flex items-center justify-between mb-4">
-                <h2 id="lesson-title" class="text-2xl md:text-3xl font-bold"></h2>
-                <button id="close-lesson-btn" class="p-2 rounded-full hover:bg-gray-700">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </header>
-            <div class="w-full progress-bar-bg rounded-full h-2.5 mb-6">
-                <div id="lesson-progress" class="progress-bar-fill h-2.5 rounded-full" style="width: 10%;"></div>
-            </div>
-            <div id="lesson-content" class="flex-grow prose prose-invert max-w-none prose-p:text-lg prose-headings:text-white prose-strong:text-white overflow-y-auto"></div>
-
-            <footer class="flex justify-between items-center mt-6">
-                <button id="prev-btn" class="btn-primary" disabled>Anterior</button>
-                <span id="lesson-step" class="font-mono">1 / 10</span>
-                <button id="next-btn" class="btn-primary">Siguiente</button>
-            </footer>
-        </div>
-    </div>
-
-    <!-- Panel de Quiz -->
-    <div id="quiz-panel" class="panel flex-col items-center justify-center p-4">
-        <div class="w-full max-w-4xl">
-            <header class="flex justify-between items-center mb-6">
-                <div>
-                    <h2 id="quiz-level-title" class="text-2xl font-bold">Quiz - Nivel 1</h2>
-                    <div id="quiz-type-indicator" class="quiz-type-indicator hidden"></div>
-                </div>
-                <span id="quiz-progress" class="font-mono text-lg">1/10</span>
-            </header>
-            <p id="quiz-question" class="text-xl md:text-2xl mb-8"></p>
-
-            <!-- Contenedor para diferentes tipos de preguntas -->
-            <div id="quiz-content">
-                <!-- Selección múltiple (por defecto) -->
-                <div id="multiple-choice-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-
-                <!-- Completar código -->
-                <div id="code-completion-container" class="hidden">
-                    <div class="code-block rounded-lg overflow-hidden mt-4">
-                        <div class="code-block-header px-4 py-2 flex items-center gap-2">
-                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                            <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                        </div>
-                        <pre id="code-completion-code" class="p-4"><code class="language-python"></code></pre>
-                    </div>
-                </div>
-
-                <!-- Arrastrar y soltar -->
-                <div id="drag-drop-container" class="hidden drag-drop-container"></div>
-
-                <!-- Emparejamiento -->
-                <div id="matching-container" class="hidden matching-container"></div>
-
-                <!-- Ordenar código -->
-                <div id="ordering-container" class="hidden ordering-container"></div>
-
-                <!-- Encontrar errores -->
-                <div id="error-finding-container" class="hidden error-finding-container"></div>
-            </div>
-
-            <div id="quiz-feedback" class="quiz-feedback hidden"></div>
-
-            <div class="flex justify-between items-center mt-8">
-                <button id="quiz-hint-btn" class="btn-primary">Pista</button>
-                
-            </div>
-        </div>
-    </div>
-
-    <!-- Panel de Resultados -->
-    <div id="results-panel" class="panel flex-col items-center justify-center text-center p-4">
-        <i id="results-icon" class="w-24 h-24 mb-6"></i>
-        <h2 id="results-title" class="text-4xl font-bold mb-4"></h2>
-        <p id="results-score" class="text-2xl mb-2"></p>
-        <p id="results-message" class="mb-8"></p>
-        <div class="flex gap-4">
-            <button id="retry-lesson-btn" class="btn-primary">Repetir Lección</button>
-            <button id="next-level-btn" class="btn-primary hidden">Siguiente Nivel</button>
-            <a id="code-challenge-btn" href="#" class="btn-primary hidden" style="background-color: var(--accent); color: white; display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                <i data-lucide="code"></i> Ir al Desafío
-            </a>
-        </div>
-    </div>
-
-    <!-- Panel de Práctica -->
-
-</div>
-
-<!-- Floating Chat Button -->
-<!-- Floating Chat Button Removed -->
-
-<!-- Chat Modal -->
-<!-- Chat Modal Removed -->
-
 <script>
 // Datos de Práctica
 const practiceData = [
@@ -1884,298 +245,892 @@ for estudiante in estudiantes:
 ];
 
 const courseData = [
-        { // Nivel 1
-            title: "Introducción a las Bases de Datos",
-            lesson: [
-                { title: "¿Qué es una Base de Datos?", content: `<p>Una base de datos es una colección organizada de información estructurada. Es como un armario archivador digital donde guardas y recuperas datos de manera eficiente.</p>`},
-                { title: "Tipos de Bases de Datos", content: `<p>Existen diferentes tipos: <strong>relacionales</strong> (tablas con filas y columnas), <strong>NoSQL</strong> (documentos, clave-valor, grafos) y <strong>jerárquicas</strong> (estructura de árbol).</p>`},
-                { title: "SQL vs NoSQL", content: `<p>SQL es para datos estructurados con relaciones complejas. NoSQL es más flexible y escalable para datos no estructurados o semi-estructurados.</p>`},
-                { title: "Sistemas de Gestión de Bases de Datos", content: `<p>Programas como MySQL, PostgreSQL, MongoDB, SQLite que permiten crear, leer, actualizar y eliminar datos.</p>`},
-                { title: "Tablas y Registros", content: `<p>Una tabla es como una hoja de cálculo. Cada fila es un registro (ej: un usuario) y cada columna es un campo (ej: nombre, email).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE TABLE usuarios (
-    id INT PRIMARY KEY,
-    nombre VARCHAR(50),
-    email VARCHAR(100)
-);</code></pre></div>`},
-                { title: "Claves Primarias", content: `<p>Campo único que identifica cada registro. Generalmente es un número auto-incrementable (AUTO_INCREMENT).</p>`},
-                { title: "Claves Foráneas", content: `<p>Campo que referencia la clave primaria de otra tabla, creando relaciones entre tablas.</p>`},
-                { title: "Tipos de Datos", content: `<p>INT (números enteros), VARCHAR (texto), DATE (fechas), BOOLEAN (verdadero/falso), TEXT (texto largo).</p>`},
-                { title: "NULL vs NOT NULL", content: `<p>NULL significa "sin valor". NOT NULL obliga a que el campo tenga un valor.</p>`},
-                { title: "¡Listo para el Quiz!", content: "<p>Has aprendido los conceptos básicos de las bases de datos. ¡Demuestra tus conocimientos!</p>"}
-            ],
-            quiz: [
-                { question: "¿Qué es una base de datos?", options: ["Un programa", "Una colección organizada de información", "Un lenguaje de programación", "Un servidor web"], answer: "Una colección organizada de información" },
-                { question: "¿Qué tipo de base de datos usa tablas?", options: ["NoSQL", "Relacional", "Jerárquica", "Todas las anteriores"], answer: "Relacional" },
-                { question: "¿Qué significa SQL?", options: ["Structured Query Language", "Simple Query Language", "Standard Query Language", "System Query Language"], answer: "Structured Query Language" },
-                { question: "¿Qué es un registro en una tabla?", options: ["Una columna", "Una fila", "Una tabla completa", "Una base de datos"], answer: "Una fila" },
-                { question: "¿Qué identifica de forma única cada registro?", options: ["Clave foránea", "Clave primaria", "Índice", "Campo"], answer: "Clave primaria" },
-                { question: "¿Qué tipo de dato almacena texto corto?", options: ["INT", "VARCHAR", "TEXT", "BOOLEAN"], answer: "VARCHAR" },
-                { question: "¿Qué tipo de dato almacena fechas?", options: ["DATE", "VARCHAR", "INT", "TEXT"], answer: "DATE" },
-                { question: "¿Qué significa NULL?", options: ["Valor cero", "Sin valor", "Valor por defecto", "Error"], answer: "Sin valor" },
-                { question: "¿Qué obliga a que un campo tenga valor?", options: ["NULL", "NOT NULL", "DEFAULT", "AUTO_INCREMENT"], answer: "NOT NULL" },
-                { question: "¿Qué conecta tablas relacionadas?", options: ["Clave primaria", "Clave foránea", "Índice", "Vista"], answer: "Clave foránea" }
-            ]
-        },
-        { // Nivel 2
-            title: "SQL Básico - SELECT",
-            lesson: [
-                { title: "Sintaxis Básica de SELECT", content: `<p>SELECT recupera datos de una tabla. Sintaxis: SELECT columnas FROM tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT nombre, email FROM usuarios;</code></pre></div>`},
-                { title: "Seleccionar Todas las Columnas", content: `<p>Usa * para seleccionar todas las columnas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos;</code></pre></div>`},
-                { title: "Cláusula WHERE", content: `<p>Filtra resultados basados en condiciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM usuarios WHERE edad > 18;</code></pre></div>`},
-                { title: "Operadores de Comparación", content: `<p>=, !=, <, >, <=, >=, LIKE (para patrones), IN (para listas).</p>`},
-                { title: "Operadores Lógicos", content: `<p>AND, OR, NOT para combinar condiciones.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos WHERE precio > 100 AND categoria = 'electronica';</code></pre></div>`},
-                { title: "Ordenando Resultados", content: `<p>ORDER BY ordena los resultados ASC (ascendente) o DESC (descendente).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos ORDER BY precio DESC;</code></pre></div>`},
-                { title: "Limitando Resultados", content: `<p>LIMIT especifica cuántos registros devolver.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT * FROM productos LIMIT 10;</code></pre></div>`},
-                { title: "Funciones de Agregación", content: `<p>COUNT(), SUM(), AVG(), MAX(), MIN().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT COUNT(*) FROM usuarios;
-SELECT AVG(precio) FROM productos;</code></pre></div>`},
-                { title: "DISTINCT", content: `<p>Elimina valores duplicados de los resultados.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT DISTINCT categoria FROM productos;</code></pre></div>`},
-                { title: "¡Listo para el Quiz!", content: "<p>SELECT es el corazón de SQL. ¡Muestra que sabes consultar datos!</p>"}
-            ],
-            quiz: [
-                { question: "¿Qué hace SELECT * FROM tabla?", options: ["Selecciona todas las columnas", "Selecciona todas las filas", "Crea una tabla", "Borra una tabla"], answer: "Selecciona todas las columnas" },
-                { question: "¿Qué cláusula filtra resultados?", options: ["FROM", "WHERE", "SELECT", "ORDER BY"], answer: "WHERE" },
-                { question: "¿Qué operador lógico significa 'Y'?", options: ["OR", "AND", "NOT", "LIKE"], answer: "AND" },
-                { question: "¿Qué cláusula ordena resultados?", options: ["SORT BY", "ORDER BY", "GROUP BY", "ARRANGE BY"], answer: "ORDER BY" },
-                { question: "¿Qué función cuenta registros?", options: ["SUM()", "COUNT()", "TOTAL()", "SIZE()"], answer: "COUNT()" },
-                { question: "¿Qué palabra elimina duplicados?", options: ["UNIQUE", "DISTINCT", "DIFFERENT", "REMOVE"], answer: "DISTINCT" },
-                { question: "¿Qué cláusula limita número de resultados?", options: ["TOP", "LIMIT", "MAX", "RESTRICT"], answer: "LIMIT" },
-                { question: "¿Qué función calcula promedio?", options: ["MEAN()", "AVERAGE()", "AVG()", "PROM()"], answer: "AVG()" },
-                { question: "¿Qué ordena de menor a mayor?", options: ["ASC", "DESC", "UP", "DOWN"], answer: "ASC" },
-                { question: "¿Qué operador busca patrones?", options: ["=", "LIKE", "MATCH", "SEARCH"], answer: "LIKE" }
-            ]
-        },
-        { // Nivel 3
-            title: "SQL - INSERT, UPDATE, DELETE",
-            lesson: [
-                { title: "INSERT INTO", content: `<p>Añade nuevos registros a una tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">INSERT INTO usuarios (nombre, email, edad)
-VALUES ('Ana García', 'ana@email.com', 25);</code></pre></div>`},
-                { title: "INSERT Múltiple", content: `<p>Añade múltiples registros en una sola consulta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">INSERT INTO productos (nombre, precio)
-VALUES ('Laptop', 999.99), ('Mouse', 25.50);</code></pre></div>`},
-                { title: "UPDATE", content: `<p>Modifica registros existentes.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">UPDATE usuarios SET email = 'nuevo@email.com' WHERE id = 1;</code></pre></div>`},
-                { title: "UPDATE Múltiple", content: `<p>Modifica múltiples columnas a la vez.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">UPDATE productos SET precio = precio * 1.1, stock = stock - 1 WHERE id = 5;</code></pre></div>`},
-                { title: "DELETE", content: `<p>Elimina registros de una tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DELETE FROM usuarios WHERE id = 1;</code></pre></div>`},
-                { title: "TRUNCATE", content: `<p>Elimina todos los registros de una tabla (más rápido que DELETE).</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">TRUNCATE TABLE productos;</code></pre></div>`},
-                { title: "DROP TABLE", content: `<p>Elimina completamente una tabla y su estructura.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DROP TABLE usuarios;</code></pre></div>`},
-                { title: "Transacciones", content: `<p>BEGIN, COMMIT, ROLLBACK para operaciones seguras.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">BEGIN;
-UPDATE cuentas SET saldo = saldo - 100 WHERE id = 1;
-UPDATE cuentas SET saldo = saldo + 100 WHERE id = 2;
-COMMIT;</code></pre></div>`},
-                { title: "¡Listo para el Quiz!", content: "<p>INSERT, UPDATE y DELETE modifican datos. ¡Muestra que sabes manipularlos!</p>"}
-            ],
-            quiz: [
-                { question: "¿Qué comando añade nuevos registros?", options: ["ADD", "INSERT", "CREATE", "NEW"], answer: "INSERT" },
-                { question: "¿Qué comando modifica registros existentes?", options: ["MODIFY", "CHANGE", "UPDATE", "EDIT"], answer: "UPDATE" },
-                { question: "¿Qué comando elimina registros?", options: ["REMOVE", "DELETE", "ERASE", "CLEAR"], answer: "DELETE" },
-                { question: "¿Qué cláusula especifica qué registros modificar/eliminar?", options: ["WHEN", "IF", "WHERE", "CONDITION"], answer: "WHERE" },
-                { question: "¿Qué comando elimina todos los registros?", options: ["DELETE ALL", "TRUNCATE", "CLEAR", "EMPTY"], answer: "TRUNCATE" },
-                { question: "¿Qué comando elimina la tabla completa?", options: ["DELETE TABLE", "DROP TABLE", "REMOVE TABLE", "CLEAR TABLE"], answer: "DROP TABLE" },
-                { question: "¿Qué inicia una transacción?", options: ["START", "BEGIN", "OPEN", "INIT"], answer: "BEGIN" },
-                { question: "¿Qué confirma una transacción?", options: ["CONFIRM", "COMMIT", "SAVE", "END"], answer: "COMMIT" },
-                { question: "¿Qué cancela una transacción?", options: ["CANCEL", "ROLLBACK", "UNDO", "REVERT"], answer: "ROLLBACK" },
-                { question: "¿Por qué usar transacciones?", options: ["Para hacer consultas más rápidas", "Para asegurar integridad de datos", "Para crear tablas", "Para hacer backups"], answer: "Para asegurar integridad de datos" }
-            ]
-        },
-        { // Nivel 4
-            title: "Relaciones y JOINs",
-            lesson: [
-                { title: "Tipos de Relaciones", content: `<p>Uno a Uno, Uno a Muchos, Muchos a Muchos.</p>`},
-                { title: "Claves Foráneas", content: `<p>Campo que referencia la clave primaria de otra tabla.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">ALTER TABLE pedidos ADD COLUMN usuario_id INT;
-ALTER TABLE pedidos ADD FOREIGN KEY (usuario_id) REFERENCES usuarios(id);</code></pre></div>`},
-                { title: "INNER JOIN", content: `<p>Devuelve solo registros que tienen coincidencias en ambas tablas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT usuarios.nombre, pedidos.fecha
-FROM usuarios
-INNER JOIN pedidos ON usuarios.id = pedidos.usuario_id;</code></pre></div>`},
-                { title: "LEFT JOIN", content: `<p>Devuelve todos los registros de la tabla izquierda y coincidencias de la derecha.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT usuarios.nombre, pedidos.fecha
-FROM usuarios
-LEFT JOIN pedidos ON usuarios.id = pedidos.usuario_id;</code></pre></div>`},
-                { title: "RIGHT JOIN", content: `<p>Devuelve todos los registros de la tabla derecha y coincidencias de la izquierda.</p>`},
-                { title: "FULL OUTER JOIN", content: `<p>Devuelve todos los registros de ambas tablas.</p>`},
-                { title: "JOIN Múltiple", content: `<p>Unir más de dos tablas en una consulta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT u.nombre, p.fecha, pr.nombre as producto
-FROM usuarios u
-JOIN pedidos p ON u.id = p.usuario_id
-JOIN productos pr ON p.producto_id = pr.id;</code></pre></div>`},
-                { title: "Alias de Tablas", content: `<p>Acorta nombres de tablas con AS.</p>`},
-                { title: "¡Listo para el Quiz!", content: "<p>Las relaciones conectan datos entre tablas. ¡Muestra que sabes unirlas!</p>"}
-            ],
-            quiz: [
-                { question: "¿Qué tipo de relación es usuario -> múltiples pedidos?", options: ["Uno a Uno", "Uno a Muchos", "Muchos a Muchos", "Ninguna"], answer: "Uno a Muchos" },
-                { question: "¿Qué conecta tablas relacionadas?", options: ["Clave primaria", "Clave foránea", "Índice", "Vista"], answer: "Clave foránea" },
-                { question: "¿Qué JOIN devuelve solo coincidencias?", options: ["LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "FULL JOIN"], answer: "INNER JOIN" },
-                { question: "¿Qué JOIN devuelve todo de la izquierda?", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN"], answer: "LEFT JOIN" },
-                { question: "¿Qué JOIN devuelve todo de la derecha?", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN"], answer: "RIGHT JOIN" },
-                { question: "¿Qué JOIN devuelve todo de ambas tablas?", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"], answer: "FULL OUTER JOIN" },
-                { question: "¿Qué palabra clave acorta nombres de tablas?", options: ["AS", "LIKE", "ALIAS", "SHORT"], answer: "AS" },
-                { question: "¿Cuántas tablas puedes unir en una consulta?", options: ["Solo 2", "Hasta 3", "Sin límite", "Depende del DBMS"], answer: "Sin límite" },
-                { question: "¿Qué es una relación Muchos a Muchos?", options: ["Un usuario múltiples pedidos", "Estudiante múltiples cursos", "Empleado múltiples proyectos", "Todas las anteriores"], answer: "Todas las anteriores" },
-                { question: "¿Para qué sirven las relaciones?", options: ["Solo para diseño", "Evitar datos duplicados", "Hacer consultas más rápidas", "Crear índices"], answer: "Evitar datos duplicados" }
-            ]
-        },
-        { // Nivel 5
-            title: "Funciones y Procedimientos",
-            lesson: [
-                { title: "Funciones de Texto", content: `<p>UPPER(), LOWER(), LENGTH(), CONCAT(), SUBSTRING().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT UPPER(nombre), LENGTH(email) FROM usuarios;
-SELECT CONCAT(nombre, ' - ', email) FROM usuarios;</code></pre></div>`},
-                { title: "Funciones de Fecha", content: `<p>NOW(), CURDATE(), DATE_ADD(), DATEDIFF().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT NOW();
-SELECT DATEDIFF(fecha_fin, fecha_inicio) FROM proyectos;</code></pre></div>`},
-                { title: "Funciones Matemáticas", content: `<p>ROUND(), CEIL(), FLOOR(), ABS(), POWER().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT ROUND(precio, 2), ABS(-5) FROM productos;</code></pre></div>`},
-                { title: "Funciones de Agregación Avanzadas", content: `<p>GROUP_CONCAT(), STDDEV(), VARIANCE().</p>`},
-                { title: "GROUP BY", content: `<p>Agrupa filas con valores iguales.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT categoria, COUNT(*) FROM productos GROUP BY categoria;</code></pre></div>`},
-                { title: "HAVING", content: `<p>Filtra grupos después de GROUP BY.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">SELECT categoria, COUNT(*) FROM productos
-GROUP BY categoria HAVING COUNT(*) > 5;</code></pre></div>`},
-                { title: "Procedimientos Almacenados", content: `<p>Conjunto de consultas SQL guardadas para reutilizar.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DELIMITER //
-CREATE PROCEDURE obtener_usuarios_activos()
-BEGIN
-    SELECT * FROM usuarios WHERE activo = 1;
-END //
-DELIMITER ;</code></pre></div>`},
-                { title: "Parámetros en Procedimientos", content: `<p>Procedimientos que aceptan parámetros.</p>`},
-                { title: "¡Listo para el Quiz!", content: "<p>Las funciones y procedimientos hacen SQL más poderoso. ¡Muestra que sabes usarlos!</p>"}
-            ],
-            quiz: [
-                { question: "¿Qué función convierte a mayúsculas?", options: ["UPPER()", "UP()", "TOUPPER()", "CAPS()"], answer: "UPPER()" },
-                { question: "¿Qué función concatena textos?", options: ["JOIN()", "CONCAT()", "MERGE()", "COMBINE()"], answer: "CONCAT()" },
-                { question: "¿Qué función devuelve la fecha actual?", options: ["TODAY()", "NOW()", "CURRENT_DATE()", "DATE()"], answer: "NOW()" },
-                { question: "¿Qué función redondea números?", options: ["ROUND()", "CEIL()", "FLOOR()", "Todas las anteriores"], answer: "Todas las anteriores" },
-                { question: "¿Qué cláusula agrupa filas?", options: ["GROUP BY", "ORDER BY", "SORT BY", "CLUSTER BY"], answer: "GROUP BY" },
-                { question: "¿Qué cláusula filtra grupos?", options: ["WHERE", "HAVING", "FILTER", "GROUP WHERE"], answer: "HAVING" },
-                { question: "¿Cómo se llaman las funciones guardadas?", options: ["Stored Functions", "Procedimientos Almacenados", "Funciones Guardadas", "Todas las anteriores"], answer: "Todas las anteriores" },
-                { question: "¿Qué delimitador cambia para procedimientos?", options: ["DELIMITER", "SEPARATOR", "DIVIDER", "SPLITTER"], answer: "DELIMITER" },
-                { question: "¿Qué función calcula desviación estándar?", options: ["STD()", "STDDEV()", "STANDARD()", "DEVIATION()"], answer: "STDDEV()" },
-                { question: "¿Para qué sirven las funciones de agregación?", options: ["Solo contar", "Resumir datos", "Crear tablas", "Eliminar datos"], answer: "Resumir datos" }
-            ]
-        },
-        { // Nivel 6
-            title: "Índices y Optimización",
-            lesson: [
-                { title: "Qué son los Índices", content: `<p>Los índices aceleran las consultas creando estructuras de búsqueda rápida.</p>` },
-                { title: "CREATE INDEX", content: `<p>Crea índices en columnas específicas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE INDEX idx_email ON usuarios(email);</code></pre></div>` },
-                { title: "Índices Compuestos", content: `<p>Índices en múltiples columnas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE INDEX idx_nombre_email ON usuarios(nombre, email);</code></pre></div>` },
-                { title: "Índices Únicos", content: `<p>Aseguran que los valores sean únicos.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE UNIQUE INDEX idx_email_unique ON usuarios(email);</code></pre></div>` },
-                { title: "DROP INDEX", content: `<p>Elimina índices cuando no son necesarios.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">DROP INDEX idx_email;</code></pre></div>` },
-                { title: "EXPLAIN", content: `<p>Analiza cómo se ejecuta una consulta.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">EXPLAIN SELECT * FROM usuarios WHERE email = 'test@test.com';</code></pre></div>` },
-                { title: "Optimización de Consultas", content: `<p>Usar índices apropiados, evitar SELECT *, optimizar JOINs.</p>` },
-                { title: "Vistas", content: `<p>Tablas virtuales basadas en consultas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">CREATE VIEW usuarios_activos AS
-SELECT * FROM usuarios WHERE activo = 1;</code></pre></div>` },
-                { title: "¡Listo para el Quiz!", content: "<p>Los índices y la optimización hacen las bases de datos más rápidas. ¡Muestra que sabes optimizar!</p>" }
-            ],
-            quiz: [
-                { question: "¿Para qué sirven los índices?", options: ["Almacenar datos", "Acelerar consultas", "Crear tablas", "Hacer backups"], answer: "Acelerar consultas" },
-                { question: "¿Qué comando crea índices?", options: ["CREATE INDEX", "ADD INDEX", "NEW INDEX", "MAKE INDEX"], answer: "CREATE INDEX" },
-                { question: "¿Qué comando elimina índices?", options: ["DELETE INDEX", "DROP INDEX", "REMOVE INDEX", "CLEAR INDEX"], answer: "DROP INDEX" },
-                { question: "¿Qué comando analiza consultas?", options: ["ANALYZE", "EXPLAIN", "DESCRIBE", "SHOW"], answer: "EXPLAIN" },
-                { question: "¿Qué son las vistas?", options: ["Tablas físicas", "Tablas virtuales", "Índices", "Procedimientos"], answer: "Tablas virtuales" },
-                { question: "¿Qué aceleran los índices?", options: ["Solo SELECT", "Solo INSERT", "Consultas de búsqueda", "Solo DELETE"], answer: "Consultas de búsqueda" },
-                { question: "¿Qué tipo de índice asegura unicidad?", options: ["PRIMARY", "UNIQUE", "NORMAL", "SIMPLE"], answer: "UNIQUE" },
-                { question: "¿Qué comando crea vistas?", options: ["CREATE VIEW", "NEW VIEW", "MAKE VIEW", "ADD VIEW"], answer: "CREATE VIEW" },
-                { question: "¿Por qué optimizar consultas?", options: ["Para usar más memoria", "Para hacerlas más rápidas", "Para usar más CPU", "Para hacer backups"], answer: "Para hacerlas más rápidas" },
-                { question: "¿Qué evita SELECT * en optimización?", options: ["Traer datos innecesarios", "Traer más datos", "Hacer consultas más lentas", "Todas las anteriores"], answer: "Todas las anteriores" }
-            ]
-        },
-        { // Nivel 7
-            title: "Bases de Datos NoSQL",
-            lesson: [
-                { title: "Qué es NoSQL", content: `<p>Bases de datos no relacionales para datos no estructurados.</p>` },
-                { title: "Tipos de NoSQL", content: `<p>Documentales (MongoDB), Clave-Valor (Redis), Columnares (Cassandra), Grafos (Neo4j).</p>` },
-                { title: "MongoDB", content: `<p>Base de datos documental que almacena datos en formato BSON/JSON.</p>` },
-                { title: "Colecciones y Documentos", content: `<p>Equivalentes a tablas y registros en MongoDB.</p>` },
-                { title: "Consultas en MongoDB", content: `<p>Usa find(), insert(), update(), delete().</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-javascript">db.usuarios.find({edad: {$gte: 18}})</code></pre></div>` },
-                { title: "Agregaciones", content: `<p>Procesamiento de datos similar a GROUP BY en MongoDB.</p>` },
-                { title: "Ventajas de NoSQL", content: `<p>Escalabilidad horizontal, esquema flexible, alto rendimiento.</p>` },
-                { title: "Cuándo usar NoSQL", content: `<p>Datos no estructurados, aplicaciones web grandes, necesidad de escalabilidad.</p>` },
-                { title: "¡Listo para el Quiz!", content: "<p>NoSQL es ideal para datos modernos. ¡Muestra que sabes cuándo usarlo!</p>" }
-            ],
-            quiz: [
-                { question: "¿Qué significa NoSQL?", options: ["No Structured Query Language", "Not Only SQL", "New Object Storage Language", "Non-Standard Query Language"], answer: "Not Only SQL" },
-                { question: "¿Qué tipo de NoSQL almacena documentos?", options: ["Clave-Valor", "Documental", "Columnares", "Grafos"], answer: "Documental" },
-                { question: "¿Qué base de datos es documental?", options: ["MySQL", "MongoDB", "PostgreSQL", "SQLite"], answer: "MongoDB" },
-                { question: "¿Qué tipo de NoSQL es Redis?", options: ["Documental", "Clave-Valor", "Columnares", "Grafos"], answer: "Clave-Valor" },
-                { question: "¿Qué tipo de NoSQL es ideal para redes sociales?", options: ["Documental", "Clave-Valor", "Columnares", "Grafos"], answer: "Grafos" },
-                { question: "¿Qué ventaja tiene NoSQL sobre SQL?", options: ["Esquema fijo", "Esquema flexible", "Menos escalable", "Más lento"], answer: "Esquema flexible" },
-                { question: "¿Cuándo es mejor NoSQL?", options: ["Datos estructurados", "Datos no estructurados", "Relaciones complejas", "Transacciones financieras"], answer: "Datos no estructurados" },
-                { question: "¿Qué método usa MongoDB para consultar?", options: ["SELECT", "find()", "query()", "search()"], answer: "find()" },
-                { question: "¿Qué permite la escalabilidad horizontal?", options: ["Añadir más CPU", "Añadir más servidores", "Añadir más memoria", "Añadir más disco"], answer: "Añadir más servidores" },
-                { question: "¿Qué formato usa MongoDB internamente?", options: ["JSON", "BSON", "XML", "YAML"], answer: "BSON" }
-            ]
-        },
-        { // Nivel 8
-            title: "Seguridad en Bases de Datos",
-            lesson: [
-                { title: "Autenticación", content: `<p>Verificar identidad de usuarios con contraseñas seguras.</p>` },
-                { title: "Autorización", content: `<p>Controlar qué acciones puede realizar cada usuario.</p>` },
-                { title: "Encriptación", content: `<p>Proteger datos sensibles en reposo y en tránsito.</p>` },
-                { title: "SQL Injection", content: `<p>Ataque que inyecta código malicioso en consultas.</p>` },
-                { title: "Prevención de Inyección", content: `<p>Usar prepared statements y validar entradas.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-php">// Vulnerable
-$query = "SELECT * FROM users WHERE email = '$email'";
+    { // Nivel 1 - REVISADO
+        title: "Los Cimientos de la Web",
+        lesson: [
+            {
+                title: "¿Qué es HTML?",
+                content: `
+                    <p>HTML son las siglas de <strong>HyperText Markup Language</strong> (Lenguaje de Marcado de Hipertexto). No es un lenguaje de programación, sino un <strong>lenguaje de marcado</strong>. Su única función es darle estructura y significado al contenido de una página web.</p>
+                    <p>Piensa en HTML como el esqueleto de un cuerpo humano. Define dónde va la cabeza (título), el cuerpo (contenido principal), los brazos y las piernas (secciones), pero no define su apariencia (colores, fuentes) ni su comportamiento (interactividad). De eso se encargan CSS y JavaScript.</p>
+                `
+            },
+            {
+                title: "Etiquetas y Elementos",
+                content: `
+                    <p>HTML funciona mediante <strong>etiquetas</strong> (tags). La mayoría vienen en pares: una etiqueta de apertura y una de cierre. Por ejemplo, <code>&lt;p&gt;</code> abre un párrafo y <code>&lt;/p&gt;</code> lo cierra.</p>
+                    <p>El conjunto de la etiqueta de apertura, el contenido y la etiqueta de cierre se llama un <strong>elemento HTML</strong>.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;p&gt;Este es el contenido de un elemento de párrafo.&lt;/p&gt;</code></pre></div>
+                    <p class="mt-4">Algunas etiquetas, como las de imágenes <code>&lt;img&gt;</code> o saltos de línea <code>&lt;br&gt;</code>, no necesitan cerrarse y se conocen como <strong>etiquetas de autocierre</strong>.</p>
+                `
+            },
+            {
+                title: "La Estructura Básica",
+                content: `
+                    <p>Toda página HTML tiene una estructura fundamental. ¡Vamos a analizarla línea por línea!</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;title&gt;Mi Primera Página&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;¡Hola Mundo!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+                    <ul class="mt-4 list-disc pl-5">
+                        <li><code>&lt;!DOCTYPE html&gt;</code>: Es la primera línea, una instrucción que le dice al navegador que el documento es de tipo HTML5 (la versión moderna de HTML).</li>
+                        <li><code>&lt;html&gt;</code>: Es la etiqueta raíz que envuelve todo el contenido de la página. El atributo <code>lang="es"</code> le dice al navegador que el contenido principal está en español.</li>
+                        <li><code>&lt;head&gt;</code>: Contiene "metadatos", que es información <strong>para el navegador</strong>. No es visible en la página. Aquí va el título que aparece en la pestaña del navegador (<code>&lt;title&gt;</code>), enlaces a archivos CSS y más.</li>
+                        <li><code>&lt;body&gt;</code>: ¡Aquí va la acción! Todo el contenido <strong>visible</strong> para el usuario (textos, imágenes, videos) se coloca dentro de esta etiqueta.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Atributos: Más Información para las Etiquetas",
+                content: `
+                    <p>Los atributos proporcionan información adicional a los elementos. Se escriben dentro de la etiqueta de apertura.</p>
+                    <p>Ya viste el atributo <code>lang</code>. Otro muy común es <code>href</code> (Hypertext Reference) en la etiqueta de enlace <code>&lt;a&gt;</code>, que especifica la URL a la que quieres que vaya el enlace.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;!-- Este enlace lleva a Google --&gt;
+&lt;a href="https://www.google.com"&gt;Ir a Google&lt;/a&gt;</code></pre></div>
+                    <p class="mt-4">O el atributo <code>src</code> (source) en una etiqueta de imagen, que indica la ubicación del archivo de la imagen.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;img src="logo.png" alt="Logo de mi empresa"&gt;</code></pre></div>
+                    <p class="mt-2">El atributo <code>alt</code> es muy importante: proporciona un texto alternativo si la imagen no se puede cargar y ayuda a la accesibilidad para personas con discapacidad visual.</p>
+                `
+            },
+            {
+                title: "Comentarios en HTML",
+                content: `
+                    <p>Puedes dejar notas en tu código que el navegador ignorará. Son útiles para explicar partes de tu código a otros desarrolladores o a tu "yo" del futuro.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;!-- Esto es un comentario. El navegador no lo mostrará. --&gt;
+&lt;p&gt;Esto sí es visible.&lt;/p&gt;
+&lt;!-- &lt;p&gt;Este párrafo no aparecerá porque está comentado.&lt;/p&gt; --&gt;</code></pre></div>
+                `
+            },
 
-// Seguro
-$stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-$stmt->execute([$email]);</code></pre></div>` },
-                { title: "Permisos de Usuario", content: `<p>GRANT y REVOKE para controlar acceso.</p><div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-sql">GRANT SELECT ON usuarios TO usuario_lectura;
-REVOKE INSERT ON productos FROM usuario_escritura;</code></pre></div>` },
-                { title: "Auditoría", content: `<p>Registrar todas las acciones en la base de datos.</p>` },
-                { title: "Backups Seguros", content: `<p>Respaldos encriptados y almacenados en múltiples ubicaciones.</p>` },
-                { title: "¡Listo para el Quiz!", content: "<p>La seguridad protege los datos valiosos. ¡Muestra que sabes protegerlos!</p>" }
-            ],
-            quiz: [
-                { question: "¿Qué verifica la identidad del usuario?", options: ["Autorización", "Autenticación", "Encriptación", "Auditoría"], answer: "Autenticación" },
-                { question: "¿Qué controla las acciones del usuario?", options: ["Autenticación", "Autorización", "Encriptación", "Auditoría"], answer: "Autorización" },
-                { question: "¿Qué protege datos sensibles?", options: ["Autenticación", "Autorización", "Encriptación", "Auditoría"], answer: "Encriptación" },
-                { question: "¿Qué registra las acciones en la BD?", options: ["Autenticación", "Autorización", "Encriptación", "Auditoría"], answer: "Auditoría" },
-                { question: "¿Qué es SQL Injection?", options: ["Ataque que inyecta código malicioso", "Método de encriptación", "Tipo de índice", "Función de búsqueda"], answer: "Ataque que inyecta código malicioso" },
-                { question: "¿Qué previene SQL Injection?", options: ["Prepared statements", "SELECT *", "ORDER BY", "GROUP BY"], answer: "Prepared statements" },
-                { question: "¿Qué comando da permisos?", options: ["GIVE", "GRANT", "ALLOW", "PERMIT"], answer: "GRANT" },
-                { question: "¿Qué comando quita permisos?", options: ["TAKE", "REVOKE", "DENY", "REMOVE"], answer: "REVOKE" },
-                { question: "¿Por qué son importantes los backups?", options: ["Para ahorrar espacio", "Para recuperar datos perdidos", "Para hacer consultas más rápidas", "Para crear índices"], answer: "Para recuperar datos perdidos" },
-                { question: "¿Qué debe tener una contraseña segura?", options: ["Solo números", "Longitud mínima, mayúsculas, números, símbolos", "Solo letras", "Máximo 6 caracteres"], answer: "Longitud mínima, mayúsculas, números, símbolos" }
-            ]
-        },
-        { // Nivel 9
-            title: "Normalización",
-            lesson: [
-                { title: "Primera Forma Normal (1NF)", content: `<p>Eliminar grupos repetidos, cada campo atómico.</p>` },
-                { title: "Segunda Forma Normal (2NF)", content: `<p>Eliminar dependencias parciales, todo depende de la clave completa.</p>` },
-                { title: "Tercera Forma Normal (3NF)", content: `<p>Eliminar dependencias transitivas, no dependencias entre campos no clave.</p>` },
-                { title: "Forma Normal de Boyce-Codd (BCNF)", content: `<p>Versión estricta de 3NF.</p>` },
-                { title: "Cuarta Forma Normal (4NF)", content: `<p>Eliminar dependencias multivalor.</p>` },
-                { title: "Quinta Forma Normal (5NF)", content: `<p>Eliminar dependencias de unión.</p>` },
-                { title: "Desnormalización", content: `<p>Romper reglas de normalización para mejorar rendimiento.</p>` },
-                { title: "¡Listo para el Quiz!", content: "<p>La normalización elimina redundancia. ¡Muestra que sabes normalizar!</p>" }
-            ],
-            quiz: [
-                { question: "¿Qué elimina la 1NF?", options: ["Dependencias parciales", "Grupos repetidos", "Dependencias transitivas", "Dependencias multivalor"], answer: "Grupos repetidos" },
-                { question: "¿Qué elimina la 2NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias multivalor"], answer: "Dependencias parciales" },
-                { question: "¿Qué elimina la 3NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias multivalor"], answer: "Dependencias transitivas" },
-                { question: "¿Qué es más estricta que 3NF?", options: ["1NF", "2NF", "BCNF", "4NF"], answer: "BCNF" },
-                { question: "¿Qué elimina la 4NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias multivalor"], answer: "Dependencias multivalor" },
-                { question: "¿Qué elimina la 5NF?", options: ["Grupos repetidos", "Dependencias parciales", "Dependencias transitivas", "Dependencias de unión"], answer: "Dependencias de unión" },
-                { question: "¿Qué es la desnormalización?", options: ["Seguir estrictamente las reglas", "Romper reglas para rendimiento", "Crear más tablas", "Eliminar índices"], answer: "Romper reglas para rendimiento" },
-                { question: "¿Cuál es la forma normal más básica?", options: ["1NF", "2NF", "3NF", "BCNF"], answer: "1NF" },
-                { question: "¿Cuál es la forma normal más estricta?", options: ["1NF", "2NF", "3NF", "5NF"], answer: "5NF" },
-                { question: "¿Por qué normalizar?", options: ["Para hacer más lento", "Para eliminar redundancia", "Para usar más espacio", "Para complicar"], answer: "Para eliminar redundancia" }
-            ]
-        },
-        { // Nivel 10
-            title: "Transacciones y Concurrencia",
-            lesson: [
-                { title: "Propiedades ACID", content: `<p>Atomicidad, Consistencia, Aislamiento, Durabilidad.</p>` },
-                { title: "Niveles de Aislamiento", content: `<p>READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE.</p>` },
-                { title: "Bloqueos", content: `<p>SELECT ... FOR UPDATE para bloquear filas.</p>` },
-                { title: "Deadlocks", content: `<p>Situaciones donde dos transacciones se bloquean mutuamente.</p>` },
-                { title: "Control de Concurrencia", content: `<p>Manejar múltiples usuarios accediendo simultáneamente.</p>` },
-                { title: "¡Listo para el Quiz!", content: "<p>Las transacciones aseguran integridad. ¡Muestra que sabes manejar concurrencia!</p>" }
-            ],
-            quiz: [
-                { question: "¿Qué significa Atomicidad?", options: ["Todo o nada", "Consistencia", "Aislamiento", "Durabilidad"], answer: "Todo o nada" },
-                { question: "¿Qué significa Consistencia?", options: ["Todo o nada", "Estado válido", "Aislamiento", "Persistencia"], answer: "Estado válido" },
-                { question: "¿Qué significa Aislamiento?", options: ["Todo o nada", "Consistencia", "Transacciones no interfieren", "Durabilidad"], answer: "Transacciones no interfieren" },
-                { question: "¿Qué significa Durabilidad?", options: ["Todo o nada", "Consistencia", "Aislamiento", "Cambios persisten"], answer: "Cambios persisten" },
-                { question: "¿Cuál es el nivel de aislamiento más estricto?", options: ["READ UNCOMMITTED", "READ COMMITTED", "REPEATABLE READ", "SERIALIZABLE"], answer: "SERIALIZABLE" },
-                { question: "¿Cuál es el nivel de aislamiento más permisivo?", options: ["READ UNCOMMITTED", "READ COMMITTED", "REPEATABLE READ", "SERIALIZABLE"], answer: "READ UNCOMMITTED" },
-                { question: "¿Qué evita deadlocks?", options: ["Bloquear todo", "Bloquear en orden consistente", "No usar transacciones", "Usar solo SELECT"], answer: "Bloquear en orden consistente" },
-                { question: "¿Qué propiedad ACID es 'todo o nada'?", options: ["Atomicidad", "Consistencia", "Aislamiento", "Durabilidad"], answer: "Atomicidad" },
-                { question: "¿Qué propiedad ACID asegura que cambios persisten?", options: ["Atomicidad", "Consistencia", "Aislamiento", "Durabilidad"], answer: "Durabilidad" },
-                { question: "¿Por qué son importantes las transacciones?", options: ["Para hacer consultas más rápidas", "Para mantener integridad", "Para usar menos memoria", "Para crear índices"], answer: "Para mantener integridad" }
-            ]
-        },
-];
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Has aprendido la estructura fundamental de una página web, qué son los elementos, las etiquetas y los atributos. ¡Ahora, a demostrar lo que sabes!</p>"
+            }
+        ],
+        quiz: [
+            { question: "¿Qué significa HTML?", options: ["HyperText Markup Language", "High-Level Textual Machine Language", "Hyperlink and Text Management Language", "Home Tool Markup Language"], answer: "HyperText Markup Language" },
+            { question: "¿Cuál es el propósito de la etiqueta <body>?", options: ["Contener información para el navegador", "Contener todo el contenido visible de la página", "Definir el idioma del documento", "Enlazar a hojas de estilo"], answer: "Contener todo el contenido visible de la página" },
+            { question: "¿Qué tipo de lenguaje es HTML?", options: ["De programación", "De estilos", "De marcado", "De bases de datos"], answer: "De marcado" },
+            { question: "¿Cómo se llama el conjunto de una etiqueta de apertura, contenido y etiqueta de cierre?", options: ["Un atributo", "Una declaración", "Un elemento HTML", "Un comentario"], answer: "Un elemento HTML" },
+            { question: "¿Cuál de las siguientes es una etiqueta de autocierre?", options: ["<p>", "<div>", "<h1>", "<br>"], answer: "<br>" },
+            { question: "La declaración <!DOCTYPE html> le dice al navegador que la página está escrita en...", options: ["HTML4", "XML", "HTML5", "JavaScript"], answer: "HTML5" },
+            { question: "¿Dónde se coloca la información para el navegador, como el título de la página?", options: ["En la etiqueta <body>", "En la etiqueta <head>", "Justo después del DOCTYPE", "Al final del archivo"], answer: "En la etiqueta <head>" },
+            { question: "¿Para qué sirve el atributo 'href' en una etiqueta <a>?", options: ["Para cambiar el color del texto", "Para especificar la URL de destino del enlace", "Para definir el tamaño del enlace", "Para añadir un comentario"], answer: "Para especificar la URL de destino del enlace" },
+            { question: "¿Cómo se escribe un comentario en HTML?", options: ["// Esto es un comentario", "/* Esto es un comentario */", "<!-- Esto es un comentario -->", "# Esto es un comentario"], answer: "<!-- Esto es un comentario -->" },
+            { question: "¿Qué atributo proporciona texto alternativo para las imágenes?", options: ["src", "href", "title", "alt"], answer: "alt" }
+        ]
+    },
+    { // Nivel 2 - REVISADO
+        title: "Contenido Esencial en HTML",
+        lesson: [
+            {
+                title: "Jerarquía de Títulos",
+                content: `
+                    <p>Los títulos (headings) organizan el contenido y establecen una jerarquía. Van desde <code>&lt;h1&gt;</code> (el más importante) hasta <code>&lt;h6&gt;</code> (el menos importante).</p>
+                    <p><strong>Regla de oro:</strong> Debería haber solo un <code>&lt;h1&gt;</code> por página, que usualmente corresponde al título principal. No uses los títulos solo para cambiar el tamaño del texto; su propósito es dar estructura semántica al documento.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;h1&gt;El Sistema Solar&lt;/h1&gt;
+&lt;p&gt;Una introducción a nuestro vecindario cósmico.&lt;/p&gt;
+&lt;h2&gt;Planetas Interiores&lt;/h2&gt;
+&lt;h3&gt;La Tierra&lt;/h3&gt;
+&lt;h2&gt;Planetas Exteriores&lt;/h2&gt;
+&lt;h3&gt;Júpiter&lt;/h3&gt;</code></pre></div>
+                `
+            },
+            {
+                title: "Párrafos y Saltos de Línea",
+                content: `
+                    <p>La etiqueta <code>&lt;p&gt;</code> se usa para agrupar texto en párrafos. El navegador añade automáticamente un espacio entre ellos.</p>
+                    <p>HTML ignora los saltos de línea que haces en tu editor de código. Si necesitas forzar un salto de línea sin crear un nuevo párrafo, usa la etiqueta de autocierre <code>&lt;br&gt;</code>.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;p&gt;Este es el primer párrafo.&lt;/p&gt;
+&lt;p&gt;Este es el segundo. Forzamos una línea aquí.&lt;br&gt;Y esta es la línea nueva.&lt;/p&gt;</code></pre></div>
+                `
+            },
+            {
+                title: "Listas: Ordenadas y Desordenadas",
+                content: `
+                    <p>Las listas son fundamentales para organizar información. Hay dos tipos principales:</p>
+                    <ul class="list-disc pl-5">
+                        <li><strong>Listas Desordenadas <code>&lt;ul&gt;</code>:</strong> Para items donde el orden no importa. Se muestran con viñetas.</li>
+                        <li><strong>Listas Ordenadas <code>&lt;ol&gt;</code>:</strong> Para items donde el orden sí importa, como pasos en una receta. Se muestran numeradas.</li>
+                    </ul>
+                    <p>En ambos casos, cada item de la lista se define con la etiqueta <code>&lt;li&gt;</code> (list item).</p>
+                     <div class="code-block"><pre><code class="language-html">&lt;h4&gt;Lista de la compra (desordenada):&lt;/h4&gt;
+&lt;ul&gt;
+    &lt;li&gt;Leche&lt;/li&gt;
+    &lt;li&gt;Pan&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;Pasos para hacer café (ordenada):&lt;/h4&gt;
+&lt;ol&gt;
+    &lt;li&gt;Hervir agua&lt;/li&gt;
+    &lt;li&gt;Añadir café&lt;/li&gt;
+    &lt;li&gt;Servir en una taza&lt;/li&gt;
+&lt;/ol&gt;</code></pre></div>
+                `
+            },
+            {
+                title: "Dando Énfasis al Texto",
+                content: `
+                    <p>A veces quieres resaltar ciertas palabras. HTML ofrece etiquetas semánticas para esto:</p>
+                    <ul class="list-disc pl-5">
+                        <li><code>&lt;strong&gt;</code>: Indica que el texto tiene una <strong>gran importancia</strong>. Los navegadores lo muestran en negrita.</li>
+                        <li><code>&lt;em&gt;</code> (emphasis): Pone <em>énfasis</em> en una palabra o frase. Se suele mostrar en cursiva.</li>
+                    </ul>
+                    <p>Aunque existen las etiquetas <code>&lt;b&gt;</code> (bold) y <code>&lt;i&gt;</code> (italic) que logran el mismo efecto visual, se prefieren <code>&lt;strong&gt;</code> y <code>&lt;em&gt;</code> porque añaden significado semántico, lo cual es mejor para la accesibilidad y los motores de búsqueda.</p>
+                `
+            },
+            {
+                title: "Entidades HTML: Caracteres Especiales",
+                content: `
+                    <p>¿Qué pasa si quieres mostrar una etiqueta HTML como texto en tu página? No puedes escribir <code>&lt;p&gt;</code> directamente, porque el navegador lo interpretaría como una etiqueta real.</p>
+                    <p>Para esto, usamos <strong>entidades HTML</strong>. Son códigos especiales para representar caracteres reservados.</p>
+                    <ul class="list-disc pl-5">
+                        <li>Para mostrar <code>&lt;</code>, escribes <code>&amp;lt;</code> (less than).</li>
+                        <li>Para mostrar <code>&gt;</code>, escribes <code>&amp;gt;</code> (greater than).</li>
+                        <li>Para mostrar <code>&amp;</code>, escribes <code>&amp;amp;</code> (ampersand).</li>
+                    </ul>
+                    <div class="code-block"><pre><code class="language-html">&lt;!-- Esto mostrará: El tag &lt;p&gt; se usa para párrafos. --&gt;
+&lt;p&gt;El tag &amp;lt;p&amp;gt; se usa para párrafos.&lt;/p&gt;</code></pre></div>
+                `
+            },
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Ahora puedes estructurar texto con títulos, párrafos y listas, y hasta sabes cómo mostrar caracteres especiales. ¡A por el quiz!</p>"
+            }
+        ],
+        quiz: [
+            { question: "¿Qué etiqueta usarías para el título más importante de la página?", options: ["<h6>", "<h1>", "<h2>", "<head>"], answer: "<h1>" },
+            { question: "Si quieres hacer una lista de ingredientes para una receta (el orden no importa), ¿qué etiqueta usarías?", options: ["<ol>", "<li>", "<ul>", "<dl>"], answer: "<ul>" },
+            { question: "Para crear los items dentro de una lista, ya sea ordenada o desordenada, usas la etiqueta...", options: ["<item>", "<li>", "<ol>", "<ul>"], answer: "<li>" },
+            { question: "¿Qué etiqueta fuerza un salto de línea dentro de un párrafo?", options: ["<p>", "<br>", "<hr>", "<break>"], answer: "<br>" },
+            { question: "Para dar un énfasis fuerte y semántico a un texto (visualmente negrita), ¿cuál es la etiqueta preferida?", options: ["<b>", "<bold>", "<strong>", "<em>"], answer: "<strong>" },
+            { question: "¿Cómo mostrarías el carácter '<' en una página web sin que el navegador lo interprete?", options: ["<", "&lt;", "&less;", "&lcarr;"], answer: "&lt;" },
+            { question: "Es una buena práctica tener más de un <h1> en una misma página.", options: ["Verdadero", "Falso"], answer: "Falso" },
+            { question: "La etiqueta <em> se usa para...", options: ["Mostrar texto muy importante", "Poner énfasis en un texto (visualmente cursiva)", "Crear un error en el texto", "Marcar texto eliminado"], answer: "Poner énfasis en un texto (visualmente cursiva)" },
+            { question: "Las etiquetas <ul> y <ol> necesitan etiquetas ______ en su interior.", options: ["<p>", "<li>", "<a>", "<span>"], answer: "<li>" },
+            { question: "¿Qué sucede si pones muchos espacios o saltos de línea en tu editor de código HTML?", options: ["Se genera un error", "Se muestran todos en la página", "HTML los ignora y los colapsa en un solo espacio", "Se convierten en <br> automáticamente"], answer: "HTML los ignora y los colapsa en un solo espacio" }
+        ]
+    },
+    { // Nivel 3 - REVISADO
+        title: "Contenedores y Semántica",
+        lesson: [
+            {
+                title: "<div> y <span>: Contenedores Genéricos",
+                content: `
+                    <p>A veces necesitas agrupar elementos para aplicarles estilos o para organización. Para eso existen los contenedores genéricos:</p>
+                    <ul class="list-disc pl-5">
+                        <li><code>&lt;div&gt;</code> (división): Es un contenedor de <strong>bloque</strong>. Ocupa todo el ancho disponible y siempre empieza en una nueva línea. Es ideal para agrupar grandes secciones de contenido, como una barra lateral o una tarjeta de producto.</li>
+                        <li><code>&lt;span&gt;</code>: Es un contenedor de <strong>línea</strong>. Solo ocupa el espacio necesario para su contenido y no empieza en una nueva línea. Es perfecto para agrupar pequeñas partes de texto dentro de un párrafo para, por ejemplo, cambiarles el color.</li>
+                    </ul>
+                    <div class="code-block"><pre><code class="language-html">&lt;div style="background-color: lightgray;"&gt;
+  &lt;h2&gt;Sección de Noticias&lt;/h2&gt;
+  &lt;p&gt;Esta es una noticia &lt;span style="color: red;"&gt;urgente&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div>
+                `
+            },
+            {
+                title: "HTML Semántico: Estructura con Significado",
+                content: `
+                    <p>En lugar de usar <code>&lt;div&gt;</code> para todo, HTML5 introdujo etiquetas semánticas que describen su contenido. Esto es genial para la accesibilidad (lectores de pantalla) y para SEO (motores de búsqueda).</p>
+                    <p>Imagina la estructura de una página web típica:</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;header&gt;
+  &lt;h1&gt;Logo y Título de la Web&lt;/h1&gt;
+  &lt;nav&gt;
+    &lt;!-- Menú de navegación principal --&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;h2&gt;Contenido Principal de la Página&lt;/h2&gt;
+  &lt;article&gt;
+    &lt;h3&gt;Un post del blog&lt;/h3&gt;
+  &lt;/article&gt;
+  &lt;section&gt;
+    &lt;h3&gt;Otra sección de contenido&lt;/h3&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+
+&lt;aside&gt;
+  &lt;h3&gt;Barra lateral (anuncios, enlaces)&lt;/h3&gt;
+&lt;/aside&gt;
+
+&lt;footer&gt;
+  &lt;p&gt;Copyright y enlaces de contacto.&lt;/p&gt;
+&lt;/footer&gt;</code></pre></div>
+                `
+            },
+            {
+                title: "Explicación de Etiquetas Semánticas",
+                content: `
+                    <ul class="list-disc pl-5">
+                        <li><code>&lt;header&gt;</code>: Contiene la cabecera de una página o sección. Usualmente tiene el logo, el título y la navegación.</li>
+                        <li><code>&lt;nav&gt;</code>: Para el menú de navegación principal.</li>
+                        <li><code>&lt;main&gt;</code>: Debe contener el contenido <strong>principal y único</strong> de la página. Solo debe haber uno por página.</li>
+                        <li><code>&lt;article&gt;</code>: Para contenido independiente y auto-contenido, como un post de un blog, un artículo de periódico o un comentario de un foro.</li>
+                        <li><code>&lt;section&gt;</code>: Agrupa contenido temáticamente relacionado. Es una sección genérica, pero con más significado que un <code>&lt;div&gt;</code>.</li>
+                        <li><code>&lt;aside&gt;</code>: Para contenido relacionado tangencialmente, como una barra lateral (sidebar).</li>
+                        <li><code>&lt;footer&gt;</code>: Para el pie de página. Contiene información de autor, copyright, etc.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Anidando Enlaces",
+                content: `
+                    <p>Una pregunta común es si se pueden poner enlaces dentro de otros enlaces. La respuesta simple es <strong>no</strong>. Anidar etiquetas <code>&lt;a&gt;</code> no es válido en HTML y los navegadores se comportarán de forma impredecible.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;!-- ❌ INCORRECTO --&gt;
+&lt;a href="#"&gt;Enlace exterior &lt;a href="#"&gt;enlace interior&lt;/a&gt;&lt;/a&gt;
+
+&lt;!-- ✅ CORRECTO --&gt;
+&lt;a href="#"&gt;Primer enlace&lt;/a&gt; | &lt;a href="#"&gt;Segundo enlace&lt;/a&gt;</code></pre></div>
+                    <p>Si quieres que un bloque entero sea clickeable, puedes poner un <code>&lt;div&gt;</code> u otro elemento dentro de un <code>&lt;a&gt;</code> (esto es válido en HTML5), pero nunca otro <code>&lt;a&gt;</code>.</p>
+                `
+            },
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Has aprendido a estructurar tus páginas de forma profesional con contenedores y etiquetas semánticas. ¡Demuestra que lo dominas!</p>"
+            }
+        ],
+        quiz: [
+            { question: "¿Qué etiqueta usarías para la cabecera principal de tu sitio web, que contiene el logo y el menú?", options: ["<head>", "<main>", "<header>", "<section>"], answer: "<header>" },
+            { question: "¿Cuál es la principal diferencia entre <div> y <span>?", options: ["<div> es para imágenes y <span> para texto", "<div> es un elemento de bloque y <span> de línea", "<div> no puede tener estilos y <span> sí", "<div> es semántico y <span> no"], answer: "<div> es un elemento de bloque y <span> de línea" },
+            { question: "El contenido principal y único de una página debe ir dentro de la etiqueta...", options: ["<article>", "<section>", "<main>", "<header>"], answer: "<main>" },
+            { question: "Para un post de un blog que podría existir de forma independiente, ¿qué etiqueta semántica es la más apropiada?", options: ["<section>", "<article>", "<div>", "<main>"], answer: "<article>" },
+            { question: "La etiqueta <nav> se usa típicamente para...", options: ["Navegar a la siguiente página", "Contener el menú de navegación principal", "Crear un nuevo artículo", "Definir una nota al pie"], answer: "Contener el menú de navegación principal" },
+            { question: "Una barra lateral con contenido relacionado pero no esencial (como anuncios) iría dentro de...", options: ["<section>", "<aside>", "<div>", "<footer>"], answer: "<aside>" },
+            { question: "El pie de página, con información de copyright y contacto, se define con la etiqueta...", options: ["<bottom>", "<end>", "<footer>", "<main>"], answer: "<footer>" },
+            { question: "¿Es una práctica válida anidar una etiqueta <a> dentro de otra etiqueta <a>?", options: ["Sí, siempre", "No, nunca es válido", "Solo si tienen diferentes atributos href", "Sí, pero solo en el <footer>"], answer: "No, nunca es válido" },
+            { question: "¿Cuál de estas etiquetas es un elemento de línea?", options: ["<div>", "<h1>", "<p>", "<span>"], answer: "<span>" },
+            { question: "¿Por qué es importante usar HTML semántico?", options: ["Hace que la página se cargue más rápido", "Es la única forma de usar CSS", "Mejora la accesibilidad y el SEO", "Añade colores automáticamente"], answer: "Mejora la accesibilidad y el SEO" }
+        ]
+    },
+    { // Nivel 4 - REVISADO
+        title: "Introducción a CSS",
+        lesson: [
+            {
+                title: "¿Qué es CSS?",
+                content: `
+                    <p>CSS son las siglas de <strong>Cascading Style Sheets</strong> (Hojas de Estilo en Cascada). Es el lenguaje que usamos para dar estilo y diseño a nuestras páginas HTML. Si HTML es el esqueleto, CSS es la ropa, el peinado y el maquillaje.</p>
+                    <p>Con CSS controlamos colores, fuentes, tamaños, márgenes, posicionamiento y mucho más.</p>
+                `
+            },
+            {
+                title: "Sintaxis de una Regla CSS",
+                content: `
+                    <p>Una regla CSS tiene dos partes principales: un <strong>selector</strong> y un <strong>bloque de declaración</strong>.</p>
+                    <div class="code-block"><pre><code class="language-css">/* h1 es el selector */
+h1 { 
+    /* color: blue; es una declaración */
+    color: blue; 
+    font-size: 24px;
+}</code></pre></div>
+                    <ul class="list-disc pl-5 mt-4">
+                        <li>El <strong>selector</strong> apunta al elemento HTML que quieres estilizar (ej. <code>h1</code>, <code>p</code>, <code>.mi-clase</code>).</li>
+                        <li>El <strong>bloque de declaración</strong> va entre llaves <code>{ }</code> y contiene una o más declaraciones separadas por punto y coma.</li>
+                        <li>Cada <strong>declaración</strong> consiste en una <strong>propiedad</strong> (ej. <code>color</code>) y un <strong>valor</strong> (ej. <code>blue</code>), separados por dos puntos.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Tres Formas de Añadir CSS",
+                content: `
+                    <p>Puedes añadir CSS a tu HTML de tres maneras:</p>
+                    <ol class="list-decimal pl-5">
+                        <li><strong>CSS Externo (Recomendado):</strong> Creas un archivo <code>.css</code> separado y lo enlazas en el <code>&lt;head&gt;</code> de tu HTML. Esto es ideal para mantener el código organizado.
+                            <div class="code-block"><pre><code class="language-html">&lt;head&gt;
+  &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;</code></pre></div>
+                        </li>
+                        <li><strong>CSS Interno:</strong> Escribes el CSS dentro de una etiqueta <code>&lt;style&gt;</code> en el <code>&lt;head&gt;</code> del HTML. Útil para estilos de una sola página.
+                            <div class="code-block"><pre><code class="language-html">&lt;head&gt;
+  &lt;style&gt;
+    body { background-color: #f0f0f0; }
+  &lt;/style&gt;
+&lt;/head&gt;</code></pre></div>
+                        </li>
+                        <li><strong>CSS en Línea:</strong> Aplicas estilos directamente a un elemento usando el atributo <code>style</code>. Debe usarse con moderación, ya que es difícil de mantener.
+                            <div class="code-block"><pre><code class="language-html">&lt;p style="color: red;"&gt;Este texto es rojo.&lt;/p&gt;</code></pre></div>
+                        </li>
+                    </ol>
+                `
+            },
+            {
+                title: "Selectores Básicos: Etiqueta, Clase e ID",
+                content: `
+                    <p>Los selectores son la clave para conectar CSS con HTML.</p>
+                    <ul class="list-disc pl-5">
+                        <li><strong>Selector de Etiqueta:</strong> Selecciona todos los elementos de un tipo. (<code>p { ... }</code>)</li>
+                        <li><strong>Selector de Clase:</strong> Selecciona todos los elementos que tienen un atributo <code>class</code> específico. Se usa un punto <code>.</code> antes del nombre de la clase en CSS. Es reutilizable. (<code>.importante { ... }</code>)</li>
+                        <li><strong>Selector de ID:</strong> Selecciona <strong>un único elemento</strong> con un atributo <code>id</code> específico. Se usa una almohadilla <code>#</code>. Un ID debe ser único en toda la página. (<code>#titulo-principal { ... }</code>)</li>
+                    </ul>
+                     <div class="code-block"><pre><code class="language-html">&lt;h1 id="titulo-principal"&gt;Título&lt;/h1&gt;
+&lt;p class="importante"&gt;Párrafo importante.&lt;/p&gt;
+&lt;p&gt;Otro párrafo.&lt;/p&gt;</code></pre></div>
+                     <div class="code-block mt-2"><pre><code class="language-css">/* Selector de ID */
+#titulo-principal { color: navy; }
+
+/* Selector de Clase */
+.importante { font-weight: bold; }
+
+/* Selector de Etiqueta */
+p { color: gray; }</code></pre></div>
+                `
+            },
+            {
+                title: "El Significado de 'Cascada'",
+                content: `
+                    <p>La "C" en CSS significa "Cascading" (en Cascada). Este es un concepto fundamental que define cómo se resuelven los conflictos cuando múltiples reglas CSS apuntan al mismo elemento.</p>
+                    <p>La cascada sigue un orden de prioridad:</p>
+                    <ol class="list-decimal pl-5">
+                        <li><strong>Importancia:</strong> Una regla con <code>!important</code> casi siempre gana (¡pero úsalo con mucho cuidado!).</li>
+                        <li><strong>Especificidad:</strong> Reglas más específicas tienen más peso. Un selector de ID (<code>#id</code>) es más específico que un selector de clase (<code>.clase</code>), que a su vez es más específico que un selector de etiqueta (<code>p</code>).</li>
+                        <li><strong>Orden de Fuente:</strong> Si la especificidad es la misma, la regla que aparece más tarde en el código (o en el último archivo CSS importado) es la que se aplica.</li>
+                    </ol>
+                `
+            },
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Ya conoces los fundamentos de CSS, cómo añadirlo a tu web y cómo funcionan los selectores y la cascada. ¡Vamos a probarlo!</p>"
+            }
+        ],
+        quiz: [
+            { question: "¿Qué significa CSS?", options: ["Creative Style System", "Cascading Style Sheets", "Computer Styling Syntax", "Colorful Style Sheets"], answer: "Cascading Style Sheets" },
+            { question: "¿Qué parte de una regla CSS apunta al elemento HTML que se va a estilizar?", options: ["La propiedad", "El valor", "El selector", "La declaración"], answer: "El selector" },
+            { question: "¿Qué símbolo se usa en CSS para seleccionar elementos por su CLASE?", options: ["# (Almohadilla)", ". (Punto)", "* (Asterisco)", "& (Ampersand)"], answer: ". (Punto)" },
+            { question: "¿Y qué símbolo se usa para seleccionar un elemento por su ID?", options: ["# (Almohadilla)", ". (Punto)", "!", "$"], answer: "# (Almohadilla)" },
+            { question: "¿Cuál es la forma RECOMENDADA de añadir CSS a un sitio web con múltiples páginas?", options: ["CSS en línea (atributo style)", "CSS interno (<style>)", "CSS externo (archivo .css enlazado)", "Usando JavaScript"], answer: "CSS externo (archivo .css enlazado)" },
+            { question: "En la 'cascada' de CSS, ¿qué criterio tiene, por lo general, la máxima prioridad?", options: ["El orden en el archivo", "La especificidad del selector", "El color de la regla", "Una regla marcada con !important"], answer: "Una regla marcada con !important" },
+            { question: "¿Cuál de estos selectores es MÁS específico?", options: ["p", ".texto", "#principal"], answer: "#principal" },
+            { question: "En la declaración `color: blue;`, `color` es...", options: ["El selector", "La propiedad", "El valor", "La clase"], answer: "La propiedad" },
+            { question: "Si dos reglas CSS tienen la misma especificidad, ¿cuál se aplica?", options: ["La primera que aparece en el código", "La última que aparece en el código", "Ninguna de las dos", "La que tenga un color más oscuro"], answer: "La última que aparece en el código" },
+            { question: "La etiqueta <link rel=\"stylesheet\"> para enlazar un CSS externo se coloca dentro de...", options: ["<body>", "<header>", "<footer>", "<head>"], answer: "<head>" }
+        ]
+    },
+    { // Nivel 5 - REVISADO
+        title: "El Modelo de Caja en CSS",
+        lesson: [
+            {
+                title: "Todo es una Caja",
+                content: `
+                    <p>El concepto más importante del diseño en CSS es el <strong>Modelo de Caja (Box Model)</strong>. Cada elemento HTML que pones en una página es, para el navegador, una caja rectangular. Esta caja se compone de cuatro partes:</p>
+                    <ul class="list-disc pl-5">
+                        <li><strong>Content (Contenido):</strong> El área donde se muestra tu texto o imágenes.</li>
+                        <li><strong>Padding (Relleno):</strong> Un espacio transparente alrededor del contenido, pero dentro de los bordes.</li>
+                        <li><strong>Border (Borde):</strong> Una línea que rodea el padding y el contenido.</li>
+                        <li><strong>Margin (Margen):</strong> Un espacio transparente fuera del borde, que separa la caja de otras cajas.</li>
+                    </ul>
+                    <img src="https://i.imgur.com/kE5gSt8.png" alt="Diagrama del Modelo de Caja de CSS" style="max-width: 100%; border-radius: 8px; margin-top: 1rem;">
+                `
+            },
+            {
+                title: "Propiedades del Modelo de Caja",
+                content: `
+                    <p>Puedes controlar cada parte de la caja con propiedades CSS:</p>
+                    <div class="code-block"><pre><code class="language-css">.mi-caja {
+    /* Dimensiones del CONTENIDO */
+    width: 300px;
+    height: 150px;
+
+    /* PADDING de 10px en todos los lados */
+    padding: 10px; 
+    /* Equivalente a:
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    */
+
+    /* BORDER de 2px, sólido y de color negro */
+    border: 2px solid black;
+
+    /* MARGIN de 20px en todos los lados */
+    margin: 20px;
+}</code></pre></div>
+                    <p class="mt-4">Puedes especificar los valores para cada lado (top, right, bottom, left) de forma individual, o usar la notación abreviada (shorthand).</p>
+                `
+            },
+            {
+                title: "box-sizing: border-box",
+                content: `
+                    <p>Por defecto, cuando defines un <code>width</code> y un <code>height</code>, estos solo se aplican al área del <strong>contenido</strong>. El padding y el border se añaden por fuera, haciendo que la caja sea más grande de lo que esperabas. Esto puede ser muy confuso.</p>
+                    <p>La solución moderna es usar <code>box-sizing: border-box;</code>. Con esta regla, el <code>width</code> y <code>height</code> que definas incluirán el <strong>contenido, el padding y el borde</strong>. ¡Esto hace que los cálculos de tamaño sean mucho más intuitivos!</p>
+                     <div class="code-block"><pre><code class="language-css">/* Un truco muy común es aplicar esto a todos los elementos */
+* {
+    box-sizing: border-box;
+}
+
+.mi-caja {
+    width: 300px; /* Ahora 300px es el ancho total de la caja */
+    padding: 20px;
+    border: 5px solid red;
+    /* El área para el contenido se ajustará automáticamente */
+}</code></pre></div>
+                    <p class="mt-2">El selector universal <code>*</code> selecciona todos los elementos de la página.</p>
+                `
+            },
+            {
+                title: "Unidades: Píxeles vs. Unidades Relativas",
+                content: `
+                    <p>Para definir tamaños, tienes varias unidades a tu disposición:</p>
+                    <ul class="list-disc pl-5">
+                        <li><strong><code>px</code> (Píxeles):</strong> Una unidad absoluta y fija. Es precisa, pero no se adapta bien a diferentes tamaños de pantalla.</li>
+                        <li><strong><code>%</code> (Porcentaje):</strong> Una unidad relativa al tamaño del elemento padre. <code>width: 50%;</code> significa que la caja ocupará la mitad del ancho de su contenedor.</li>
+                        <li><strong><code>em</code>:</strong> Una unidad relativa al tamaño de fuente (<code>font-size</code>) del elemento actual. Si <code>font-size</code> es <code>16px</code>, entonces <code>2em</code> son <code>32px</code>.</li>
+                        <li><strong><code>rem</code> (root em):</strong> Una unidad relativa al tamaño de fuente del elemento raíz (la etiqueta <code>&lt;html&gt;</code>). Es la unidad relativa más usada y recomendada hoy en día porque proporciona consistencia en toda la página.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Dominar el Modelo de Caja es el paso más importante para crear layouts en CSS. Has visto sus partes y cómo controlar tamaños. ¡A por ello!</p>"
+            }
+        ],
+        quiz: [
+            { question: "En el Modelo de Caja, ¿qué propiedad define el espacio ENTRE el contenido y el borde?", options: ["margin", "spacing", "padding", "content-gap"], answer: "padding" },
+            { question: "¿Y cuál define el espacio FUERA del borde, separando el elemento de otros?", options: ["margin", "spacing", "padding", "border-gap"], answer: "margin" },
+            { question: "Si a una caja con `box-sizing: border-box` le pones `width: 100px` y `padding: 10px`, ¿cuál es su ancho total?", options: ["120px", "110px", "100px", "80px"], answer: "100px" },
+            { question: "Si a una caja con el `box-sizing` por defecto le pones `width: 100px` y `padding: 10px` a cada lado, ¿cuál es su ancho total?", options: ["120px", "110px", "100px", "80px"], answer: "120px" },
+            { question: "¿Qué hace el selector universal `*` en CSS?", options: ["Selecciona solo los elementos importantes", "Multiplica los valores de las propiedades", "Selecciona todos los elementos de la página", "Es un comentario"], answer: "Selecciona todos los elementos de la página" },
+            { question: "¿Cuál es la unidad de medida relativa al tamaño de fuente del elemento RAÍZ (<html>)?", options: ["em", "px", "%", "rem"], answer: "rem" },
+            { question: "La propiedad `border` es una notación abreviada para...", options: ["border-width, border-style, y border-color", "border-size, border-type, y border-shade", "margin, padding, y content", "width, height, y display"], answer: "border-width, border-style, y border-color" },
+            { question: "Si un elemento tiene `font-size: 20px;`, ¿a cuántos píxeles equivale `padding: 2em;`?", options: ["20px", "30px", "40px", "10px"], answer: "40px" },
+            { question: "Las cuatro partes del Modelo de Caja, de adentro hacia afuera, son:", options: ["Margin, Border, Padding, Content", "Content, Padding, Border, Margin", "Content, Border, Padding, Margin", "Padding, Content, Margin, Border"], answer: "Content, Padding, Border, Margin" },
+            { question: "La propiedad `margin` se usa para...", options: ["Añadir un fondo de color", "Separar un elemento de otros elementos", "Aumentar el tamaño del texto", "Crear un borde punteado"], answer: "Separar un elemento de otros elementos" }
+        ]
+    },
+    { // Nivel 6 - REVISADO
+        title: "Introducción a JavaScript",
+        lesson: [
+            {
+                title: "¿Qué es JavaScript?",
+                content: `
+                    <p>JavaScript (o JS) es un <strong>lenguaje de programación</strong> que da vida a las páginas web. Mientras HTML estructura y CSS decora, JavaScript añade <strong>interactividad</strong>.</p>
+                    <p>Con JS puedes:</p>
+                    <ul class="list-disc pl-5">
+                        <li>Reaccionar a acciones del usuario (clics, movimientos del ratón).</li>
+                        <li>Cambiar el contenido de la página dinámicamente sin recargarla.</li>
+                        <li>Crear animaciones, validar formularios, cargar datos de servidores y mucho más.</li>
+                    </ul>
+                    <p>El código JavaScript se ejecuta directamente en el navegador del usuario.</p>
+                `
+            },
+            {
+                title: "Añadiendo JavaScript a tu Página",
+                content: `
+                    <p>Al igual que con CSS, hay varias formas de incluir JS. La más común y recomendada es usar la etiqueta <code>&lt;script&gt;</code> con el atributo <code>src</code> para enlazar un archivo <code>.js</code> externo.</p>
+                    <p>Por convención, la etiqueta <code>&lt;script&gt;</code> se suele colocar justo antes del cierre de la etiqueta <code>&lt;/body&gt;</code>. Esto asegura que todo el HTML se haya cargado antes de que el JavaScript intente manipularlo.</p>
+                    <div class="code-block"><pre><code class="language-html">&lt;body&gt;
+    &lt;!-- Tu contenido HTML va aquí --&gt;
+    &lt;h1 id="titulo"&gt;Hola&lt;/h1&gt;
+
+    &lt;script src="mi_script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre></div>
+                `
+            },
+            {
+                title: "Variables: Guardando Información",
+                content: `
+                    <p>Las variables son como cajas donde guardamos datos. En JavaScript moderno, usamos principalmente dos palabras clave para declararlas:</p>
+                    <ul class="list-disc pl-5">
+                        <li><code>let</code>: Para variables cuyo valor puede cambiar.</li>
+                        <li><code>const</code>: Para constantes, es decir, variables cuyo valor no cambiará una vez asignado.</li>
+                    </ul>
+                     <div class="code-block"><pre><code class="language-javascript">// Usamos 'let' porque el nombre de usuario puede cambiar
+let nombreUsuario = "Ana"; 
+nombreUsuario = "Carlos"; // Válido
+
+// Usamos 'const' para un valor que no debería cambiar
+const PI = 3.1416;
+// PI = 3.14; // Esto daría un error
+ 
+let edad = 25; // Números
+let mensaje = "¡Hola, mundo!"; // Cadenas de texto (Strings)
+let esMayorDeEdad = true; // Booleanos (true o false)</code></pre></div>
+                    <p class="mt-2">También existe <code>var</code>, una forma más antigua de declarar variables, pero se recomienda usar <code>let</code> y <code>const</code>.</p>
+                `
+            },
+            {
+                title: "La Consola del Navegador",
+                content: `
+                    <p>La consola es la mejor amiga de un desarrollador de JavaScript. Es una herramienta en tu navegador (puedes abrirla con F12 o clic derecho -> Inspeccionar -> Consola) donde puedes ver mensajes, errores y probar código.</p>
+                    <p>El comando <code>console.log()</code> te permite imprimir cualquier variable o mensaje en la consola para depurar tu código.</p>
+                    <div class="code-block"><pre><code class="language-javascript">let saludo = "Bienvenido a JavaScript";
+console.log(saludo); // "Bienvenido a JavaScript" aparecerá en la consola
+
+let a = 10;
+let b = 20;
+console.log(a + b); // 30 aparecerá en la consola</code></pre></div>
+                `
+            },
+            {
+                title: "Interactuando con el DOM",
+                content: `
+                    <p>El DOM (Document Object Model) es la representación de tu HTML que JavaScript puede entender y manipular. JS puede "ver" cada elemento de tu página como un objeto.</p>
+                    <p>Para empezar a manipular el DOM, primero necesitamos seleccionar un elemento. El método más común es <code>document.getElementById()</code>.</p>
+                    <div class="code-block"><pre><code class="language-javascript">// HTML: &lt;h1 id="titulo"&gt;Título Original&lt;/h1&gt;
+
+// En tu archivo .js:
+// 1. Seleccionamos el elemento por su ID y lo guardamos en una variable
+const miTitulo = document.getElementById("titulo");
+
+// 2. Manipulamos sus propiedades. Por ejemplo, cambiamos su texto.
+miTitulo.textContent = "¡Título Cambiado con JS!";
+
+// 3. O cambiamos su estilo.
+miTitulo.style.color = "purple";</code></pre></div>
+                    <p class="mt-2"><code>textContent</code> y <code>style</code> son propiedades del objeto <code>miTitulo</code> que representan el contenido de texto y los estilos en línea del elemento <code>&lt;h1&gt;</code>, respectivamente.</p>
+                `
+            },
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Has dado tus primeros pasos en JavaScript: sabes qué es, cómo incluirlo en tu página, cómo guardar datos en variables y cómo manipular tu primer elemento HTML. ¡Vamos al quiz!</p>"
+            }
+        ],
+        quiz: [
+            { question: "¿Para qué se utiliza principalmente JavaScript en el desarrollo web?", options: ["Para estructurar el contenido de la página", "Para dar estilos y colores a la página", "Para añadir interactividad y comportamiento a la página", "Para gestionar bases de datos"], answer: "Para añadir interactividad y comportamiento a la página" },
+            { question: "¿Dónde se recomienda colocar la etiqueta &lt;script&gt; para enlazar un archivo JS externo?", options: ["Dentro de la etiqueta &lt;head&gt;", "Justo después de la etiqueta &lt;body&gt;", "Justo antes de cerrar la etiqueta &lt;/body&gt;", "Fuera de la etiqueta &lt;html&gt;"], answer: "Justo antes de cerrar la etiqueta &lt;/body&gt;" },
+            { question: "Si necesitas guardar un valor que NUNCA va a cambiar, como el número Pi, ¿qué palabra clave deberías usar?", options: ["let", "var", "const", "static"], answer: "const" },
+            { question: "Y si el valor de una variable SÍ puede cambiar, como la puntuación de un jugador, ¿qué palabra clave es la más adecuada?", options: ["let", "const", "fixed", "variable"], answer: "let" },
+            { question: "¿Qué comando usarías para imprimir un mensaje o el valor de una variable en la consola del navegador?", options: ["document.write()", "alert()", "console.log()", "print()"], answer: "console.log()" },
+            { question: "El DOM (Document Object Model) es...", options: ["Un lenguaje de programación", "Una hoja de estilos", "La representación de la estructura HTML que JS puede manipular", "Un servidor web"], answer: "La representación de la estructura HTML que JS puede manipular" },
+            { question: "¿Qué método de `document` se usa para seleccionar un elemento por su atributo `id`?", options: ["getElementByClass()", "querySelector()", "getElement()", "getElementById()"], answer: "getElementById()" },
+            { question: "Después de seleccionar un elemento con `const el = document.getElementById('miId');`, ¿cómo cambiarías su color de texto a rojo?", options: ["el.color = 'red';", "el.style.color = 'red';", "el.changeColor('red');", "el.css('color', 'red');"], answer: "el.style.color = 'red';" },
+            { question: "El código JavaScript se ejecuta en...", options: ["El servidor web", "La base de datos", "El navegador del usuario", "El editor de código"], answer: "El navegador del usuario" },
+            { question: "Para cambiar el texto visible dentro de un elemento, puedes modificar su propiedad...", options: ["text", "content", "textContent", "value"], answer: "textContent" }
+        ]
+    },
+    { // Nivel 7 - Funciones en JavaScript: Explicar código
+        title: "Funciones en JavaScript",
+        lesson: [
+            {
+                title: "Código Completo: Funciones",
+                content: `
+                    <p>Aquí tienes un ejemplo de código con las funciones que aprenderás en este nivel:</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                        <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                        </div>
+                        <pre class="p-4"><code class="language-javascript">function saludar(nombre) {
+  return "Hola, " + nombre;
+}
+
+let miFuncion = function() {
+  console.log("Función de expresión");
+};
+
+const funcionFlecha = () => {
+  console.log("Función flecha");
+};</code></pre>
+                    </div>
+                `
+            },
+            {
+                title: "Explicación del Código: Declaración de Funciones",
+                content: `
+                    <p>Las funciones son bloques de código reutilizables.</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-javascript">function saludar(nombre) {
+    return "¡Hola, " + nombre + "!";
+}</code></pre>
+                    </div>
+                    <p>La función <code>saludar</code> toma un parámetro <code>nombre</code> y devuelve un saludo personalizado.</p>
+                `
+            },
+            {
+                title: "Explicación del Código: Llamando Funciones",
+                content: `
+                    <p>Para ejecutar una función, la llamas con su nombre seguido de paréntesis.</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-javascript">console.log(saludar("Ana")); // ¡Hola, Ana!</code></pre>
+                    </div>
+                `
+            },
+            {
+                title: "Tipos de Funciones",
+                content: `
+                    <p>JavaScript tiene diferentes formas de declarar funciones:</p>
+                    <ul>
+                        <li><strong>Declaración de función</strong> - <code>function nombre() {}</code></li>
+                        <li><strong>Expresión de función</strong> - <code>const nombre = function() {}</code></li>
+                        <li><strong>Función flecha</strong> - <code>const nombre = () => {}</code></li>
+                    </ul>
+                `
+            },
+            {
+                title: "Funciones con Parámetros",
+                content: `
+                    <p>Las funciones pueden recibir parámetros para trabajar con diferentes valores.</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-javascript">function saludar(nombre) {
+    return "Hola, " + nombre + "!";
+}
+
+console.log(saludar("María"));  // "Hola, María!"
+console.log(saludar("Juan"));   // "Hola, Juan!"
+
+// Múltiples parámetros
+function sumar(a, b) {
+    return a + b;
+}
+
+console.log(sumar(5, 3));  // 8</code></pre>
+                    </div>
+                    <p>Los parámetros permiten que las funciones sean reutilizables con diferentes datos.</p>
+                `
+            },
+            {
+                title: "Funciones Anónimas y Flecha",
+                content: `
+                    <p>JavaScript permite crear funciones sin nombre y funciones flecha.</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-javascript">// Función anónima
+let despedir = function(nombre) {
+    return "Adiós, " + nombre;
+};
+
+// Función flecha
+let multiplicar = (a, b) => a * b;
+
+// Función flecha con cuerpo
+let esMayor = (edad) => {
+    if (edad >= 18) {
+        return "Mayor de edad";
+    } else {
+        return "Menor de edad";
+    }
+};
+
+console.log(despedir("Ana"));     // "Adiós, Ana"
+console.log(multiplicar(4, 5));   // 20
+console.log(esMayor(20));         // "Mayor de edad"</code></pre>
+                    </div>
+                    <p>Las funciones flecha son más concisas y no tienen su propio <code>this</code>.</p>
+                `
+            },
+            {
+                title: "Alcance de Variables",
+                content: `
+                    <p>El alcance determina dónde se puede acceder a una variable.</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-javascript">// Variable global
+let global = "Soy global";
+
+function ejemplo() {
+    // Variable local a la función
+    let local = "Soy local";
+    
+    if (true) {
+        // Variable de bloque
+        let bloque = "Soy de bloque";
+        var varBloque = "Soy var (no respeta bloque)";
+        console.log(bloque);  // Funciona
+    }
+    
+    console.log(local);      // Funciona
+    console.log(varBloque);  // Funciona (var no respeta bloques)
+    console.log(global);     // Funciona
+}
+
+console.log(global);  // Funciona
+// console.log(local); // Error: local no está definida</code></pre>
+                    </div>
+                    <p><code>let</code> y <code>const</code> tienen alcance de bloque, <code>var</code> tiene alcance de función.</p>
+                `
+            },
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Has aprendido sobre funciones en JavaScript. ¡Demuestra tus conocimientos!</p>"
+            }
+        ],
+        quiz: [
+            { question: "¿Cómo se declara una función?", options: ["function miFuncion()", "def miFuncion()", "func miFuncion()", "declare miFuncion()"], answer: "function miFuncion()" },
+            { question: "¿Qué hace return?", options: ["Termina la función", "Devuelve un valor", "Crea una variable", "Todas las anteriores"], answer: "Todas las anteriores" },
+            { question: "¿Qué son los parámetros?", options: ["Valores que devuelve la función", "Variables que recibe la función", "Nombre de la función", "Tipo de función"], answer: "Variables que recibe la función" },
+            { question: "¿Cómo se llama una función?", options: ["miFuncion{}", "miFuncion()", "miFuncion[]", "miFuncion<>"], answer: "miFuncion()" },
+            { question: "¿Qué devuelve una función sin return?", options: ["null", "undefined", "error", "nada"], answer: "undefined" },
+            { question: "¿Se pueden anidar funciones?", options: ["Sí", "No", "Solo en objetos", "Solo en arrays"], answer: "Sí" },
+            { question: "¿Qué es una función anónima?", options: ["Función sin nombre", "Función con errores", "Función muy pequeña", "Función lenta"], answer: "Función sin nombre" },
+            { question: "¿Para qué sirven las funciones?", options: ["Solo para matemáticas", "Reutilizar código", "Crear variables", "Mostrar mensajes"], answer: "Reutilizar código" },
+            { question: "¿Qué palabra clave crea funciones?", options: ["func", "function", "def", "declare"], answer: "function" },
+            { question: "¿Pueden las funciones tener parámetros por defecto?", options: ["Sí", "No", "Solo en ES6+", "Solo en objetos"], answer: "Sí" }
+        ]
+    },
+    { // Nivel 8 - Eventos en JavaScript: Explicar código
+        title: "Eventos en JavaScript",
+        lesson: [
+            {
+                title: "Código Completo: Eventos",
+                content: `
+                    <p>Aquí tienes un ejemplo de código con los eventos que aprenderás en este nivel:</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                        <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                        </div>
+                        <pre class="p-4"><code class="language-html">&lt;button id="miBoton"&gt;Púlsame&lt;/button&gt;
+&lt;script&gt;
+    const boton = document.getElementById('miBoton');
+    boton.addEventListener('click', () => {
+        alert('Botón pulsado');
+    });
+&lt;/script&gt;</code></pre>
+                    </div>
+                `
+            },
+            {
+                title: "Explicación del Código: Escuchando Eventos",
+                content: `
+                    <p>Los eventos permiten que JavaScript responda a acciones del usuario.</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-javascript">const boton = document.getElementById('miBoton');
+boton.addEventListener('click', function() {
+    alert('¡Botón clickeado!');
+});</code></pre>
+                    </div>
+                    <p>Este código busca un elemento con ID 'miBoton' y le añade un escuchador de eventos para el clic.</p>
+                `
+            },
+            {
+                title: "Explicación del Código: Función del Evento",
+                content: `
+                    <p>La función se ejecuta cuando ocurre el evento.</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-javascript">function() {
+    alert('¡Botón clickeado!');
+}</code></pre>
+                    </div>
+                    <p>Esta es una función anónima que se ejecuta cuando se hace clic en el botón.</p>
+                `
+            },
+            {
+                title: "Tipos de Eventos Comunes",
+                content: `
+                    <p>Algunos eventos comunes en JavaScript:</p>
+                    <ul>
+                        <li><code>click</code> - Clic del mouse</li>
+                        <li><code>mouseover</code> - Mouse sobre elemento</li>
+                        <li><code>keydown</code> - Tecla presionada</li>
+                        <li><code>submit</code> - Formulario enviado</li>
+                        <li><code>load</code> - Página cargada</li>
+                    </ul>
+                `
+            },
+            {
+                title: "¡Listo para el Quiz!",
+                content: "<p>Has aprendido sobre eventos en JavaScript. ¡Muestra que sabes manejarlos!</p>"
+            }
+        ],
+        quiz: [
+            { question: "¿Qué método añade escuchadores de eventos?", options: ["addEvent", "addEventListener", "onEvent", "listenEvent"], answer: "addEventListener" },
+            { question: "¿Qué evento se dispara al hacer clic?", options: ["click", "onclick", "mouseclick", "buttonclick"], answer: "click" },
+            { question: "¿Qué evento se dispara al cambiar input?", options: ["input", "change", "modify", "update"], answer: "change" },
+            { question: "¿Qué contiene información del evento?", options: ["Event object", "Element object", "Window object", "Document object"], answer: "Event object" },
+            { question: "¿Cómo se previene el comportamiento por defecto?", options: ["preventDefault()", "stopPropagation()", "cancelEvent()", "blockDefault()"], answer: "preventDefault()" },
+            { question: "¿Qué evento se dispara al enviar formulario?", options: ["send", "submit", "post", "form"], answer: "submit" },
+            { question: "¿Qué evento se dispara al cargar la página?", options: ["ready", "load", "start", "init"], answer: "load" },
+            { question: "¿Para qué sirven los eventos?", options: ["Mostrar datos", "Responder a acciones del usuario", "Crear funciones", "Definir variables"], answer: "Responder a acciones del usuario" },
+            { question: "¿Se pueden quitar escuchadores de eventos?", options: ["Sí", "No", "Solo algunos", "Solo en objetos"], answer: "Sí" },
+            { question: "¿Qué método quita escuchadores?", options: ["removeEventListener", "deleteEventListener", "offEvent", "stopEvent"], answer: "removeEventListener" }
+        ]
+    },
+    { // Nivel 9 - Proyecto Final: Código completo
+        title: "Proyecto Final: Página Web Completa",
+        lesson: [
+            {
+                title: "Código Completo del Proyecto Final",
+                content: `
+                    <p>Aquí tienes el código completo de una página web interactiva que combina HTML, CSS y JavaScript:</p>
+                    <div class="code-block rounded-lg overflow-hidden mt-4">
+                      <div class="code-block-header px-4 py-2 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                      </div>
+                      <pre class="p-4"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Mi Proyecto Web&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .contenedor {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .tarea {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .completada {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="contenedor"&gt;
+        &lt;h1&gt;Lista de Tareas Interactiva&lt;/h1&gt;
+        &lt;div id="nueva-tarea"&gt;
+            &lt;input type="text" id="input-tarea" placeholder="Nueva tarea..."&gt;
+            &lt;button onclick="agregarTarea()"&gt;Agregar&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;ul id="lista-tareas"&gt;&lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        let tareas = [];
 
         function agregarTarea() {
             const input = document.getElementById('input-tarea');
@@ -3390,16 +2345,7 @@ let currentPracticeStep = 0;
 let userProgress = { completedLevels: [], quizScores: {} };
 const COURSE_ID = 'python';
 
-const challengeMap = {
-    4: { id: 'python_challenge1', title: 'Desafío: Variables' },
-    5: { id: 'python_challenge2', title: 'Desafío: Control' },
-    9: { id: 'python_challenge3', title: 'Desafío: Funciones' },
-    10: { id: 'python_challenge4', title: 'Desafío: Diccionarios' },
-    14: { id: 'python_challenge5', title: 'Desafío: POO Básica' },
-    15: { id: 'python_challenge6', title: 'Desafío: Excepciones' },
-    18: { id: 'python_challenge7', title: 'Desafío: Datos' },
-    19: { id: 'python_challenge8', title: 'Desafío Final: Integración' }
-};
+
 
 // INIT (Strict)
 document.addEventListener('DOMContentLoaded', async () => {
@@ -3416,7 +2362,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const localSession = JSON.parse(localStorage.getItem('currentUser'));
         if (!localSession || !localSession.id) {
             console.warn('⚠️ Sesión inválida en Python Course.');
-            window.location.href = 'main.sql';
+            window.location.href = 'index.html';
             return;
         }
         
@@ -3449,7 +2395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const localSession = JSON.parse(localStorage.getItem('currentUser'));
     if (!localSession || !localSession.id) {
         console.warn('⚠️ Sesión inválida en Python Course.');
-        window.location.href = 'main.sql';
+        window.location.href = 'index.html';
         return;
     }
     
@@ -3478,9 +2424,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (window.renderLevelSelection) renderLevelSelection();
         if (window.showPanel) showPanel('levelSelection');
         
-        // Check for Challenge Return
-        const urlParams = new URLSearchParams(window.location.search);
-        const challengeCompleted = urlParams.get('completed');
+        
         
         if (hideLoading) hideLoading();
         
@@ -3561,6 +2505,277 @@ function showLevelUpNotification() {
     }, 3000);
 }
 
+// ================= LÓGICA DEL TOUR EN LECCIONES =================
+
+
+window.monacoRequireConfigured = false;
+window.originalLessonHTML = ''; // Guardará el contenido original de la lección
+
+function ensureMonacoLoaded(callback) {
+    if (window.monaco) return callback();
+    if (!window.monacoRequireConfigured) {
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        window.monacoRequireConfigured = true;
+    }
+    require(['vs/editor/editor.main'], function() {
+        window.monaco = monaco;
+        if (window.themeManager) window.themeManager.defineCustomThemes();
+        callback();
+    });
+}
+
+const keywordDocs = {
+   "print": { 
+        title: "Comando print()", 
+        desc: "<p>Es la función más fundamental y utilizada de Python. Su propósito exclusivo es expulsar y mostrar información gráfica en la terminal, para que el operador logre leer los resultados generados por el código.</p><p>Puedes imprimir textos, variables e incluso cálculos directamente separados por comas.</p>", 
+        example: "print('¡Hola Academia!')\nprint(5 + 10) # En consola saldrá 15\nprint('Total:', 200)",
+        ref: "Nivel 1" 
+   },
+   "input": { 
+        title: "Comando input()", 
+        desc: "<p>Esta función representa la <strong>Pausa Suprema</strong>. Al activarse, detiene agresivamente el programa e inmoviliza la terminal a la espera de un humano.</p><p>Solo avanzará una vez que el espectador teclee algún texto y presione la tecla <code>ENTER</code>. Recuerda: cualquier tecla que presione el humano <strong>siempre</strong> se registrará pura y llanamente como Texto Crudo (String), nunca números nativos.</p>", 
+        example: "poder = input('Mide tu nivel: ')\n# Si tecleas 9000 será texto '9000'",
+        ref: "Nivel 1" 
+   },
+   "if": { 
+        title: "Bloque if (Si...)", 
+        desc: "<p>Es el guardia de seguridad central. Significa 'Solamente si pasa esto...'. Evalúa matemáticamente o de forma lógica una condición inmediata.</p><p>Si el sistema aprueba (sale <code>True</code>), las siguientes líneas indentadas (tabuladas) se ejecutarán obedientemente.</p>", 
+        example: "if energia < 20:\n    print('Tu batería se agota')",
+        ref: "Nivel 3" 
+   },
+   "elif": { 
+        title: "Bloque elif (Sino, si...)", 
+        desc: "<p>Es un <code>if</code> secundario o de repuesto. Se ejecuta únicamente si el <code>if</code> o los <code>elif</code> situados arriba fallaron. Sirve para enlazar inmensas cadenas lógicas y atrapar un bloque específico uno detrás del otro.</p>", 
+        example: "if color == 'Rojo':\n    print('Peligro')\nelif color == 'Amarillo':\n    print('Precaución')\nelse:\n    print('Siga')",
+        ref: "Nivel 3" 
+   },
+   "else": { 
+        title: "Bloque else (De lo contrario...)", 
+        desc: "<p>El plan final de respaldo o la red de seguridad del código. El bloque <code>else</code> captura literalmente todo caso paralelo que rebotó de los <code>if</code>. Por naturaleza, <strong>jamás admite</strong> condiciones escritas frente a él.</p>", 
+        example: "if edad >= 18:\n    print('Acceso Total')\nelse:\n    print('Acceso Denegado')",
+        ref: "Nivel 3" 
+   },
+   "while": { 
+        title: "Estructura while (Mientras...)", 
+        desc: "<p>Un espiral cósmico o <strong>bucle de condición</strong> indefinido. Repetirá la secuencia una, y otra, y otra vez, hasta que milagrosamente la condición que evalúa termine convertida en Falsa.</p><p>¡Si olvidas cambiar la variable que le das como tope, el bucle será infinito y tu computadora morirá del pánico colapsando!</p>", 
+        example: "ciclos = 3\nwhile ciclos > 0:\n    print('Faltan:', ciclos)\n    ciclos = ciclos - 1",
+        ref: "Nivel 4" 
+   },
+   "for": { 
+        title: "Estructura for (Para cada...)", 
+        desc: "<p>El más controlado y elegante de los bucles en el desarrollo diario. A diferencia del inestable <code>while</code>, un ciclo <code>for</code> recorre quirúrgicamente listas completas o textos hasta el final, iterando un objeto y procesándolo uno por uno de forma finita y sin riesgo de cierre mortal continuo.</p>", 
+        example: "for persona in ['Steven', 'Kurumi']:\n    print('Te veo, ' + persona)",
+        ref: "Nivel 5" 
+   },
+   "range": { 
+        title: "Generador range()", 
+        desc: "<p>Un generador aritmético veloz que escupe enormes fábricas de números. Crea una ráfaga secuencial instantánea.</p><p>Suele ir incrustado dentro de los <code>for</code> para enumerar veces específicas y determinar paradas matemáticas.</p>", 
+        example: "for numero in range(3):\n    print(numero) # Arroja 0, 1, 2",
+        ref: "Nivel 5" 
+   },
+   "int": { 
+        title: "Casting int()", 
+        desc: "<p>Significa Integer (Número Entero). Corta radicalmente los textos con números que metes en inputs y decapitada fracciones si le introduces decimales, quedándose únicamente con un número redondo válido en las mates.</p>", 
+        example: "base = int('200') # De Texto a Número\nala = int(10.9) # Termina siendo 10",
+        ref: "Nivel 2" 
+   },
+   "float": { 
+        title: "Casting float()", 
+        desc: "<p>Significa Número de Coma Flotante (Con decimales). Un conversor numérico preciso. Mantiene todo valor intacto para operar matemáticametne con exactitud microscópica, sin cercenar las fracciones.</p>", 
+        example: "peso = float('68.5') # Texto a Decimal matemático",
+        ref: "Nivel 2" 
+   },
+   "str": { 
+        title: "Casting str()", 
+        desc: "<p>Significa String (Cadena de Texto). Permite convertir números vivos o estados lógicos como True o False en simples letras pasivas, inhabilitadas para sumar y diseñadas exclusivamente para poder fundirlas con frases.</p>", 
+        example: "resultado = 500\nprint('Lograste ' + str(resultado))",
+        ref: "Nivel 2" 
+   },
+   "True": { 
+        title: "Booleano True (Verdadero)", 
+        desc: "<p>Absoluta Verdad en el procesador. Indica estado binario positivo. En una comparación, dictamina que el universo lógico ha cumplido tu afirmación.</p>", 
+        example: "es_mayor = True",
+        ref: "Nivel 3" 
+   },
+   "False": { 
+        title: "Booleano False (Falso)", 
+        desc: "<p>Negación bi-estado absoluta. Afirmación que falló miserablemente, o interruptor que está apagado temporalmente.</p>", 
+        example: "vivo = False",
+        ref: "Nivel 3" 
+   }
+};
+
+function restoreLessonContent() {
+    if (window.originalLessonHTML !== '') {
+        const contentDiv = document.getElementById('lesson-content');
+        contentDiv.style.opacity = '0';
+        setTimeout(() => {
+            contentDiv.innerHTML = window.originalLessonHTML;
+            contentDiv.style.opacity = '1';
+            window.originalLessonHTML = ''; // Limpiar estado
+            // Restaurar header
+            document.getElementById('lesson-narrator-title').textContent = 'Teoría y Conceptos';
+            document.getElementById('lesson-narrator-subtitle').textContent = 'Lectura';
+            document.getElementById('lesson-narrator-icon').innerHTML = '<i data-lucide="book-open" class="w-4 h-4"></i>';
+            lucide.createIcons();
+            
+            // Si el Monaco estaba resaltado, limpiamos las decoraciones
+            if (window.tourDecorations) window.tourDecorations.clear();
+        }, 200);
+    }
+}
+
+function showKeywordTooltip(word, posLine) {
+    const doc = keywordDocs[word];
+    if (!doc) return; 
+
+    const contentDiv = document.getElementById('lesson-content');
+    
+    // Guardar original solo la primera vez si no hay estado previo almacenado
+    if (window.originalLessonHTML === '') {
+        window.originalLessonHTML = contentDiv.innerHTML;
+    }
+    
+    // Resaltar suavemente la linea en Monaco (Ayuda visual)
+    if (window.lessonMainMonacoEditor && posLine) {
+        const decorations = [{
+            range: new monaco.Range(posLine, 1, posLine, 1),
+            options: { isWholeLine: true, className: 'bg-accent/30 border-l-4 border-accent' }
+        }];
+        if (!window.tourDecorations) window.tourDecorations = window.lessonMainMonacoEditor.createDecorationsCollection();
+        window.tourDecorations.set(decorations);
+        window.lessonMainMonacoEditor.revealLineInCenter(posLine);
+    }
+
+    // Adaptar Header del Panel
+    document.getElementById('lesson-narrator-title').textContent = 'Diccionario de Comandos';
+    document.getElementById('lesson-narrator-subtitle').textContent = 'Profundizando la información';
+    document.getElementById('lesson-narrator-icon').innerHTML = '<i data-lucide="book" class="w-4 h-4"></i>';
+    
+    // Animar la transición del texto
+    contentDiv.style.opacity = '0';
+    setTimeout(() => {
+        contentDiv.innerHTML = `
+            <div class="mb-4">
+                <button onclick="restoreLessonContent()" class="btn-secondary flex items-center gap-2 mb-6 px-4 py-2 text-sm bg-accent/20 border-accent/40 hover:bg-accent/40 text-accent transition">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Regresar a la Lección General
+                </button>
+            </div>
+            
+            <div class="glass p-6 rounded-xl border border-accent/40 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
+                
+                <h2 class="text-2xl font-bold font-mono text-white mb-4 flex items-center gap-3">
+                    <span class="text-accent">${word}</span> 
+                    <span class="text-xs px-2 py-1 rounded bg-white/10 text-gray-300 font-sans tracking-wide uppercase">Definición</span>
+                </h2>
+                
+                <div class="prose prose-invert prose-p:leading-relaxed text-gray-300 mb-6">
+                    ${doc.desc}
+                </div>
+                
+                <div class="bg-black/40 rounded-lg p-4 font-mono text-sm border-l-4 border-accent shadow-inner">
+                    <p class="text-gray-400 text-xs mb-2 uppercase tracking-wide">Ejemplo Práctico en código:</p>
+                    <pre class="bg-transparent m-0 p-0 overflow-x-auto"><code class="text-blue-300">${doc.example}</code></pre>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-sm font-bold text-gray-400">
+                    <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-accent"></i> Visto originalmente en ${doc.ref}</span>
+                </div>
+            </div>
+        `;
+        contentDiv.style.opacity = '1';
+        lucide.createIcons();
+    }, 200);
+}
+
+// ============== REESCRITURA COMPLETA DEL SISTEMA "TOUR" ==============
+function startLessonTour(tourSteps) { 
+    if (!tourSteps || tourSteps.length === 0) return;
+
+    const contentDiv = document.getElementById('lesson-content');
+    
+    // Guardar original si estamos empezando un tour limpio de cero
+    if (window.originalLessonHTML === '') {
+        window.originalLessonHTML = contentDiv.innerHTML;
+    }
+
+    let currentStep = 0;
+    
+    // Adaptar Header del Panel
+    document.getElementById('lesson-narrator-title').textContent = 'Guía Interactiva Paso a Paso';
+    document.getElementById('lesson-narrator-subtitle').textContent = 'Anatomía del código';
+    document.getElementById('lesson-narrator-icon').innerHTML = '<i data-lucide="microscope" class="w-4 h-4"></i>';
+
+    function renderTourUI(index) {
+        if (index >= tourSteps.length) {
+            restoreLessonContent();
+            return;
+        }
+
+        const step = tourSteps[index];
+
+        // Highlight en Monaco visualmente para anclar la pantalla al código
+        if (window.lessonMainMonacoEditor && step.line) {
+            const decorations = [{
+                range: new monaco.Range(step.line, 1, step.line, 1),
+                options: { isWholeLine: true, className: 'bg-accent/40 border-l-4 border-accent' }
+            }];
+            if (!window.tourDecorations) window.tourDecorations = window.lessonMainMonacoEditor.createDecorationsCollection();
+            window.tourDecorations.set(decorations);
+            window.lessonMainMonacoEditor.revealLineInCenter(step.line);
+        }
+
+        const btnText = index === tourSteps.length - 1 ? "Completar Análisis" : "Siguiente Línea";
+        const iconName = index === tourSteps.length - 1 ? "check-circle" : "arrow-down-circle";
+        
+        contentDiv.style.opacity = '0';
+        setTimeout(() => {
+            contentDiv.innerHTML = `
+                <div class="mb-4 flex flex-wrap gap-3 justify-between items-center">
+                    <button id="tour-back-btn" class="btn-secondary flex items-center gap-2 px-4 py-2 text-sm bg-accent/20 border-accent/40 hover:bg-accent/40 text-accent transition">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Regresar a la Lección
+                    </button>
+                    <span class="text-sm font-mono text-gray-400 bg-black/40 px-3 py-1 rounded-full border border-white/5">Paso ${index + 1} de ${tourSteps.length}</span>
+                </div>
+                
+                <div class="glass p-6 rounded-xl border border-accent/30 bg-black/20 shadow-xl relative mt-4">
+                    <div class="flex items-center gap-3 mb-4 border-b border-white/10 pb-3">
+                        <div class="w-10 h-10 rounded-full bg-accent/20 flex flex-shrink-0 items-center justify-center text-accent">
+                            <i data-lucide="focus" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">${step.title || "Explicando línea " + step.line}</h3>
+                    </div>
+                    
+                    <div class="prose prose-invert prose-p:leading-loose text-gray-200 mb-6 text-md">
+                        ${step.text}
+                    </div>
+                    
+                    <div class="flex justify-end pt-4 mt-2">
+                        <button id="tour-next-btn" class="btn-primary flex items-center gap-2">
+                            ${btnText} <i data-lucide="${iconName}" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-6 text-sm text-gray-500 text-center flex gap-2 items-center justify-center">
+                    <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i> También puedes clickear palabras clave azules en el código para ver el diccionario
+                </div>
+            `;
+            contentDiv.style.opacity = '1';
+            lucide.createIcons();
+
+            document.getElementById('tour-back-btn').onclick = restoreLessonContent;
+            document.getElementById('tour-next-btn').onclick = () => {
+                renderTourUI(index + 1);
+            };
+        }, 150);
+    }
+    
+    renderTourUI(currentStep);
+}
+
+// ================================================================
+
 const panels = { levelSelection: document.getElementById('level-selection-panel'), lesson: document.getElementById('lesson-panel'), quiz: document.getElementById('quiz-panel'), results: document.getElementById('results-panel'), practice: document.getElementById('practice-panel') };
 const savedTheme = localStorage.getItem('theme') || 'dark';
 if (savedTheme === 'light') document.documentElement.classList.remove('dark');
@@ -3577,164 +2792,222 @@ function renderLevelSelection() {
     if (!levelGrid) return;
     
     levelGrid.innerHTML = '';
+    levelGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.9rem; width: 100%; max-width: 860px; margin-bottom: 2rem;';
+    levelGrid.className = '';
     
-    // Asegurarse de que userProgress tiene las propiedades necesarias
     if (!userProgress.completedLevels) {
         userProgress.completedLevels = [];
     }
     
+    const totalLevels = courseData.length;
+    const completedCount = userProgress.completedLevels.length;
+    const progressPercent = Math.round((completedCount / totalLevels) * 100);
+    
+    // Actualizar barra de progreso general
+    const progressBar = document.getElementById('overall-progress-bar');
+    const progressText = document.getElementById('overall-progress-text');
+    if (progressBar) progressBar.style.width = progressPercent + '%';
+    if (progressText) progressText.textContent = `${completedCount}/${totalLevels} niveles`;
+    
     courseData.forEach((level, index) => {
-        // Un nivel está desbloqueado si:
-        // 1. Es el nivel 1 (índice 0) O
-        // 2. El nivel anterior está completado
         const isUnlocked = index === 0 || userProgress.completedLevels.includes(index - 1);
         const isCompleted = userProgress.completedLevels.includes(index);
         
         const levelNode = document.createElement('div');
-        levelNode.className = `level-node ${isCompleted ? 'completed' : isUnlocked ? 'unlocked' : 'locked'}`;
-        levelNode.style.display = 'flex';
-        levelNode.style.flexDirection = 'column';
-        levelNode.style.alignItems = 'center';
-        levelNode.style.position = 'relative';
-        levelNode.style.cursor = isUnlocked ? 'pointer' : 'not-allowed';
+        levelNode.className = `level-node ${isUnlocked ? 'unlocked' : 'locked'} ${isCompleted ? 'completed' : ''}`;
         
-        const iconWrapper = document.createElement('div');
-        iconWrapper.className = 'level-icon-wrapper';
-        iconWrapper.style.width = '64px';
-        iconWrapper.style.height = '64px';
-        iconWrapper.style.borderRadius = '50%';
-        iconWrapper.style.display = 'flex';
-        iconWrapper.style.alignItems = 'center';
-        iconWrapper.style.justifyContent = 'center';
-        iconWrapper.style.border = '3px solid';
-        iconWrapper.style.transition = 'all 0.3s ease';
-        
-        const icon = document.createElement('i');
+        // Ribbon para niveles completados
         if (isCompleted) {
-            icon.setAttribute('data-lucide', 'check-circle');
-            iconWrapper.style.borderColor = 'var(--green)';
-            iconWrapper.style.backgroundColor = 'var(--green)';
-            iconWrapper.style.color = 'var(--card-background)';
-        } else if (isUnlocked) {
-            icon.setAttribute('data-lucide', 'circle');
-            iconWrapper.style.borderColor = 'var(--accent)';
-            iconWrapper.style.color = 'var(--accent)';
-        } else {
-            icon.setAttribute('data-lucide', 'lock');
-            iconWrapper.style.borderColor = 'var(--border)';
-            iconWrapper.style.color = 'var(--border)';
-            iconWrapper.style.backgroundColor = 'transparent';
+            const ribbon = document.createElement('div');
+            ribbon.className = 'status-ribbon';
+            ribbon.innerText = 'HECHO';
+            levelNode.appendChild(ribbon);
         }
-        icon.className = 'w-8 h-8';
         
-        iconWrapper.appendChild(icon);
+        // Icono dinámico brillante
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'node-icon';
+        const iconName = isCompleted ? 'check-circle' : isUnlocked ? 'play-circle' : 'lock';
+        iconDiv.innerHTML = `<i data-lucide="${iconName}"></i>`;
+        levelNode.appendChild(iconDiv);
         
-        const levelNumber = document.createElement('div');
-        levelNumber.className = 'level-number';
-        levelNumber.textContent = `Nivel ${index + 1}`;
-        levelNumber.style.marginTop = '8px';
-        levelNumber.style.fontWeight = '600';
-        levelNumber.style.fontSize = '0.9rem';
-        
-        levelNode.appendChild(iconWrapper);
-        levelNode.appendChild(levelNumber);
+        // Información del nivel
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'flex flex-col items-center gap-1';
+        infoDiv.innerHTML = `
+            <span class="node-number">Nivel ${index + 1}</span>
+            <div class="node-title">${level.title}</div>
+        `;
+        levelNode.appendChild(infoDiv);
         
         if (isUnlocked) {
-            levelNode.addEventListener('click', () => startLevel(index));
+            levelNode.onclick = () => startLevel(index);
         }
         
         levelGrid.appendChild(levelNode);
     });
     
-    // Render practice levels grid
-    const practiceLevelGrid = document.getElementById('practice-level-grid');
-    if (practiceLevelGrid) {
-        practiceLevelGrid.innerHTML = '';
-        practiceData.forEach((practice, index) => {
-            const practiceNode = document.createElement('div');
-            practiceNode.className = 'level-node unlocked';
-            practiceNode.style.display = 'flex';
-            practiceNode.style.flexDirection = 'column';
-            practiceNode.style.alignItems = 'center';
-            practiceNode.style.cursor = 'pointer';
-            
-            const iconWrapper = document.createElement('div');
-            iconWrapper.className = 'level-icon-wrapper';
-            iconWrapper.style.width = '64px';
-            iconWrapper.style.height = '64px';
-            iconWrapper.style.borderRadius = '50%';
-            iconWrapper.style.display = 'flex';
-            iconWrapper.style.alignItems = 'center';
-            iconWrapper.style.justifyContent = 'center';
-            iconWrapper.style.border = '3px solid var(--yellow)';
-            iconWrapper.style.color = 'var(--yellow)';
-            
-            const icon = document.createElement('i');
-            icon.setAttribute('data-lucide', 'code-2');
-            icon.className = 'w-8 h-8';
-            iconWrapper.appendChild(icon);
-            
-            const practiceNumber = document.createElement('div');
-            practiceNumber.className = 'level-number';
-            practiceNumber.textContent = `Práctica ${index + 1}`;
-            practiceNumber.style.marginTop = '8px';
-            practiceNumber.style.fontWeight = '600';
-            practiceNumber.style.fontSize = '0.9rem';
-            
-            practiceNode.appendChild(iconWrapper);
-            practiceNode.appendChild(practiceNumber);
-            
-            practiceNode.addEventListener('click', () => startPractice(index));
-            
-            practiceLevelGrid.appendChild(practiceNode);
-        });
-    }
-    
-    lucide.createIcons();
+    if (window.lucide) window.lucide.createIcons();
 }
 
 function startLevel(levelIndex) { 
     currentLevel = levelIndex; 
     currentLessonStep = 0; 
-    renderLesson(); 
+    
+    // Mostramos el panel primero para que el layout se asiente
     showPanel('lesson'); 
+    
+    // Renderizamos la lección con un ligero delay para el Editor Monaco
+    setTimeout(() => {
+        renderLesson(); 
+    }, 50);
 }
 
 function renderLesson() {
+    // 1. Limpiar Monaco Editor previo si existe en el Code Panel
+    if (window.lessonMainMonacoEditor) {
+        window.lessonMainMonacoEditor.dispose();
+        window.lessonMainMonacoEditor = null;
+    }
+
     const levelData = courseData[currentLevel];
     const stepData = levelData.lesson[currentLessonStep];
-    document.getElementById('lesson-title').textContent = `Nivel ${currentLevel + 1}: ${stepData.title}`;
-    document.getElementById('lesson-content').innerHTML = stepData.content;
     
-    // Inicializar Monaco para bloques estáticos inmediatamente
-    setTimeout(() => {
-        initializeCodeBlockMonaco();
-        Prism.highlightAll(); // Fallback para otros elementos Prism si los hay
-    }, 50);
+    document.getElementById('lesson-title').textContent = `Nivel ${currentLevel + 1}: ${stepData.title || 'Lección'}`;
+    
+    const dialogPanel = document.getElementById('lesson-dialog-panel');
+    const codePanel = document.getElementById('lesson-code-panel');
+    const lessonContent = document.getElementById('lesson-content');
 
-    // Inicializar Consolas Interactivas
+    // 2. Animación de salida express
+    dialogPanel.style.opacity = '0';
+    dialogPanel.style.transform = 'translateY(10px)';
+
     setTimeout(() => {
-        const consoles = document.querySelectorAll('#lesson-content [data-code-base64], #lesson-content [data-code]');
-        consoles.forEach(div => {
-            if (div.dataset.codeBase64) {
-                 createInteractiveConsole(div.dataset.codeBase64, div.id, true);
-            } else if (div.dataset.code) {
-                createInteractiveConsole(div.dataset.code, div.id, false);
+        // 3. Evaluar el nuevo formato (Dialogo + Código) vs formato viejo (content)
+        if (stepData.dialogo) {
+            // Formato Nuevo (Nivel 1 reformulado)
+            lessonContent.innerHTML = stepData.dialogo;
+            
+            if (stepData.codigo) {
+                // Hay código para mostrar
+                codePanel.classList.remove('hidden');
+                codePanel.classList.add('flex');
+                dialogPanel.classList.replace('lg:w-full', 'lg:w-1/2');
+                
+                document.getElementById('lesson-code-filename').textContent = stepData.filename || 'ejemplo.py';
+                
+                // Boton tour: mostrar solo si hay tourSteps
+                const tourBtn = document.getElementById('code-tour-btn');
+                if (tourBtn) {
+                    if (stepData.tourSteps && stepData.tourSteps.length > 0) {
+                        tourBtn.classList.add('visible');
+                        tourBtn.onclick = () => startLessonTour(stepData.tourSteps);
+                        if (window.lucide) lucide.createIcons({ nodes: [tourBtn] });
+                    } else {
+                        tourBtn.classList.remove('visible');
+                        tourBtn.onclick = null;
+                    }
+                }
+                
+                // Renderizar Monaco Editor local
+                setTimeout(() => {
+                    const container = document.getElementById('lesson-monaco-container');
+                    if (container) {
+                        ensureMonacoLoaded(() => {
+                            window.lessonMainMonacoEditor = window.monaco.editor.create(container, {
+                                value: stepData.codigo.trim(),
+                                language: 'python',
+                                theme: 'tokyo-night',
+                                readOnly: true,
+                                minimap: { enabled: false },
+                                fontSize: 14,
+                                fontFamily: "'JetBrains Mono', monospace",
+                                scrollBeyondLastLine: false,
+                                padding: { top: 16 }, automaticLayout: true
+                            });
+
+                            // Attach listener interactivo al tocar keywords en cualquier nivel
+                            window.lessonMainMonacoEditor.onMouseDown(function (e) {
+                                if (e.target.type === window.monaco.editor.MouseTargetType.CONTENT_TEXT) {
+                                    var word = window.lessonMainMonacoEditor.getModel().getWordAtPosition(e.target.position);
+                                    if (word) {
+                                        showKeywordTooltip(word.word, e.target.position.lineNumber);
+                                    }
+                                }
+                            });
+
+                            // Autochain del tour o highlighter manual
+                            if (stepData.tourSteps && stepData.tourSteps.length > 0) {
+                                setTimeout(() => {
+                                    startLessonTour(stepData.tourSteps);
+                                }, 300);
+                            } else if (stepData.highlightLines && stepData.highlightLines.length > 0) {
+                                setTimeout(() => {
+                                    const decorations = stepData.highlightLines.map(line => ({
+                                        range: new window.monaco.Range(line, 1, line, 1),
+                                        options: { isWholeLine: true, className: 'bg-blue-500/30 border-l-4 border-blue-500' }
+                                    }));
+                                    window.lessonMainMonacoEditor.deltaDecorations([], decorations);
+                                }, 100);
+                            }
+                        });
+                    }
+                }, 100);
+            } else {
+                // Solo diálogo
+                codePanel.classList.add('hidden');
+                codePanel.classList.remove('flex');
+                dialogPanel.classList.replace('lg:w-1/2', 'lg:w-full');
             }
-        });
-    }, 100);
-    
+        } else {
+            // Formato Viejo (Fallback para Nivel 2-20)
+            codePanel.classList.add('hidden');
+            codePanel.classList.remove('flex');
+            dialogPanel.classList.replace('lg:w-1/2', 'lg:w-full');
+            
+            lessonContent.innerHTML = stepData.content;
+            
+            // Inicializar bloques viejos
+            setTimeout(() => {
+                initializeCodeBlockMonaco();
+                Prism.highlightAll();
+                
+                const consoles = document.querySelectorAll('#lesson-content [data-code-base64], #lesson-content [data-code]');
+                consoles.forEach(div => {
+                    if (div.dataset.codeBase64) {
+                         createInteractiveConsole(div.dataset.codeBase64, div.id, true);
+                    } else if (div.dataset.code) {
+                        createInteractiveConsole(div.dataset.code, div.id, false);
+                    }
+                });
+            }, 50);
+        }
+
+        // 4. Animación de Entrada
+        dialogPanel.style.opacity = '1';
+        dialogPanel.style.transform = 'translateY(0)';
+
+    }, 150); // Timeout para permitir render reflow
+
+    // 5. Actualizar barra de progreso y botones
     document.getElementById('lesson-step').textContent = `${currentLessonStep + 1} / ${levelData.lesson.length}`;
     const progress = ((currentLessonStep + 1) / levelData.lesson.length) * 100;
     document.getElementById('lesson-progress').style.width = `${progress}%`;
-    const prevBtn = document.getElementById('prev-btn');
-    prevBtn.disabled = currentLessonStep === 0;
-    document.getElementById('next-btn').textContent = (currentLessonStep === levelData.lesson.length - 1) ? 'Iniciar Quiz' : 'Siguiente';
-
-    // Re-initialize drag and drop after content change
+    
+    document.getElementById('prev-btn').disabled = currentLessonStep === 0;
+    
+    const nextBtn = document.getElementById('next-btn');
+    if (currentLessonStep === levelData.lesson.length - 1) {
+        nextBtn.innerHTML = `Iniciar Quiz <i data-lucide="zap" class="w-4 h-4 ml-2"></i>`;
+    } else {
+        nextBtn.innerHTML = `Siguiente <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>`;
+    }
+    
     setTimeout(() => {
+        lucide.createIcons();
         if(window.initializeClickToPlace) initializeClickToPlace();
-    }, 100);
+    }, 200);
 }
 
 function startQuiz() {
@@ -4213,6 +3486,7 @@ function showResults() {
 
     if (passed) {
         resultsTitle.textContent = '¡Felicidades!';
+        resultsTitle.style.color = 'var(--green)';
         resultsMessage.textContent = 'Has aprobado el cuestionario.';
         resultsIcon.setAttribute('data-lucide', 'award');
         resultsIcon.style.color = 'var(--green)';
@@ -4226,6 +3500,7 @@ function showResults() {
 
     } else {
         resultsTitle.textContent = '¡Inténtalo de nuevo!';
+        resultsTitle.style.color = 'var(--red)';
         resultsMessage.textContent = 'Necesitas al menos 70% para aprobar.';
         resultsIcon.setAttribute('data-lucide', 'refresh-cw');
         resultsIcon.style.color = 'var(--red)';
@@ -4238,84 +3513,6 @@ function showResults() {
     
     // Desbloquear chat después del quiz (Removed)
     // document.getElementById('chat-toggle-btn').style.display = 'block';
-}
-
-// Render Level Selection Grid
-function renderLevelSelection() {
-    const levelGrid = document.getElementById('level-grid');
-    if (!levelGrid) return;
-    
-    levelGrid.innerHTML = '';
-    levelGrid.style.display = 'grid';
-    levelGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(80px, 1fr))';
-    levelGrid.style.gap = '32px 16px';
-    levelGrid.style.width = '100%';
-    levelGrid.style.maxWidth = '60rem';
-    levelGrid.style.margin = '0 auto';
-    
-    courseData.forEach((level, index) => {
-        const isUnlocked = index < userProgress.unlockedLevel;
-        const isCompleted = userProgress.completedLevels.includes(index);
-        
-        const levelNode = document.createElement('div');
-        levelNode.className = `level-node ${isCompleted ? 'completed' : isUnlocked ? 'unlocked' : 'locked'}`;
-        levelNode.style.display = 'flex';
-        levelNode.style.flexDirection = 'column';
-        levelNode.style.alignItems = 'center';
-        levelNode.style.position = 'relative';
-        levelNode.style.cursor = isUnlocked ? 'pointer' : 'not-allowed';
-        
-        const iconWrapper = document.createElement('div');
-        iconWrapper.className = 'level-icon-wrapper';
-        iconWrapper.style.width = '64px';
-        iconWrapper.style.height = '64px';
-        iconWrapper.style.borderRadius = '50%';
-        iconWrapper.style.display = 'flex';
-        iconWrapper.style.alignItems = 'center';
-        iconWrapper.style.justifyContent = 'center';
-        iconWrapper.style.border = '3px solid';
-        iconWrapper.style.transition = 'all 0.3s ease';
-        
-        const icon = document.createElement('i');
-        if (isCompleted) {
-            icon.setAttribute('data-lucide', 'check-circle');
-            iconWrapper.style.borderColor = 'var(--green)';
-            iconWrapper.style.backgroundColor = 'var(--green)';
-            iconWrapper.style.color = 'var(--card-background)';
-        } else if (isUnlocked) {
-            icon.setAttribute('data-lucide', 'circle');
-            iconWrapper.style.borderColor = 'var(--accent)';
-            iconWrapper.style.color = 'var(--accent)';
-        } else {
-            icon.setAttribute('data-lucide', 'lock');
-            iconWrapper.style.borderColor = 'var(--border)';
-            iconWrapper.style.color = 'var(--border)';
-            iconWrapper.style.backgroundColor = 'transparent';
-        }
-        icon.className = 'w-8 h-8';
-        
-        iconWrapper.appendChild(icon);
-        
-        const levelNumber = document.createElement('div');
-        levelNumber.className = 'level-number';
-        levelNumber.textContent = `Nivel ${index + 1}`;
-        levelNumber.style.marginTop = '8px';
-        levelNumber.style.fontWeight = '600';
-        levelNumber.style.fontSize = '0.9rem';
-        
-        levelNode.appendChild(iconWrapper);
-        levelNode.appendChild(levelNumber);
-        
-        if (isUnlocked) {
-            levelNode.addEventListener('click', () => startLevel(index));
-        }
-        
-        levelGrid.appendChild(levelNode);
-    });
-    
-
-    
-    lucide.createIcons();
 }
 
 // Event Listeners
@@ -4784,8 +3981,8 @@ function initializeCodeBlockMonaco() {
         block.setAttribute('data-monaco-initialized', 'true');
 
         // Detectar lenguaje
-        let language = 'python';
-        if (codeElement.className.includes('language-html')) language = 'sql';
+        let language = 'html';
+        if (codeElement.className.includes('language-html')) language = 'html';
         else if (codeElement.className.includes('language-css')) language = 'css';
         else if (codeElement.className.includes('language-javascript')) language = 'javascript';
 
@@ -4813,7 +4010,7 @@ function initializeCodeBlockMonaco() {
                 <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
                 <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
                 <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
-                <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'html' ? 'main.sql' : language === 'html' ? 'main.sql' : 'code.' + language}</span>
+                <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'python' ? 'index.html' : language === 'html' ? 'index.html' : 'code.' + language}</span>
             </div>
             <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
         `;
@@ -4826,8 +4023,7 @@ function initializeCodeBlockMonaco() {
         container.appendChild(monacoContainer);
         block.appendChild(container);
 
-        window.monacoEditors = window.monacoEditors || {};
-            const editor = monaco.editor.create(monacoContainer, {
+        const editor = monaco.editor.create(monacoContainer, {
             value: codeText.trim(),
             language: language,
             theme: 'tokyo-night',
@@ -4962,57 +4158,3 @@ function getUserInput(containerId, prompt) {
 
 
 </script>
-
-
-// ========= COPIAR Y EJECUTAR EN SANDBOX =========
-
-function copyLessonCode() {
-    if (window.lessonMainMonacoEditor) {
-        const code = window.lessonMainMonacoEditor.getValue();
-        navigator.clipboard.writeText(code).then(() => {
-            alert('¡Copiado!');
-        });
-    }
-}
-
-function openInSandbox() {
-    if (window.lessonMainMonacoEditor) {
-        const code = window.lessonMainMonacoEditor.getValue();
-        sessionStorage.setItem('sandbox_code', code);
-        const fName = window.location.pathname.split('/').pop();
-        sessionStorage.setItem('sandbox_lang', fName.includes('python') ? 'python' : 'javascript');
-        sessionStorage.setItem('sandbox_return_url', fName);
-        window.location.href = 'sandbox.html';
-    }
-}
-
-function copyInlineCode(id) {
-    const editor = window.monacoEditors[id];
-    if (editor) {
-        navigator.clipboard.writeText(editor.getValue()).then(() => alert('¡Código Copiado!'));
-    }
-}
-
-function executeInlineCode(id, language) {
-    const editor = window.monacoEditors[id];
-    if (editor) {
-        sessionStorage.setItem('sandbox_code', editor.getValue());
-        const fName = window.location.pathname.split('/').pop();
-        sessionStorage.setItem('sandbox_return_url', fName);
-        let langToUse = (language === 'html' || language === 'css') ? 'javascript' : language;
-        sessionStorage.setItem('sandbox_lang', langToUse);
-        window.location.href = 'sandbox.html';
-    }
-}
-
-<!-- Prism.js core and languages -->
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js"></script>
-</body>
-</html>

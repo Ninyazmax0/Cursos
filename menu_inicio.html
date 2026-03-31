@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status Code 418 - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind.min.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
@@ -518,9 +518,18 @@
         
         // Course Data
         const courses = {
+            intro: { 
+                title: "Introducción a la Programación", 
+                subtitle: "Fundamentos de Lógica",
+                icon: "lightbulb", 
+                url: "intro_course.html", 
+                color: "bg-purple-500/20",
+                iconColor: "text-purple-400",
+                key: "intro"
+            },
             web: { 
                 title: "Desarrollo Web", 
-                subtitle: "Bootcamp",
+                subtitle: "HTML · CSS · JavaScript",
                 icon: "code", 
                 url: "web_course.html", 
                 color: "bg-blue-500/20",
@@ -529,7 +538,7 @@
             },
             python: { 
                 title: "Python", 
-                subtitle: "Master",
+                subtitle: "Lógica y Algoritmos",
                 icon: "cpu", 
                 url: "python_course.html", 
                 color: "bg-yellow-500/20",
@@ -538,7 +547,7 @@
             },
             ruby: { 
                 title: "Ruby on Rails", 
-                subtitle: "Crash Course",
+                subtitle: "Desarrollo Rápido",
                 icon: "gem", 
                 url: "ruby_course.html", 
                 color: "bg-red-500/20",
@@ -547,7 +556,7 @@
             },
             db: { 
                 title: "Bases de Datos", 
-                subtitle: "SQL",
+                subtitle: "SQL y Diseño",
                 icon: "database", 
                 url: "database_course.html", 
                 color: "bg-green-500/20",
@@ -699,6 +708,7 @@
                 
                 const card = document.createElement('div');
                 card.className = 'course-card-new';
+                card.id = `course-card-${key}`;
                 card.innerHTML = `
                     <div class="course-icon-wrapper ${course.color}">
                         <i data-lucide="${course.icon}" class="w-8 h-8 ${course.iconColor}"></i>

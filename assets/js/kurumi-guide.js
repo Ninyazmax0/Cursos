@@ -4,55 +4,79 @@
  * Tour funcional y claro para la interfaz de la academia.
  */
 
-const GUIDE_COMPLETED_KEY = 'kurumi_academy_guide_v3_professional';
+const GUIDE_COMPLETED_KEY = 'kurumi_academy_guide_v4_matrix';
 
 const TOUR_STEPS = [
     {
-        target: null, // Centro
-        title: "Bienvenido a la Academia",
-        text: "Esta es tu plataforma de aprendizaje interactivo. <br>A continuación, una breve guía sobre las herramientas disponibles.",
+        target: null,
+        title: "Bienvenido al Dashboard Principal",
+        text: "Este es tu centro de control. Aquí tienes acceso directo a todos los cursos, herramientas y tu perfil de estudiante. <br>Te guiaremos por cada sección para que conozcas todas las funciones disponibles.",
         position: 'center'
     },
     {
-        target: "[onclick*='sandbox.html']", 
-        title: "Entorno de Desarrollo (Sandbox)",
-        text: "Accede a un editor de código completo. <br>Aquí puedes practicar libremente en <strong>Python</strong>, <strong>Ruby</strong> y tecnologías <strong>Web</strong> (HTML/CSS/JS) sin afectar tu progreso.",
+        target: "#course-card-intro",
+        title: "Curso: Introducción a la Programación",
+        text: "Tu punto de partida recomendado. Este módulo establece los fundamentos de lógica computacional que necesitarás en todos los demás cursos. <br>Es opcional, pero altamente recomendado si eres principiante.",
         position: 'right'
     },
     {
-        target: "[onclick*='leaderboard.html']", 
-        title: "Tabla de Clasificación",
-        text: "Consulta tu posición global. <br>Compite con otros estudiantes basándote en la experiencia (XP) ganada al completar lecciones y desafíos.",
+        target: "#course-card-web",
+        title: "Curso: Desarrollo Web",
+        text: "Aprende HTML, CSS y JavaScript en un curso integrado dividido en fases. <br>Incluye un editor de código en vivo y un diccionario de etiquetas interactivo.",
         position: 'right'
     },
     {
-        target: "[onclick*='story.html']", 
-        title: "Lore de la Academia",
-        text: "Explora el transfondo narrativo. <br>Descubre la historia oculta detrás de nuestra institución y sus fundadores.",
+        target: "#course-card-python",
+        title: "Curso: Python",
+        text: "20 niveles de lógica y algoritmos. Cada nivel incluye teoría, ejemplos con editor Monaco, un tour de código línea por línea y un quiz evaluativo.",
         position: 'right'
     },
     {
-        target: "[onclick*='tienda.html']", 
-        title: "Tienda de Recompensas",
-        text: "Personaliza tu experiencia. <br>Canjea tus puntos acumulados por marcos de avatar, efectos visuales y títulos exclusivos.",
+        target: "#course-card-ruby",
+        title: "Curso: Ruby on Rails",
+        text: "Desarrollo web rápido con el framework Ruby on Rails. Ideal para quienes ya dominan los fundamentos de otro lenguaje.",
         position: 'right'
     },
     {
-        target: "[onclick*='perfil_usuario.html']", 
-        title: "Perfil de Estudiante",
-        text: "Tu centro de control personal. <br>Visualiza tus estadísticas detalladas, medallas obtenidas, nivel actual y gestiona tu avatar.",
+        target: "#course-card-db",
+        title: "Curso: Bases de Datos",
+        text: "Diseño de tablas, consultas SQL y gestión de datos. Fundamental para cualquier aplicación que necesite almacenar información.",
         position: 'right'
     },
     {
-        target: ".theme-switch", 
-        title: "Preferencia Visual",
-        text: "Ajuste de tema. <br>Alterna entre el modo claro y oscuro para adaptar la interfaz a tu entorno de lectura.",
+        target: "[onclick*='sandbox.html']",
+        title: "Sandbox: Entorno de Práctica",
+        text: "Un editor de código libre donde puedes experimentar con Python, Ruby y tecnologías Web sin afectar tu progreso en los cursos.",
+        position: 'right'
+    },
+    {
+        target: "[onclick*='estudiantes.html']",
+        title: "Comunidad de Estudiantes",
+        text: "Conecta con otros estudiantes que están aprendiendo. Puedes ver sus perfiles y enviarles mensajes directos.",
+        position: 'right'
+    },
+    {
+        target: "[onclick*='tienda.html']",
+        title: "Tienda de la Academia",
+        text: "Usa la experiencia (XP) que ganas en los cursos para adquirir auras, decoraciones y personalizar tu perfil.",
+        position: 'right'
+    },
+    {
+        target: "#inbox-btn",
+        title: "Bandeja de Entrada",
+        text: "Revisa los mensajes que otros estudiantes te envían. El indicador rojo te avisará cuando tengas mensajes sin leer.",
         position: 'bottom'
     },
     {
-        target: "[title='Ayuda / Tour']", // Campana
-        title: "Centro de Ayuda",
-        text: "Acceso rápido a esta guía. <br>Si necesitas repasar las funciones de la interfaz, puedes reactivar este tour en cualquier momento.",
+        target: "#background-btn",
+        title: "Personalización Visual",
+        text: "Cambia el fondo animado del dashboard y alterna entre el tema oscuro y claro según tu preferencia.",
+        position: 'bottom'
+    },
+    {
+        target: "[title='Ayuda / Tour']",
+        title: "Botón de Ayuda",
+        text: "¡Eso es todo! Ya conoces todas las secciones de la academia. <br>Si necesitas repasar esta guía, pulsa este botón en cualquier momento para reiniciar el recorrido.",
         position: 'bottom'
     }
 ];

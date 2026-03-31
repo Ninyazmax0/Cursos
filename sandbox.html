@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurumi's Sandbox - Área de Pruebas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sandbox - Área de Pruebas</title>
+    <link rel="stylesheet" href="assets/css/tailwind.min.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
@@ -306,8 +307,7 @@
                     <div class="flex items-start gap-2">
                         <i data-lucide="info" class="w-4 h-4 text-blue-400 mt-0.5"></i>
                         <p class="text-xs text-blue-200/80 leading-relaxed">
-                            Aquí puedes probar libremente tus comandos. ¡Rompe cosas, es la única forma de aprender! <br>
-                            <span class="italic opacity-70">- Kurumi</span>
+                            Aquí puedes probar libremente tus comandos. ¡Rompe cosas, es la única forma de aprender!
                         </p>
                     </div>
                 </div>
@@ -372,7 +372,7 @@
         
         // --- Configuraciones por Defecto ---
         const defaultCode = {
-            python: `# Escribe tu código Python aquí\nprint("¡Hola Kurumi!")\n\nfor i in range(3):\n    print(f"Contando: {i + 1}")`,
+            python: `# Escribe tu código Python aquí\nprint("¡Hola Mundo!")\n\nfor i in range(3):\n    print(f"Contando: {i + 1}")`,
             javascript: `<!-- Escribe HTML/JS aquí -->\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: sans-serif; padding: 20px; color: #333; }\n    h1 { color: #7aa2f7; }\n  </style>\n</head>\n<body>\n  <h1>¡Hola mundo!</h1>\n  <p id="demo">Soy una página web en vivo.</p>\n  <button onclick="saludar()">Haz clic</button>\n\n  <script>\n    function saludar() {\n      document.getElementById('demo').innerText = "¡Has hecho clic! ❤️";\n    }\n  <\/script>\n</body>\n</html>`,
             ruby: `# Escribe tu código Ruby aquí\nputs "¡Hola desde Ruby!"\n\n3.times do |i|\n  puts "Iteración: #{i + 1}"\nend`
         };

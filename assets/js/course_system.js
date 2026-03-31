@@ -1,5 +1,5 @@
 // ==========================================
-// SISTEMA DE QUIZSCORES Y CHALLENGEMAP
+// SISTEMA DE QUIZSCORES
 // Sistema Universal para todos los cursos
 // ==========================================
 
@@ -31,52 +31,20 @@ async function saveQuizScore(score, total, courseId, levelNumber) {
     }
 }
 
-// Mostrar botón de challenge
-function showChallengeButton(challengeData, resultsMessageElement) {
-    // Si challengeData es un string, lo tratamos como ID. Si es objeto, extraemos id y title.
-    const challengeId = typeof challengeData === 'string' ? challengeData : challengeData.id;
-    const challengeTitle = (typeof challengeData === 'object' && challengeData.title) ? challengeData.title : "¡Ir al Desafío!";
-
-    // Verificar si ya existe un botón
-    const existingBtn = document.querySelector('.challenge-btn');
-    if (existingBtn) existingBtn.remove();
-    
-    // Detectar el curso actual
-    const currentPage = window.location.pathname;
-    let courseParam = 'web';
-    let engineFile = 'engine.html';
-    
-    if (currentPage.includes('python_course')) {
-        courseParam = 'python';
-        engineFile = 'python_engine.html';
-    } else if (currentPage.includes('ruby_course')) {
-        courseParam = 'ruby';
-        engineFile = 'engine.html'; // Usamos el engine estándar para Ruby/Web/DB
-    } else if (currentPage.includes('database_course')) {
-        courseParam = 'database';
-        engineFile = 'engine.html';
-    }
-    
-    const challengeBtn = document.createElement('button');
-    challengeBtn.className = 'btn-primary mt-4 challenge-btn flex items-center gap-2 mx-auto justify-center';
-    challengeBtn.innerHTML = `<i data-lucide="zap"></i> ${challengeTitle}`;
-    challengeBtn.onclick = () => {
-        window.location.href = `challenges/${engineFile}?id=${challengeId}&course=${courseParam}`;
-    };
-    
-    // Si el elemento es un botón de ID 'code-challenge-btn' (el original), lo usamos o lo reemplazamos
-    const originalBtn = document.getElementById('code-challenge-btn');
-    if (originalBtn) {
-        originalBtn.classList.remove('hidden');
-        originalBtn.innerHTML = `<i data-lucide="zap"></i> ${challengeTitle}`;
-        originalBtn.onclick = challengeBtn.onclick;
-        // Si hay nextLevelBtn, lo ocultamos
-        const nextBtn = document.getElementById('next-level-btn');
+// Mostrar botón de challenge si corresponde
+function showChallengeButton(challenge, resultsMessageElement) {
+    const challengeBtn = document.getElementById('code-challenge-btn');
+    const nextBtn = document.getElementById('next-level-btn');
+    if (challengeBtn) {
+        challengeBtn.classList.remove('hidden');
+        challengeBtn.onclick = () => {
+            window.location.href = challenge.url;
+        };
         if (nextBtn) nextBtn.classList.add('hidden');
     } else {
         resultsMessageElement.insertAdjacentElement('afterend', challengeBtn);
     }
-    
+
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 

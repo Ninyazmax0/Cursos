@@ -1931,9 +1931,10 @@ const courseData = [
     },
 { // Nivel 6
         title: "Creando Tus Propios Comandos (Funciones Básicas)",
-        lesson: [            {
-                title: `¿Para qué sirve una función?`,
-                dialogo: `<p>Imagina que en tu videojuego, cada vez que un enemigo muere tienes que escribir: calcular puntos, reproducir sonido, mostrar animación, actualizar marcador... son 20 líneas. Y hay 50 tipos de enemigos. ¿Vas a copiar esas 20 líneas 50 veces?</p>
+        lesson: [
+            {
+                title: "¿Para qué sirve una función?",
+                content: `<p>Imagina que en tu videojuego, cada vez que un enemigo muere tienes que escribir: calcular puntos, reproducir sonido, mostrar animación, actualizar marcador... son 20 líneas. Y hay 50 tipos de enemigos. ¿Vas a copiar esas 20 líneas 50 veces?</p>
                 <p>Las <strong>funciones</strong> son cajas de código reutilizable. Las escribes una vez y las usas cuantas veces quieras. Es el principio más importante de programación: <strong>No te repitas (DRY - Don't Repeat Yourself)</strong>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># SIN funciones (el horror):
 print("Calculando puntos...")
@@ -1953,23 +1954,7 @@ def enemigo_muere():
 # Ahora la usamos cuantas veces queramos:
 enemigo_muere()
 enemigo_muere()
-enemigo_muere()</code></pre></div>`,
-                codigo: `# CON función (elegante):
-def enemigo_muere():
-    print("Calculando puntos...")
-    print("Reproduciendo sonido...")
-    print("Actualizando marcador...")
-
-# Ahora la usamos cuantas veces queramos:
-enemigo_muere()
-enemigo_muere()
-enemigo_muere()`,
-                tourSteps: [
-                    { text: `Se define la función <code>enemigo_muere()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 }
-                ]
+enemigo_muere()</code></pre></div>`
             },
             {
                 title: "Creando una función con `def`",
@@ -1983,9 +1968,10 @@ enemigo_muere()`,
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Olvidar los paréntesis <code>()</code> o los dos puntos <code>:</code> después del nombre. Ejemplo roto: <code>def saludar</code> — Python se quejará inmediatamente.</p>
                 </div>`
-            },            {
-                title: `Llamando (ejecutando) la función`,
-                dialogo: `<p>Para encender la máquina que construiste, escribes su nombre seguido de paréntesis. A eso le llamamos "llamar" o "invocar" la función.</p>
+            },
+            {
+                title: "Llamando (ejecutando) la función",
+                content: `<p>Para encender la máquina que construiste, escribes su nombre seguido de paréntesis. A eso le llamamos "llamar" o "invocar" la función.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def mostrar_menu():
     print("1. Nueva Partida")
     print("2. Cargar Partida")
@@ -1997,24 +1983,11 @@ mostrar_menu()  # Las vuelve a imprimir</code></pre></div>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Error Importante:</strong>
                     <p class="text-sm">Si escribes solo <code>mostrar_menu</code> sin los paréntesis, Python no ejecuta nada, solo te dice que esa función existe. Los paréntesis son la orden de "¡ejecuta ahora!".</p>
-                </div>`,
-                codigo: `def mostrar_menu():
-    print("1. Nueva Partida")
-    print("2. Cargar Partida")
-    print("3. Salir")
-
-# La función se define arriba, se llama aquí abajo:
-mostrar_menu()  # Imprime las 3 opciones
-mostrar_menu()  # Las vuelve a imprimir`,
-                tourSteps: [
-                    { text: `Se define la función <code>mostrar_menu()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 }
-                ]
-            },            {
-                title: `No puedes usar lo que no has definido aún`,
-                dialogo: `<p>Python lee tu código de <strong>arriba hacia abajo</strong>, línea por línea. Si intentas llamar a una función antes de haberla definido, te dará un error.</p>
+                </div>`
+            },
+            {
+                title: "No puedes usar lo que no has definido aún",
+                content: `<p>Python lee tu código de <strong>arriba hacia abajo</strong>, línea por línea. Si intentas llamar a una función antes de haberla definido, te dará un error.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># ESTO FALLA:
 saludar()        # Error: Python aún no sabe qué es 'saludar'
 
@@ -2024,19 +1997,11 @@ def saludar():
 def saludar():
     print("Hola")
 
-saludar()        # ✅ Python ya sabe qué es 'saludar'</code></pre></div>`,
-                codigo: `# ESTO FUNCIONA:
-def saludar():
-    print("Hola")
-
-saludar()        # ✅ Python ya sabe qué es 'saludar'`,
-                tourSteps: [
-                    { text: `Se define la función <code>saludar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 }
-                ]
-            },            {
-                title: `Funciones dentro de un programa real`,
-                dialogo: `<p>En un programa real, organizas tu código en funciones con nombres claros. Esto hace que tu código sea fácil de leer y de arreglar cuando tiene bugs.</p>
+saludar()        # ✅ Python ya sabe qué es 'saludar'</code></pre></div>`
+            },
+            {
+                title: "Funciones dentro de un programa real",
+                content: `<p>En un programa real, organizas tu código en funciones con nombres claros. Esto hace que tu código sea fácil de leer y de arreglar cuando tiene bugs.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def mostrar_bienvenida():
     print("=== BATALLA FINAL ===")
     print("¡El último boss te espera!")
@@ -2047,26 +2012,7 @@ def mostrar_instrucciones():
 
 # El programa principal:
 mostrar_bienvenida()
-mostrar_instrucciones()</code></pre></div>`,
-                codigo: `def mostrar_bienvenida():
-    print("=== BATALLA FINAL ===")
-    print("¡El último boss te espera!")
-
-def mostrar_instrucciones():
-    print("Usa W,A,S,D para moverte")
-    print("Presiona ESPACIO para atacar")
-
-# El programa principal:
-mostrar_bienvenida()
-mostrar_instrucciones()`,
-                tourSteps: [
-                    { text: `Se define la función <code>mostrar_bienvenida()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `Se define la función <code>mostrar_instrucciones()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 }
-                ]
+mostrar_instrucciones()</code></pre></div>`
             }
         ],
         quiz: [
@@ -2084,29 +2030,21 @@ mostrar_instrucciones()`,
     },
     { // Nivel 7
         title: "Funciones con Ingredientes (Parámetros y Return)",
-        lesson: [            {
-                title: `Pasándole datos a la función`,
-                dialogo: `<p>Las funciones que hicimos antes siempre hacen lo mismo. Pero, ¿y si quiero saludar a personas diferentes cada vez? Para eso existen los <strong>parámetros</strong>: son variables que la función recibe como ingredientes cuando la llamas.</p>
+        lesson: [
+            {
+                title: "Pasándole datos a la función",
+                content: `<p>Las funciones que hicimos antes siempre hacen lo mismo. Pero, ¿y si quiero saludar a personas diferentes cada vez? Para eso existen los <strong>parámetros</strong>: son variables que la función recibe como ingredientes cuando la llamas.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar(nombre):         # 'nombre' es el parámetro
     print("¡Hola,", nombre, "!")
 
 saludar("Steven")    # Imprime: ¡Hola, Steven !
 saludar("Kurumi")    # Imprime: ¡Hola, Kurumi !
 saludar("Luigi")     # Imprime: ¡Hola, Luigi !</code></pre></div>
-                <p>Al llamar la función, el valor que le pases ("Steven") se copia dentro de la variable parámetro (<code>nombre</code>) por ese instante.</p>`,
-                codigo: `def saludar(nombre):         # 'nombre' es el parámetro
-    print("¡Hola,", nombre, "!")
-
-saludar("Steven")    # Imprime: ¡Hola, Steven !
-saludar("Kurumi")    # Imprime: ¡Hola, Kurumi !
-saludar("Luigi")     # Imprime: ¡Hola, Luigi !`,
-                tourSteps: [
-                    { text: `Se define la función <code>saludar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 2 }
-                ]
-            },            {
-                title: `Múltiples parámetros`,
-                dialogo: `<p>Puedes tener varios parámetros, separados por comas. Se asignan en orden: el primero va al primero, el segundo al segundo.</p>
+                <p>Al llamar la función, el valor que le pases ("Steven") se copia dentro de la variable parámetro (<code>nombre</code>) por ese instante.</p>`
+            },
+            {
+                title: "Múltiples parámetros",
+                content: `<p>Puedes tener varios parámetros, separados por comas. Se asignan en orden: el primero va al primero, el segundo al segundo.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def calcular_daño(ataque, defensa):
     resultado = ataque - defensa
     print("Daño recibido:", resultado)
@@ -2116,18 +2054,7 @@ calcular_daño(100, 80)  # ataque=100, defensa=80 → Imprime: Daño recibido: 2
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Si defines 2 parámetros y llamas la función con 1 o con 3 valores, Python lanzará un <code>TypeError</code>. El número de valores que pasas debe coincidir exactamente con los parámetros.</p>
-                </div>`,
-                codigo: `def calcular_daño(ataque, defensa):
-    resultado = ataque - defensa
-    print("Daño recibido:", resultado)
-
-calcular_daño(50, 20)   # ataque=50, defensa=20 → Imprime: Daño recibido: 30
-calcular_daño(100, 80)  # ataque=100, defensa=80 → Imprime: Daño recibido: 20`,
-                tourSteps: [
-                    { text: `Se define la función <code>calcular_daño()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `Se asigna un valor a <code>resultado</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 }
-                ]
+                </div>`
             },
             {
                 title: "Devolviendo resultados con `return`",
@@ -2150,9 +2077,10 @@ print(doble(7) + 1)        # Imprime: 15 (14 + 1)</code></pre></div>
 
 print(verificar(0))    # Imprime: Game Over
 print(verificar(50))   # Imprime: Sigues vivo</code></pre></div>`
-            },            {
-                title: `Variables locales: lo que pasa dentro, se queda dentro`,
-                dialogo: `<p>Las variables que creas <strong>dentro</strong> de una función solo existen mientras esa función está corriendo. Cuando termina, desaparecen. No puedes acceder a ellas desde afuera.</p>
+            },
+            {
+                title: "Variables locales: lo que pasa dentro, se queda dentro",
+                content: `<p>Las variables que creas <strong>dentro</strong> de una función solo existen mientras esa función está corriendo. Cuando termina, desaparecen. No puedes acceder a ellas desde afuera.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def calcular():
     secreto = 999      # Solo existe mientras calcular() corre
     return secreto
@@ -2162,20 +2090,7 @@ print(secreto)         # ❌ Error: 'secreto' no existe aquí afuera</code></pre
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Intentar acceder a una variable creada dentro de una función desde afuera. Python lanzará <code>NameError</code>. Si necesitas el valor, usa <code>return</code> para sacarlo.</p>
-                </div>`,
-                codigo: `def calcular():
-    secreto = 999      # Solo existe mientras calcular() corre
-    return secreto
-
-print(calcular())      # ✅ Imprime: 999
-print(secreto)         # ❌ Error: 'secreto' no existe aquí afuera`,
-                tourSteps: [
-                    { text: `Se define la función <code>calcular()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `Se asigna un valor a <code>secreto</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 }
-                ]
+                </div>`
             }
         ],
         quiz: [
@@ -2193,9 +2108,10 @@ print(secreto)         # ❌ Error: 'secreto' no existe aquí afuera`,
     },
     { // Nivel 8
         title: "El Inventario del Juego (Listas)",
-        lesson: [            {
-                title: `¿Por qué necesitamos las Listas?`,
-                dialogo: `<p>Imagina que tienes un juego con 100 jugadores y necesitas guardar su puntuación. Con variables normales sería un desastre:</p>
+        lesson: [
+            {
+                title: "¿Por qué necesitamos las Listas?",
+                content: `<p>Imagina que tienes un juego con 100 jugadores y necesitas guardar su puntuación. Con variables normales sería un desastre:</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Sin Listas: el horror
 jugador1 = "Ana"
 jugador2 = "Luis"
@@ -2203,15 +2119,11 @@ jugador3 = "Sara"
 # ... x100</code></pre></div>
                 <p>Las <strong>Listas</strong> son vagones de tren: una sola variable que guarda muchos datos en orden. Puedes agregar vagones, quitar vagones, y acceder a cualquiera por su número de posición.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Con Lista: elegante
-jugadores = ["Ana", "Luis", "Sara", "Pedro", "María"]</code></pre></div>`,
-                codigo: `# Con Lista: elegante
-jugadores = ["Ana", "Luis", "Sara", "Pedro", "María"]`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>jugadores</code>. Esto queda guardado en memoria para usarse después.`, line: 2 }
-                ]
-            },            {
-                title: `Creando listas y accediendo a sus elementos`,
-                dialogo: `<p>Las listas usan corchetes <code>[]</code> y sus elementos se separan con comas. Para acceder a un elemento, usas su número de posición (índice) — y recuerda: <strong>las computadoras cuentan desde 0</strong>.</p>
+jugadores = ["Ana", "Luis", "Sara", "Pedro", "María"]</code></pre></div>`
+            },
+            {
+                title: "Creando listas y accediendo a sus elementos",
+                content: `<p>Las listas usan corchetes <code>[]</code> y sus elementos se separan con comas. Para acceder a un elemento, usas su número de posición (índice) — y recuerda: <strong>las computadoras cuentan desde 0</strong>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">armas = ["Espada", "Hacha", "Arco", "Bastón"]
 #          índice:    0       1       2        3
 
@@ -2221,22 +2133,11 @@ print(armas[-1])  # Bastón   (la ÚLTIMA, truco con -1)</code></pre></div>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Si tienes 4 elementos (índices 0-3) y pides <code>armas[4]</code>, Python lanzará <code>IndexError: list index out of range</code>. El índice 4 no existe.</p>
-                </div>`,
-                codigo: `armas = ["Espada", "Hacha", "Arco", "Bastón"]
-#          índice:    0       1       2        3
-
-print(armas[0])   # Espada   (la primera)
-print(armas[2])   # Arco     (la tercera)
-print(armas[-1])  # Bastón   (la ÚLTIMA, truco con -1)`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>armas</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 }
-                ]
-            },            {
-                title: `Modificando la lista`,
-                dialogo: `<p>Las listas son mutables: puedes cambiar, agregar y eliminar elementos libremente.</p>
+                </div>`
+            },
+            {
+                title: "Modificando la lista",
+                content: `<p>Las listas son mutables: puedes cambiar, agregar y eliminar elementos libremente.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">inventario = ["Poción", "Espada", "Escudo"]
 
 # Cambiar un elemento:
@@ -2250,50 +2151,21 @@ item_perdido = inventario.pop()
 print(item_perdido)  # Llave Dorada
 
 # Ver la lista completa:
-print(inventario)  # ['Mega Poción', 'Espada', 'Escudo']</code></pre></div>`,
-                codigo: `inventario = ["Poción", "Espada", "Escudo"]
-
-# Cambiar un elemento:
-inventario[0] = "Mega Poción"
-
-# Agregar al final:
-inventario.append("Llave Dorada")
-
-# Eliminar el último y obtenerlo:
-item_perdido = inventario.pop()
-print(item_perdido)  # Llave Dorada
-
-# Ver la lista completa:
-print(inventario)  # ['Mega Poción', 'Espada', 'Escudo']`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>inventario</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Se asigna un valor a <code>inventario[0]</code>. Esto queda guardado en memoria para usarse después.`, line: 4 },
-                    { text: `Se asigna un valor a <code>item_perdido</code>. Esto queda guardado en memoria para usarse después.`, line: 10 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 11 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 14 }
-                ]
-            },            {
-                title: `Saber el tamaño de la lista con len()`,
-                dialogo: `<p>La función <code>len()</code> te dice cuántos elementos tiene una lista. Es muy útil para no intentar acceder a posiciones que no existen.</p>
+print(inventario)  # ['Mega Poción', 'Espada', 'Escudo']</code></pre></div>`
+            },
+            {
+                title: "Saber el tamaño de la lista con len()",
+                content: `<p>La función <code>len()</code> te dice cuántos elementos tiene una lista. Es muy útil para no intentar acceder a posiciones que no existen.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">equipo = ["Mario", "Luigi", "Peach"]
 print(len(equipo))   # 3
 
 # Uso práctico: imprimir cuántos miembros hay
 print("El equipo tiene", len(equipo), "miembros.")</code></pre></div>
-                <p>Recuerda: si <code>len()</code> devuelve 3, los índices válidos son 0, 1 y 2. El índice 3 NO existe.</p>`,
-                codigo: `equipo = ["Mario", "Luigi", "Peach"]
-print(len(equipo))   # 3
-
-# Uso práctico: imprimir cuántos miembros hay
-print("El equipo tiene", len(equipo), "miembros.")`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>equipo</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 }
-                ]
-            },            {
-                title: `Listas pueden mezclar tipos de datos`,
-                dialogo: `<p>Python es flexible: una misma lista puede tener strings, números, booleanos... todo junto. Pero en la práctica, es mejor mantener listas con el mismo tipo de dato para no confundirte.</p>
+                <p>Recuerda: si <code>len()</code> devuelve 3, los índices válidos son 0, 1 y 2. El índice 3 NO existe.</p>`
+            },
+            {
+                title: "Listas pueden mezclar tipos de datos",
+                content: `<p>Python es flexible: una misma lista puede tener strings, números, booleanos... todo junto. Pero en la práctica, es mejor mantener listas con el mismo tipo de dato para no confundirte.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Lista mixta (válida en Python):
 perfil = ["Steven", 16, True, 9.5]
 print(perfil[0])   # Steven
@@ -2303,25 +2175,7 @@ print(perfil[3])   # 9.5
 # Lista vacía (puedes empezar vacía y llenarla después):
 bolsa = []
 bolsa.append("Moneda de Oro")
-print(bolsa)  # ['Moneda de Oro']</code></pre></div>`,
-                codigo: `# Lista mixta (válida en Python):
-perfil = ["Steven", 16, True, 9.5]
-print(perfil[0])   # Steven
-print(perfil[1])   # 16
-print(perfil[3])   # 9.5
-
-# Lista vacía (puedes empezar vacía y llenarla después):
-bolsa = []
-bolsa.append("Moneda de Oro")
-print(bolsa)  # ['Moneda de Oro']`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>perfil</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 },
-                    { text: `Se asigna un valor a <code>bolsa</code>. Esto queda guardado en memoria para usarse después.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
+print(bolsa)  # ['Moneda de Oro']</code></pre></div>`
             }
         ],
         quiz: [
@@ -2339,9 +2193,10 @@ print(bolsa)  # ['Moneda de Oro']`,
     },
     { // Nivel 9
         title: "Recorriendo Listas (For + Listas)",
-        lesson: [            {
-                title: `El For fue hecho para las listas`,
-                dialogo: `<p>¿Recuerdas el bucle <code>for</code>? Fue diseñado exactamente para esto: <strong>recorrer cada elemento de una lista, uno por uno</strong>, sin que tengas que saber cuántos elementos hay.</p>
+        lesson: [
+            {
+                title: "El For fue hecho para las listas",
+                content: `<p>¿Recuerdas el bucle <code>for</code>? Fue diseñado exactamente para esto: <strong>recorrer cada elemento de una lista, uno por uno</strong>, sin que tengas que saber cuántos elementos hay.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">enemigos = ["Orco", "Goblin", "Slime", "Dragón"]
 
 for monstruo in enemigos:
@@ -2352,25 +2207,11 @@ for monstruo in enemigos:
 # ¡Aparece un Goblin !
 # ¡Aparece un Slime !
 # ¡Aparece un Dragón !</code></pre></div>
-                <p>En cada vuelta del bucle, <code>monstruo</code> toma el valor del siguiente elemento. Python hace eso automáticamente.</p>`,
-                codigo: `enemigos = ["Orco", "Goblin", "Slime", "Dragón"]
-
-for monstruo in enemigos:
-    print("¡Aparece un", monstruo, "!")
-
-# Imprime:
-# ¡Aparece un Orco !
-# ¡Aparece un Goblin !
-# ¡Aparece un Slime !
-# ¡Aparece un Dragón !`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>enemigos</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Bucle <code>for</code>: la variable <code>monstruo</code> tomará cada valor de la colección, uno por vuelta.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 }
-                ]
-            },            {
-                title: `Acumulando resultados (el patrón acumulador)`,
-                dialogo: `<p>Uno de los usos más comunes: sumar todos los valores de una lista. El truco es una variable que empieza en 0 y acumula.</p>
+                <p>En cada vuelta del bucle, <code>monstruo</code> toma el valor del siguiente elemento. Python hace eso automáticamente.</p>`
+            },
+            {
+                title: "Acumulando resultados (el patrón acumulador)",
+                content: `<p>Uno de los usos más comunes: sumar todos los valores de una lista. El truco es una variable que empieza en 0 y acumula.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">notas = [85, 90, 78, 92, 88]
 total = 0
 
@@ -2378,25 +2219,11 @@ for nota in notas:
     total += nota
 
 promedio = total / len(notas)
-print("Promedio:", promedio)   # Promedio: 86.6</code></pre></div>`,
-                codigo: `notas = [85, 90, 78, 92, 88]
-total = 0
-
-for nota in notas:
-    total += nota
-
-promedio = total / len(notas)
-print("Promedio:", promedio)   # Promedio: 86.6`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>notas</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Se asigna un valor a <code>total</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Bucle <code>for</code>: la variable <code>nota</code> tomará cada valor de la colección, uno por vuelta.`, line: 4 },
-                    { text: `Se asigna un valor a <code>promedio</code>. Esto queda guardado en memoria para usarse después.`, line: 7 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 }
-                ]
-            },            {
-                title: `Modificar la lista real con índices`,
-                dialogo: `<p>Ojo importante: cuando haces <code>for x in lista</code>, la variable <code>x</code> es una <strong>copia</strong> del elemento. Si cambias <code>x</code>, la lista original NO cambia.</p>
+print("Promedio:", promedio)   # Promedio: 86.6</code></pre></div>`
+            },
+            {
+                title: "Modificar la lista real con índices",
+                content: `<p>Ojo importante: cuando haces <code>for x in lista</code>, la variable <code>x</code> es una <strong>copia</strong> del elemento. Si cambias <code>x</code>, la lista original NO cambia.</p>
                 <p>Para modificar la lista de verdad, necesitas acceder por índice usando <code>range(len())</code>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">precios = [10, 20, 30]
 
@@ -2410,29 +2237,7 @@ print(precios)   # [10, 20, 30] — sin cambios
 for i in range(len(precios)):
     precios[i] = precios[i] * 2
 
-print(precios)   # [20, 40, 60]</code></pre></div>`,
-                codigo: `precios = [10, 20, 30]
-
-# ❌ Esto NO modifica la lista:
-for p in precios:
-    p = p * 2    # Solo cambia la copia 'p'
-
-print(precios)   # [10, 20, 30] — sin cambios
-
-# ✅ Esto SÍ modifica la lista:
-for i in range(len(precios)):
-    precios[i] = precios[i] * 2
-
-print(precios)   # [20, 40, 60]`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>precios</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Bucle <code>for</code>: la variable <code>p</code> tomará cada valor de la colección, uno por vuelta.`, line: 4 },
-                    { text: `Se asigna un valor a <code>p</code>. Esto queda guardado en memoria para usarse después.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 },
-                    { text: `Bucle <code>for</code>: la variable <code>i</code> tomará cada valor de la colección, uno por vuelta.`, line: 10 },
-                    { text: `Se asigna un valor a <code>precios[i]</code>. Esto queda guardado en memoria para usarse después.`, line: 11 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 13 }
-                ]
+print(precios)   # [20, 40, 60]</code></pre></div>`
             },
             {
                 title: "Buscar elementos con `in`",
@@ -2447,9 +2252,10 @@ else:
 # También puedes usar 'not in':
 if "Escudo" not in mochila:
     print("Vas desprotegido, cuidado.")</code></pre></div>`
-            },            {
-                title: `Construir listas nuevas con un For`,
-                dialogo: `<p>Puedes empezar con una lista vacía y construirla dentro de un bucle, filtrando o transformando datos.</p>
+            },
+            {
+                title: "Construir listas nuevas con un For",
+                content: `<p>Puedes empezar con una lista vacía y construirla dentro de un bucle, filtrando o transformando datos.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">puntuaciones = [45, 80, 30, 95, 60, 15]
 aprobados = []
 
@@ -2457,22 +2263,7 @@ for punto in puntuaciones:
     if punto >= 60:
         aprobados.append(punto)
 
-print("Aprobaron:", aprobados)  # [80, 95, 60]</code></pre></div>`,
-                codigo: `puntuaciones = [45, 80, 30, 95, 60, 15]
-aprobados = []
-
-for punto in puntuaciones:
-    if punto >= 60:
-        aprobados.append(punto)
-
-print("Aprobaron:", aprobados)  # [80, 95, 60]`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>puntuaciones</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Se asigna un valor a <code>aprobados</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Bucle <code>for</code>: la variable <code>punto</code> tomará cada valor de la colección, uno por vuelta.`, line: 4 },
-                    { text: `Condición <code>if</code>: evalúa si la expresión es verdadera. Si lo es, ejecuta el bloque indentado.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 }
-                ]
+print("Aprobaron:", aprobados)  # [80, 95, 60]</code></pre></div>`
             }
         ],
         quiz: [
@@ -2490,9 +2281,10 @@ print("Aprobaron:", aprobados)  # [80, 95, 60]`,
     },
     { // Nivel 10
         title: "Datos con Nombre (Diccionarios)",
-        lesson: [            {
-                title: `El problema de las listas sin nombre`,
-                dialogo: `<p>Las listas guardan datos por posición (0, 1, 2...). Si tienes <code>jugador = ["Steven", 16, True]</code>, tienes que recordar que el 0 es el nombre, el 1 la edad, el 2 si está activo. Eso se olvida fácil.</p>
+        lesson: [
+            {
+                title: "El problema de las listas sin nombre",
+                content: `<p>Las listas guardan datos por posición (0, 1, 2...). Si tienes <code>jugador = ["Steven", 16, True]</code>, tienes que recordar que el 0 es el nombre, el 1 la edad, el 2 si está activo. Eso se olvida fácil.</p>
                 <p>Los <strong>Diccionarios</strong> resuelven esto: en vez de números como índice, usas <strong>nombres descriptivos</strong> (llaves). Es como un formulario con campos etiquetados.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Lista: confusa
 jugador = ["Steven", 16, True]
@@ -2502,23 +2294,11 @@ jugador = {
     "nombre": "Steven",
     "edad": 16,
     "activo": True
-}</code></pre></div>`,
-                codigo: `# Lista: confusa
-jugador = ["Steven", 16, True]
-
-# Diccionario: claro y legible
-jugador = {
-    "nombre": "Steven",
-    "edad": 16,
-    "activo": True
-}`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>jugador</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>jugador</code>. Esto queda guardado en memoria para usarse después.`, line: 5 }
-                ]
-            },            {
-                title: `Accediendo y modificando valores`,
-                dialogo: `<p>Para leer un valor, usas la llave entre corchetes. Para modificar o agregar, usas la misma sintaxis pero asignando con <code>=</code>.</p>
+}</code></pre></div>`
+            },
+            {
+                title: "Accediendo y modificando valores",
+                content: `<p>Para leer un valor, usas la llave entre corchetes. Para modificar o agregar, usas la misma sintaxis pero asignando con <code>=</code>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">personaje = {
     "nombre": "Aragorn",
     "nivel": 20,
@@ -2539,34 +2319,11 @@ print(personaje)
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Intentar acceder con un número: <code>personaje[0]</code> en un diccionario lanzará <code>KeyError</code>. Los diccionarios se acceden siempre por su llave de texto, no por posición numérica.</p>
-                </div>`,
-                codigo: `personaje = {
-    "nombre": "Aragorn",
-    "nivel": 20,
-    "hp": 450
-}
-
-# Leer:
-print(personaje["nombre"])   # Aragorn
-
-# Modificar:
-personaje["hp"] = 500
-
-# Agregar una llave nueva:
-personaje["arma"] = "Andúril"
-
-print(personaje)
-# {'nombre': 'Aragorn', 'nivel': 20, 'hp': 500, 'arma': 'Andúril'}`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>personaje</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 },
-                    { text: `Se asigna un valor a <code>personaje["hp"]</code>. Esto queda guardado en memoria para usarse después.`, line: 11 },
-                    { text: `Se asigna un valor a <code>personaje["arma"]</code>. Esto queda guardado en memoria para usarse después.`, line: 14 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 16 }
-                ]
-            },            {
-                title: `Recorrer un diccionario`,
-                dialogo: `<p>Si usas un <code>for</code> directamente sobre un diccionario, obtienes las <strong>llaves</strong> (los nombres, no los valores). Para obtener los valores o ambos, tienes métodos especiales.</p>
+                </div>`
+            },
+            {
+                title: "Recorrer un diccionario",
+                content: `<p>Si usas un <code>for</code> directamente sobre un diccionario, obtienes las <strong>llaves</strong> (los nombres, no los valores). Para obtener los valores o ambos, tienes métodos especiales.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">stats = {"fuerza": 80, "velocidad": 65, "magia": 95}
 
 # Solo las llaves:
@@ -2578,53 +2335,22 @@ for llave, valor in stats.items():
     print(llave, "→", valor)
 # fuerza → 80
 # velocidad → 65
-# magia → 95</code></pre></div>`,
-                codigo: `stats = {"fuerza": 80, "velocidad": 65, "magia": 95}
-
-# Solo las llaves:
-for llave in stats:
-    print(llave)    # fuerza, velocidad, magia
-
-# Llave y valor juntos:
-for llave, valor in stats.items():
-    print(llave, "→", valor)
-# fuerza → 80
-# velocidad → 65
-# magia → 95`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>stats</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Bucle <code>for</code>: la variable <code>llave</code> tomará cada valor de la colección, uno por vuelta.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 },
-                    { text: `Bucle <code>for</code>: la variable <code>elemento</code> tomará cada valor de la colección, uno por vuelta.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 }
-                ]
-            },            {
-                title: `Verificar si una llave existe`,
-                dialogo: `<p>Antes de acceder a una llave, puedes verificar si existe. Intentar acceder a una llave que no existe da <code>KeyError</code>.</p>
+# magia → 95</code></pre></div>`
+            },
+            {
+                title: "Verificar si una llave existe",
+                content: `<p>Antes de acceder a una llave, puedes verificar si existe. Intentar acceder a una llave que no existe da <code>KeyError</code>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">item = {"nombre": "Espada", "daño": 45}
 
 if "daño" in item:
     print("Daño:", item["daño"])      # Daño: 45
 
 if "magia" not in item:
-    print("Este item no tiene magia")</code></pre></div>`,
-                codigo: `item = {"nombre": "Espada", "daño": 45}
-
-if "daño" in item:
-    print("Daño:", item["daño"])      # Daño: 45
-
-if "magia" not in item:
-    print("Este item no tiene magia")`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>item</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Condición <code>if</code>: evalúa si la expresión es verdadera. Si lo es, ejecuta el bloque indentado.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `Condición <code>if</code>: evalúa si la expresión es verdadera. Si lo es, ejecuta el bloque indentado.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 }
-                ]
-            },            {
-                title: `Listas de diccionarios: la base de toda app real`,
-                dialogo: `<p>En casi toda aplicación real (videojuegos, redes sociales, apps), los datos son <strong>listas de diccionarios</strong>. Cada diccionario representa un objeto (usuario, producto, personaje), y la lista los agrupa.</p>
+    print("Este item no tiene magia")</code></pre></div>`
+            },
+            {
+                title: "Listas de diccionarios: la base de toda app real",
+                content: `<p>En casi toda aplicación real (videojuegos, redes sociales, apps), los datos son <strong>listas de diccionarios</strong>. Cada diccionario representa un objeto (usuario, producto, personaje), y la lista los agrupa.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">equipo = [
     {"nombre": "Ana",  "clase": "Maga",    "nivel": 15},
     {"nombre": "Luis", "clase": "Guerrero","nivel": 20},
@@ -2632,20 +2358,7 @@ if "magia" not in item:
 ]
 
 for miembro in equipo:
-    print(miembro["nombre"], "es", miembro["clase"], "nivel", miembro["nivel"])</code></pre></div>`,
-                codigo: `equipo = [
-    {"nombre": "Ana",  "clase": "Maga",    "nivel": 15},
-    {"nombre": "Luis", "clase": "Guerrero","nivel": 20},
-    {"nombre": "Sara", "clase": "Arquera", "nivel": 18}
-]
-
-for miembro in equipo:
-    print(miembro["nombre"], "es", miembro["clase"], "nivel", miembro["nivel"])`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>equipo</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Bucle <code>for</code>: la variable <code>miembro</code> tomará cada valor de la colección, uno por vuelta.`, line: 7 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 }
-                ]
+    print(miembro["nombre"], "es", miembro["clase"], "nivel", miembro["nivel"])</code></pre></div>`
             }
         ],
         quiz: [
@@ -2663,9 +2376,10 @@ for miembro in equipo:
     },
 { // Nivel 11
         title: "Textos con Superpoderes (Strings Avanzados)",
-        lesson: [            {
-                title: `Los strings son listas de letras`,
-                dialogo: `<p>Un string no es solo texto: internamente Python lo trata casi igual que una lista de caracteres. Puedes acceder a cada letra por su posición, igual que en las listas.</p>
+        lesson: [
+            {
+                title: "Los strings son listas de letras",
+                content: `<p>Un string no es solo texto: internamente Python lo trata casi igual que una lista de caracteres. Puedes acceder a cada letra por su posición, igual que en las listas.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = "Python"
 print(nombre[0])    # P
 print(nombre[3])    # h
@@ -2674,42 +2388,20 @@ print(len(nombre))  # 6</code></pre></div>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Importante: los strings son INMUTABLES</strong>
                     <p class="text-sm">A diferencia de las listas, NO puedes cambiar una letra individual. <code>nombre[0] = "X"</code> dará un <code>TypeError</code>. Para modificar un string, debes crear uno nuevo.</p>
-                </div>`,
-                codigo: `nombre = "Python"
-print(nombre[0])    # P
-print(nombre[3])    # h
-print(nombre[-1])   # n  (último carácter)
-print(len(nombre))  # 6`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 }
-                ]
-            },            {
-                title: `Cortando strings: Slicing`,
-                dialogo: `<p>El <strong>slicing</strong> te permite cortar un pedazo del string (o de una lista). La sintaxis es <code>[inicio:fin]</code>, donde el inicio se incluye pero el fin NO.</p>
+                </div>`
+            },
+            {
+                title: "Cortando strings: Slicing",
+                content: `<p>El <strong>slicing</strong> te permite cortar un pedazo del string (o de una lista). La sintaxis es <code>[inicio:fin]</code>, donde el inicio se incluye pero el fin NO.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">texto = "Verdadera Academia"
 print(texto[0:9])    # Verdadera  (del 0 al 8)
 print(texto[10:])    # Academia   (del 10 hasta el final)
 print(texto[:9])     # Verdadera  (desde el inicio hasta el 8)
-print(texto[-8:])    # Academia   (últimos 8 caracteres)</code></pre></div>`,
-                codigo: `texto = "Verdadera Academia"
-print(texto[0:9])    # Verdadera  (del 0 al 8)
-print(texto[10:])    # Academia   (del 10 hasta el final)
-print(texto[:9])     # Verdadera  (desde el inicio hasta el 8)
-print(texto[-8:])    # Academia   (últimos 8 caracteres)`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>texto</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 }
-                ]
-            },            {
-                title: `f-strings: la forma moderna de combinar texto y variables`,
-                dialogo: `<p>Antes unir texto con variables era tedioso: <code>"Hola " + nombre + ", tienes " + str(edad) + " años"</code>. Las <strong>f-strings</strong> hacen lo mismo en una línea limpia:</p>
+print(texto[-8:])    # Academia   (últimos 8 caracteres)</code></pre></div>`
+            },
+            {
+                title: "f-strings: la forma moderna de combinar texto y variables",
+                content: `<p>Antes unir texto con variables era tedioso: <code>"Hola " + nombre + ", tienes " + str(edad) + " años"</code>. Las <strong>f-strings</strong> hacen lo mismo en una línea limpia:</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = "Steven"
 nivel = 42
 hp = 350.5
@@ -2719,27 +2411,11 @@ print(f"Jugador: {nombre} | Nivel: {nivel} | HP: {hp}")
 # Jugador: Steven | Nivel: 42 | HP: 350.5
 
 # Incluso puedes hacer operaciones dentro:
-print(f"El doble de tu nivel es {nivel * 2}")</code></pre></div>`,
-                codigo: `nombre = "Steven"
-nivel = 42
-hp = 350.5
-
-# Pon una 'f' antes de las comillas, y las variables van en {}
-print(f"Jugador: {nombre} | Nivel: {nivel} | HP: {hp}")
-# Jugador: Steven | Nivel: 42 | HP: 350.5
-
-# Incluso puedes hacer operaciones dentro:
-print(f"El doble de tu nivel es {nivel * 2}")`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Se asigna un valor a <code>nivel</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>hp</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
-            },            {
-                title: `Métodos útiles de strings`,
-                dialogo: `<p>Los strings vienen con herramientas integradas (métodos) para transformarlos fácilmente:</p>
+print(f"El doble de tu nivel es {nivel * 2}")</code></pre></div>`
+            },
+            {
+                title: "Métodos útiles de strings",
+                content: `<p>Los strings vienen con herramientas integradas (métodos) para transformarlos fácilmente:</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frase = "  hola mundo  "
 
 print(frase.upper())      # "  HOLA MUNDO  "
@@ -2749,29 +2425,11 @@ print(frase.strip().capitalize())  # "Hola mundo"
 
 # Reemplazar partes:
 texto = "Me gusta Python"
-print(texto.replace("Python", "programar"))  # Me gusta programar</code></pre></div>`,
-                codigo: `frase = "  hola mundo  "
-
-print(frase.upper())      # "  HOLA MUNDO  "
-print(frase.lower())      # "  hola mundo  "
-print(frase.strip())      # "hola mundo"  (elimina espacios del borde)
-print(frase.strip().capitalize())  # "Hola mundo"
-
-# Reemplazar partes:
-texto = "Me gusta Python"
-print(texto.replace("Python", "programar"))  # Me gusta programar`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>frase</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 },
-                    { text: `Se asigna un valor a <code>texto</code>. Esto queda guardado en memoria para usarse después.`, line: 9 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
-            },            {
-                title: `Dividir y unir strings`,
-                dialogo: `<p><code>.split()</code> convierte un string en una lista, dividiéndolo por el carácter que le indiques. Y <code>.join()</code> hace lo contrario: une una lista en un string.</p>
+print(texto.replace("Python", "programar"))  # Me gusta programar</code></pre></div>`
+            },
+            {
+                title: "Dividir y unir strings",
+                content: `<p><code>.split()</code> convierte un string en una lista, dividiéndolo por el carácter que le indiques. Y <code>.join()</code> hace lo contrario: une una lista en un string.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Dividir:
 equipos = "Mario,Luigi,Peach,Toad"
 lista = equipos.split(",")
@@ -2780,24 +2438,7 @@ print(lista[2])  # Peach
 
 # Unir de vuelta:
 unido = " - ".join(lista)
-print(unido)   # Mario - Luigi - Peach - Toad</code></pre></div>`,
-                codigo: `# Dividir:
-equipos = "Mario,Luigi,Peach,Toad"
-lista = equipos.split(",")
-print(lista)   # ['Mario', 'Luigi', 'Peach', 'Toad']
-print(lista[2])  # Peach
-
-# Unir de vuelta:
-unido = " - ".join(lista)
-print(unido)   # Mario - Luigi - Peach - Toad`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>equipos</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>lista</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 },
-                    { text: `Se asigna un valor a <code>unido</code>. Esto queda guardado en memoria para usarse después.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 }
-                ]
+print(unido)   # Mario - Luigi - Peach - Toad</code></pre></div>`
             }
         ],
         quiz: [
@@ -2815,9 +2456,10 @@ print(unido)   # Mario - Luigi - Peach - Toad`,
     },
     { // Nivel 12
         title: "Más Colecciones (Tuplas y Sets)",
-        lesson: [            {
-                title: `¿Cuándo NO quieres que los datos cambien? Tuplas`,
-                dialogo: `<p>Las listas son modificables: puedes agregar, quitar o cambiar elementos. Pero a veces tienes datos que <strong>nunca deben cambiar</strong> (coordenadas GPS, los días de la semana, los colores de un semáforo). Para eso están las <strong>Tuplas</strong>.</p>
+        lesson: [
+            {
+                title: "¿Cuándo NO quieres que los datos cambien? Tuplas",
+                content: `<p>Las listas son modificables: puedes agregar, quitar o cambiar elementos. Pero a veces tienes datos que <strong>nunca deben cambiar</strong> (coordenadas GPS, los días de la semana, los colores de un semáforo). Para eso están las <strong>Tuplas</strong>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Las tuplas usan paréntesis
 dias = ("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
 coordenadas = (14.5, -90.2)
@@ -2828,26 +2470,11 @@ print(dias[-1])     # Viernes
 
 # Pero NO puedes modificarlas:
 # dias[0] = "Domingo"  ← TypeError: no se puede</code></pre></div>
-                <p>Las tuplas son más rápidas que las listas y protegen tus datos de cambios accidentales.</p>`,
-                codigo: `# Las tuplas usan paréntesis
-dias = ("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
-coordenadas = (14.5, -90.2)
-
-# Puedes leerlas igual que listas:
-print(dias[0])      # Lunes
-print(dias[-1])     # Viernes
-
-# Pero NO puedes modificarlas:
-# dias[0] = "Domingo"  ← TypeError: no se puede`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>dias</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>coordenadas</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 }
-                ]
-            },            {
-                title: `Sets: la colección sin duplicados`,
-                dialogo: `<p>Un <strong>Set</strong> es una colección que tiene un superpoder: <strong>automáticamente elimina duplicados</strong>. Si agregas el mismo valor dos veces, solo lo guarda una.</p>
+                <p>Las tuplas son más rápidas que las listas y protegen tus datos de cambios accidentales.</p>`
+            },
+            {
+                title: "Sets: la colección sin duplicados",
+                content: `<p>Un <strong>Set</strong> es una colección que tiene un superpoder: <strong>automáticamente elimina duplicados</strong>. Si agregas el mismo valor dos veces, solo lo guarda una.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Limpiar duplicados de una lista:
 votos = [1, 2, 1, 3, 2, 2, 4, 1]
 votos_unicos = set(votos)
@@ -2859,25 +2486,11 @@ print(frutas)   # {'Manzana', 'Pera', 'Uva'}</code></pre></div>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Cuidado:</strong>
                     <p class="text-sm">Los Sets NO tienen orden fijo ni índices. No puedes hacer <code>mi_set[0]</code>. Sin embargo, puedes verificar si algo está dentro con <code>in</code>.</p>
-                </div>`,
-                codigo: `# Limpiar duplicados de una lista:
-votos = [1, 2, 1, 3, 2, 2, 4, 1]
-votos_unicos = set(votos)
-print(votos_unicos)   # {1, 2, 3, 4} — sin repetidos
-
-# Crear un set directamente con { }:
-frutas = {"Manzana", "Pera", "Manzana", "Uva"}
-print(frutas)   # {'Manzana', 'Pera', 'Uva'}`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>votos</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>votos_unicos</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `Se asigna un valor a <code>frutas</code>. Esto queda guardado en memoria para usarse después.`, line: 7 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 }
-                ]
-            },            {
-                title: `Operaciones de Sets (Matemática de Conjuntos)`,
-                dialogo: `<p>Los Sets permiten operaciones matemáticas de conjuntos, muy útiles para comparar grupos de datos.</p>
+                </div>`
+            },
+            {
+                title: "Operaciones de Sets (Matemática de Conjuntos)",
+                content: `<p>Los Sets permiten operaciones matemáticas de conjuntos, muy útiles para comparar grupos de datos.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">grupo_a = {1, 2, 3, 4}
 grupo_b = {3, 4, 5, 6}
 
@@ -2888,28 +2501,11 @@ print(grupo_a.union(grupo_b))         # {1, 2, 3, 4, 5, 6}
 print(grupo_a.intersection(grupo_b))  # {3, 4}
 
 # Diferencia (los de A que NO están en B):
-print(grupo_a.difference(grupo_b))    # {1, 2}</code></pre></div>`,
-                codigo: `grupo_a = {1, 2, 3, 4}
-grupo_b = {3, 4, 5, 6}
-
-# Unión (todos los elementos de ambos):
-print(grupo_a.union(grupo_b))         # {1, 2, 3, 4, 5, 6}
-
-# Intersección (solo los que están en AMBOS):
-print(grupo_a.intersection(grupo_b))  # {3, 4}
-
-# Diferencia (los de A que NO están en B):
-print(grupo_a.difference(grupo_b))    # {1, 2}`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>grupo_a</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Se asigna un valor a <code>grupo_b</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 11 }
-                ]
-            },            {
-                title: `Comparando las 4 colecciones`,
-                dialogo: `<p>Python tiene 4 tipos de colecciones. Cada una tiene su función:</p>
+print(grupo_a.difference(grupo_b))    # {1, 2}</code></pre></div>`
+            },
+            {
+                title: "Comparando las 4 colecciones",
+                content: `<p>Python tiene 4 tipos de colecciones. Cada una tiene su función:</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">lista =       [1, 2, 2, 3]    # Ordenada, mutable, permite duplicados
 tupla =       (1, 2, 2, 3)    # Ordenada, INMUTABLE, permite duplicados
 set_col =     {1, 2, 3}       # Sin orden, mutable, SIN duplicados
@@ -2920,20 +2516,11 @@ diccionario = {"a": 1, "b": 2} # Sin orden (en orden de inserción), mutable, ll
                     <li>¿Datos fijos que no cambiarán? → <strong>Tupla</strong></li>
                     <li>¿Necesitas eliminar duplicados? → <strong>Set</strong></li>
                     <li>¿Datos con nombre clave-valor? → <strong>Diccionario</strong></li>
-                </ul>`,
-                codigo: `lista =       [1, 2, 2, 3]    # Ordenada, mutable, permite duplicados
-tupla =       (1, 2, 2, 3)    # Ordenada, INMUTABLE, permite duplicados
-set_col =     {1, 2, 3}       # Sin orden, mutable, SIN duplicados
-diccionario = {"a": 1, "b": 2} # Sin orden (en orden de inserción), mutable, llaves únicas`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>lista</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Se asigna un valor a <code>tupla</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>set_col</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>diccionario</code>. Esto queda guardado en memoria para usarse después.`, line: 4 }
-                ]
-            },            {
-                title: `Convirtiendo entre colecciones`,
-                dialogo: `<p>Puedes convertir entre tipos de colecciones fácilmente con funciones de conversión. Esto es muy útil en la práctica.</p>
+                </ul>`
+            },
+            {
+                title: "Convirtiendo entre colecciones",
+                content: `<p>Puedes convertir entre tipos de colecciones fácilmente con funciones de conversión. Esto es muy útil en la práctica.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Lista con duplicados → Set para limpiar → Lista de nuevo
 numeros = [1, 2, 2, 3, 3, 3, 4]
 sin_duplicados = list(set(numeros))
@@ -2942,24 +2529,7 @@ print(sin_duplicados)   # [1, 2, 3, 4]
 # Lista → Tupla (para protegerla):
 colores = ["Rojo", "Verde", "Azul"]
 colores_fijos = tuple(colores)
-print(colores_fijos)    # ('Rojo', 'Verde', 'Azul')</code></pre></div>`,
-                codigo: `# Lista con duplicados → Set para limpiar → Lista de nuevo
-numeros = [1, 2, 2, 3, 3, 3, 4]
-sin_duplicados = list(set(numeros))
-print(sin_duplicados)   # [1, 2, 3, 4]
-
-# Lista → Tupla (para protegerla):
-colores = ["Rojo", "Verde", "Azul"]
-colores_fijos = tuple(colores)
-print(colores_fijos)    # ('Rojo', 'Verde', 'Azul')`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>numeros</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>sin_duplicados</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `Se asigna un valor a <code>colores</code>. Esto queda guardado en memoria para usarse después.`, line: 7 },
-                    { text: `Se asigna un valor a <code>colores_fijos</code>. Esto queda guardado en memoria para usarse después.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 }
-                ]
+print(colores_fijos)    # ('Rojo', 'Verde', 'Azul')</code></pre></div>`
             }
         ],
         quiz: [
@@ -2977,22 +2547,18 @@ print(colores_fijos)    # ('Rojo', 'Verde', 'Azul')`,
     },
     { // Nivel 13
         title: "Cacería de Errores (try / except)",
-        lesson: [            {
-                title: `Cuando el usuario hace cosas inesperadas`,
-                dialogo: `<p>Tu código puede estar perfecto, pero el usuario siempre puede hacer algo que no esperabas. Si le pides un número y escribe "hamburgesa", tu programa se cae con letras rojas.</p>
+        lesson: [
+            {
+                title: "Cuando el usuario hace cosas inesperadas",
+                content: `<p>Tu código puede estar perfecto, pero el usuario siempre puede hacer algo que no esperabas. Si le pides un número y escribe "hamburgesa", tu programa se cae con letras rojas.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Sin protección: el programa muere si el usuario escribe texto
 edad = int(input("¿Cuántos años tienes? "))
 # Si el usuario escribe "veinte" → ValueError y el programa se apaga</code></pre></div>
-                <p>Los programas profesionales nunca deben cerrarse bruscamente por el error de un usuario. Para eso existe el manejo de errores.</p>`,
-                codigo: `# Sin protección: el programa muere si el usuario escribe texto
-edad = int(input("¿Cuántos años tienes? "))
-# Si el usuario escribe "veinte" → ValueError y el programa se apaga`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>edad</code>. Esto queda guardado en memoria para usarse después.`, line: 2 }
-                ]
-            },            {
-                title: `El escudo protector: try / except`,
-                dialogo: `<p>Envuelves el código peligroso en un bloque <code>try</code> (intentar), y en el bloque <code>except</code> defines qué hacer si algo falla. Es como una red de seguridad bajo un trapecista.</p>
+                <p>Los programas profesionales nunca deben cerrarse bruscamente por el error de un usuario. Para eso existe el manejo de errores.</p>`
+            },
+            {
+                title: "El escudo protector: try / except",
+                content: `<p>Envuelves el código peligroso en un bloque <code>try</code> (intentar), y en el bloque <code>except</code> defines qué hacer si algo falla. Es como una red de seguridad bajo un trapecista.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
     edad = int(input("¿Cuántos años tienes? "))
     print("Tienes", edad, "años.")
@@ -3002,22 +2568,11 @@ except:
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Importante:</strong>
                     <p class="text-sm">Un <code>try</code> sin <code>except</code> dará error de sintaxis. Siempre van en pareja.</p>
-                </div>`,
-                codigo: `try:
-    edad = int(input("¿Cuántos años tienes? "))
-    print("Tienes", edad, "años.")
-except:
-    print("Eso no es un número válido.")`,
-                tourSteps: [
-                    { text: `<code>try</code>: Python intentará ejecutar lo que está dentro. Si ocurre un error, saltará al bloque <code>except</code>.`, line: 1 },
-                    { text: `Se asigna un valor a <code>edad</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `Bloque <code>except</code>: captura el error y ejecuta este código como respuesta controlada.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 5 }
-                ]
-            },            {
-                title: `Tipos de errores específicos`,
-                dialogo: `<p>Puedes atrapar tipos específicos de error para dar mensajes más útiles. Algunos de los más comunes:</p>
+                </div>`
+            },
+            {
+                title: "Tipos de errores específicos",
+                content: `<p>Puedes atrapar tipos específicos de error para dar mensajes más útiles. Algunos de los más comunes:</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
     numero = int(input("Dame un número: "))
     resultado = 100 / numero
@@ -3028,27 +2583,7 @@ except ValueError:
 
 except ZeroDivisionError:
     print("Error: no puedes dividir entre cero.")</code></pre></div>
-                <p>Si el usuario escribe "abc", cae en <code>ValueError</code>. Si escribe 0, cae en <code>ZeroDivisionError</code>. Cada error tiene su mensaje personalizado.</p>`,
-                codigo: `try:
-    numero = int(input("Dame un número: "))
-    resultado = 100 / numero
-    print("100 /", numero, "=", resultado)
-
-except ValueError:
-    print("Error: debes escribir un número, no texto.")
-
-except ZeroDivisionError:
-    print("Error: no puedes dividir entre cero.")`,
-                tourSteps: [
-                    { text: `<code>try</code>: Python intentará ejecutar lo que está dentro. Si ocurre un error, saltará al bloque <code>except</code>.`, line: 1 },
-                    { text: `Se asigna un valor a <code>numero</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>resultado</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `Bloque <code>except</code>: captura el error y ejecuta este código como respuesta controlada.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 },
-                    { text: `Bloque <code>except</code>: captura el error y ejecuta este código como respuesta controlada.`, line: 9 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
+                <p>Si el usuario escribe "abc", cae en <code>ValueError</code>. Si escribe 0, cae en <code>ZeroDivisionError</code>. Cada error tiene su mensaje personalizado.</p>`
             },
             {
                 title: "El bloque `finally`: siempre se ejecuta",
@@ -3060,29 +2595,17 @@ except ValueError:
     print("No era un número.")
 finally:
     print("Gracias por usar el programa.")  # Siempre corre</code></pre></div>`
-            },            {
-                title: `El truco: While + try para forzar entrada correcta`,
-                dialogo: `<p>Un patrón muy útil en aplicaciones reales: repetir el input hasta que el usuario escriba algo válido.</p>
+            },
+            {
+                title: "El truco: While + try para forzar entrada correcta",
+                content: `<p>Un patrón muy útil en aplicaciones reales: repetir el input hasta que el usuario escriba algo válido.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">while True:
     try:
         edad = int(input("Ingresa tu edad: "))
         break  # Si llegó aquí sin error, salimos del bucle
     except ValueError:
         print("Eso no es válido. Intenta de nuevo.")</code></pre></div>
-                <p>El programa seguirá preguntando hasta que el usuario escriba un número real. Una vez que lo haga, el <code>break</code> termina el bucle.</p>`,
-                codigo: `while True:
-    try:
-        edad = int(input("Ingresa tu edad: "))
-        break  # Si llegó aquí sin error, salimos del bucle
-    except ValueError:
-        print("Eso no es válido. Intenta de nuevo.")`,
-                tourSteps: [
-                    { text: `Bucle <code>while</code>: repetirá el bloque indentado mientras la condición sea <code>True</code>.`, line: 1 },
-                    { text: `<code>try</code>: Python intentará ejecutar lo que está dentro. Si ocurre un error, saltará al bloque <code>except</code>.`, line: 2 },
-                    { text: `Se asigna un valor a <code>edad</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Bloque <code>except</code>: captura el error y ejecuta este código como respuesta controlada.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 }
-                ]
+                <p>El programa seguirá preguntando hasta que el usuario escriba un número real. Una vez que lo haga, el <code>break</code> termina el bucle.</p>`
             }
         ],
         quiz: [
@@ -3100,9 +2623,10 @@ finally:
     },
     { // Nivel 14
         title: "Construyendo Moldes (Clases - POO Básica)",
-        lesson: [            {
-                title: `¿Por qué necesitamos Clases?`,
-                dialogo: `<p>Imagina que tienes que crear 100 personajes para tu juego, cada uno con nombre, vida, nivel y arma. Con lo que sabemos, necesitarías 4 diccionarios o 4 listas por personaje. Las <strong>Clases</strong> son moldes de galleta: defines la forma una vez y puedes crear mil galletas (objetos) con esa misma forma.</p>
+        lesson: [
+            {
+                title: "¿Por qué necesitamos Clases?",
+                content: `<p>Imagina que tienes que crear 100 personajes para tu juego, cada uno con nombre, vida, nivel y arma. Con lo que sabemos, necesitarías 4 diccionarios o 4 listas por personaje. Las <strong>Clases</strong> son moldes de galleta: defines la forma una vez y puedes crear mil galletas (objetos) con esa misma forma.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Sin Clases: repetitivo y propenso a errores
 personaje1 = {"nombre": "Ana", "vida": 100, "nivel": 1}
 personaje2 = {"nombre": "Luis", "vida": 100, "nivel": 1}
@@ -3110,23 +2634,11 @@ personaje2 = {"nombre": "Luis", "vida": 100, "nivel": 1}
 
 # Con Clases: definir una vez, usar muchas
 class Personaje:
-    pass  # (lo completaremos en la siguiente lección)</code></pre></div>`,
-                codigo: `# Sin Clases: repetitivo y propenso a errores
-personaje1 = {"nombre": "Ana", "vida": 100, "nivel": 1}
-personaje2 = {"nombre": "Luis", "vida": 100, "nivel": 1}
-# x100...
-
-# Con Clases: definir una vez, usar muchas
-class Personaje:
-    pass  # (lo completaremos en la siguiente lección)`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>personaje1</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>personaje2</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se define la clase <code>Personaje</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 7 }
-                ]
-            },            {
-                title: `Creando una Clase básica y sus instancias`,
-                dialogo: `<p>La palabra <code>class</code> seguida del nombre (por convención con <strong>Mayúscula inicial</strong>) crea el molde. Para crear un objeto (instancia) a partir de ese molde, lo llamas como si fuera una función.</p>
+    pass  # (lo completaremos en la siguiente lección)</code></pre></div>`
+            },
+            {
+                title: "Creando una Clase básica y sus instancias",
+                content: `<p>La palabra <code>class</code> seguida del nombre (por convención con <strong>Mayúscula inicial</strong>) crea el molde. Para crear un objeto (instancia) a partir de ese molde, lo llamas como si fuera una función.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Personaje:
     vida = 100
     nivel = 1
@@ -3137,29 +2649,11 @@ jugador2 = Personaje()
 
 print(jugador1.vida)   # 100
 print(jugador2.nivel)  # 1</code></pre></div>
-                <p>El punto (<code>.</code>) es el operador de acceso. <code>jugador1.vida</code> significa "la propiedad 'vida' que pertenece a jugador1".</p>`,
-                codigo: `class Personaje:
-    vida = 100
-    nivel = 1
-
-# Creando objetos (instancias) del molde:
-jugador1 = Personaje()
-jugador2 = Personaje()
-
-print(jugador1.vida)   # 100
-print(jugador2.nivel)  # 1`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Personaje</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se asigna un valor a <code>vida</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Se asigna un valor a <code>nivel</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>jugador1</code>. Esto queda guardado en memoria para usarse después.`, line: 6 },
-                    { text: `Se asigna un valor a <code>jugador2</code>. Esto queda guardado en memoria para usarse después.`, line: 7 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
-            },            {
-                title: `El constructor __init__: personalizar al nacer`,
-                dialogo: `<p>Con el código anterior, todos los personajes nacen igual (vida=100, nivel=1). El <code>__init__</code> es una función especial que se ejecuta automáticamente cuando creas un objeto, y te permite darle valores únicos a cada uno.</p>
+                <p>El punto (<code>.</code>) es el operador de acceso. <code>jugador1.vida</code> significa "la propiedad 'vida' que pertenece a jugador1".</p>`
+            },
+            {
+                title: "El constructor __init__: personalizar al nacer",
+                content: `<p>Con el código anterior, todos los personajes nacen igual (vida=100, nivel=1). El <code>__init__</code> es una función especial que se ejecuta automáticamente cuando creas un objeto, y te permite darle valores únicos a cada uno.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Guerrero:
     def __init__(self, nombre, vida):
         self.nombre = nombre   # Guarda el nombre en ESTE objeto
@@ -3173,27 +2667,7 @@ print(guerrero2.nombre, guerrero2.vida)  # Luis 80</code></pre></div>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Escribir <code>def init(self)</code> sin los dobles guiones bajos es un error silencioso: Python no lo tomará como el constructor especial. Debe ser <code>def __init__(self)</code>.</p>
-                </div>`,
-                codigo: `class Guerrero:
-    def __init__(self, nombre, vida):
-        self.nombre = nombre   # Guarda el nombre en ESTE objeto
-        self.vida = vida       # Guarda la vida en ESTE objeto
-
-guerrero1 = Guerrero("Ana", 150)
-guerrero2 = Guerrero("Luis", 80)
-
-print(guerrero1.nombre, guerrero1.vida)  # Ana 150
-print(guerrero2.nombre, guerrero2.vida)  # Luis 80`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Guerrero</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `Se asigna un valor a <code>self.nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>self.vida</code>. Esto queda guardado en memoria para usarse después.`, line: 4 },
-                    { text: `Se asigna un valor a <code>guerrero1</code>. Esto queda guardado en memoria para usarse después.`, line: 6 },
-                    { text: `Se asigna un valor a <code>guerrero2</code>. Esto queda guardado en memoria para usarse después.`, line: 7 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
+                </div>`
             },
             {
                 title: "¿Qué es `self`?",
@@ -3209,9 +2683,10 @@ mago2 = Mago("Gandalf", 900)
 # Cada objeto tiene SU PROPIA copia de los atributos:
 mago1.mana = 0   # Solo afecta a mago1
 print(mago2.mana)  # 900 — mago2 no cambió</code></pre></div>`
-            },            {
-                title: `Objetos independientes: modificar uno no afecta al otro`,
-                dialogo: `<p>Cada objeto creado con una clase tiene su <strong>propia memoria</strong>. Cambiar un atributo de <code>jugador1</code> no afecta a <code>jugador2</code>, aunque vengan del mismo molde.</p>
+            },
+            {
+                title: "Objetos independientes: modificar uno no afecta al otro",
+                content: `<p>Cada objeto creado con una clase tiene su <strong>propia memoria</strong>. Cambiar un atributo de <code>jugador1</code> no afecta a <code>jugador2</code>, aunque vengan del mismo molde.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Enemigo:
     def __init__(self, hp):
         self.hp = hp
@@ -3221,26 +2696,7 @@ slime2 = Enemigo(50)
 
 slime1.hp -= 30   # El jugador golpeó a slime1
 print(slime1.hp)  # 20
-print(slime2.hp)  # 50 — ¡intacto!</code></pre></div>`,
-                codigo: `class Enemigo:
-    def __init__(self, hp):
-        self.hp = hp
-
-slime1 = Enemigo(50)
-slime2 = Enemigo(50)
-
-slime1.hp -= 30   # El jugador golpeó a slime1
-print(slime1.hp)  # 20
-print(slime2.hp)  # 50 — ¡intacto!`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Enemigo</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `Se asigna un valor a <code>self.hp</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>slime1</code>. Esto queda guardado en memoria para usarse después.`, line: 5 },
-                    { text: `Se asigna un valor a <code>slime2</code>. Esto queda guardado en memoria para usarse después.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
+print(slime2.hp)  # 50 — ¡intacto!</code></pre></div>`
             }
         ],
         quiz: [
@@ -3258,9 +2714,10 @@ print(slime2.hp)  # 50 — ¡intacto!`,
     },
     { // Nivel 15
         title: "Objetos en Acción (Métodos de Clase)",
-        lesson: [            {
-                title: `Clases con acciones: los Métodos`,
-                dialogo: `<p>En el nivel anterior, las Clases solo guardaban datos (atributos). Ahora les añadiremos <strong>acciones</strong>: funciones que viven dentro de la clase y que operan sobre sus propios datos. A estas funciones se les llama <strong>métodos</strong>.</p>
+        lesson: [
+            {
+                title: "Clases con acciones: los Métodos",
+                content: `<p>En el nivel anterior, las Clases solo guardaban datos (atributos). Ahora les añadiremos <strong>acciones</strong>: funciones que viven dentro de la clase y que operan sobre sus propios datos. A estas funciones se les llama <strong>métodos</strong>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Guerrero:
     def __init__(self, nombre, vida):
         self.nombre = nombre
@@ -3268,25 +2725,11 @@ print(slime2.hp)  # 50 — ¡intacto!`,
     
     def gritar(self):          # Este es un método
         print(f"{self.nombre}: ¡POR LA GLORIA!")</code></pre></div>
-                <p>Los métodos son funciones normales con una diferencia: el primer parámetro siempre debe ser <code>self</code>.</p>`,
-                codigo: `class Guerrero:
-    def __init__(self, nombre, vida):
-        self.nombre = nombre
-        self.vida = vida
-    
-    def gritar(self):          # Este es un método
-        print(f"{self.nombre}: ¡POR LA GLORIA!")`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Guerrero</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `Se asigna un valor a <code>self.nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>self.vida</code>. Esto queda guardado en memoria para usarse después.`, line: 4 },
-                    { text: `Se define la función <code>gritar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 }
-                ]
-            },            {
-                title: `Métodos que modifican los atributos`,
-                dialogo: `<p>Los métodos más poderosos son los que cambian los datos internos del objeto usando <code>self</code>.</p>
+                <p>Los métodos son funciones normales con una diferencia: el primer parámetro siempre debe ser <code>self</code>.</p>`
+            },
+            {
+                title: "Métodos que modifican los atributos",
+                content: `<p>Los métodos más poderosos son los que cambian los datos internos del objeto usando <code>self</code>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Jefe:
     def __init__(self, nombre):
         self.nombre = nombre
@@ -3301,37 +2744,11 @@ print(slime2.hp)  # 50 — ¡intacto!`,
 
 boss = Jefe("Dragón Oscuro")
 boss.recibir_golpe(300)   # Dragón Oscuro tiene 700 HP restantes.
-boss.recibir_golpe(800)   # Dragón Oscuro fue derrotado!</code></pre></div>`,
-                codigo: `class Jefe:
-    def __init__(self, nombre):
-        self.nombre = nombre
-        self.hp = 1000
-    
-    def recibir_golpe(self, daño):
-        self.hp -= daño
-        if self.hp <= 0:
-            print(f"{self.nombre} fue derrotado!")
-        else:
-            print(f"{self.nombre} tiene {self.hp} HP restantes.")
-
-boss = Jefe("Dragón Oscuro")
-boss.recibir_golpe(300)   # Dragón Oscuro tiene 700 HP restantes.
-boss.recibir_golpe(800)   # Dragón Oscuro fue derrotado!`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Jefe</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `Se asigna un valor a <code>self.nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>self.hp</code>. Esto queda guardado en memoria para usarse después.`, line: 4 },
-                    { text: `Se define la función <code>recibir_golpe()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 6 },
-                    { text: `Condición <code>if</code>: evalúa si la expresión es verdadera. Si lo es, ejecuta el bloque indentado.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 },
-                    { text: `Bloque <code>else</code>: se ejecuta si ninguna condición anterior fue verdadera.`, line: 10 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 11 },
-                    { text: `Se asigna un valor a <code>boss</code>. Esto queda guardado en memoria para usarse después.`, line: 13 }
-                ]
-            },            {
-                title: `Métodos que devuelven datos`,
-                dialogo: `<p>Los métodos también pueden usar <code>return</code> para devolver resultados calculados.</p>
+boss.recibir_golpe(800)   # Dragón Oscuro fue derrotado!</code></pre></div>`
+            },
+            {
+                title: "Métodos que devuelven datos",
+                content: `<p>Los métodos también pueden usar <code>return</code> para devolver resultados calculados.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Jugador:
     def __init__(self, nombre, nivel):
         self.nombre = nombre
@@ -3345,34 +2762,7 @@ boss.recibir_golpe(800)   # Dragón Oscuro fue derrotado!`,
 
 p = Jugador("Steven", 15)
 print(p.esta_vivo())      # True
-print(p.descripcion())    # Jugador Steven en nivel 15</code></pre></div>`,
-                codigo: `class Jugador:
-    def __init__(self, nombre, nivel):
-        self.nombre = nombre
-        self.nivel = nivel
-    
-    def esta_vivo(self):
-        return self.nivel > 0
-    
-    def descripcion(self):
-        return f"Jugador {self.nombre} en nivel {self.nivel}"
-
-p = Jugador("Steven", 15)
-print(p.esta_vivo())      # True
-print(p.descripcion())    # Jugador Steven en nivel 15`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Jugador</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `Se asigna un valor a <code>self.nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>self.nivel</code>. Esto queda guardado en memoria para usarse después.`, line: 4 },
-                    { text: `Se define la función <code>esta_vivo()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 6 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 7 },
-                    { text: `Se define la función <code>descripcion()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 9 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 10 },
-                    { text: `Se asigna un valor a <code>p</code>. Esto queda guardado en memoria para usarse después.`, line: 12 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 13 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 14 }
-                ]
+print(p.descripcion())    # Jugador Steven en nivel 15</code></pre></div>`
             },
             {
                 title: "Siempre: el primer parámetro es `self`",
@@ -3395,29 +2785,17 @@ r.hablar("Beep boop!")   # Robot R2D2 dice: Beep boop!</code></pre></div>
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Olvidar <code>self</code> en el método dará <code>TypeError</code> al llamarlo. Python pasa el objeto automáticamente como primer argumento, y si no hay <code>self</code> para recibirlo, se confunde con los demás parámetros.</p>
                 </div>`
-            },            {
-                title: `Ya usabas POO sin saberlo`,
-                dialogo: `<p>¿Recuerdas <code>mi_lista.append("dato")</code>, o <code>texto.upper()</code>? El punto (<code>.</code>) antes del método significa que estás llamando una función que pertenece a ese objeto. <code>mi_lista</code> es un objeto de tipo List. <code>texto</code> es un objeto de tipo String. <strong>Todo en Python es un objeto.</strong></p>
+            },
+            {
+                title: "Ya usabas POO sin saberlo",
+                content: `<p>¿Recuerdas <code>mi_lista.append("dato")</code>, o <code>texto.upper()</code>? El punto (<code>.</code>) antes del método significa que estás llamando una función que pertenece a ese objeto. <code>mi_lista</code> es un objeto de tipo List. <code>texto</code> es un objeto de tipo String. <strong>Todo en Python es un objeto.</strong></p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Esto que ya conoces... ES POO:
 lista = [3, 1, 2]
 lista.sort()          # Llamando el método .sort() del objeto lista
 print(lista)          # [1, 2, 3]
 
 texto = "hola"
-print(texto.upper())  # Llamando el método .upper() del objeto texto</code></pre></div>`,
-                codigo: `# Esto que ya conoces... ES POO:
-lista = [3, 1, 2]
-lista.sort()          # Llamando el método .sort() del objeto lista
-print(lista)          # [1, 2, 3]
-
-texto = "hola"
-print(texto.upper())  # Llamando el método .upper() del objeto texto`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>lista</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `Se asigna un valor a <code>texto</code>. Esto queda guardado en memoria para usarse después.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 }
-                ]
+print(texto.upper())  # Llamando el método .upper() del objeto texto</code></pre></div>`
             }
         ],
         quiz: [
@@ -3435,9 +2813,10 @@ print(texto.upper())  # Llamando el método .upper() del objeto texto`,
     },
 { // Nivel 16
         title: "Heredando Superpoderes (Herencia POO)",
-        lesson: [            {
-                title: `El problema de repetir código en Clases`,
-                dialogo: `<p>Tienes una clase <code>Guerrero</code> y quieres crear <code>Mago</code> y <code>Arquero</code>. Los tres tienen nombre, vida y nivel. ¿Vas a copiar esas propiedades en los tres? Si luego cambias algo común, tendrás que actualizarlo en 3 lugares.</p>
+        lesson: [
+            {
+                title: "El problema de repetir código en Clases",
+                content: `<p>Tienes una clase <code>Guerrero</code> y quieres crear <code>Mago</code> y <code>Arquero</code>. Los tres tienen nombre, vida y nivel. ¿Vas a copiar esas propiedades en los tres? Si luego cambias algo común, tendrás que actualizarlo en 3 lugares.</p>
                 <p>La <strong>Herencia</strong> permite que una clase "Hija" tome todo lo que tiene su clase "Padre", y solo aggregrás lo que sea único de esa clase hija.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># El Padre: contiene lo COMÚN a todos los personajes
 class Personaje:
@@ -3446,26 +2825,11 @@ class Personaje:
         self.vida = vida
     
     def presentarse(self):
-        print(f"Soy {self.nombre} con {self.vida} HP.")</code></pre></div>`,
-                codigo: `# El Padre: contiene lo COMÚN a todos los personajes
-class Personaje:
-    def __init__(self, nombre, vida):
-        self.nombre = nombre
-        self.vida = vida
-    
-    def presentarse(self):
-        print(f"Soy {self.nombre} con {self.vida} HP.")`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Personaje</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 2 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 3 },
-                    { text: `Se asigna un valor a <code>self.nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 4 },
-                    { text: `Se asigna un valor a <code>self.vida</code>. Esto queda guardado en memoria para usarse después.`, line: 5 },
-                    { text: `Se define la función <code>presentarse()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 7 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 }
-                ]
-            },            {
-                title: `Creando Hijos con herencia`,
-                dialogo: `<p>Para heredar, pones el nombre del Padre entre paréntesis al definir la clase Hija. La clase Hija automáticamente tendrá todos los métodos y atributos del Padre.</p>
+        print(f"Soy {self.nombre} con {self.vida} HP.")</code></pre></div>`
+            },
+            {
+                title: "Creando Hijos con herencia",
+                content: `<p>Para heredar, pones el nombre del Padre entre paréntesis al definir la clase Hija. La clase Hija automáticamente tendrá todos los métodos y atributos del Padre.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Guerrero(Personaje):    # Hereda de Personaje
     def atacar(self):
         print(f"{self.nombre} ataca con espada!")
@@ -3480,35 +2844,11 @@ g.presentarse()    # Soy Ana con 200 HP.
 g.atacar()         # Ana ataca con espada!
 
 m = Mago("Luis", 120)
-m.lanzar_hechizo() # Luis lanza ¡BOLA DE FUEGO!</code></pre></div>`,
-                codigo: `class Guerrero(Personaje):    # Hereda de Personaje
-    def atacar(self):
-        print(f"{self.nombre} ataca con espada!")
-
-class Mago(Personaje):        # Hereda de Personaje
-    def lanzar_hechizo(self):
-        print(f"{self.nombre} lanza ¡BOLA DE FUEGO!")
-
-# Ambos usan el __init__ y presentarse() del Padre:
-g = Guerrero("Ana", 200)
-g.presentarse()    # Soy Ana con 200 HP.
-g.atacar()         # Ana ataca con espada!
-
-m = Mago("Luis", 120)
-m.lanzar_hechizo() # Luis lanza ¡BOLA DE FUEGO!`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Guerrero</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>atacar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `Se define la clase <code>Mago</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 5 },
-                    { text: `Se define la función <code>lanzar_hechizo()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 },
-                    { text: `Se asigna un valor a <code>g</code>. Esto queda guardado en memoria para usarse después.`, line: 10 },
-                    { text: `Se asigna un valor a <code>m</code>. Esto queda guardado en memoria para usarse después.`, line: 14 }
-                ]
-            },            {
-                title: `Sobrescribir métodos del Padre`,
-                dialogo: `<p>Si la clase Hija define un método con el mismo nombre que el Padre, el método del Hijo <strong>gana</strong> y reemplaza al del padre para esa clase.</p>
+m.lanzar_hechizo() # Luis lanza ¡BOLA DE FUEGO!</code></pre></div>`
+            },
+            {
+                title: "Sobrescribir métodos del Padre",
+                content: `<p>Si la clase Hija define un método con el mismo nombre que el Padre, el método del Hijo <strong>gana</strong> y reemplaza al del padre para esa clase.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Animal:
     def hablar(self):
         print("...")
@@ -3524,39 +2864,11 @@ class Gato(Animal):
 perro = Perro()
 gato  = Gato()
 perro.hablar()  # ¡Guau!
-gato.hablar()   # ¡Miau!</code></pre></div>`,
-                codigo: `class Animal:
-    def hablar(self):
-        print("...")
-
-class Perro(Animal):
-    def hablar(self):         # Sobrescribe al padre
-        print("¡Guau!")
-
-class Gato(Animal):
-    def hablar(self):         # Sobrescribe al padre
-        print("¡Miau!")
-
-perro = Perro()
-gato  = Gato()
-perro.hablar()  # ¡Guau!
-gato.hablar()   # ¡Miau!`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Animal</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>hablar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `Se define la clase <code>Perro</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 5 },
-                    { text: `Se define la función <code>hablar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 },
-                    { text: `Se define la clase <code>Gato</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 9 },
-                    { text: `Se define la función <code>hablar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 10 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 11 },
-                    { text: `Se asigna un valor a <code>perro</code>. Esto queda guardado en memoria para usarse después.`, line: 13 },
-                    { text: `Se asigna un valor a <code>gato</code>. Esto queda guardado en memoria para usarse después.`, line: 14 }
-                ]
-            },            {
-                title: `super(): llamar al Padre desde el Hijo`,
-                dialogo: `<p>A veces el Hijo quiere <strong>agregar</strong> funcionalidad al constructor del Padre sin reemplazarlo todo. <code>super()</code> te deja llamar al <code>__init__</code> del Padre desde el Hijo.</p>
+gato.hablar()   # ¡Miau!</code></pre></div>`
+            },
+            {
+                title: "super(): llamar al Padre desde el Hijo",
+                content: `<p>A veces el Hijo quiere <strong>agregar</strong> funcionalidad al constructor del Padre sin reemplazarlo todo. <code>super()</code> te deja llamar al <code>__init__</code> del Padre desde el Hijo.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Personaje:
     def __init__(self, nombre, vida):
         self.nombre = nombre
@@ -3568,33 +2880,11 @@ class Paladin(Personaje):
         self.fe = fe                      # Agrega lo suyo
 
 p = Paladin("Sara", 300, 100)
-print(p.nombre, p.vida, p.fe)  # Sara 300 100</code></pre></div>`,
-                codigo: `class Personaje:
-    def __init__(self, nombre, vida):
-        self.nombre = nombre
-        self.vida = vida
-
-class Paladin(Personaje):
-    def __init__(self, nombre, vida, fe):
-        super().__init__(nombre, vida)   # Llama al Padre
-        self.fe = fe                      # Agrega lo suyo
-
-p = Paladin("Sara", 300, 100)
-print(p.nombre, p.vida, p.fe)  # Sara 300 100`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Personaje</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `Se asigna un valor a <code>self.nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `Se asigna un valor a <code>self.vida</code>. Esto queda guardado en memoria para usarse después.`, line: 4 },
-                    { text: `Se define la clase <code>Paladin</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 6 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 7 },
-                    { text: `Se asigna un valor a <code>self.fe</code>. Esto queda guardado en memoria para usarse después.`, line: 9 },
-                    { text: `Se asigna un valor a <code>p</code>. Esto queda guardado en memoria para usarse después.`, line: 11 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 12 }
-                ]
-            },            {
-                title: `La ventaja real de la herencia`,
-                dialogo: `<p>Si tienes 10 tipos de enemigos y todos heredan de <code>Enemigo</code>, y encuentras un bug en el método <code>morir()</code>, lo arreglas en un solo lugar y todos los 10 tipos lo heredan corregido automáticamente.</p>
+print(p.nombre, p.vida, p.fe)  # Sara 300 100</code></pre></div>`
+            },
+            {
+                title: "La ventaja real de la herencia",
+                content: `<p>Si tienes 10 tipos de enemigos y todos heredan de <code>Enemigo</code>, y encuentras un bug en el método <code>morir()</code>, lo arreglas en un solo lugar y todos los 10 tipos lo heredan corregido automáticamente.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Enemigo:
     def morir(self):
         print(f"{self.nombre} fue derrotado. +{self.xp} XP!")
@@ -3611,35 +2901,7 @@ class Dragón(Enemigo):
 # Los 3 heredan morir() sin repetir código:
 Goblin().morir()   # Goblin fue derrotado. +10 XP!
 Orco().morir()     # Orco fue derrotado. +25 XP!
-Dragón().morir()   # Dragón fue derrotado. +500 XP!</code></pre></div>`,
-                codigo: `class Enemigo:
-    def morir(self):
-        print(f"{self.nombre} fue derrotado. +{self.xp} XP!")
-
-class Goblin(Enemigo):
-    def __init__(self):   self.nombre = "Goblin"; self.xp = 10
-
-class Orco(Enemigo):
-    def __init__(self):   self.nombre = "Orco";   self.xp = 25
-
-class Dragón(Enemigo):
-    def __init__(self):   self.nombre = "Dragón"; self.xp = 500
-
-# Los 3 heredan morir() sin repetir código:
-Goblin().morir()   # Goblin fue derrotado. +10 XP!
-Orco().morir()     # Orco fue derrotado. +25 XP!
-Dragón().morir()   # Dragón fue derrotado. +500 XP!`,
-                tourSteps: [
-                    { text: `Se define la clase <code>Enemigo</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 1 },
-                    { text: `Se define la función <code>morir()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 },
-                    { text: `Se define la clase <code>Goblin</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 5 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 6 },
-                    { text: `Se define la clase <code>Orco</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 8 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 9 },
-                    { text: `Se define la clase <code>Dragón</code>. Es la plantilla o molde que usaremos para crear objetos.`, line: 11 },
-                    { text: `Se define la función <code>__init__()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 12 }
-                ]
+Dragón().morir()   # Dragón fue derrotado. +500 XP!</code></pre></div>`
             }
         ],
         quiz: [
@@ -3657,9 +2919,10 @@ Dragón().morir()   # Dragón fue derrotado. +500 XP!`,
     },
     { // Nivel 17
         title: "Usando Superpoderes Ajenos (Módulos)",
-        lesson: [            {
-                title: `¿Para qué reinventar la rueda?`,
-                dialogo: `<p>Miles de programadores antes que tú ya resolvieron problemas comunes: generar números aleatorios, acceder a archivos del sistema, calcular raíces cuadradas, conectarse a internet. Ellos empaquetaron ese código en <strong>módulos</strong> que puedes importar gratis.</p>
+        lesson: [
+            {
+                title: "¿Para qué reinventar la rueda?",
+                content: `<p>Miles de programadores antes que tú ya resolvieron problemas comunes: generar números aleatorios, acceder a archivos del sistema, calcular raíces cuadradas, conectarse a internet. Ellos empaquetaron ese código en <strong>módulos</strong> que puedes importar gratis.</p>
                 <p>Un módulo es simplemente un archivo Python con funciones y clases listas para usar. Python viene con docenas incluidos, y hay miles más que puedes instalar.</p>`
             },
             {
@@ -3702,9 +2965,10 @@ import math   as m
 # Ahora usas el apodo:
 print(rng.randint(1, 100))
 print(m.sqrt(9))              # 3.0</code></pre></div>`
-            },            {
-                title: `Tus propios módulos: conectar archivos`,
-                dialogo: `<p>Si tienes un archivo <code>utils.py</code> con funciones que creaste, puedes importarlo en otro archivo, exactamente igual que con los módulos de Python. Así organizas proyectos grandes separando el código en archivos.</p>
+            },
+            {
+                title: "Tus propios módulos: conectar archivos",
+                content: `<p>Si tienes un archivo <code>utils.py</code> con funciones que creaste, puedes importarlo en otro archivo, exactamente igual que con los módulos de Python. Así organizas proyectos grandes separando el código en archivos.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># utils.py (tu archivo de funciones)
 def calcular_nivel(xp):
     return xp // 100
@@ -3714,25 +2978,7 @@ import utils
 
 xp_jugador = 550
 nivel = utils.calcular_nivel(xp_jugador)
-print("Nivel:", nivel)   # Nivel: 5</code></pre></div>`,
-                codigo: `# utils.py (tu archivo de funciones)
-def calcular_nivel(xp):
-    return xp // 100
-
-# juego.py (el archivo principal)
-import utils
-
-xp_jugador = 550
-nivel = utils.calcular_nivel(xp_jugador)
-print("Nivel:", nivel)   # Nivel: 5`,
-                tourSteps: [
-                    { text: `Se define la función <code>calcular_nivel()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 3 },
-                    { text: `Importa el módulo o función para usarla en este archivo.`, line: 6 },
-                    { text: `Se asigna un valor a <code>xp_jugador</code>. Esto queda guardado en memoria para usarse después.`, line: 8 },
-                    { text: `Se asigna un valor a <code>nivel</code>. Esto queda guardado en memoria para usarse después.`, line: 9 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 10 }
-                ]
+print("Nivel:", nivel)   # Nivel: 5</code></pre></div>`
             }
         ],
         quiz: [
@@ -3750,20 +2996,17 @@ print("Nivel:", nivel)   # Nivel: 5`,
     },
     { // Nivel 18
         title: "Guardando Datos Permanentemente (Archivos)",
-        lesson: [            {
-                title: `El problema de la memoria volátil`,
-                dialogo: `<p>Todo lo que guardas en variables vive en la RAM (memoria del computador). Cuando el programa termina, la RAM se limpia y todo desaparece. Cada vez que reinicias el programa, comienzas desde cero.</p>
+        lesson: [
+            {
+                title: "El problema de la memoria volátil",
+                content: `<p>Todo lo que guardas en variables vive en la RAM (memoria del computador). Cuando el programa termina, la RAM se limpia y todo desaparece. Cada vez que reinicias el programa, comienzas desde cero.</p>
                 <p>Para guardar datos permanentemente entre ejecuciones (puntajes, configuraciones, usuarios), necesitas escribirlos en un <strong>archivo en el disco duro</strong>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">puntaje = 1500    # Si el programa termina, este dato muere
-# La próxima vez que corras el programa... vuelve a 0</code></pre></div>`,
-                codigo: `puntaje = 1500    # Si el programa termina, este dato muere
-# La próxima vez que corras el programa... vuelve a 0`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>puntaje</code>. Esto queda guardado en memoria para usarse después.`, line: 1 }
-                ]
-            },            {
-                title: `Escribir en un archivo`,
-                dialogo: `<p>Usamos <code>open()</code> con el modo <code>"w"</code> (write) para crear o sobreescribir un archivo. La forma segura es con <code>with</code>, que cierra el archivo automáticamente al terminar.</p>
+# La próxima vez que corras el programa... vuelve a 0</code></pre></div>`
+            },
+            {
+                title: "Escribir en un archivo",
+                content: `<p>Usamos <code>open()</code> con el modo <code>"w"</code> (write) para crear o sobreescribir un archivo. La forma segura es con <code>with</code>, que cierra el archivo automáticamente al terminar.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">puntaje = 1500
 nombre  = "Steven"
 
@@ -3775,24 +3018,11 @@ print("Datos guardados!")</code></pre></div>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Cuidado con "w":</strong>
                     <p class="text-sm">El modo <code>"w"</code> borra todo el contenido anterior del archivo y empieza desde cero. Si quieres agregar sin borrar, usa el modo <code>"a"</code> (append).</p>
-                </div>`,
-                codigo: `puntaje = 1500
-nombre  = "Steven"
-
-with open("datos.txt", "w") as f:
-    f.write(f"Jugador: {nombre}\n")
-    f.write(f"Puntaje: {puntaje}\n")
-
-print("Datos guardados!")`,
-                tourSteps: [
-                    { text: `Se asigna un valor a <code>puntaje</code>. Esto queda guardado en memoria para usarse después.`, line: 1 },
-                    { text: `Se asigna un valor a <code>nombre</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Abre el archivo de forma segura. Al salir del bloque <code>with</code>, el archivo se cierra automáticamente.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 8 }
-                ]
-            },            {
-                title: `Leer un archivo`,
-                dialogo: `<p>Para leer el contenido de un archivo, usas el modo <code>"r"</code> (read). Si el archivo no existe, Python lanzará <code>FileNotFoundError</code>.</p>
+                </div>`
+            },
+            {
+                title: "Leer un archivo",
+                content: `<p>Para leer el contenido de un archivo, usas el modo <code>"r"</code> (read). Si el archivo no existe, Python lanzará <code>FileNotFoundError</code>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Leer todo el archivo de una vez:
 with open("datos.txt", "r") as f:
     contenido = f.read()
@@ -3801,27 +3031,11 @@ with open("datos.txt", "r") as f:
 # O línea por línea:
 with open("datos.txt", "r") as f:
     for linea in f:
-        print(linea.strip())  # .strip() elimina el salto de línea extra</code></pre></div>`,
-                codigo: `# Leer todo el archivo de una vez:
-with open("datos.txt", "r") as f:
-    contenido = f.read()
-    print(contenido)
-
-# O línea por línea:
-with open("datos.txt", "r") as f:
-    for linea in f:
-        print(linea.strip())  # .strip() elimina el salto de línea extra`,
-                tourSteps: [
-                    { text: `Abre el archivo de forma segura. Al salir del bloque <code>with</code>, el archivo se cierra automáticamente.`, line: 2 },
-                    { text: `Se asigna un valor a <code>contenido</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `Abre el archivo de forma segura. Al salir del bloque <code>with</code>, el archivo se cierra automáticamente.`, line: 7 },
-                    { text: `Bucle <code>for</code>: la variable <code>linea</code> tomará cada valor de la colección, uno por vuelta.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 }
-                ]
-            },            {
-                title: `Los modos de apertura`,
-                dialogo: `<p>La tabla de modos es sencilla:</p>
+        print(linea.strip())  # .strip() elimina el salto de línea extra</code></pre></div>`
+            },
+            {
+                title: "Los modos de apertura",
+                content: `<p>La tabla de modos es sencilla:</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># "r"  → Leer  (el archivo debe existir)
 # "w"  → Escribir (crea el archivo o borra el existente)
 # "a"  → Append: agrega al final sin borrar nada
@@ -3830,45 +3044,18 @@ with open("datos.txt", "r") as f:
 # Modo append - útil para registros/logs:
 with open("registro.txt", "a") as f:
     f.write("Jugador conectado a las 22:00\n")
-    f.write("Puntuación: 4500\n")</code></pre></div>`,
-                codigo: `# "r"  → Leer  (el archivo debe existir)
-# "w"  → Escribir (crea el archivo o borra el existente)
-# "a"  → Append: agrega al final sin borrar nada
-# "x"  → Crear  (falla si el archivo ya existe)
-
-# Modo append - útil para registros/logs:
-with open("registro.txt", "a") as f:
-    f.write("Jugador conectado a las 22:00\n")
-    f.write("Puntuación: 4500\n")`,
-                tourSteps: [
-                    { text: `Abre el archivo de forma segura. Al salir del bloque <code>with</code>, el archivo se cierra automáticamente.`, line: 7 }
-                ]
-            },            {
-                title: `Protegerlo con try/except`,
-                dialogo: `<p>Lo profesional es combinar archivos con manejo de errores. Un archivo podría no existir, estar corrupto, o no tener permisos.</p>
+    f.write("Puntuación: 4500\n")</code></pre></div>`
+            },
+            {
+                title: "Protegerlo con try/except",
+                content: `<p>Lo profesional es combinar archivos con manejo de errores. Un archivo podría no existir, estar corrupto, o no tener permisos.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
     with open("puntaje.txt", "r") as f:
         datos = f.read()
         print("Puntaje guardado:", datos)
 except FileNotFoundError:
     print("No hay puntaje guardado aún.")
-    print("Empezando desde cero.")</code></pre></div>`,
-                codigo: `try:
-    with open("puntaje.txt", "r") as f:
-        datos = f.read()
-        print("Puntaje guardado:", datos)
-except FileNotFoundError:
-    print("No hay puntaje guardado aún.")
-    print("Empezando desde cero.")`,
-                tourSteps: [
-                    { text: `<code>try</code>: Python intentará ejecutar lo que está dentro. Si ocurre un error, saltará al bloque <code>except</code>.`, line: 1 },
-                    { text: `Abre el archivo de forma segura. Al salir del bloque <code>with</code>, el archivo se cierra automáticamente.`, line: 2 },
-                    { text: `Se asigna un valor a <code>datos</code>. Esto queda guardado en memoria para usarse después.`, line: 3 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 4 },
-                    { text: `Bloque <code>except</code>: captura el error y ejecuta este código como respuesta controlada.`, line: 5 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 }
-                ]
+    print("Empezando desde cero.")</code></pre></div>`
             }
         ],
         quiz: [
@@ -3886,13 +3073,15 @@ except FileNotFoundError:
     },
     { // Nivel 19
         title: "Pensando como Programador (Algoritmos)",
-        lesson: [            {
-                title: `¿Qué es un Algoritmo?`,
-                dialogo: `<p>Un algoritmo no es código ni magia de Hollywood. Es simplemente: <strong>una serie de pasos lógicos ordenados para resolver un problema</strong>. Una receta de cocina es un algoritmo. El GPS que calcula la ruta más corta usa algoritmos. Los videojuegos, las redes sociales, todo funciona con algoritmos.</p>
+        lesson: [
+            {
+                title: "¿Qué es un Algoritmo?",
+                content: `<p>Un algoritmo no es código ni magia de Hollywood. Es simplemente: <strong>una serie de pasos lógicos ordenados para resolver un problema</strong>. Una receta de cocina es un algoritmo. El GPS que calcula la ruta más corta usa algoritmos. Los videojuegos, las redes sociales, todo funciona con algoritmos.</p>
                 <p>La habilidad más importante de un programador no es saber Python: es poder descomponer un problema grande en pasos pequeños y lógicos.</p>`
-            },            {
-                title: `Búsqueda Lineal: el método simple`,
-                dialogo: `<p>Si tienes una lista de 1000 elementos y buscas el número 500, la búsqueda más simple es revisar uno por uno de principio a fin. Esto es la <strong>Búsqueda Lineal</strong>. Funciona, pero es lenta con listas enormes.</p>
+            },
+            {
+                title: "Búsqueda Lineal: el método simple",
+                content: `<p>Si tienes una lista de 1000 elementos y buscas el número 500, la búsqueda más simple es revisar uno por uno de principio a fin. Esto es la <strong>Búsqueda Lineal</strong>. Funciona, pero es lenta con listas enormes.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def buscar(lista, objetivo):
     for i in range(len(lista)):
         if lista[i] == objetivo:
@@ -3901,29 +3090,11 @@ except FileNotFoundError:
 
 numeros = [34, 7, 23, 32, 5, 62]
 pos = buscar(numeros, 23)
-print("Encontrado en posición:", pos)  # 2</code></pre></div>`,
-                codigo: `def buscar(lista, objetivo):
-    for i in range(len(lista)):
-        if lista[i] == objetivo:
-            return i    # Devuelve la posición donde lo encontró
-    return -1           # -1 si no está
-
-numeros = [34, 7, 23, 32, 5, 62]
-pos = buscar(numeros, 23)
-print("Encontrado en posición:", pos)  # 2`,
-                tourSteps: [
-                    { text: `Se define la función <code>buscar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `Bucle <code>for</code>: la variable <code>i</code> tomará cada valor de la colección, uno por vuelta.`, line: 2 },
-                    { text: `Condición <code>if</code>: evalúa si la expresión es verdadera. Si lo es, ejecuta el bloque indentado.`, line: 3 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 4 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 5 },
-                    { text: `Se asigna un valor a <code>numeros</code>. Esto queda guardado en memoria para usarse después.`, line: 7 },
-                    { text: `Se asigna un valor a <code>pos</code>. Esto queda guardado en memoria para usarse después.`, line: 8 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 9 }
-                ]
-            },            {
-                title: `Ordenamiento Burbuja: un algoritmo clásico`,
-                dialogo: `<p>El algoritmo de burbuja ordena una lista comparando pares de elementos adyacentes e intercambiándolos si están en el orden equivocado, repetidamente hasta que la lista quede ordenada.</p>
+print("Encontrado en posición:", pos)  # 2</code></pre></div>`
+            },
+            {
+                title: "Ordenamiento Burbuja: un algoritmo clásico",
+                content: `<p>El algoritmo de burbuja ordena una lista comparando pares de elementos adyacentes e intercambiándolos si están en el orden equivocado, repetidamente hasta que la lista quede ordenada.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def burbuja(lista):
     n = len(lista)
     for i in range(n):
@@ -3935,55 +3106,22 @@ print("Encontrado en posición:", pos)  # 2`,
 nums = [64, 34, 25, 12, 22, 11, 90]
 burbuja(nums)
 print(nums)   # [11, 12, 22, 25, 34, 64, 90]</code></pre></div>
-                <p>Python tiene <code>lista.sort()</code> que hace esto más rápido, pero entender el algoritmo detrás te hace mejor programador.</p>`,
-                codigo: `def burbuja(lista):
-    n = len(lista)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if lista[j] > lista[j+1]:
-                # Intercambiar
-                lista[j], lista[j+1] = lista[j+1], lista[j]
-
-nums = [64, 34, 25, 12, 22, 11, 90]
-burbuja(nums)
-print(nums)   # [11, 12, 22, 25, 34, 64, 90]`,
-                tourSteps: [
-                    { text: `Se define la función <code>burbuja()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `Se asigna un valor a <code>n</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
-                    { text: `Bucle <code>for</code>: la variable <code>i</code> tomará cada valor de la colección, uno por vuelta.`, line: 3 },
-                    { text: `Bucle <code>for</code>: la variable <code>j</code> tomará cada valor de la colección, uno por vuelta.`, line: 4 },
-                    { text: `Condición <code>if</code>: evalúa si la expresión es verdadera. Si lo es, ejecuta el bloque indentado.`, line: 5 },
-                    { text: `Se asigna un valor a <code>nums</code>. Esto queda guardado en memoria para usarse después.`, line: 9 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 11 }
-                ]
-            },            {
-                title: `Recursividad: funciones que se llaman a sí mismas`,
-                dialogo: `<p>Una función recursiva es la que se llama a sí misma. Es otra forma de hacer bucles, pero muy elegante para ciertos problemas. El truco es el <strong>caso base</strong>: la condición que para la recursión. Sin él, es un bucle infinito.</p>
+                <p>Python tiene <code>lista.sort()</code> que hace esto más rápido, pero entender el algoritmo detrás te hace mejor programador.</p>`
+            },
+            {
+                title: "Recursividad: funciones que se llaman a sí mismas",
+                content: `<p>Una función recursiva es la que se llama a sí misma. Es otra forma de hacer bucles, pero muy elegante para ciertos problemas. El truco es el <strong>caso base</strong>: la condición que para la recursión. Sin él, es un bucle infinito.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def factorial(n):
     if n == 0:          # CASO BASE: para la recursión
         return 1
     return n * factorial(n - 1)  # Se llama a sí misma
 
 print(factorial(5))    # 5 × 4 × 3 × 2 × 1 = 120
-print(factorial(0))    # 1</code></pre></div>`,
-                codigo: `def factorial(n):
-    if n == 0:          # CASO BASE: para la recursión
-        return 1
-    return n * factorial(n - 1)  # Se llama a sí misma
-
-print(factorial(5))    # 5 × 4 × 3 × 2 × 1 = 120
-print(factorial(0))    # 1`,
-                tourSteps: [
-                    { text: `Se define la función <code>factorial()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
-                    { text: `Condición <code>if</code>: evalúa si la expresión es verdadera. Si lo es, ejecuta el bloque indentado.`, line: 2 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 3 },
-                    { text: `<code>return</code> devuelve el resultado al lugar que llamó la función y finaliza su ejecución.`, line: 4 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 6 },
-                    { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 7 }
-                ]
-            },            {
-                title: `La mentalidad del programador`,
-                dialogo: `<p>La diferencia entre un principiante y un programador no es que uno sabe más comandos. Es que el programador <strong>piensa el algoritmo en papel antes de escribir una sola línea</strong>.</p>
+print(factorial(0))    # 1</code></pre></div>`
+            },
+            {
+                title: "La mentalidad del programador",
+                content: `<p>La diferencia entre un principiante y un programador no es que uno sabe más comandos. Es que el programador <strong>piensa el algoritmo en papel antes de escribir una sola línea</strong>.</p>
                 <p>Cuando te den un problema, pregúntate:</p>
                 <ul class="ml-5 mt-2 space-y-2 list-disc">
                     <li>¿Cuál es la entrada? ¿Cuál es la salida esperada?</li>
@@ -4008,13 +3146,15 @@ print(factorial(0))    # 1`,
     },
     { // Nivel 20
         title: "¡Examen Final de Lógica! (Nivel Boss)",
-        lesson: [            {
-                title: `Has llegado al final`,
-                dialogo: `<p>En 19 niveles recorriste todo el camino: desde crear tu primera variable, hasta construir clases con herencia, manejar errores, trabajar con archivos y entender algoritmos. Eso no es poco.</p>
+        lesson: [
+            {
+                title: "Has llegado al final",
+                content: `<p>En 19 niveles recorriste todo el camino: desde crear tu primera variable, hasta construir clases con herencia, manejar errores, trabajar con archivos y entender algoritmos. Eso no es poco.</p>
                 <p>Este nivel final no tiene nueva teoría. Es un <strong>Examen de Boss</strong>: 10 preguntas que mezclan todo lo que aprendiste. Lee con calma, no hay prisa.</p>`
-            },            {
-                title: `Lo que dominas ahora`,
-                dialogo: `<p>Repasa mentalmente todo lo que ya sabes:</p>
+            },
+            {
+                title: "Lo que dominas ahora",
+                content: `<p>Repasa mentalmente todo lo que ya sabes:</p>
                 <ul class="ml-5 mt-2 space-y-2 list-disc">
                     <li><strong>Nivel 1-2:</strong> Variables, tipos de datos, operadores matemáticos, input/output</li>
                     <li><strong>Nivel 3-5:</strong> Condicionales (if/elif/else), bucles while y for, range</li>
@@ -4025,17 +3165,19 @@ print(factorial(0))    # 1`,
                     <li><strong>Nivel 14-16:</strong> Clases, objetos, __init__, métodos, herencia, super()</li>
                     <li><strong>Nivel 17-19:</strong> Módulos, archivos, algoritmos, recursividad</li>
                 </ul>`
-            },            {
-                title: `Consejo para el Quiz Final`,
-                dialogo: `<p>Las preguntas finales son de <strong>deducción de lógica</strong>: te muestran código y tienes que predecir qué hace sin ejecutarlo. El truco es:</p>
+            },
+            {
+                title: "Consejo para el Quiz Final",
+                content: `<p>Las preguntas finales son de <strong>deducción de lógica</strong>: te muestran código y tienes que predecir qué hace sin ejecutarlo. El truco es:</p>
                 <ol class="ml-5 mt-2 space-y-2 list-decimal">
                     <li>Lee de arriba hacia abajo, línea por línea</li>
                     <li>Simula las variables mentalmente (¿qué valor tiene X en cada paso?)</li>
                     <li>Identifica si hay bucles (¿cuántas vueltas da?), funciones (¿devuelve qué?), o errores (¿puede explotar?)</li>
                 </ol>`
-            },            {
-                title: `¿Y ahora qué sigue?`,
-                dialogo: `<p>Terminar este curso no es el final, es el comienzo. Con esta base puedes explorar:</p>
+            },
+            {
+                title: "¿Y ahora qué sigue?",
+                content: `<p>Terminar este curso no es el final, es el comienzo. Con esta base puedes explorar:</p>
                 <ul class="ml-5 mt-2 space-y-2 list-disc">
                     <li><strong>Pygame:</strong> Crear videojuegos 2D con Python</li>
                     <li><strong>Flask/Django:</strong> Crear aplicaciones web</li>
@@ -4043,9 +3185,10 @@ print(factorial(0))    # 1`,
                     <li><strong>Requests + APIs:</strong> Conectarse a servicios de internet</li>
                 </ul>
                 <p>El lenguaje es solo una herramienta. La lógica que desarrollaste aquí te seguirá a cualquier lenguaje que aprendas después.</p>`
-            },            {
-                title: `¡Adelante, programador!`,
-                dialogo: `<p>Has invertido tu tiempo y energía en aprender algo real. La mayoría de personas no llega hasta aquí. El hecho de que estés en el Nivel 20 ya dice mucho de ti.</p>
+            },
+            {
+                title: "¡Adelante, programador!",
+                content: `<p>Has invertido tu tiempo y energía en aprender algo real. La mayoría de personas no llega hasta aquí. El hecho de que estés en el Nivel 20 ya dice mucho de ti.</p>
                 <p>Cuando el quiz aparezca, recuerda: no estás adivinando, estás <em>razonando</em>. Confía en lo que aprendiste. 🖤</p>`
             }
         ],

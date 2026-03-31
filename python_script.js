@@ -1,0 +1,3753 @@
+<script>
+// Datos de Práctica
+const practiceData = [
+    {
+        title: "Práctica 1: Variables y Tipos de Datos",
+        content: `<h3>Ejercicios Básicos</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Pida al usuario su nombre y edad usando input()</li>
+        <li>Convierta la edad a entero</li>
+        <li>Muestre un mensaje personalizado</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+nombre = input("Ingresa tu nombre: ")
+edad = int(input("Ingresa tu edad: "))
+print(f"Hola {nombre}, tienes {edad} años!")</code></pre></div>`
+    },
+    {
+        title: "Práctica 1.1: Encontrar Errores",
+        content: `<h3>Encuentra los Errores</h3>
+        <p>Haz clic en las partes del código que están incorrectas para corregirlas.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong> input, int, print, f-string
+            <div class="command-counter mt-1">
+                <span id="command-counter-1">Usados: 0/4</span>
+            </div>
+        </div>
+        <div id="error-code-1" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = input("Ingresa tu nombre: ")
+edad = input("Ingresa tu edad: ")
+print("Hola {nombre}, tienes {edad} años!")</code></pre></div>
+        <button id="give-up-1" class="btn-primary mt-4">Rendirme y Ver Solución</button>
+        <div id="solution-1" class="hidden mt-4">
+            <p><strong>Solución:</strong></p>
+            <pre><code class="language-python">nombre = input("Ingresa tu nombre: ")
+edad = int(input("Ingresa tu edad: "))
+print(f"Hola {nombre}, tienes {edad} años!")</code></pre>
+        </div>`
+    },
+    {
+        title: "Práctica 1.2: Completar Código",
+        content: `<h3>Completa el Código</h3>
+        <p>Arrastra los comandos disponibles a los huecos correctos.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong>
+            <div class="command-palette mt-2 flex flex-wrap gap-2" id="command-palette-1">
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="input">input</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="int">int</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="print">print</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="f">f</div>
+            </div>
+            <div class="command-counter mt-1">
+                <span id="command-counter-fill-1">Completados: 0/4</span>
+            </div>
+        </div>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+nombre = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="1"></span>("Ingresa tu nombre: ")
+edad = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="2"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="3"></span>("Ingresa tu edad: "))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="4"></span>("Hola {nombre}, tienes {edad} años!"))</code></pre></div>
+        <div class="mt-4">
+            
+            <button id="reset-fill-1" class="btn-primary ml-2">Reiniciar</button>
+        </div>
+        <div id="fill-feedback-1" class="mt-2"></div>`
+    },
+    {
+        title: "Práctica 2: Operadores y Condicionales",
+        content: `<h3>Ejercicios con Lógica</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Pida dos números al usuario</li>
+        <li>Realice operaciones básicas (+, -, *, /)</li>
+        <li>Determine cuál es mayor</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
+print(f"Suma: {num1 + num2}")
+print(f"Resta: {num1 - num2}")
+print(f"Multiplicación: {num1 * num2}")
+if num2 != 0:
+   print(f"División: {num1 / num2}")
+else:
+   print("No se puede dividir por cero")
+if num1 > num2:
+   print(f"{num1} es mayor")
+elif num2 > num1:
+   print(f"{num2} es mayor")
+else:
+   print("Son iguales")</code></pre></div>`
+    },
+    {
+        title: "Práctica 2.1: Encontrar Errores en Condicionales",
+        content: `<h3>Encuentra los Errores</h3>
+        <p>Haz clic en las partes del código que están incorrectas.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong> float, input, print, f-string, if, elif, else
+            <div class="command-counter mt-1">
+                <span id="command-counter-2">Usados: 0/7</span>
+            </div>
+        </div>
+        <div id="error-code-2" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">num1 = input("Primer número: ")
+num2 = input("Segundo número: ")
+print(f"Suma: {num1 + num2}")
+if num1 > num2
+   print(f"{num1} es mayor")
+else num2 > num1:
+   print(f"{num2} es mayor")
+else:
+   print("Son iguales")</code></pre></div>
+        <button id="give-up-2" class="btn-primary mt-4">Rendirme y Ver Solución</button>
+        <div id="solution-2" class="hidden mt-4">
+            <p><strong>Solución:</strong></p>
+            <pre><code class="language-python">num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
+print(f"Suma: {num1 + num2}")
+print(f"Resta: {num1 - num2}")
+print(f"Multiplicación: {num1 * num2}")
+if num2 != 0:
+   print(f"División: {num1 / num2}")
+else:
+   print("No se puede dividir por cero")
+if num1 > num2:
+   print(f"{num1} es mayor")
+elif num2 > num1:
+   print(f"{num2} es mayor")
+else:
+   print("Son iguales")</code></pre>
+        </div>`
+    },
+    {
+        title: "Práctica 2.2: Completar Código con Condicionales",
+        content: `<h3>Completa el Código</h3>
+        <p>Arrastra los comandos disponibles a los huecos correctos.</p>
+        <div class="command-list mt-2 mb-2">
+            <strong>Comandos disponibles:</strong>
+            <div class="command-palette mt-2 flex flex-wrap gap-2" id="command-palette-2">
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="float">float</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="input">input</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="print">print</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="f">f</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="if">if</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="elif">elif</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="else">else</div>
+            </div>
+            <div class="command-counter mt-1">
+                <span id="command-counter-fill-2">Completados: 0/14</span>
+            </div>
+        </div>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">num1 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="5"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="6"></span>("Primer número: "))
+num2 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="7"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="8"></span>("Segundo número: "))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="9"></span>("Suma: {num1 + num2}"))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="10"></span>("Resta: {num1 - num2}"))
+print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="11"></span>("Multiplicación: {num1 * num2}"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="12"></span> num2 != 0:
+   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="13"></span>("División: {num1 / num2}"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="14"></span>:
+   print("No se puede dividir por cero")
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="15"></span> num1 > num2:
+   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="16"></span>("{num1} es mayor"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="17"></span> num2 > num1:
+   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="18"></span>("{num2} es mayor"))
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="19"></span>:
+   print("Son iguales")</code></pre></div>
+        <div class="mt-4">
+            
+            <button id="reset-fill-2" class="btn-primary ml-2">Reiniciar</button>
+        </div>
+        <div id="fill-feedback-2" class="mt-2"></div>`
+    },
+    {
+        title: "Práctica 3: Bucles",
+        content: `<h3>Ejercicios con Repetición</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Pida un número al usuario</li>
+        <li>Muestre la tabla de multiplicar de ese número (del 1 al 10)</li>
+        <li>Use un bucle for</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+numero = int(input("Ingresa un número: "))
+for i in range(1, 11):
+    print(f"{numero} x {i} = {numero * i}")</code></pre></div>`
+    },
+    {
+        title: "Práctica 4: Listas y Funciones",
+        content: `<h3>Ejercicios con Colecciones</h3>
+        <p>Crea funciones que:</p>
+        <ol>
+        <li>Reciba una lista de números</li>
+        <li>Devuelva el promedio</li>
+        <li>Encuentre el número mayor</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+def calcular_promedio(numeros):
+    return sum(numeros) / len(numeros)
+
+def encontrar_mayor(numeros):
+    return max(numeros)
+
+# Prueba las funciones
+lista = [10, 20, 30, 40, 50]
+print(f"Promedio: {calcular_promedio(lista)}")
+print(f"Mayor: {encontrar_mayor(lista)}")</code></pre></div>`
+    },
+    {
+        title: "Práctica 5: Proyecto Final",
+        content: `<h3>Aplicación Completa</h3>
+        <p>Crea un programa que:</p>
+        <ol>
+        <li>Sea un sistema de gestión de estudiantes</li>
+        <li>Permita agregar estudiantes con nombre y calificaciones</li>
+        <li>Muestre el promedio de cada estudiante</li>
+        <li>Liste todos los estudiantes ordenados por promedio</li>
+        </ol>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí
+estudiantes = []
+
+def agregar_estudiante():
+    nombre = input("Nombre del estudiante: ")
+    calificaciones = []
+    for i in range(3):
+        calif = float(input(f"Calificación {i+1}: "))
+        calificaciones.append(calif)
+    estudiantes.append({"nombre": nombre, "calificaciones": calificaciones})
+
+def calcular_promedio(calificaciones):
+    return sum(calificaciones) / len(calificaciones)
+
+# Agregar algunos estudiantes
+for _ in range(2):
+    agregar_estudiante()
+
+# Mostrar resultados
+for estudiante in estudiantes:
+    prom = calcular_promedio(estudiante["calificaciones"])
+    print(f"{estudiante['nombre']}: {prom:.2f}")
+
+# Ordenar por promedio
+estudiantes.sort(key=lambda x: calcular_promedio(x["calificaciones"]), reverse=True)
+print("\\nOrdenados por promedio:")
+for estudiante in estudiantes:
+    prom = calcular_promedio(estudiante["calificaciones"])
+    print(f"{estudiante['nombre']}: {prom:.2f}")</code></pre></div>`
+    }
+];
+
+const courseData = [
+
+    { // Nivel 1
+        title: "Conceptos Básicos: Nuestro Primer Día",
+        lesson: [
+            {
+                title: "Bienvenido a Python",
+                dialogo: `<p>Antes de que escribas siquiera tu primera línea de código, necesitas entender qué es programar realmente.</p>
+                <p>Básicamente, es darle instrucciones precisas a una computadora. Son veloces, pero carecen de iniciativa. En Python, guardamos datos en la memoria usando espacios etiquetados que llamamos <strong>Variables</strong>.</p>`
+            },
+            {
+                title: "Variables: Tu Espacio en Memoria",
+                dialogo: `<p>A la derecha verás tu primer fragmento de código. Todo código de Python se lee de arriba hacia abajo, y las sentencias para guardar información se leen de derecha a izquierda.</p>`,
+                codigo: "nivel = 1\n" +
+                        "nombre = \"Steven\"\n" +
+                        "print(nombre)",
+                tourSteps: [
+                    { text: "En esta línea hemos creado una Variable. Piensa en ella como una caja en la memoria nombrada como <code>nivel</code>. El símbolo <code>=</code> no es igualdad matemática aquí, significa <strong>ASIGNACIÓN</strong> (guardar adentro).", line: 1 },
+                    { text: "Aquí estamos guardando un texto (String). Es vital que todo texto vaya siempre entre comillas <code>\"\"</code>. Si lo olvidas, Python creerá que intentas llamar a otra variable con ese nombre y fallará.", line: 2 },
+                    { text: "<code>print()</code> es la función básica para mostrar resultados en pantalla. Al poner <code>nombre</code> ahí dentro libre de comillas, mostrará su valor contenido: 'Steven'.", line: 3 }
+                ]
+            },
+            {
+                title: "La Mutabilidad de las Variables",
+                dialogo: `<p>¿Por qué crees que los llamaron 'variables'? ¡Porque pueden mutar (cambiar su valor) permanentemente durante la ejecución del programa!</p>
+                <p>Los datos antiguos se borran y reemplazan en el segundo exacto en que asignas un nuevo valor a la misma variable.</p>`,
+                codigo: "poder = 1\n" +
+                        "poder = 5000\n" +
+                        "print(poder)",
+                tourSteps: [
+                    { text: "Inicias tu variable <code>poder</code> con un valor temporal de 1.", line: 1 },
+                    { text: "Después decides sobrescribirla. Python descarta el número 1 inicial y guarda el 5000 definitivo.", line: 2 },
+                    { text: "La consola revelará entonces el último valor almacenado.", line: 3 }
+                ]
+            },
+            {
+                title: "Interactuando con el Operador",
+                dialogo: `<p>Hasta ahora hemos asignado variables nosotros mismos escribiéndolas fijas (Hardcodeadas) en el script.</p>
+                <p>Pero el código de verdad solicita mucha información a los usuarios en tiempo real. Para hacer que la terminal se detenga y escuche al usuario, usamos una función llamada <code>input()</code>.</p>`
+            },
+            {
+                title: "Ingresando información con input()",
+                dialogo: `<p>Con esto, el programa detendrá totalmente su avance hasta que el usuario decida escribir algo en su teclado.</p>`,
+                codigo: "victima = input(\"¿Cuál es tu dulce nombre? \")\n" +
+                        "print(\"¡Has caído en mi red, \" + victima + \"!\")",
+                tourSteps: [
+                    { text: "Con <code>input()</code> la terminal de comandos de Python se <strong>pausará</strong>. Esperará a que el usuario teclee algo y presione ENTER para guardarlo dentro de la variable.", line: 1 },
+                    { text: "Aquí usamos la 'Concatenación' mediante el signo <code>+</code>. Al sumar dos textos, Python los une para armar una gran frase.", line: 2 }
+                ]
+            },
+            {
+                title: "Importante: El Peligro de input()",
+                dialogo: `<p>Acá existe un detalle técnico fundamental con los teclados:</p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🔥 ALERTA INMINENTE:</strong>
+                    <p class="text-sm">Todo texto o número que ingrese por input() es capturado como puramente Texto crudo (String) y no es posible usarlo para hacer cálculos matemáticos directos. <code>" "</code>.</p>
+                </div>`,
+                codigo: "edad = input(\"Dime tu edad: \")\n" +
+                        "print(edad)",
+                tourSteps: [
+                    { text: "Si un usuario ingresa que tiene '16' años de edad, Python lo guardará como texto <code>\"16\"</code>. ¡Imposible añadirle un uno matemáticamente! Más adelante aprenderemos como transformar de regreso (Casting) esos textos a números puros de vuelta.", line: 1 }
+                ]
+            },
+            {
+                title: "Misión Cumplida (Fin del Nivel 1)",
+                dialogo: `<p>¡Felicidades por completar tu Primer Nivel!</p>
+                <p>Acabas de asimilar con éxito las bases iniciales lógicas: guardar información en variables, reescribirlas ordenadamente, imprimir su resultado mediante <code>print()</code> e interactuar pidiendo datos básicos con un <code>input()</code> pausante.</p>
+                <p>Prueba tu conocimiento en el Quiz Evaluativo que sigue a continuación para poder reclamar la victoria sobre este desafío.</p>`
+            }
+                ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué significa el signo = en: edad = 20?", options: ["Comparar dos valores", "Guardar 20 dentro de la caja 'edad'", "Hacer una suma", "Declarar un número"], answer: "Guardar 20 dentro de la caja 'edad'" },
+            { type: "multiple-choice", question: "¿Qué pasará al ejecutar: print(hola) sin comillas?", options: ["Imprime 'hola'", "Imprime un espacio", "Error: Python busca una variable llamada hola", "No pasa nada"], answer: "Error: Python busca una variable llamada hola" },
+            { type: "multiple-choice", question: "¿Cuál es la forma correcta de guardar un número decimal?", options: ["peso = '60.5'", "peso = 60,5", "peso = 60.5", "peso = float('60,5')"], answer: "peso = 60.5" },
+            { type: "multiple-choice", question: "Dado: x = 5 / y = x / print(y) ¿Qué imprime?", options: ["x", "y", "5", "Nada"], answer: "5" },
+            { type: "multiple-choice", question: "Encuentra el error: print('Hola, ' nombre)", options: ["Falta la coma: print('Hola, ', nombre)", "Falta el punto y coma", "nombre debe ir con comillas", "No hay error"], answer: "Falta la coma: print('Hola, ', nombre)" },
+            { type: "multiple-choice", question: "¿De qué tipo es: activo = True?", options: ["Integer", "String", "Float", "Boolean"], answer: "Boolean" },
+            { type: "multiple-choice", question: "Dado: color='Rojo' / color='Azul' / print(color). ¿Qué imprime?", options: ["Rojo", "Azul", "Rojo Azul", "Error"], answer: "Azul" },
+            { type: "multiple-choice", question: "¿Qué función pausa el programa para que el usuario escriba algo?", options: ["print()", "get()", "input()", "read()"], answer: "input()" },
+            { type: "multiple-choice", question: "El usuario escribe 15 en un input(). ¿Qué tipo es ese 15 para Python?", options: ["Integer", "Float", "Boolean", "String"], answer: "String" },
+            { type: "multiple-choice", question: "Dado: texto = '10' / print(texto). ¿Puede usarse ese 10 en sumas matemáticas?", options: ["Sí, es un número", "No, es texto con las letras 1 y 0", "Solo si lo imprimís", "Depende de la PC"], answer: "No, es texto con las letras 1 y 0" }
+        ]
+    },
+    { // Nivel 2
+        title: "Matemáticas para Máquinas",
+        lesson: [
+            {
+                title: "Haciendo cálculos",
+                dialogo: `<p>La función favorita de los procesadores es hacer matemáticas miles de millones de veces por segundo. Para usarlos tenemos símbolos claros.</p>
+                <p>Las computadoras primero ejecutan toda la matemática de la derecha de la ecuación, la resuelven en un número solitario, y por último la guardan en la variable de la izquierda.</p>`,
+                codigo: "a = 10 + 5\n" +
+                        "b = 10 - 5\n" +
+                        "c = 10 * 5\n" +
+                        "d = 10 / 5\n" +
+                        "print(d)",
+                tourSteps: [
+                    { text: "<code>+</code> Suma matemática. En este caso da 15.", line: 1 },
+                    { text: "<code>-</code> Resta. Aquí nos da 5.", line: 2 },
+                    { text: "<code>*</code> Multiplicación. ¡Usa el asterisco en vez de la 'x'! Nos da 50.", line: 3 },
+                    { text: "<code>/</code> División. Esto siempre devuelve un Float (número decimal), así que da 2.0.", line: 4 }
+                ]
+            },
+            {
+                title: "Variables Operando entre Ellas",
+                dialogo: "<p>¿Para qué molestarte sumando números tú mismo? El verdadero poder es enseñarle al código a operar las variables complejas de tu juego o tu calculadora.</p>",
+                codigo: "balas_pistola = 12\n" +
+                        "balas_escopeta = 8\n\n" +
+                        "balas_totales = balas_pistola + balas_escopeta\n" +
+                        "print(\"Total de munición:\")\n" +
+                        "print(balas_totales)",
+                tourSteps: [
+                    { text: "Definimos dos variables con valores base.", line: 1 },
+                    { text: "Python jalará lo que haya dentro de las variables en este momento exacto, las sumará y guardará el total (20) en <code>balas_totales</code>.", line: 4 },
+                    { text: "Y finalmente revelamos el resultado de nuestra operación combinada en la consola.", line: 6 }
+                ]
+            },
+            {
+                title: "Los 2 Operadores Supremos (// y %)",
+                dialogo: `<p>Hay dos operadores en el mundo de la lógica del desarrollo que usarás exhaustivamente, muy usados en videojuegos e inteligencia artificial.</p>
+                <ul class="ml-5 mt-2 space-y-2 list-disc">
+                    <li><strong>División Entera (//):</strong> Elimina los decimales truncando al entero. Divide y descarta los picos. Ej: <code>10 // 3</code> te arrojará exactamente 3 limpios.</li>
+                    <li><strong>El Sobrante de la División "Módulo" (%):</strong> Bastante útil e imprescindible. Esto no divide, te dice "cuántos trozos me SOBRARON de una división perfecta".</li>
+                </ul>
+                <p><strong>Un súper truco vital:</strong> Para saber si un número es par o impar, siempre haz <code>variable % 2</code>. Si es "0" de sobrante, ¡Tu número es par, está balanceado!</p>`,
+                codigo: "sobrante = 10 % 3\nprint(sobrante)",
+                tourSteps: [
+                    { text: "Si divido 10 manzanas entre 3 amigos, les tocan 3 a cada uno. ¿Cuántas me sobran? Exacto: 1. Ese es el Módulo <code>%</code>.", line: 1 },
+                    { text: "Vemos que el output es literalmente el sobrante de la división.", line: 2 }
+                ]
+            },
+            {
+                title: "El Problema de Sumar Textos",
+                dialogo: `<p>Como te advertimos en el Nivel 1. Sumar a una palabra no tiene sentido matemático, así que Python los concatena pegando palabra a palabra.</p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Errores Comunes:</strong>
+                    <p class="text-sm">Si intentas sumar texto + un número entero real (<code>"Hola" + 5</code>), Python te mostrará las famosas letras rojas de <strong>TypeError</strong> porque no sabe mezclar abecedario con mates directas.</p>
+                </div>`,
+                codigo: "numero_falso1 = \"10\"\n" +
+                        "numero_falso2 = \"5\"\n" +
+                        "print(numero_falso1 + numero_falso2)",
+                tourSteps: [
+                    { text: "Fíjate en las comillas. Estos son <code>Strings</code>, texto puramente decorativo para Python.", line: 1 },
+                    { text: "Al hacer <code>+</code> entre Strings, Python concatena. Así que en vez de 15, nos escupirá un bizarro \"105\".", line: 3 }
+                ]
+            },
+            {
+                title: "Casting: Transmutar y forzar variables",
+                dialogo: `<p>Pero entonces... ¿cómo hago cálculos si <code>input()</code> siempre pausa y me devuelve Strings? Para esto, ordenaremos un "Cast" (Conversión Forzosa de Dato):</p>
+                <ul class="ml-5 mt-2 space-y-2 list-disc">
+                    <li><code>int( cajita )</code>: Aplastará un texto como "10", volviéndolo un 10 matemático útil.</li>
+                    <li><code>str( cajita )</code>: Transformará el número a texto con comillas, ideal para concatenar.</li>
+                </ul>`,
+                codigo: "dinero_texto = input(\"Dime cuánto dinero traes: \")\n" + 
+                        "dinero_real = int(dinero_texto)\n\n" + 
+                        "print(\"Te sumaré 5 extras.\")\n" + 
+                        "print(dinero_real + 5)",
+                tourSteps: [
+                    { text: "El <code>input()</code> detiene todo y recoge el dinero como String.", line: 1 },
+                    { text: "Aquí usamos <code>int()</code> para triturar las comillas de ese String y forzarlo a ser un verdadero Integer (enteros).", line: 2 },
+                    { text: "¡Ahora la suma sí operará correctamente!", line: 5 }
+                ]
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "Dado: x = 4 / y = 2 / print(x * y + 2). ¿Qué imprime?", options: ["16", "10", "12", "6"], answer: "10" },
+            { type: "multiple-choice", question: "Dado: a = '5' / b = '5' / print(a + b). ¿Qué imprime?", options: ["10", "Error", "55", "5 5"], answer: "55" },
+            { type: "multiple-choice", question: "¿Por qué falla: edad + 1 si edad = input()?", options: ["input devuelve String, no número", "El 1 está mal escrito", "edad no existe", "Falta el +"], answer: "input devuelve String, no número" },
+            { type: "multiple-choice", question: "¿Qué símbolo devuelve el SOBRANTE de una división?", options: ["//", "/", "%", "**"], answer: "%" },
+            { type: "multiple-choice", question: "Dado: vidas = 3 / vidas = vidas - 1 / print(vidas). ¿Qué imprime?", options: ["3", "-1", "4", "2"], answer: "2" },
+            { type: "multiple-choice", question: "¿Cuánto da 14 % 2?", options: ["7", "0", "1", "14"], answer: "0" },
+            { type: "multiple-choice", question: "¿Cuánto da 10 // 4?", options: ["2.5", "2", "3", "0.5"], answer: "2" },
+            { type: "multiple-choice", question: "¿Cómo arreglas para que sume: x = input() / x + 5?", options: ["x = str(input())", "x = int(input())", "x = input() + 5", "No hace falta nada"], answer: "x = int(input())" },
+            { type: "multiple-choice", question: "¿Qué hace str(150)?", options: ["Resta 150", "Convierte 150 al texto '150'", "Convierte texto a número", "Imprime 150"], answer: "Convierte 150 al texto '150'" },
+            { type: "multiple-choice", question: "Dado: x = int('2') / print(x * 3). ¿Qué imprime?", options: ["222", "6", "Error", "2"], answer: "6" }
+        ]
+    },
+    { // Nivel 3
+        title: "Decisiones de Código (if, else)",
+        lesson: [
+            {
+                title: "¿Cómo piensan los Robots y la IA?",
+                dialogo: `<p>¿Cómo hace un videojuego para matarte de un Game Over <strong>sólo</strong> si tus vidas llegan a cero y no antes? ¡Tomando decisiones condicionales!</p>
+                <p>Las computadoras evalúan una pregunta (condición): "SI sucede esto... haz mi bloque A. SINO, ignora y haz el B". A esto le llamamos puras sentencias o estructuras de control.</p>`
+            },
+            {
+                title: "Booleans y la Lógica Comparativa",
+                dialogo: `<p>Antes de decidir los caminos, Python necesita obligatoriamente comparar las cajas de variables. Las comparaciones devolverán siempre un mágico valor invisible de la nada: un <strong>Booleano</strong> <code>True</code> o un Booleano <code>False</code>.</p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Errores Comunes:</strong>
+                    <p class="text-sm">Escribir <code>if nivel = 100</code> romperá tu programa en mil pedazos. Recuerda: para guardar datos (<code>=</code>) para comparar y evaluar futuro (<code>==</code>).</p>
+                </div>`,
+                codigo: "a == b\n" +
+                        "a != b\n" +
+                        "a > b\n" +
+                        "a < b\n" +
+                        "a >= b",
+                tourSteps: [
+                    { text: "¿Es A EXACTAMENTE IGUAL a B? (Doble signo es comparar. Un solo igual (=) guarda valor y dará error en un if).", line: 1 },
+                    { text: "¿Es A un rebelde total y DIFERENTE a B?", line: 2 },
+                    { text: "¿Es A MAYOR (más inmenso) que B?", line: 3 },
+                    { text: "¿Es A MENOR que B?", line: 4 },
+                    { text: "¿Es MAYOR o IGUAL al mismo tiempo que B?", line: 5 }
+                ]
+            },
+            {
+                title: "Si pasa esto, ataca: if",
+                dialogo: `<p>La palabra predeterminada que evalúa es es <code>if</code>. Se traduce como "En caso de que...". Escribes tu sentencia, y necesitas obligatoriamente utilizar <strong>dos puntos</strong> (<code>:</code>) para obligar a Python a preparar motores.</p>`,
+                codigo: "lvl = 18\n\n" +
+                        "print(\"Verificando acceso a zona vip de juego...\")\n\n" +
+                        "if lvl >= 18:\n" +
+                        "    print(\"¡Eres nivel suficiente, pasas la muralla!\")\n" +
+                        "    print(\"Has desbloqueado las Monturas Magicas.\")",
+                tourSteps: [
+                    { text: "Tenemos al jugador con nivel exactamente 18.", line: 1 },
+                    { text: "La palabra mágica <code>if</code> evalúa nuestra variable. Pregunta: ¿Acaso el nivel de este guerrero es mayor o igual a 18? ¡La respuesta es <code>True</code>! Python avanza y ejecuta lo que sigue adentrándose.", line: 5 },
+                    { text: "Gracias a que la condición fue exitosa, esta impresión de la zona VIP correrá normalmente.", line: 6 }
+                ]
+            },
+            {
+                title: "Indentación (El abismo de los 4 espacios)",
+                dialogo: `<p>Notaste en el ejemplo anterior que las líneas de código que siguen al (<code>:</code>) del <code>if</code>, están "empujadas" a la derecha por 4 espacios? Eso es el alma suprema del lenguaje Python: <strong>la indentación</strong> o Sangría.</p>
+                <p>Python no usa llaves <code>{ }</code> ni la palabra <code>end</code> como otros lenguajes. Python sabe que el código pertenece a la rama del IF porque está indentado a la derecha (Tabulador). <strong>Si escribes cosas pegadas totalmente al borde izquierdo, Python sabrá que el ciclo o decisión de ese bloque de código del IF se terminó ahí mismo.</strong></p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Errores Comunes:</strong>
+                    <p class="text-sm">Si tienes 3 espacios arriba y 4 espacios abajo en el siguiente nivel, Python tirará la famosa bala roja del <code>IndentationError</code>.</p>
+                </div>`
+            },
+            {
+                title: "Sino, Plan B: else y elif",
+                dialogo: `<p>¿Y si tienes 15 años y el if rebotando tu evaluación tira False? El programa no hará nada y bajará aburridamente de largo. Usamos la trampa de rebote: <code>else</code>.</p>`,
+                codigo: "clima_actual = \"Nevando\"\n\n" +
+                        "if clima_actual == \"Soleado\":\n" +
+                        "    print(\"Camiseta.\")\n" +
+                        "elif clima_actual == \"Nevando\":\n" +
+                        "    print(\"Lleva los mega-abrigos por tu vida.\")\n" +
+                        "else:\n" +
+                        "    print(\"Solo enciérrate en casa.\")",
+                tourSteps: [
+                    { text: "Primera evaluación. ¿Hace sol? No. Nos rebota.", line: 3 },
+                    { text: "El <code>elif</code> salva el día, nos permite dar una segunda condición condicional si la primera rebotó a falso y se ejecuta en cadena.", line: 5 },
+                    { text: "El <code>else</code> corre única y exclusivamente si todas las condiciones anteriores de la cadena fallaron miserablemente y terminaron en <code>False</code>.", line: 7 }
+                ]
+            }
+                ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué devuelve la comparación 5 == 5?", options: ["True", "False", "Error", "5"], answer: "True" },
+            { type: "multiple-choice", question: "¿Qué pasa si el if no tiene indentación en el bloque interno?", options: ["Funciona igual", "IndentationError", "Skip automático", "Imprime vacío"], answer: "IndentationError" },
+            { type: "multiple-choice", question: "¿Qué significa x != 10?", options: ["x nunca puede ser 10", "Verdadero si x ES diferente a 10", "Asigna x con valor distinto", "Error de sintaxis"], answer: "Verdadero si x ES diferente a 10" },
+            { type: "multiple-choice", question: "¿Para qué sirve el else?", options: ["Ejecuta si el if fue True", "Ejecuta si el if fue False", "Compara dos cosas", "Detiene el bucle"], answer: "Ejecuta si el if fue False" },
+            { type: "multiple-choice", question: "Dado: color='Azul' / if color=='Azul': print('Mar') / else: print('Tierra'). ¿Qué imprime?", options: ["Tierra", "Mar", "Azul", "Error"], answer: "Mar" },
+            { type: "multiple-choice", question: "¿Para qué sirven los dos puntos ':' al final del if?", options: ["Decoración", "Abrir el bloque indentado", "Para restar 2", "Nada en Python"], answer: "Abrir el bloque indentado" },
+            { type: "multiple-choice", question: "Encuentra el error: if precio > 100 / print('Caro')", options: ["100 es muy grande", "Indentación incorrecta", "Faltan los ':' al final del if", "precio no es String"], answer: "Faltan los ':' al final del if" },
+            { type: "multiple-choice", question: "Dado: x=10 / y=20 / if x>y: print('X') / else: print('Y'). ¿Qué imprime?", options: ["X", "Y", "XY", "Ambos"], answer: "Y" },
+            { type: "multiple-choice", question: "¿Para qué sirve elif?", options: ["Igual que else siempre", "Nueva condición si el if fue falso", "Repite el if", "Cierra el programa"], answer: "Nueva condición si el if fue falso" },
+            { type: "multiple-choice", question: "Dado: a='Perro' / b='Perro' / if a!=b: print('No') / else: print('Si'). ¿Qué imprime?", options: ["No", "Perro", "True", "Si"], answer: "Si" }
+        ]
+    },
+    { // Nivel 4
+        title: "La Era de los Bucles (Ciclo While)",
+        lesson: [
+            {
+                title: "¿Qué es un Bucle y por qué ahorran horas?",
+                dialogo: `<p>A las computadoras jamás les da aburrimiento hacer el mismo tedioso proceso matemático un millar de veces continuas. De hecho, los procesadores nacieron para iterar.</p>
+                <p>Un <strong>bucle (loop)</strong> es una caja inmensa de comandos que ejecutará, repetirá, iterará y volverá a empezar su código una y otra vez eternamente (hasta que tú logres apagarlo).</p>`
+            },
+            {
+                title: "El bucle infinito y persistente del While",
+                dialogo: `<p>El término reservado <code>while</code> significa en español "Mientras que". Su poder consiste en ejecutar el bloque interno que indentes MIENTRAS su condición siga regresando <code>True</code>.</p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🔥 ALERTA INMINENTE:</strong>
+                    <p class="text-sm">Si dejas un bucle que nunca cambia a falso, tu computadora congelará la pestaña o el software por una eternidad intentando correrlo.</p>
+                </div>`,
+                codigo: "while True:\n" +
+                        "    print(\"¡SOY INFINITO!\")",
+                tourSteps: [
+                    { text: "<code>while True:</code> es un agujero negro condicional. La prueba será Verdadera por el resto del tiempo cósmico.", line: 1 },
+                    { text: "Ya que la indentación indica las acciones a repetir, esta línea inundará la pantalla de puro texto. Tu pestaña se va a morir.", line: 2 }
+                ]
+            },
+            {
+                title: "Deteniendo el Mientras - Condición de salida lógica",
+                dialogo: `<p>Para evitar un problema de recursos críticos del ciclo, toda tu misión al crear un <code>while</code> consiste en armarle un mecanismo de freno en el bloque indentado, algo que cambie el estado de la condición.</p>`,
+                codigo: "balas_clip = 3\n\n" +
+                        "while balas_clip > 0:\n" +
+                        "    print(\"¡Pang!\")\n" +
+                        "    balas_clip = balas_clip - 1",
+                tourSteps: [
+                    { text: "Cargamos el arma. Tenemos 3 balas limitadas.", line: 1 },
+                    { text: "El bucle pregunta: ¿Quedan balas en el cargador mayores a 0? Comienza entonces True.", line: 3 },
+                    { text: "Se dispara el arma imprimiendo el mensaje.", line: 4 },
+                    { text: "ESTE ES EL FRENO MAGISTRAL. Forzamos a nuestra var destructivamente a disminuir su propio número en -1. Así logrará llegar al vacío 0 causando un final natural a la barrera del Bucle.", line: 5 }
+                ]
+            },
+            {
+                title: "Contadores Rápidos (Atajos)",
+                dialogo: `<p>Como escribir <code>variable = variable - 1</code> es verborrágico y redundante en longitud, a los magos del código les encantan los atajos: <code>+=</code> o <code>-=</code>.</p>
+                <p>Escribir el amado <code>energia -= 1</code> significará la misma monstruosidad a los ojos de Python (a la energía restále/únele en sí la de él lo siguiente sin invocar cajas dobles).</p>`
+            },
+            {
+                title: "Activando el Freno Inmediato de Bloques: break",
+                dialogo: `<p>Existen momentos raros donde no querrás esperar a que todo un contador decaiga, o surge un suceso imprevisto (ej. apretaste botón de "abortar"). El comando <code>break</code> frena absolutamente cualquier iteración o ciclo asesino de golpe y rompe las rejas para salir.</p>`,
+                codigo: "intentos = 100\n" +
+                        "while intentos > 0:\n" +
+                        "    clave = input(\"Dame la clave (rinde: Q): \")\n" +
+                        "    if clave == \"Q\":\n" +
+                        "        print(\"Abordaste.\")\n" +
+                        "        break\n" +
+                        "    intentos -= 1",
+                tourSteps: [
+                    { text: "Te dieron increíblemente 100 intentos generosos para adivinar el tesoro.", line: 1 },
+                    { text: "Pausa en input como de costumbre. Si damos una pista diferente, fallaremos y restaremos una oportunidad al final.", line: 3 },
+                    { text: "Pero si nos cansamos y apretamos 'Q', se corre el if...", line: 4 },
+                    { text: "EL BOTON DE EMERGENCIA NUCLEAR. Se invoca <code>break</code> e ignora a los 99 intentos sobrantes y liquida al ciclo de inmediato, fugándonos.", line: 6 }
+                ]
+            }
+                ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué hace while condición:?", options: ["Ejecuta una vez", "Repite mientras la condición sea True", "Cierra el programa", "Espera 5 segundos"], answer: "Repite mientras la condición sea True" },
+            { type: "multiple-choice", question: "¿Qué pasa si while siempre es True y no hay break?", options: ["El código se ajusta solo", "Error de sintaxis", "Bucle infinito, congela la PC", "Python lo ignora"], answer: "Bucle infinito, congela la PC" },
+            { type: "multiple-choice", question: "Dado: c=0 / while c < 3: / print(c) / c += 1. ¿Qué imprime?", options: ["1 2 3", "0 1 2", "3 2 1", "Solo 0"], answer: "0 1 2" },
+            { type: "multiple-choice", question: "¿Qué significa x += 5?", options: ["Reemplaza x por 5", "Le suma 5 a x y lo guarda", "Junta x y 5 como texto", "Error"], answer: "Le suma 5 a x y lo guarda" },
+            { type: "multiple-choice", question: "¿Para qué sirve break dentro de un bucle?", options: ["Pausa 1 segundo", "Destruye la variable", "Sale del bucle inmediatamente", "Reinicia el bucle"], answer: "Sale del bucle inmediatamente" },
+            { type: "multiple-choice", question: "Encuentra el error: hp = 5 / while hp > 0: / print(hp)", options: ["Faltan :", "No hay indentación", "hp nunca se resta: bucle infinito", "hp es menor que 0"], answer: "hp nunca se resta: bucle infinito" },
+            { type: "multiple-choice", question: "Dado: x=5 / while x>4: / print('A') / x-=1. ¿Cuántas veces imprime A?", options: ["2", "5", "1", "Infinitas"], answer: "1" },
+            { type: "multiple-choice", question: "¿Las condiciones de un while devuelven un Booleano internamente?", options: ["No, devuelven texto", "Sí, True o False", "Depende del número", "Solo en Python 3"], answer: "Sí, True o False" },
+            { type: "multiple-choice", question: "¿Qué hace continue dentro de un while?", options: ["Sale del bucle", "Cierra Python", "Salta ese ciclo y vuelve al inicio", "Error"], answer: "Salta ese ciclo y vuelve al inicio" },
+            { type: "multiple-choice", question: "Dado: c=2 / while c>0: / c-=1 / if c==1: break / print(c). ¿Qué imprime?", options: ["1", "0", "Nada", "2"], answer: "1" }
+        ]
+    },
+    { // Nivel 5
+        title: "Bucles Exactos (Iterador For)",
+        lesson: [
+            {
+                title: "¿La Diferencia Evolucionada: For vs While?",
+                dialogo: `<p>La principal desventaja del <code>while</code> tiene una misión en la vida: Repetir infinitamente "mientras que" se le cumpla la orden y rogar que alguien lo detenga con un <code>break</code>.</p>
+                <p>Por otro lado, la estructura predecible del <strong><code>for</code></strong> radica en darle una cantidad TOTALMENTE FIJA y PREDETERMINADA de saltos cíclicos o repeticiones limitadas. Es como pedir de manera perfecta que de "exactamente 5 giros". ¡No tendrás bucles infinitos usando esta obra de arte!</p>`
+            },
+            {
+                title: "Explicación Vital: Desmenuzando textos y listas",
+                dialogo: `<p>Mira la sintaxis ultra-poderosa de iteración automática. Usaremos una variable temporal (que llamaremos 'letra') que navega, inspecciona e itera paso por paso:</p>
+                <p>Ojo importante: No hace ninguna falta que escribas obligatoriamente var "letra" o la típica i mítica, nombra al viajero como quieras. Llámalo "manzana", se portará idéntico de funcional extrayendo elementos secuencialmente.</p>`,
+                codigo: "for letra in \"PYTHON\":\n" +
+                        "    print(\"Extrayendo del vacío la variable llamada:\")\n" +
+                        "    print(letra)",
+                tourSteps: [
+                    { text: "<code>for</code> inicia la orden iteradora. <code>letra</code> es nuestro dron explorador, y <code>in</code> dice que navegue dentro de la palabra P-Y-T-H-O-N secuencialmente.", line: 1 },
+                    { text: "Este dron hará un ciclo idéntico para extraer la P, luego la Y, luego la T, etc. Al finalizar con la N soltará el control y el For morirá en paz sin necesidad de contadores.", line: 3 }
+                ]
+            },
+            {
+                title: "Creación Instantánea de Secuencias y Numeración - Range",
+                dialogo: `<p>Si te ordenan repetir algo exactamente 50 veces para matar un boss del juego pero con un For para librarse del bucle muerte infinito, usas <code>range()</code>.</p>
+                <p>Esta poderosa bestia fabrica listas imaginarias veloces, creadoras de conteos perfectos puramente numéricos.</p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Errores Comunes Mentales Base del Nivel Dios Hacker:</strong>
+                    <p class="text-sm">Todo principiante cree matemáticamente o ciegamente que una cuenta de 5 pasará por 1,2,3,4,5. ¡¡Jamás en código Python!! Todos los chips de la tierra y los lenguajes cuentan partiendo la posición inicial desde un absoluto <strong>0</strong>. Y nunca tocarán el techo que le pasaste al Range.</p>
+                </div>`,
+                codigo: "for index_p in range(5):\n" +
+                        "    print(\"El índice ahora es:\")\n" +
+                        "    print(index_p)",
+                tourSteps: [
+                    { text: "Crea automáticamente 5 viajes en el espacio, generando la secuencia [0, 1, 2, 3, 4]. Imprimirá el 0 primero.", line: 1 },
+                    { text: "En la última iteración, el index_p valdrá exactamente 4, y luego el ciclo acabará solo.", line: 3 }
+                ]
+            },
+            {
+                title: "Manipulación de Motor del Engranaje Range",
+                dialogo: `<p>¿Quieres alterar el motor interno base matemático de los creadores de listas y secuencias <code>range()</code> a gran nivel y poderío maestro?</p>
+                <p>Le inyectaremos brutalmente hasta un máximo de tres parámetros enteros para moldear de plastilina loca la cuenta del sistema local: <code>range(inicio, tope, saltos)</code>.</p>`,
+                codigo: "for num in range(2, 10, 2):\n" +
+                        "    print(\"Contador dual mutante:\")\n" +
+                        "    print(num)",
+                tourSteps: [
+                    { text: "Arranca el auto de fuerza en el kilómetro 2. Su tope de gasolina será el Km 10 (sin rozar el 10). ¡Y saltará a velocidad doble marchando de 2 en 2 por ciclo!", line: 1 },
+                    { text: "El resultado te desvelará: 2, 4, 6 y 8 limpios.", line: 3 }
+                ]
+            },
+            {
+                title: "Reflexión Final del Supremacismo For vs While",
+                dialogo: `<p>¡Si sabes previamente desde los genes cuántas repeticiones máximas debe vivir tu bloque de código o qué texto va a cruzar la barra de un lado al fondo... No pienses un milisegundo en while.</p>
+                <p>Tira tu carta <code>For</code> sobre la mesa y destruye al adversario ahorrando RAM vital de juego con cero peligro mortal que crashee los procesadores gigantes en bucles infinitos!</p>`
+            }
+                ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Cuál es la diferencia principal entre for y while?", options: ["Son iguales", "for itera cantidad exacta, while repite mientras sea True", "for es más rápido", "while no necesita condición"], answer: "for itera cantidad exacta, while repite mientras sea True" },
+            { type: "multiple-choice", question: "¿Qué números produce range(3)?", options: ["1, 2, 3", "0, 1, 2", "3, 4, 5", "Solo el 3"], answer: "0, 1, 2" },
+            { type: "multiple-choice", question: "Dado: for k in 'SOL': / print(k). ¿Qué imprime?", options: ["SOL en una línea", "S, O, L en líneas separadas", "Solo O", "Error"], answer: "S, O, L en líneas separadas" },
+            { type: "multiple-choice", question: "¿Qué es la variable i en: for i in range(5)?", options: ["Un estorbo", "El número de la vuelta actual", "El total de vueltas", "No sirve para nada"], answer: "El número de la vuelta actual" },
+            { type: "multiple-choice", question: "Dado: for i in range(1, 4): / print(i). ¿Qué imprime?", options: ["0, 1, 2, 3, 4", "1, 2, 3", "1, 2, 3, 4", "Solo 4"], answer: "1, 2, 3" },
+            { type: "multiple-choice", question: "¿Qué hace range(0, 10, 2)?", options: ["Suma 0+10+2", "Cuenta del 0 al 9 de 2 en 2", "Multiplica 10 por 2", "Error"], answer: "Cuenta del 0 al 9 de 2 en 2" },
+            { type: "multiple-choice", question: "¿Desde qué número empiezan a contar las computadoras?", options: ["1", "-1", "0", "Depende"], answer: "0" },
+            { type: "multiple-choice", question: "Dado: total=0 / for i in range(3): / total+=i / print(total). ¿Qué imprime?", options: ["3", "6", "1", "0"], answer: "3" },
+            { type: "multiple-choice", question: "¿Se puede meter un if dentro de un for?", options: ["No, mala práctica", "Sí, con la indentación correcta", "Solo en while", "Solo con strings"], answer: "Sí, con la indentación correcta" },
+            { type: "multiple-choice", question: "Dado: for x in 'NO': / if x=='O': break / print(x). ¿Qué imprime?", options: ["NO", "Error", "O", "N"], answer: "N" }
+        ]
+    },
+{ // Nivel 6
+        title: "Creando Tus Propios Comandos (Funciones Básicas)",
+        lesson: [
+            {
+                title: "¿Para qué sirve una función?",
+                content: `<p>Imagina que en tu videojuego, cada vez que un enemigo muere tienes que escribir: calcular puntos, reproducir sonido, mostrar animación, actualizar marcador... son 20 líneas. Y hay 50 tipos de enemigos. ¿Vas a copiar esas 20 líneas 50 veces?</p>
+                <p>Las <strong>funciones</strong> son cajas de código reutilizable. Las escribes una vez y las usas cuantas veces quieras. Es el principio más importante de programación: <strong>No te repitas (DRY - Don't Repeat Yourself)</strong>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># SIN funciones (el horror):
+print("Calculando puntos...")
+print("Reproduciendo sonido...")
+print("Actualizando marcador...")
+
+# 50 líneas después, de nuevo:
+print("Calculando puntos...")
+print("Reproduciendo sonido...")
+print("Actualizando marcador...")</code></pre></div>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># CON función (elegante):
+def enemigo_muere():
+    print("Calculando puntos...")
+    print("Reproduciendo sonido...")
+    print("Actualizando marcador...")
+
+# Ahora la usamos cuantas veces queramos:
+enemigo_muere()
+enemigo_muere()
+enemigo_muere()</code></pre></div>`
+            },
+            {
+                title: "Creando una función con `def`",
+                content: `<p>La palabra mágica es <code>def</code> (de "definir"). La estructura siempre es la misma: <code>def</code>, luego el nombre, luego paréntesis, luego los dos puntos, y el código indentado abajo.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar():
+    print("¡Hola!")
+    print("Bienvenido al juego.")
+    print("¡Que ganes!")</code></pre></div>
+                <p>Esto solo define la función. No ejecuta nada. Es como construir una máquina pero no apagarla aún.</p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Olvidar los paréntesis <code>()</code> o los dos puntos <code>:</code> después del nombre. Ejemplo roto: <code>def saludar</code> — Python se quejará inmediatamente.</p>
+                </div>`
+            },
+            {
+                title: "Llamando (ejecutando) la función",
+                content: `<p>Para encender la máquina que construiste, escribes su nombre seguido de paréntesis. A eso le llamamos "llamar" o "invocar" la función.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def mostrar_menu():
+    print("1. Nueva Partida")
+    print("2. Cargar Partida")
+    print("3. Salir")
+
+# La función se define arriba, se llama aquí abajo:
+mostrar_menu()  # Imprime las 3 opciones
+mostrar_menu()  # Las vuelve a imprimir</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Importante:</strong>
+                    <p class="text-sm">Si escribes solo <code>mostrar_menu</code> sin los paréntesis, Python no ejecuta nada, solo te dice que esa función existe. Los paréntesis son la orden de "¡ejecuta ahora!".</p>
+                </div>`
+            },
+            {
+                title: "No puedes usar lo que no has definido aún",
+                content: `<p>Python lee tu código de <strong>arriba hacia abajo</strong>, línea por línea. Si intentas llamar a una función antes de haberla definido, te dará un error.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># ESTO FALLA:
+saludar()        # Error: Python aún no sabe qué es 'saludar'
+
+def saludar():
+    print("Hola")</code></pre></div>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># ESTO FUNCIONA:
+def saludar():
+    print("Hola")
+
+saludar()        # ✅ Python ya sabe qué es 'saludar'</code></pre></div>`
+            },
+            {
+                title: "Funciones dentro de un programa real",
+                content: `<p>En un programa real, organizas tu código en funciones con nombres claros. Esto hace que tu código sea fácil de leer y de arreglar cuando tiene bugs.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def mostrar_bienvenida():
+    print("=== BATALLA FINAL ===")
+    print("¡El último boss te espera!")
+
+def mostrar_instrucciones():
+    print("Usa W,A,S,D para moverte")
+    print("Presiona ESPACIO para atacar")
+
+# El programa principal:
+mostrar_bienvenida()
+mostrar_instrucciones()</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Para qué sirve crear una función?", options: ["Para hacer el código más largo", "Para reutilizar código sin repetirlo", "Para crear variables globales", "Para acelerar el procesador"], answer: "Para reutilizar código sin repetirlo" },
+            { type: "multiple-choice", question: "¿Qué hace esta línea: `def atacar():`?", options: ["Ejecuta la función inmediatamente", "Define la función pero no la ejecuta", "Borra la función anterior", "Compara dos valores"], answer: "Define la función pero no la ejecuta" },
+            { type: "multiple-choice", question: "¿Cómo se ejecuta una función llamada `cargar`?", options: ["run cargar", "cargar()", "def cargar()", "start(cargar)"], answer: "cargar()" },
+            { type: "multiple-choice", question: "Encuentra el error: `def mi_funcion / print(\"Hola\")`", options: ["print está mal", "Faltan los () y : después del nombre", "El nombre es muy largo", "No hay error"], answer: "Faltan los () y : después del nombre" },
+            { type: "multiple-choice", question: "Dado: `def test(): / x = 10 / print(x) / test() / test()` ¿Qué imprime?", options: ["10 10", "10", "Error", "x x"], answer: "10 10" },
+            { type: "multiple-choice", question: "¿Qué pasa si defines dos funciones con el mismo nombre?", options: ["Ambas coexisten", "La segunda reemplaza a la primera", "Python las fusiona", "Error fatal"], answer: "La segunda reemplaza a la primera" },
+            { type: "multiple-choice", question: "¿Por qué falla llamar a una función antes de definirla?", options: ["Python no permite funciones largas", "Python lee de arriba a abajo y aún no la conoce", "Debe estar en un archivo aparte", "Las comillas faltan"], answer: "Python lee de arriba a abajo y aún no la conoce" },
+            { type: "multiple-choice", question: "¿Qué pasa si escribes `saludar` sin paréntesis?", options: ["Ejecuta la función", "Python dice que existe pero NO la ejecuta", "Borra la función", "Error inmediato"], answer: "Python dice que existe pero NO la ejecuta" },
+            { type: "multiple-choice", question: "¿Puedes llamar una función múltiples veces?", options: ["No, solo una vez", "Sí, cuantas veces quieras", "Solo dos veces máximo", "Solo dentro de un bucle"], answer: "Sí, cuantas veces quieras" },
+            { type: "multiple-choice", question: "Dado: `a = 1 / def go(): / print(a) / go()`", options: ["Error, a está fuera", "1", "Nada", "a"], answer: "1" }
+        ]
+    },
+    { // Nivel 7
+        title: "Funciones con Ingredientes (Parámetros y Return)",
+        lesson: [
+            {
+                title: "Pasándole datos a la función",
+                content: `<p>Las funciones que hicimos antes siempre hacen lo mismo. Pero, ¿y si quiero saludar a personas diferentes cada vez? Para eso existen los <strong>parámetros</strong>: son variables que la función recibe como ingredientes cuando la llamas.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def saludar(nombre):         # 'nombre' es el parámetro
+    print("¡Hola,", nombre, "!")
+
+saludar("Steven")    # Imprime: ¡Hola, Steven !
+saludar("Kurumi")    # Imprime: ¡Hola, Kurumi !
+saludar("Luigi")     # Imprime: ¡Hola, Luigi !</code></pre></div>
+                <p>Al llamar la función, el valor que le pases ("Steven") se copia dentro de la variable parámetro (<code>nombre</code>) por ese instante.</p>`
+            },
+            {
+                title: "Múltiples parámetros",
+                content: `<p>Puedes tener varios parámetros, separados por comas. Se asignan en orden: el primero va al primero, el segundo al segundo.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def calcular_daño(ataque, defensa):
+    resultado = ataque - defensa
+    print("Daño recibido:", resultado)
+
+calcular_daño(50, 20)   # ataque=50, defensa=20 → Imprime: Daño recibido: 30
+calcular_daño(100, 80)  # ataque=100, defensa=80 → Imprime: Daño recibido: 20</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Si defines 2 parámetros y llamas la función con 1 o con 3 valores, Python lanzará un <code>TypeError</code>. El número de valores que pasas debe coincidir exactamente con los parámetros.</p>
+                </div>`
+            },
+            {
+                title: "Devolviendo resultados con `return`",
+                content: `<p>Hasta ahora las funciones solo imprimían cosas. Pero muchas veces queremos que la función <strong>calcule algo y nos devuelva el resultado</strong> para usarlo después. Para eso existe <code>return</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def doble(numero):
+    return numero * 2      # Escupe el resultado hacia afuera
+
+resultado = doble(5)       # resultado ahora vale 10
+print(resultado)           # Imprime: 10
+print(doble(7) + 1)        # Imprime: 15 (14 + 1)</code></pre></div>
+                <p>Piensa en <code>return</code> como la caja de salida de una fábrica: metes materia prima (parámetros), la fábrica trabaja, y al final te entrega el producto terminado.</p>`
+            },
+            {
+                title: "El `return` termina la función al instante",
+                content: `<p>En cuanto Python encuentra un <code>return</code>, la función muere en ese punto. Ninguna línea por debajo del return se ejecutará.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def verificar(hp):
+    if hp <= 0:
+        return "Game Over"     # La función muere aquí si hp es 0
+    return "Sigues vivo"       # Solo corre si hp > 0
+
+print(verificar(0))    # Imprime: Game Over
+print(verificar(50))   # Imprime: Sigues vivo</code></pre></div>`
+            },
+            {
+                title: "Variables locales: lo que pasa dentro, se queda dentro",
+                content: `<p>Las variables que creas <strong>dentro</strong> de una función solo existen mientras esa función está corriendo. Cuando termina, desaparecen. No puedes acceder a ellas desde afuera.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def calcular():
+    secreto = 999      # Solo existe mientras calcular() corre
+    return secreto
+
+print(calcular())      # ✅ Imprime: 999
+print(secreto)         # ❌ Error: 'secreto' no existe aquí afuera</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Intentar acceder a una variable creada dentro de una función desde afuera. Python lanzará <code>NameError</code>. Si necesitas el valor, usa <code>return</code> para sacarlo.</p>
+                </div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué es un parámetro de función?", options: ["El nombre de la función", "Una variable que recibe datos al llamarla", "El resultado que devuelve", "Un tipo de bucle"], answer: "Una variable que recibe datos al llamarla" },
+            { type: "multiple-choice", question: "Dado: `def mult(a, b): / print(a*b) / mult(2, 3)` ¿Qué imprime?", options: ["6", "5", "Error", "a*b"], answer: "6" },
+            { type: "multiple-choice", question: "¿Para qué sirve `return` en una función?", options: ["Para imprimir el resultado", "Para devolver un valor que puedes guardar o usar", "Para cerrar Python", "Para crear una nueva función"], answer: "Para devolver un valor que puedes guardar o usar" },
+            { type: "multiple-choice", question: "Dado: `def f(): / return 10 / print('A') / print(f())` ¿Qué imprime?", options: ["A y luego 10", "Error", "10", "A"], answer: "10" },
+            { type: "multiple-choice", question: "¿Por qué la 'A' del ejercicio anterior no se imprimió?", options: ["print('A') está mal escrito", "El return termina la función inmediatamente", "Falta indentación", "Es de tipo string"], answer: "El return termina la función inmediatamente" },
+            { type: "multiple-choice", question: "Encuentra el error: `def sumar(a, b): / return a + c`", options: ["Faltan dos puntos", "'c' no existe como parámetro, dará NameError", "a y b no pueden sumarse", "No hay error"], answer: "'c' no existe como parámetro, dará NameError" },
+            { type: "multiple-choice", question: "Dado: `def es_par(n): / if n % 2 == 0: return True / return False / print(es_par(4))`", options: ["True", "False", "Nada", "4"], answer: "True" },
+            { type: "multiple-choice", question: "¿Qué pasa si haces `print(x)` afuera de la función donde se creó `x`?", options: ["Imprime el último valor de x", "NameError: x no existe afuera", "Imprime 0", "Funciona igual"], answer: "NameError: x no existe afuera" },
+            { type: "multiple-choice", question: "Dado: `x = 5 / def get(): / return x / print(get())`", options: ["5", "Error", "Nada", "None"], answer: "5" },
+            { type: "multiple-choice", question: "¿Una función puede devolver un texto (String)?", options: ["No, solo números", "Sí, puede devolver cualquier tipo de dato", "Solo si hay un print antes", "Solo True o False"], answer: "Sí, puede devolver cualquier tipo de dato" }
+        ]
+    },
+    { // Nivel 8
+        title: "El Inventario del Juego (Listas)",
+        lesson: [
+            {
+                title: "¿Por qué necesitamos las Listas?",
+                content: `<p>Imagina que tienes un juego con 100 jugadores y necesitas guardar su puntuación. Con variables normales sería un desastre:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Sin Listas: el horror
+jugador1 = "Ana"
+jugador2 = "Luis"
+jugador3 = "Sara"
+# ... x100</code></pre></div>
+                <p>Las <strong>Listas</strong> son vagones de tren: una sola variable que guarda muchos datos en orden. Puedes agregar vagones, quitar vagones, y acceder a cualquiera por su número de posición.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Con Lista: elegante
+jugadores = ["Ana", "Luis", "Sara", "Pedro", "María"]</code></pre></div>`
+            },
+            {
+                title: "Creando listas y accediendo a sus elementos",
+                content: `<p>Las listas usan corchetes <code>[]</code> y sus elementos se separan con comas. Para acceder a un elemento, usas su número de posición (índice) — y recuerda: <strong>las computadoras cuentan desde 0</strong>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">armas = ["Espada", "Hacha", "Arco", "Bastón"]
+#          índice:    0       1       2        3
+
+print(armas[0])   # Espada   (la primera)
+print(armas[2])   # Arco     (la tercera)
+print(armas[-1])  # Bastón   (la ÚLTIMA, truco con -1)</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Si tienes 4 elementos (índices 0-3) y pides <code>armas[4]</code>, Python lanzará <code>IndexError: list index out of range</code>. El índice 4 no existe.</p>
+                </div>`
+            },
+            {
+                title: "Modificando la lista",
+                content: `<p>Las listas son mutables: puedes cambiar, agregar y eliminar elementos libremente.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">inventario = ["Poción", "Espada", "Escudo"]
+
+# Cambiar un elemento:
+inventario[0] = "Mega Poción"
+
+# Agregar al final:
+inventario.append("Llave Dorada")
+
+# Eliminar el último y obtenerlo:
+item_perdido = inventario.pop()
+print(item_perdido)  # Llave Dorada
+
+# Ver la lista completa:
+print(inventario)  # ['Mega Poción', 'Espada', 'Escudo']</code></pre></div>`
+            },
+            {
+                title: "Saber el tamaño de la lista con len()",
+                content: `<p>La función <code>len()</code> te dice cuántos elementos tiene una lista. Es muy útil para no intentar acceder a posiciones que no existen.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">equipo = ["Mario", "Luigi", "Peach"]
+print(len(equipo))   # 3
+
+# Uso práctico: imprimir cuántos miembros hay
+print("El equipo tiene", len(equipo), "miembros.")</code></pre></div>
+                <p>Recuerda: si <code>len()</code> devuelve 3, los índices válidos son 0, 1 y 2. El índice 3 NO existe.</p>`
+            },
+            {
+                title: "Listas pueden mezclar tipos de datos",
+                content: `<p>Python es flexible: una misma lista puede tener strings, números, booleanos... todo junto. Pero en la práctica, es mejor mantener listas con el mismo tipo de dato para no confundirte.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Lista mixta (válida en Python):
+perfil = ["Steven", 16, True, 9.5]
+print(perfil[0])   # Steven
+print(perfil[1])   # 16
+print(perfil[3])   # 9.5
+
+# Lista vacía (puedes empezar vacía y llenarla después):
+bolsa = []
+bolsa.append("Moneda de Oro")
+print(bolsa)  # ['Moneda de Oro']</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué símbolo se usa para crear una lista?", options: ["()", "{}", "<>", "[]"], answer: "[]" },
+            { type: "multiple-choice", question: "Dado: `z = [10, 20, 30] / print(z[1])` ¿Qué imprime?", options: ["10", "20", "30", "1"], answer: "20" },
+            { type: "multiple-choice", question: "¿Cómo obtienes el ÚLTIMO elemento de cualquier lista sin saber su tamaño?", options: ["lista[último]", "lista[fin]", "lista[-1]", "lista.end()"], answer: "lista[-1]" },
+            { type: "multiple-choice", question: "Dado: `letras = ['A', 'B'] / print(letras[2])` ¿Qué error lanza?", options: ["TypeError", "NameError", "IndexError: list index out of range", "SyntaxError"], answer: "IndexError: list index out of range" },
+            { type: "multiple-choice", question: "¿Qué hace `.append(dato)` en una lista?", options: ["Borra ese dato", "Lo agrega al final de la lista", "Lo pone al inicio", "Lo reemplaza todo"], answer: "Lo agrega al final de la lista" },
+            { type: "multiple-choice", question: "Dado: `g = [] / g.append(1) / g.append(2) / print(g[0])`", options: ["2", "1", "1, 2", "0"], answer: "1" },
+            { type: "multiple-choice", question: "Dado: `l = [7, 7, 7] / l[0] = 8 / print(l)`", options: ["[8, 7, 7]", "[8, 8, 8]", "Error", "[7, 7, 7, 8]"], answer: "[8, 7, 7]" },
+            { type: "multiple-choice", question: "Dado: `l = ['Sol', 'Luna'] / e = l.pop() / print(e)`, ¿Qué imprime?", options: ["Sol", "Luna", "None", "Error"], answer: "Luna" },
+            { type: "multiple-choice", question: "¿Qué devuelve `len(['A', 'B', 'C'])`?", options: ["0", "2", "3", "4"], answer: "3" },
+            { type: "multiple-choice", question: "Si una lista tiene `len()` igual a 5, ¿cuál es el índice del último elemento?", options: ["5", "4", "-1 siempre", "depende"], answer: "4" }
+        ]
+    },
+    { // Nivel 9
+        title: "Recorriendo Listas (For + Listas)",
+        lesson: [
+            {
+                title: "El For fue hecho para las listas",
+                content: `<p>¿Recuerdas el bucle <code>for</code>? Fue diseñado exactamente para esto: <strong>recorrer cada elemento de una lista, uno por uno</strong>, sin que tengas que saber cuántos elementos hay.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">enemigos = ["Orco", "Goblin", "Slime", "Dragón"]
+
+for monstruo in enemigos:
+    print("¡Aparece un", monstruo, "!")
+
+# Imprime:
+# ¡Aparece un Orco !
+# ¡Aparece un Goblin !
+# ¡Aparece un Slime !
+# ¡Aparece un Dragón !</code></pre></div>
+                <p>En cada vuelta del bucle, <code>monstruo</code> toma el valor del siguiente elemento. Python hace eso automáticamente.</p>`
+            },
+            {
+                title: "Acumulando resultados (el patrón acumulador)",
+                content: `<p>Uno de los usos más comunes: sumar todos los valores de una lista. El truco es una variable que empieza en 0 y acumula.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">notas = [85, 90, 78, 92, 88]
+total = 0
+
+for nota in notas:
+    total += nota
+
+promedio = total / len(notas)
+print("Promedio:", promedio)   # Promedio: 86.6</code></pre></div>`
+            },
+            {
+                title: "Modificar la lista real con índices",
+                content: `<p>Ojo importante: cuando haces <code>for x in lista</code>, la variable <code>x</code> es una <strong>copia</strong> del elemento. Si cambias <code>x</code>, la lista original NO cambia.</p>
+                <p>Para modificar la lista de verdad, necesitas acceder por índice usando <code>range(len())</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">precios = [10, 20, 30]
+
+# ❌ Esto NO modifica la lista:
+for p in precios:
+    p = p * 2    # Solo cambia la copia 'p'
+
+print(precios)   # [10, 20, 30] — sin cambios
+
+# ✅ Esto SÍ modifica la lista:
+for i in range(len(precios)):
+    precios[i] = precios[i] * 2
+
+print(precios)   # [20, 40, 60]</code></pre></div>`
+            },
+            {
+                title: "Buscar elementos con `in`",
+                content: `<p>Para saber si algo está en una lista, no necesitas recorrerla manualmente. Python tiene la palabra <code>in</code> que lo hace en una línea.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">mochila = ["Espada", "Poción", "Llave", "Mapa"]
+
+if "Llave" in mochila:
+    print("¡Puedes abrir la puerta!")
+else:
+    print("Necesitas encontrar una llave.")
+
+# También puedes usar 'not in':
+if "Escudo" not in mochila:
+    print("Vas desprotegido, cuidado.")</code></pre></div>`
+            },
+            {
+                title: "Construir listas nuevas con un For",
+                content: `<p>Puedes empezar con una lista vacía y construirla dentro de un bucle, filtrando o transformando datos.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">puntuaciones = [45, 80, 30, 95, 60, 15]
+aprobados = []
+
+for punto in puntuaciones:
+    if punto >= 60:
+        aprobados.append(punto)
+
+print("Aprobaron:", aprobados)  # [80, 95, 60]</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "Dado: `n = [1, 2] / for k in n: print(k)` ¿Qué imprime?", options: ["1 2 en una línea", "1 y 2 en líneas separadas", "Error", "[1, 2]"], answer: "1 y 2 en líneas separadas" },
+            { type: "multiple-choice", question: "¿Qué devuelve `len(['A', 'B'])`?", options: ["Borra A y B", "2", "Un rango", "0"], answer: "2" },
+            { type: "multiple-choice", question: "Si cambias la variable del `for` dentro del bucle, ¿cambia la lista original?", options: ["Sí siempre", "No, es solo una copia temporal", "Depende del tipo", "Provoca loop infinito"], answer: "No, es solo una copia temporal" },
+            { type: "multiple-choice", question: "¿Cómo modificas de verdad el elemento en posición `i` de una lista?", options: ["lista[i] = nuevo_valor", "modificar(lista, i)", "lista = i", "lista.change(i)"], answer: "lista[i] = nuevo_valor" },
+            { type: "multiple-choice", question: "¿Qué devuelve `'Pan' in ['Agua', 'Sal']`?", options: ["'Pan' se agrega", "True", "Error", "False"], answer: "False" },
+            { type: "multiple-choice", question: "Dado: `s = 0 / nums = [5, 5] / for n in nums: s += n / print(s)` ¿Qué imprime?", options: ["0", "5", "10", "20"], answer: "10" },
+            { type: "multiple-choice", question: "Dado: `b = [] / for i in range(2): b.append(i) / print(b)`", options: ["[1, 2]", "[0, 1]", "Error", "[0]"], answer: "[0, 1]" },
+            { type: "multiple-choice", question: "¿Qué genera `range(len(mi_lista))`?", options: ["Las palabras de la lista", "Los índices posibles: 0, 1, 2...", "Error si la lista está vacía", "El último elemento"], answer: "Los índices posibles: 0, 1, 2..." },
+            { type: "multiple-choice", question: "Dado: `x = ['O','O','O'] / c = 0 / for t in x: c += 1 / print(c)` ¿Qué imprime?", options: ["1", "3", "0", "None"], answer: "3" },
+            { type: "multiple-choice", question: "¿Qué método cuenta cuántas veces aparece un elemento en la lista?", options: [".count(elemento)", ".sum()", ".find()", ".total()"], answer: ".count(elemento)" }
+        ]
+    },
+    { // Nivel 10
+        title: "Datos con Nombre (Diccionarios)",
+        lesson: [
+            {
+                title: "El problema de las listas sin nombre",
+                content: `<p>Las listas guardan datos por posición (0, 1, 2...). Si tienes <code>jugador = ["Steven", 16, True]</code>, tienes que recordar que el 0 es el nombre, el 1 la edad, el 2 si está activo. Eso se olvida fácil.</p>
+                <p>Los <strong>Diccionarios</strong> resuelven esto: en vez de números como índice, usas <strong>nombres descriptivos</strong> (llaves). Es como un formulario con campos etiquetados.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Lista: confusa
+jugador = ["Steven", 16, True]
+
+# Diccionario: claro y legible
+jugador = {
+    "nombre": "Steven",
+    "edad": 16,
+    "activo": True
+}</code></pre></div>`
+            },
+            {
+                title: "Accediendo y modificando valores",
+                content: `<p>Para leer un valor, usas la llave entre corchetes. Para modificar o agregar, usas la misma sintaxis pero asignando con <code>=</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">personaje = {
+    "nombre": "Aragorn",
+    "nivel": 20,
+    "hp": 450
+}
+
+# Leer:
+print(personaje["nombre"])   # Aragorn
+
+# Modificar:
+personaje["hp"] = 500
+
+# Agregar una llave nueva:
+personaje["arma"] = "Andúril"
+
+print(personaje)
+# {'nombre': 'Aragorn', 'nivel': 20, 'hp': 500, 'arma': 'Andúril'}</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Intentar acceder con un número: <code>personaje[0]</code> en un diccionario lanzará <code>KeyError</code>. Los diccionarios se acceden siempre por su llave de texto, no por posición numérica.</p>
+                </div>`
+            },
+            {
+                title: "Recorrer un diccionario",
+                content: `<p>Si usas un <code>for</code> directamente sobre un diccionario, obtienes las <strong>llaves</strong> (los nombres, no los valores). Para obtener los valores o ambos, tienes métodos especiales.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">stats = {"fuerza": 80, "velocidad": 65, "magia": 95}
+
+# Solo las llaves:
+for llave in stats:
+    print(llave)    # fuerza, velocidad, magia
+
+# Llave y valor juntos:
+for llave, valor in stats.items():
+    print(llave, "→", valor)
+# fuerza → 80
+# velocidad → 65
+# magia → 95</code></pre></div>`
+            },
+            {
+                title: "Verificar si una llave existe",
+                content: `<p>Antes de acceder a una llave, puedes verificar si existe. Intentar acceder a una llave que no existe da <code>KeyError</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">item = {"nombre": "Espada", "daño": 45}
+
+if "daño" in item:
+    print("Daño:", item["daño"])      # Daño: 45
+
+if "magia" not in item:
+    print("Este item no tiene magia")</code></pre></div>`
+            },
+            {
+                title: "Listas de diccionarios: la base de toda app real",
+                content: `<p>En casi toda aplicación real (videojuegos, redes sociales, apps), los datos son <strong>listas de diccionarios</strong>. Cada diccionario representa un objeto (usuario, producto, personaje), y la lista los agrupa.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">equipo = [
+    {"nombre": "Ana",  "clase": "Maga",    "nivel": 15},
+    {"nombre": "Luis", "clase": "Guerrero","nivel": 20},
+    {"nombre": "Sara", "clase": "Arquera", "nivel": 18}
+]
+
+for miembro in equipo:
+    print(miembro["nombre"], "es", miembro["clase"], "nivel", miembro["nivel"])</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué símbolo define un diccionario?", options: ["[]", "()", "{}", "<>"], answer: "{}" },
+            { type: "multiple-choice", question: "Dado: `g = {'color': 'Rojo'} / print(g['color'])` ¿Qué imprime?", options: ["color", "Rojo", "False", "Error"], answer: "Rojo" },
+            { type: "multiple-choice", question: "Dado: `d = {'hp': 10} / d['hp'] = 20` ¿Qué tiene `d['hp']` ahora?", options: ["10", "30", "20", "Error"], answer: "20" },
+            { type: "multiple-choice", question: "¿Qué error lanza `p = {'mp': 25} / print(p[0])`?", options: ["TypeError", "IndexError", "KeyError: 0 no existe en el diccionario", "NameError"], answer: "KeyError: 0 no existe en el diccionario" },
+            { type: "multiple-choice", question: "¿Cómo agregas una llave nueva 'poder' con valor 100 al dict D?", options: ["D.add('poder', 100)", "D['poder'] = 100", "D.append(100)", "D.poder = 100"], answer: "D['poder'] = 100" },
+            { type: "multiple-choice", question: "Dado: `d = {} / d['ok'] = True / print(d['ok'])`", options: ["None", "Error", "True", "ok"], answer: "True" },
+            { type: "multiple-choice", question: "¿Qué obtienes al hacer `for i in mi_diccionario:`?", options: ["Los valores", "Las llaves (nombres)", "Los pares llave-valor", "Los índices"], answer: "Las llaves (nombres)" },
+            { type: "multiple-choice", question: "¿Qué método recorre llave y valor juntos?", options: [".keys()", ".values()", ".items()", ".pairs()"], answer: ".items()" },
+            { type: "multiple-choice", question: "Dado: `d = {'a': 1} / print('b' in d)`", options: ["True", "False", "Error", "None"], answer: "False" },
+            { type: "multiple-choice", question: "¿Para qué sirve una 'lista de diccionarios'?", options: ["No tiene uso práctico", "Para guardar múltiples objetos del mismo tipo", "Solo para juegos de cartas", "Para reemplazar las Listas normales"], answer: "Para guardar múltiples objetos del mismo tipo" }
+        ]
+    },
+{ // Nivel 11
+        title: "Textos con Superpoderes (Strings Avanzados)",
+        lesson: [
+            {
+                title: "Los strings son listas de letras",
+                content: `<p>Un string no es solo texto: internamente Python lo trata casi igual que una lista de caracteres. Puedes acceder a cada letra por su posición, igual que en las listas.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = "Python"
+print(nombre[0])    # P
+print(nombre[3])    # h
+print(nombre[-1])   # n  (último carácter)
+print(len(nombre))  # 6</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Importante: los strings son INMUTABLES</strong>
+                    <p class="text-sm">A diferencia de las listas, NO puedes cambiar una letra individual. <code>nombre[0] = "X"</code> dará un <code>TypeError</code>. Para modificar un string, debes crear uno nuevo.</p>
+                </div>`
+            },
+            {
+                title: "Cortando strings: Slicing",
+                content: `<p>El <strong>slicing</strong> te permite cortar un pedazo del string (o de una lista). La sintaxis es <code>[inicio:fin]</code>, donde el inicio se incluye pero el fin NO.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">texto = "Verdadera Academia"
+print(texto[0:9])    # Verdadera  (del 0 al 8)
+print(texto[10:])    # Academia   (del 10 hasta el final)
+print(texto[:9])     # Verdadera  (desde el inicio hasta el 8)
+print(texto[-8:])    # Academia   (últimos 8 caracteres)</code></pre></div>`
+            },
+            {
+                title: "f-strings: la forma moderna de combinar texto y variables",
+                content: `<p>Antes unir texto con variables era tedioso: <code>"Hola " + nombre + ", tienes " + str(edad) + " años"</code>. Las <strong>f-strings</strong> hacen lo mismo en una línea limpia:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">nombre = "Steven"
+nivel = 42
+hp = 350.5
+
+# Pon una 'f' antes de las comillas, y las variables van en {}
+print(f"Jugador: {nombre} | Nivel: {nivel} | HP: {hp}")
+# Jugador: Steven | Nivel: 42 | HP: 350.5
+
+# Incluso puedes hacer operaciones dentro:
+print(f"El doble de tu nivel es {nivel * 2}")</code></pre></div>`
+            },
+            {
+                title: "Métodos útiles de strings",
+                content: `<p>Los strings vienen con herramientas integradas (métodos) para transformarlos fácilmente:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">frase = "  hola mundo  "
+
+print(frase.upper())      # "  HOLA MUNDO  "
+print(frase.lower())      # "  hola mundo  "
+print(frase.strip())      # "hola mundo"  (elimina espacios del borde)
+print(frase.strip().capitalize())  # "Hola mundo"
+
+# Reemplazar partes:
+texto = "Me gusta Python"
+print(texto.replace("Python", "programar"))  # Me gusta programar</code></pre></div>`
+            },
+            {
+                title: "Dividir y unir strings",
+                content: `<p><code>.split()</code> convierte un string en una lista, dividiéndolo por el carácter que le indiques. Y <code>.join()</code> hace lo contrario: une una lista en un string.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Dividir:
+equipos = "Mario,Luigi,Peach,Toad"
+lista = equipos.split(",")
+print(lista)   # ['Mario', 'Luigi', 'Peach', 'Toad']
+print(lista[2])  # Peach
+
+# Unir de vuelta:
+unido = " - ".join(lista)
+print(unido)   # Mario - Luigi - Peach - Toad</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "Dado: `t = 'Gato' / print(t[-1])` ¿Qué imprime?", options: ["G", "a", "t", "o"], answer: "o" },
+            { type: "multiple-choice", question: "¿Por qué falla `texto[0] = 'M'` en un string?", options: ["Por las comillas", "Los strings son inmutables, no se pueden cambiar letra por letra", "Falta índice", "TypeError de tipo"], answer: "Los strings son inmutables, no se pueden cambiar letra por letra" },
+            { type: "multiple-choice", question: "Dado: `w = 'ABCDE' / print(w[1:4])` ¿Qué imprime?", options: ["ABCD", "BCD", "ABC", "BCDE"], answer: "BCD" },
+            { type: "multiple-choice", question: "¿Qué hace la 'f' en `f'Hola {nombre}'`?", options: ["Indica función", "Permite inyectar variables dentro del texto con {}", "Da error", "Formatea como float"], answer: "Permite inyectar variables dentro del texto con {}" },
+            { type: "multiple-choice", question: "¿Qué método convierte todo a minúsculas?", options: [".lower()", ".upper()", ".strip()", ".small()"], answer: ".lower()" },
+            { type: "multiple-choice", question: "Dado: `j = 'H,O,L,A' / k = j.split(',') / print(k[0])`", options: ["H", "H,O", "L", "A"], answer: "H" },
+            { type: "multiple-choice", question: "¿Para qué sirve `.split(',')`?", options: ["Divide el string en una lista usando la coma como separador", "Suma strings", "Elimina comas del texto", "Convierte a número"], answer: "Divide el string en una lista usando la coma como separador" },
+            { type: "multiple-choice", question: "Dado: `f = f'1 + 1 = {1+1}' / print(f)`", options: ["1 + 1 = {1+1}", "1 + 1 = 2", "Error", "11=11"], answer: "1 + 1 = 2" },
+            { type: "multiple-choice", question: "En slicing `[1:4]` ¿el índice 4 está incluido?", options: ["Sí siempre", "No, se corta justo antes del índice final", "Solo en listas", "Depende"], answer: "No, se corta justo antes del índice final" },
+            { type: "multiple-choice", question: "Dado: `x = 'Luz' * 2` ¿Qué es x?", options: ["Error", "LuzLuz", "Luz2", "Luz Luz"], answer: "LuzLuz" }
+        ]
+    },
+    { // Nivel 12
+        title: "Más Colecciones (Tuplas y Sets)",
+        lesson: [
+            {
+                title: "¿Cuándo NO quieres que los datos cambien? Tuplas",
+                content: `<p>Las listas son modificables: puedes agregar, quitar o cambiar elementos. Pero a veces tienes datos que <strong>nunca deben cambiar</strong> (coordenadas GPS, los días de la semana, los colores de un semáforo). Para eso están las <strong>Tuplas</strong>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Las tuplas usan paréntesis
+dias = ("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
+coordenadas = (14.5, -90.2)
+
+# Puedes leerlas igual que listas:
+print(dias[0])      # Lunes
+print(dias[-1])     # Viernes
+
+# Pero NO puedes modificarlas:
+# dias[0] = "Domingo"  ← TypeError: no se puede</code></pre></div>
+                <p>Las tuplas son más rápidas que las listas y protegen tus datos de cambios accidentales.</p>`
+            },
+            {
+                title: "Sets: la colección sin duplicados",
+                content: `<p>Un <strong>Set</strong> es una colección que tiene un superpoder: <strong>automáticamente elimina duplicados</strong>. Si agregas el mismo valor dos veces, solo lo guarda una.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Limpiar duplicados de una lista:
+votos = [1, 2, 1, 3, 2, 2, 4, 1]
+votos_unicos = set(votos)
+print(votos_unicos)   # {1, 2, 3, 4} — sin repetidos
+
+# Crear un set directamente con { }:
+frutas = {"Manzana", "Pera", "Manzana", "Uva"}
+print(frutas)   # {'Manzana', 'Pera', 'Uva'}</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Cuidado:</strong>
+                    <p class="text-sm">Los Sets NO tienen orden fijo ni índices. No puedes hacer <code>mi_set[0]</code>. Sin embargo, puedes verificar si algo está dentro con <code>in</code>.</p>
+                </div>`
+            },
+            {
+                title: "Operaciones de Sets (Matemática de Conjuntos)",
+                content: `<p>Los Sets permiten operaciones matemáticas de conjuntos, muy útiles para comparar grupos de datos.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">grupo_a = {1, 2, 3, 4}
+grupo_b = {3, 4, 5, 6}
+
+# Unión (todos los elementos de ambos):
+print(grupo_a.union(grupo_b))         # {1, 2, 3, 4, 5, 6}
+
+# Intersección (solo los que están en AMBOS):
+print(grupo_a.intersection(grupo_b))  # {3, 4}
+
+# Diferencia (los de A que NO están en B):
+print(grupo_a.difference(grupo_b))    # {1, 2}</code></pre></div>`
+            },
+            {
+                title: "Comparando las 4 colecciones",
+                content: `<p>Python tiene 4 tipos de colecciones. Cada una tiene su función:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">lista =       [1, 2, 2, 3]    # Ordenada, mutable, permite duplicados
+tupla =       (1, 2, 2, 3)    # Ordenada, INMUTABLE, permite duplicados
+set_col =     {1, 2, 3}       # Sin orden, mutable, SIN duplicados
+diccionario = {"a": 1, "b": 2} # Sin orden (en orden de inserción), mutable, llaves únicas</code></pre></div>
+                <p>La regla práctica:</p>
+                <ul class="ml-5 mt-2 space-y-2 list-disc">
+                    <li>¿Datos que cambian? → <strong>Lista</strong></li>
+                    <li>¿Datos fijos que no cambiarán? → <strong>Tupla</strong></li>
+                    <li>¿Necesitas eliminar duplicados? → <strong>Set</strong></li>
+                    <li>¿Datos con nombre clave-valor? → <strong>Diccionario</strong></li>
+                </ul>`
+            },
+            {
+                title: "Convirtiendo entre colecciones",
+                content: `<p>Puedes convertir entre tipos de colecciones fácilmente con funciones de conversión. Esto es muy útil en la práctica.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Lista con duplicados → Set para limpiar → Lista de nuevo
+numeros = [1, 2, 2, 3, 3, 3, 4]
+sin_duplicados = list(set(numeros))
+print(sin_duplicados)   # [1, 2, 3, 4]
+
+# Lista → Tupla (para protegerla):
+colores = ["Rojo", "Verde", "Azul"]
+colores_fijos = tuple(colores)
+print(colores_fijos)    # ('Rojo', 'Verde', 'Azul')</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué símbolo define una Tupla?", options: ["[]", "{}", "()", "//"], answer: "()" },
+            { type: "multiple-choice", question: "¿Cuál es la diferencia clave entre Lista y Tupla?", options: ["La Tupla no permite cambiar sus datos", "Las Listas son más lentas", "La Tupla solo guarda números", "Son iguales"], answer: "La Tupla no permite cambiar sus datos" },
+            { type: "multiple-choice", question: "Dado: `c = (5, 10) / c.append(15)` ¿Qué pasa?", options: ["Agrega 15", "Error: las Tuplas no tienen .append()", "Se convierte en lista", "(5, 10, 15)"], answer: "Error: las Tuplas no tienen .append()" },
+            { type: "multiple-choice", question: "¿Qué hace `set([1, 2, 2, 3])` automáticamente?", options: ["Ordena la lista", "Elimina los duplicados, quedando {1, 2, 3}", "Suma los elementos", "Crea un diccionario"], answer: "Elimina los duplicados, quedando {1, 2, 3}" },
+            { type: "multiple-choice", question: "Dado: `s = {5, 0, 1}` sin dos puntos. ¿Qué es esto?", options: ["Diccionario mal hecho", "Un Set", "Error de sintaxis", "Una Tupla"], answer: "Un Set" },
+            { type: "multiple-choice", question: "Dado: `nums = {1, 1, 2} / print(len(nums))`", options: ["3", "2", "1", "Error"], answer: "2" },
+            { type: "multiple-choice", question: "¿Puedes hacer `mi_set[0]` en un Set?", options: ["Sí, es el primer elemento", "No, los Sets no tienen índices", "Solo con números", "Solo en Python 3"], answer: "No, los Sets no tienen índices" },
+            { type: "multiple-choice", question: "¿Cuál usarías para los días de la semana que nunca cambiarán?", options: ["Lista", "Diccionario", "Set", "Tupla"], answer: "Tupla" },
+            { type: "multiple-choice", question: "¿`{1, 2} union {2, 3}` nos da...?", options: ["{1, 2, 3, 4}", "{2}", "{1, 2, 3}", "Error"], answer: "{1, 2, 3}" },
+            { type: "multiple-choice", question: "Dado: `x = set([1,2,2]) / y = list(x) / print(y)`", options: ["[1,2,2]", "[1, 2]", "Error", "122"], answer: "[1, 2]" }
+        ]
+    },
+    { // Nivel 13
+        title: "Cacería de Errores (try / except)",
+        lesson: [
+            {
+                title: "Cuando el usuario hace cosas inesperadas",
+                content: `<p>Tu código puede estar perfecto, pero el usuario siempre puede hacer algo que no esperabas. Si le pides un número y escribe "hamburgesa", tu programa se cae con letras rojas.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Sin protección: el programa muere si el usuario escribe texto
+edad = int(input("¿Cuántos años tienes? "))
+# Si el usuario escribe "veinte" → ValueError y el programa se apaga</code></pre></div>
+                <p>Los programas profesionales nunca deben cerrarse bruscamente por el error de un usuario. Para eso existe el manejo de errores.</p>`
+            },
+            {
+                title: "El escudo protector: try / except",
+                content: `<p>Envuelves el código peligroso en un bloque <code>try</code> (intentar), y en el bloque <code>except</code> defines qué hacer si algo falla. Es como una red de seguridad bajo un trapecista.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+    edad = int(input("¿Cuántos años tienes? "))
+    print("Tienes", edad, "años.")
+except:
+    print("Eso no es un número válido.")</code></pre></div>
+                <p>Si el código dentro del <code>try</code> falla en cualquier punto, Python salta directamente al <code>except</code> sin cerrar el programa.</p>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Importante:</strong>
+                    <p class="text-sm">Un <code>try</code> sin <code>except</code> dará error de sintaxis. Siempre van en pareja.</p>
+                </div>`
+            },
+            {
+                title: "Tipos de errores específicos",
+                content: `<p>Puedes atrapar tipos específicos de error para dar mensajes más útiles. Algunos de los más comunes:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+    numero = int(input("Dame un número: "))
+    resultado = 100 / numero
+    print("100 /", numero, "=", resultado)
+
+except ValueError:
+    print("Error: debes escribir un número, no texto.")
+
+except ZeroDivisionError:
+    print("Error: no puedes dividir entre cero.")</code></pre></div>
+                <p>Si el usuario escribe "abc", cae en <code>ValueError</code>. Si escribe 0, cae en <code>ZeroDivisionError</code>. Cada error tiene su mensaje personalizado.</p>`
+            },
+            {
+                title: "El bloque `finally`: siempre se ejecuta",
+                content: `<p>Existe un tercer bloque opcional: <code>finally</code>. El código ahí siempre se ejecuta, sin importar si hubo error o no. Útil para limpiar recursos o mostrar mensajes de cierre.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+    x = int(input("Número: "))
+    print(x * 2)
+except ValueError:
+    print("No era un número.")
+finally:
+    print("Gracias por usar el programa.")  # Siempre corre</code></pre></div>`
+            },
+            {
+                title: "El truco: While + try para forzar entrada correcta",
+                content: `<p>Un patrón muy útil en aplicaciones reales: repetir el input hasta que el usuario escriba algo válido.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">while True:
+    try:
+        edad = int(input("Ingresa tu edad: "))
+        break  # Si llegó aquí sin error, salimos del bucle
+    except ValueError:
+        print("Eso no es válido. Intenta de nuevo.")</code></pre></div>
+                <p>El programa seguirá preguntando hasta que el usuario escriba un número real. Una vez que lo haga, el <code>break</code> termina el bucle.</p>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué pasa si el usuario escribe texto donde se espera `int(input())`?", options: ["Python convierte automáticamente", "ValueError y el programa se cierra", "Se guarda como 0", "Se ignora"], answer: "ValueError y el programa se cierra" },
+            { type: "multiple-choice", question: "¿Para qué sirve el bloque `try`?", options: ["Para probar código peligroso sin que el programa se cierre en error", "Para encriptar el código", "Para reintentar para siempre", "Para definir funciones"], answer: "Para probar código peligroso sin que el programa se cierre en error" },
+            { type: "multiple-choice", question: "Dado: `try: print(10/0) / except: print('E')` ¿Qué imprime?", options: ["10", "0", "E", "Error rojo"], answer: "E" },
+            { type: "multiple-choice", question: "¿Qué hace el bloque `except:` básico (sin tipo)?", options: ["Solo captura ValueError", "Captura CUALQUIER tipo de error", "Captura solo ZeroDivisionError", "No funciona solo"], answer: "Captura CUALQUIER tipo de error" },
+            { type: "multiple-choice", question: "¿Qué error ocurre al dividir 10 entre 0?", options: ["ValueError", "NameError", "ZeroDivisionError", "IndexError"], answer: "ZeroDivisionError" },
+            { type: "multiple-choice", question: "¿Puedes poner varios `except` para diferentes tipos de error?", options: ["No, solo uno", "Sí, uno por cada tipo de error", "Solo dos máximo", "Solo con ValueError"], answer: "Sí, uno por cada tipo de error" },
+            { type: "multiple-choice", question: "Dado: `try: x=10 / except: print('F') / print('V')` ¿Qué imprime?", options: ["F", "V", "F y V", "Nada"], answer: "V" },
+            { type: "multiple-choice", question: "¿Puede existir un `try` sin su `except` correspondiente?", options: ["Sí, es opcional", "No, es obligatorio tener un except", "Solo en Python 3.10+", "Solo con finally"], answer: "No, es obligatorio tener un except" },
+            { type: "multiple-choice", question: "¿Qué hace el bloque `finally`?", options: ["Solo corre si hubo error", "Solo corre si no hubo error", "Siempre corre, haya error o no", "Reinicia el try"], answer: "Siempre corre, haya error o no" },
+            { type: "multiple-choice", question: "`except ValueError:` ¿atrapa también un ZeroDivisionError?", options: ["Sí, atrapa todo", "No, cada except solo atrapa su tipo específico", "Solo si están en el mismo try", "Depende de Python"], answer: "No, cada except solo atrapa su tipo específico" }
+        ]
+    },
+    { // Nivel 14
+        title: "Construyendo Moldes (Clases - POO Básica)",
+        lesson: [
+            {
+                title: "¿Por qué necesitamos Clases?",
+                content: `<p>Imagina que tienes que crear 100 personajes para tu juego, cada uno con nombre, vida, nivel y arma. Con lo que sabemos, necesitarías 4 diccionarios o 4 listas por personaje. Las <strong>Clases</strong> son moldes de galleta: defines la forma una vez y puedes crear mil galletas (objetos) con esa misma forma.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Sin Clases: repetitivo y propenso a errores
+personaje1 = {"nombre": "Ana", "vida": 100, "nivel": 1}
+personaje2 = {"nombre": "Luis", "vida": 100, "nivel": 1}
+# x100...
+
+# Con Clases: definir una vez, usar muchas
+class Personaje:
+    pass  # (lo completaremos en la siguiente lección)</code></pre></div>`
+            },
+            {
+                title: "Creando una Clase básica y sus instancias",
+                content: `<p>La palabra <code>class</code> seguida del nombre (por convención con <strong>Mayúscula inicial</strong>) crea el molde. Para crear un objeto (instancia) a partir de ese molde, lo llamas como si fuera una función.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Personaje:
+    vida = 100
+    nivel = 1
+
+# Creando objetos (instancias) del molde:
+jugador1 = Personaje()
+jugador2 = Personaje()
+
+print(jugador1.vida)   # 100
+print(jugador2.nivel)  # 1</code></pre></div>
+                <p>El punto (<code>.</code>) es el operador de acceso. <code>jugador1.vida</code> significa "la propiedad 'vida' que pertenece a jugador1".</p>`
+            },
+            {
+                title: "El constructor __init__: personalizar al nacer",
+                content: `<p>Con el código anterior, todos los personajes nacen igual (vida=100, nivel=1). El <code>__init__</code> es una función especial que se ejecuta automáticamente cuando creas un objeto, y te permite darle valores únicos a cada uno.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Guerrero:
+    def __init__(self, nombre, vida):
+        self.nombre = nombre   # Guarda el nombre en ESTE objeto
+        self.vida = vida       # Guarda la vida en ESTE objeto
+
+guerrero1 = Guerrero("Ana", 150)
+guerrero2 = Guerrero("Luis", 80)
+
+print(guerrero1.nombre, guerrero1.vida)  # Ana 150
+print(guerrero2.nombre, guerrero2.vida)  # Luis 80</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Escribir <code>def init(self)</code> sin los dobles guiones bajos es un error silencioso: Python no lo tomará como el constructor especial. Debe ser <code>def __init__(self)</code>.</p>
+                </div>`
+            },
+            {
+                title: "¿Qué es `self`?",
+                content: `<p><code>self</code> se refiere al objeto actual. Cuando creas <code>guerrero1 = Guerrero("Ana", 150)</code>, dentro del <code>__init__</code>, <code>self</code> ES <code>guerrero1</code>. Por eso <code>self.nombre = nombre</code> guarda el nombre dentro de ese objeto específico.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Mago:
+    def __init__(self, nombre, mana):
+        self.nombre = nombre
+        self.mana = mana
+
+mago1 = Mago("Merlin", 500)
+mago2 = Mago("Gandalf", 900)
+
+# Cada objeto tiene SU PROPIA copia de los atributos:
+mago1.mana = 0   # Solo afecta a mago1
+print(mago2.mana)  # 900 — mago2 no cambió</code></pre></div>`
+            },
+            {
+                title: "Objetos independientes: modificar uno no afecta al otro",
+                content: `<p>Cada objeto creado con una clase tiene su <strong>propia memoria</strong>. Cambiar un atributo de <code>jugador1</code> no afecta a <code>jugador2</code>, aunque vengan del mismo molde.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Enemigo:
+    def __init__(self, hp):
+        self.hp = hp
+
+slime1 = Enemigo(50)
+slime2 = Enemigo(50)
+
+slime1.hp -= 30   # El jugador golpeó a slime1
+print(slime1.hp)  # 20
+print(slime2.hp)  # 50 — ¡intacto!</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Para qué sirven las Clases en POO?", options: ["Para hacer variables globales", "Como moldes para crear múltiples objetos con la misma estructura", "Para hacer bucles más rápidos", "Para guardar text en disco"], answer: "Como moldes para crear múltiples objetos con la misma estructura" },
+            { type: "multiple-choice", question: "¿Cómo se diferencia una Clase de una variable por convención?", options: ["Las Clases usan comillas", "Las Clases inician con MAYÚSCULA: `class Jugador:`", "Las Clases tienen dos puntos al final", "No hay diferencia visual"], answer: "Las Clases inician con MAYÚSCULA: `class Jugador:`" },
+            { type: "multiple-choice", question: "Dado: `class G: / hp=5 / g = G() / print(g.hp)` ¿Qué imprime?", options: ["G", "5", "hp", "Error"], answer: "5" },
+            { type: "multiple-choice", question: "¿Son `obj1 = Enemigo()` y `obj2 = Enemigo()` el mismo objeto?", options: ["Sí, son el mismo", "No, son objetos independientes del mismo molde", "obj2 reemplaza a obj1", "Depende del nombre"], answer: "No, son objetos independientes del mismo molde" },
+            { type: "multiple-choice", question: "¿Qué representa `self` dentro de una Clase?", options: ["Un string especial", "El objeto actual sobre el que se opera", "El nombre de la clase", "Un parámetro opcional"], answer: "El objeto actual sobre el que se opera" },
+            { type: "multiple-choice", question: "Encuentra el problema: `class Carro: / def init(self, color): / self.c = color`", options: ["color no puede ser string", "Debe ser `__init__` con dobles guiones bajos", "self no se puede usar", "No hay error"], answer: "Debe ser `__init__` con dobles guiones bajos" },
+            { type: "multiple-choice", question: "¿Para qué sirve `__init__`?", options: ["Para borrar el objeto", "Para ejecutarse automáticamente al crear el objeto y asignar valores iniciales", "Para imprimir el objeto", "Para comparar objetos"], answer: "Para ejecutarse automáticamente al crear el objeto y asignar valores iniciales" },
+            { type: "multiple-choice", question: "Dado: `class X: / def __init__(self, i): / self.j = i / t = X(20) / print(t.j)` ¿Qué imprime?", options: ["i", "j", "20", "X"], answer: "20" },
+            { type: "multiple-choice", question: "¿Qué hace `jugador1.vida = 0`?", options: ["Borra el objeto", "Modifica el atributo 'vida' solo de jugador1", "Afecta a todos los objetos", "Error de sintaxis"], answer: "Modifica el atributo 'vida' solo de jugador1" },
+            { type: "multiple-choice", question: "Si `mago1.mana = 0` y luego haces `print(mago2.mana)` (mago2 tenía 900) ¿Qué imprime?", options: ["0", "None", "900", "Error"], answer: "900" }
+        ]
+    },
+    { // Nivel 15
+        title: "Objetos en Acción (Métodos de Clase)",
+        lesson: [
+            {
+                title: "Clases con acciones: los Métodos",
+                content: `<p>En el nivel anterior, las Clases solo guardaban datos (atributos). Ahora les añadiremos <strong>acciones</strong>: funciones que viven dentro de la clase y que operan sobre sus propios datos. A estas funciones se les llama <strong>métodos</strong>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Guerrero:
+    def __init__(self, nombre, vida):
+        self.nombre = nombre
+        self.vida = vida
+    
+    def gritar(self):          # Este es un método
+        print(f"{self.nombre}: ¡POR LA GLORIA!")</code></pre></div>
+                <p>Los métodos son funciones normales con una diferencia: el primer parámetro siempre debe ser <code>self</code>.</p>`
+            },
+            {
+                title: "Métodos que modifican los atributos",
+                content: `<p>Los métodos más poderosos son los que cambian los datos internos del objeto usando <code>self</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Jefe:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.hp = 1000
+    
+    def recibir_golpe(self, daño):
+        self.hp -= daño
+        if self.hp <= 0:
+            print(f"{self.nombre} fue derrotado!")
+        else:
+            print(f"{self.nombre} tiene {self.hp} HP restantes.")
+
+boss = Jefe("Dragón Oscuro")
+boss.recibir_golpe(300)   # Dragón Oscuro tiene 700 HP restantes.
+boss.recibir_golpe(800)   # Dragón Oscuro fue derrotado!</code></pre></div>`
+            },
+            {
+                title: "Métodos que devuelven datos",
+                content: `<p>Los métodos también pueden usar <code>return</code> para devolver resultados calculados.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Jugador:
+    def __init__(self, nombre, nivel):
+        self.nombre = nombre
+        self.nivel = nivel
+    
+    def esta_vivo(self):
+        return self.nivel > 0
+    
+    def descripcion(self):
+        return f"Jugador {self.nombre} en nivel {self.nivel}"
+
+p = Jugador("Steven", 15)
+print(p.esta_vivo())      # True
+print(p.descripcion())    # Jugador Steven en nivel 15</code></pre></div>`
+            },
+            {
+                title: "Siempre: el primer parámetro es `self`",
+                content: `<p>Cualquier función dentro de una Clase debe tener <code>self</code> como primer parámetro. Python lo pasará automáticamente cuando llames al método. Tú no lo escribes al llamarlo.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Robot:
+    def __init__(self, modelo):
+        self.modelo = modelo
+    
+    # ❌ Definición mal: falta self
+    # def hablar(texto):
+    #     print(texto)
+    
+    # ✅ Correcto: self primero, luego los parámetros extra
+    def hablar(self, texto):
+        print(f"Robot {self.modelo} dice: {texto}")
+
+r = Robot("R2D2")
+r.hablar("Beep boop!")   # Robot R2D2 dice: Beep boop!</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Olvidar <code>self</code> en el método dará <code>TypeError</code> al llamarlo. Python pasa el objeto automáticamente como primer argumento, y si no hay <code>self</code> para recibirlo, se confunde con los demás parámetros.</p>
+                </div>`
+            },
+            {
+                title: "Ya usabas POO sin saberlo",
+                content: `<p>¿Recuerdas <code>mi_lista.append("dato")</code>, o <code>texto.upper()</code>? El punto (<code>.</code>) antes del método significa que estás llamando una función que pertenece a ese objeto. <code>mi_lista</code> es un objeto de tipo List. <code>texto</code> es un objeto de tipo String. <strong>Todo en Python es un objeto.</strong></p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Esto que ya conoces... ES POO:
+lista = [3, 1, 2]
+lista.sort()          # Llamando el método .sort() del objeto lista
+print(lista)          # [1, 2, 3]
+
+texto = "hola"
+print(texto.upper())  # Llamando el método .upper() del objeto texto</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué diferencia un método de un atributo en una Clase?", options: ["El método es una variable, el atributo es una función", "El atributo guarda datos, el método es una acción/función", "Son lo mismo", "Los métodos no usan self"], answer: "El atributo guarda datos, el método es una acción/función" },
+            { type: "multiple-choice", question: "Encuentra el error: `class T: / def test(x): print('hola')`", options: ["print falla", "Falta la indentación", "El primer parámetro debe ser `self`, no `x`", "No hay error"], answer: "El primer parámetro debe ser `self`, no `x`" },
+            { type: "multiple-choice", question: "Dado: `class A: / def run(self): print('corro') / x = A() / x.run()`", options: ["Error grave", "Nada", "corro", "self"], answer: "corro" },
+            { type: "multiple-choice", question: "¿Por qué `mi_lista.append()` es un ejemplo de POO?", options: ["No lo es", "append() es un método del objeto lista", "Crea una clase nueva", "Modifica Python internamente"], answer: "append() es un método del objeto lista" },
+            { type: "multiple-choice", question: "Encuentra el error: `class P: / def _(self): self.n = 10 / def s(): print(n)`", options: ["s() no tiene self y usa n en vez de self.n", "El nombre _  es inválido", "self.n no existe", "No hay error"], answer: "s() no tiene self y usa n en vez de self.n" },
+            { type: "multiple-choice", question: "Dado: `class Bot: / def p(self, dmg): print(dmg * 2) / z = Bot() / z.p(5)` ¿Qué imprime?", options: ["5", "10", "dmg", "Error"], answer: "10" },
+            { type: "multiple-choice", question: "¿Puede un método llamar a otro método de la misma clase?", options: ["No, daría recursión infinita", "Sí, usando self.otro_metodo()", "Solo si son estáticos", "Solo fuera de la clase"], answer: "Sí, usando self.otro_metodo()" },
+            { type: "multiple-choice", question: "Dado: `class Dog: / def bark(self): return 'Guau' / def do(self): return self.bark() / p = Dog() / print(p.do())`", options: ["None", "Guau", "do()", "Error: bark no es función"], answer: "Guau" },
+            { type: "multiple-choice", question: "¿Es obligatorio el `__init__` en toda Clase?", options: ["Sí siempre", "No, Python pone uno vacío si falta", "Solo en Python 2", "Solo si hay parámetros"], answer: "No, Python pone uno vacío si falta" },
+            { type: "multiple-choice", question: "¿Qué tipo de objeto es una Lista en Python internamente?", options: ["Una variable especial", "Un objeto de la clase `list` con sus métodos", "Un archivo binario", "Un módulo importado"], answer: "Un objeto de la clase `list` con sus métodos" }
+        ]
+    },
+{ // Nivel 16
+        title: "Heredando Superpoderes (Herencia POO)",
+        lesson: [
+            {
+                title: "El problema de repetir código en Clases",
+                content: `<p>Tienes una clase <code>Guerrero</code> y quieres crear <code>Mago</code> y <code>Arquero</code>. Los tres tienen nombre, vida y nivel. ¿Vas a copiar esas propiedades en los tres? Si luego cambias algo común, tendrás que actualizarlo en 3 lugares.</p>
+                <p>La <strong>Herencia</strong> permite que una clase "Hija" tome todo lo que tiene su clase "Padre", y solo aggregrás lo que sea único de esa clase hija.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># El Padre: contiene lo COMÚN a todos los personajes
+class Personaje:
+    def __init__(self, nombre, vida):
+        self.nombre = nombre
+        self.vida = vida
+    
+    def presentarse(self):
+        print(f"Soy {self.nombre} con {self.vida} HP.")</code></pre></div>`
+            },
+            {
+                title: "Creando Hijos con herencia",
+                content: `<p>Para heredar, pones el nombre del Padre entre paréntesis al definir la clase Hija. La clase Hija automáticamente tendrá todos los métodos y atributos del Padre.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Guerrero(Personaje):    # Hereda de Personaje
+    def atacar(self):
+        print(f"{self.nombre} ataca con espada!")
+
+class Mago(Personaje):        # Hereda de Personaje
+    def lanzar_hechizo(self):
+        print(f"{self.nombre} lanza ¡BOLA DE FUEGO!")
+
+# Ambos usan el __init__ y presentarse() del Padre:
+g = Guerrero("Ana", 200)
+g.presentarse()    # Soy Ana con 200 HP.
+g.atacar()         # Ana ataca con espada!
+
+m = Mago("Luis", 120)
+m.lanzar_hechizo() # Luis lanza ¡BOLA DE FUEGO!</code></pre></div>`
+            },
+            {
+                title: "Sobrescribir métodos del Padre",
+                content: `<p>Si la clase Hija define un método con el mismo nombre que el Padre, el método del Hijo <strong>gana</strong> y reemplaza al del padre para esa clase.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Animal:
+    def hablar(self):
+        print("...")
+
+class Perro(Animal):
+    def hablar(self):         # Sobrescribe al padre
+        print("¡Guau!")
+
+class Gato(Animal):
+    def hablar(self):         # Sobrescribe al padre
+        print("¡Miau!")
+
+perro = Perro()
+gato  = Gato()
+perro.hablar()  # ¡Guau!
+gato.hablar()   # ¡Miau!</code></pre></div>`
+            },
+            {
+                title: "super(): llamar al Padre desde el Hijo",
+                content: `<p>A veces el Hijo quiere <strong>agregar</strong> funcionalidad al constructor del Padre sin reemplazarlo todo. <code>super()</code> te deja llamar al <code>__init__</code> del Padre desde el Hijo.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Personaje:
+    def __init__(self, nombre, vida):
+        self.nombre = nombre
+        self.vida = vida
+
+class Paladin(Personaje):
+    def __init__(self, nombre, vida, fe):
+        super().__init__(nombre, vida)   # Llama al Padre
+        self.fe = fe                      # Agrega lo suyo
+
+p = Paladin("Sara", 300, 100)
+print(p.nombre, p.vida, p.fe)  # Sara 300 100</code></pre></div>`
+            },
+            {
+                title: "La ventaja real de la herencia",
+                content: `<p>Si tienes 10 tipos de enemigos y todos heredan de <code>Enemigo</code>, y encuentras un bug en el método <code>morir()</code>, lo arreglas en un solo lugar y todos los 10 tipos lo heredan corregido automáticamente.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">class Enemigo:
+    def morir(self):
+        print(f"{self.nombre} fue derrotado. +{self.xp} XP!")
+
+class Goblin(Enemigo):
+    def __init__(self):   self.nombre = "Goblin"; self.xp = 10
+
+class Orco(Enemigo):
+    def __init__(self):   self.nombre = "Orco";   self.xp = 25
+
+class Dragón(Enemigo):
+    def __init__(self):   self.nombre = "Dragón"; self.xp = 500
+
+# Los 3 heredan morir() sin repetir código:
+Goblin().morir()   # Goblin fue derrotado. +10 XP!
+Orco().morir()     # Orco fue derrotado. +25 XP!
+Dragón().morir()   # Dragón fue derrotado. +500 XP!</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Para qué sirve la Herencia en POO?", options: ["Para duplicar clases", "Para que una clase Hija tome el código del Padre sin reescribirlo", "Para hacer variables globales", "Para crear tuplas"], answer: "Para que una clase Hija tome el código del Padre sin reescribirlo" },
+            { type: "multiple-choice", question: "¿Cómo hace la clase H que herede de la clase P?", options: ["class H => P:", "class H(P):", "def H(P):", "H.padre = P"], answer: "class H(P):" },
+            { type: "multiple-choice", question: "Dado: `class A: hp=5 / class B(A): def do(self): return self.hp / z = B() / print(z.do())`", options: ["Error", "B", "A", "5"], answer: "5" },
+            { type: "multiple-choice", question: "Si Gato(Animal) define `hablar()` igual que Animal, ¿cuál se ejecuta al llamar `gato.hablar()`?", options: ["El del Animal", "El del Gato (sobrescribe al padre)", "Ambos", "Error"], answer: "El del Gato (sobrescribe al padre)" },
+            { type: "multiple-choice", question: "Encontrar el error: `class Jefe(Enemigo): pass / e = Jefe() / e.moot()` donde moot() no existe en ninguna clase", options: ["Funciona si Enemigo tiene moot", "AttributeError: moot no existe en ninguna clase", "pass genera error", "Jefe() no puede instanciarse"], answer: "AttributeError: moot no existe en ninguna clase" },
+            { type: "multiple-choice", question: "¿Para qué sirve `super().__init__()`?", options: ["Destruye el objeto padre", "Llama al constructor del Padre desde el Hijo", "Crea una nueva clase", "Sobrescribe todos los métodos"], answer: "Llama al constructor del Padre desde el Hijo" },
+            { type: "multiple-choice", question: "Dado: `class J1(Player): hp = 10 / f = J1() / print(f.hp)`", options: ["10", "Error", "None", "Player"], answer: "10" },
+            { type: "multiple-choice", question: "Si arreglas un bug en el método `correr()` de la clase Padre `Monstruo`, ¿qué clases se benefician?", options: ["Solo Monstruo", "Todas las clases que hereden de Monstruo", "Solo la última clase creada", "Ninguna, primero debes actualizar cada Hijo"], answer: "Todas las clases que hereden de Monstruo" },
+            { type: "multiple-choice", question: "¿Una Clase Hija con solo `pass` en su cuerpo es válida?", options: ["No, debe tener código propio", "Sí, heredará todo del Padre sin agregar nada", "Solo si el Padre también tiene pass", "Da error de indentación"], answer: "Sí, heredará todo del Padre sin agregar nada" },
+            { type: "multiple-choice", question: "Dado: `class V: llantas=4 / class Moto(V): llantas=2 / x = Moto() / print(x.llantas)`", options: ["4", "6", "2", "Error"], answer: "2" }
+        ]
+    },
+    { // Nivel 17
+        title: "Usando Superpoderes Ajenos (Módulos)",
+        lesson: [
+            {
+                title: "¿Para qué reinventar la rueda?",
+                content: `<p>Miles de programadores antes que tú ya resolvieron problemas comunes: generar números aleatorios, acceder a archivos del sistema, calcular raíces cuadradas, conectarse a internet. Ellos empaquetaron ese código en <strong>módulos</strong> que puedes importar gratis.</p>
+                <p>Un módulo es simplemente un archivo Python con funciones y clases listas para usar. Python viene con docenas incluidos, y hay miles más que puedes instalar.</p>`
+            },
+            {
+                title: "Importando con `import`",
+                content: `<p>La palabra <code>import</code> trae todo el módulo a tu archivo. Para usar algo del módulo, escribes <code>nombre_modulo.funcion()</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import random
+import math
+
+# Usando el módulo con el punto:
+dado = random.randint(1, 6)   # Número aleatorio entre 1 y 6
+print("Sacaste un:", dado)
+
+raiz = math.sqrt(16)
+print("Raíz de 16:", raiz)    # 4.0</code></pre></div>`
+            },
+            {
+                title: "Importar solo lo que necesitas: `from`",
+                content: `<p>Si solo necesitas una función específica, puedes importarla directamente con <code>from ... import ...</code>. Así no tienes que escribir el nombre del módulo cada vez.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">from math import sqrt, pi
+from time import sleep
+
+# Ahora puedes usarlas directamente:
+print(sqrt(25))    # 5.0
+print(pi)          # 3.14159...
+
+print("Cargando...")
+sleep(2)           # Pausa 2 segundos
+print("¡Listo!")</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Error Común:</strong>
+                    <p class="text-sm">Si haces <code>import time</code> y luego llamas <code>sleep(2)</code> directamente, Python dirá que <code>sleep</code> no existe. Tienes que usar <code>time.sleep(2)</code> o cambiar a <code>from time import sleep</code>.</p>
+                </div>`
+            },
+            {
+                title: "Apodos con `as`",
+                content: `<p>Si el nombre del módulo es largo o quieres abreviarlo para escribir menos, usa <code>as</code> para darle un apodo.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">import random as rng
+import math   as m
+
+# Ahora usas el apodo:
+print(rng.randint(1, 100))
+print(m.sqrt(9))              # 3.0</code></pre></div>`
+            },
+            {
+                title: "Tus propios módulos: conectar archivos",
+                content: `<p>Si tienes un archivo <code>utils.py</code> con funciones que creaste, puedes importarlo en otro archivo, exactamente igual que con los módulos de Python. Así organizas proyectos grandes separando el código en archivos.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># utils.py (tu archivo de funciones)
+def calcular_nivel(xp):
+    return xp // 100
+
+# juego.py (el archivo principal)
+import utils
+
+xp_jugador = 550
+nivel = utils.calcular_nivel(xp_jugador)
+print("Nivel:", nivel)   # Nivel: 5</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué hace `import random` al inicio del archivo?", options: ["Crea números aleatorios automáticamente", "Trae el módulo random para usar sus funciones", "Borra los datos anteriores", "Instala Python"], answer: "Trae el módulo random para usar sus funciones" },
+            { type: "multiple-choice", question: "Dado: `import math / x = math.sqrt(9) / print(x)` ¿Qué imprime?", options: ["9", "3", "3.0", "sqrt(9)"], answer: "3.0" },
+            { type: "multiple-choice", question: "¿Cómo importas solo `sqrt` del módulo `math`?", options: ["import math.sqrt", "from math import sqrt", "use math.sqrt", "math import sqrt"], answer: "from math import sqrt" },
+            { type: "multiple-choice", question: "Dado: `import time / sleep(1)` ¿Qué error aparece?", options: ["time no existe", "NameError: sleep no definido, debería ser time.sleep(1)", "sleep no es función", "No hay error"], answer: "NameError: sleep no definido, debería ser time.sleep(1)" },
+            { type: "multiple-choice", question: "¿Para qué sirve `import random as rng`?", options: ["Instala un alias permanente", "Le da el apodo 'rng' al módulo para escribir menos", "Crea una copia del módulo", "Exporta el módulo"], answer: "Le da el apodo 'rng' al módulo para escribir menos" },
+            { type: "multiple-choice", question: "Dado: `from time import time / print(type(time()))` ¿Qué tipo devuelve `time()`?", options: ["String", "Integer", "Float (segundos desde 1970)", "None"], answer: "Float (segundos desde 1970)" },
+            { type: "multiple-choice", question: "¿Puedes importar un archivo .py propio como módulo?", options: ["No, solo módulos oficiales", "Sí, igual que cualquier módulo si está en la misma carpeta", "Solo si lo instalas con pip", "Solo funciones, no clases"], answer: "Sí, igual que cualquier módulo si está en la misma carpeta" },
+            { type: "multiple-choice", question: "¿Puedes importar múltiples cosas en una sola línea?", options: ["No, una por línea", "Sí: `from math import sqrt, pi, floor`", "Solo con `import *`", "Máximo dos"], answer: "Sí: `from math import sqrt, pi, floor`" },
+            { type: "multiple-choice", question: "Dado: `import random / a=1 / while a>0: num=random.randint(1,2) / if num==1: break` ¿Qué hace este código?", options: ["Bucle infinito siempre", "Repite hasta que salga un 1 aleatorio, luego para", "Error de sintaxis", "Imprime 1 y 2 alternado"], answer: "Repite hasta que salga un 1 aleatorio, luego para" },
+            { type: "multiple-choice", question: "¿Cuál de estos es un módulo built-in (incluido en Python)?", options: ["numpy", "pygame", "os", "flask"], answer: "os" }
+        ]
+    },
+    { // Nivel 18
+        title: "Guardando Datos Permanentemente (Archivos)",
+        lesson: [
+            {
+                title: "El problema de la memoria volátil",
+                content: `<p>Todo lo que guardas en variables vive en la RAM (memoria del computador). Cuando el programa termina, la RAM se limpia y todo desaparece. Cada vez que reinicias el programa, comienzas desde cero.</p>
+                <p>Para guardar datos permanentemente entre ejecuciones (puntajes, configuraciones, usuarios), necesitas escribirlos en un <strong>archivo en el disco duro</strong>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">puntaje = 1500    # Si el programa termina, este dato muere
+# La próxima vez que corras el programa... vuelve a 0</code></pre></div>`
+            },
+            {
+                title: "Escribir en un archivo",
+                content: `<p>Usamos <code>open()</code> con el modo <code>"w"</code> (write) para crear o sobreescribir un archivo. La forma segura es con <code>with</code>, que cierra el archivo automáticamente al terminar.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">puntaje = 1500
+nombre  = "Steven"
+
+with open("datos.txt", "w") as f:
+    f.write(f"Jugador: {nombre}\n")
+    f.write(f"Puntaje: {puntaje}\n")
+
+print("Datos guardados!")</code></pre></div>
+                <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
+                    <strong class="text-red-400">🚧 Cuidado con "w":</strong>
+                    <p class="text-sm">El modo <code>"w"</code> borra todo el contenido anterior del archivo y empieza desde cero. Si quieres agregar sin borrar, usa el modo <code>"a"</code> (append).</p>
+                </div>`
+            },
+            {
+                title: "Leer un archivo",
+                content: `<p>Para leer el contenido de un archivo, usas el modo <code>"r"</code> (read). Si el archivo no existe, Python lanzará <code>FileNotFoundError</code>.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Leer todo el archivo de una vez:
+with open("datos.txt", "r") as f:
+    contenido = f.read()
+    print(contenido)
+
+# O línea por línea:
+with open("datos.txt", "r") as f:
+    for linea in f:
+        print(linea.strip())  # .strip() elimina el salto de línea extra</code></pre></div>`
+            },
+            {
+                title: "Los modos de apertura",
+                content: `<p>La tabla de modos es sencilla:</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># "r"  → Leer  (el archivo debe existir)
+# "w"  → Escribir (crea el archivo o borra el existente)
+# "a"  → Append: agrega al final sin borrar nada
+# "x"  → Crear  (falla si el archivo ya existe)
+
+# Modo append - útil para registros/logs:
+with open("registro.txt", "a") as f:
+    f.write("Jugador conectado a las 22:00\n")
+    f.write("Puntuación: 4500\n")</code></pre></div>`
+            },
+            {
+                title: "Protegerlo con try/except",
+                content: `<p>Lo profesional es combinar archivos con manejo de errores. Un archivo podría no existir, estar corrupto, o no tener permisos.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">try:
+    with open("puntaje.txt", "r") as f:
+        datos = f.read()
+        print("Puntaje guardado:", datos)
+except FileNotFoundError:
+    print("No hay puntaje guardado aún.")
+    print("Empezando desde cero.")</code></pre></div>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Por qué las variables desaparecen al cerrar el programa?", options: ["Porque Python las borra", "Viven en RAM que se limpia al cerrar", "Es un bug de Python", "Por la indentación"], answer: "Viven en RAM que se limpia al cerrar" },
+            { type: "multiple-choice", question: "¿Cuál es la ventaja de usar `with open()` versus `f = open()`?", options: ["Es más rápido", "Cierra el archivo automáticamente al terminar el bloque", "Permite escribir y leer al mismo tiempo", "Crea el archivo más grande"], answer: "Cierra el archivo automáticamente al terminar el bloque" },
+            { type: "multiple-choice", question: "¿Qué modo usar para LEER un archivo?", options: ["'w'", "'a'", "'r'", "'x'"], answer: "'r'" },
+            { type: "multiple-choice", question: "Si el archivo tenía '123' y lo abres con modo 'w' y escribes 'H', ¿qué queda en el archivo?", options: ["123", "H", "123H", "H123"], answer: "H" },
+            { type: "multiple-choice", question: "¿Qué modo agrega contenido al FINAL sin borrar lo anterior?", options: ["'r'", "'w'", "'a'", "'x'"], answer: "'a'" },
+            { type: "multiple-choice", question: "Dado: `with open('x.txt', 'r') as doc: s = doc.read() / print(s)` ¿Qué hace?", options: ["Escribe en el archivo", "Lee todo el archivo y lo imprime", "Borra el archivo", "Error siempre"], answer: "Lee todo el archivo y lo imprime" },
+            { type: "multiple-choice", question: "¿Qué hace `for linea in f:` cuando f es un archivo abierto?", options: ["Lee el archivo en binario", "Itera línea por línea del archivo", "Busca el texto 'linea'", "Crea una nueva línea"], answer: "Itera línea por línea del archivo" },
+            { type: "multiple-choice", question: "Encuentra el error: `with open('p.txt', 'r') as a: / a.write('OK')`", options: ["No puedes escribir en modo 'r'", "write() necesita dos argumentos", "p.txt no puede existir", "No hay error"], answer: "No puedes escribir en modo 'r'" },
+            { type: "multiple-choice", question: "¿Qué pasa si abres con modo 'w' un archivo que NO existe?", options: ["FileNotFoundError", "Python lo crea automáticamente", "No hace nada", "Requiere permisos de admin"], answer: "Python lo crea automáticamente" },
+            { type: "multiple-choice", question: "¿Qué error lanza abrir con 'r' un archivo que no existe?", options: ["ValueError", "TypeError", "FileNotFoundError", "IOError siempre"], answer: "FileNotFoundError" }
+        ]
+    },
+    { // Nivel 19
+        title: "Pensando como Programador (Algoritmos)",
+        lesson: [
+            {
+                title: "¿Qué es un Algoritmo?",
+                content: `<p>Un algoritmo no es código ni magia de Hollywood. Es simplemente: <strong>una serie de pasos lógicos ordenados para resolver un problema</strong>. Una receta de cocina es un algoritmo. El GPS que calcula la ruta más corta usa algoritmos. Los videojuegos, las redes sociales, todo funciona con algoritmos.</p>
+                <p>La habilidad más importante de un programador no es saber Python: es poder descomponer un problema grande en pasos pequeños y lógicos.</p>`
+            },
+            {
+                title: "Búsqueda Lineal: el método simple",
+                content: `<p>Si tienes una lista de 1000 elementos y buscas el número 500, la búsqueda más simple es revisar uno por uno de principio a fin. Esto es la <strong>Búsqueda Lineal</strong>. Funciona, pero es lenta con listas enormes.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def buscar(lista, objetivo):
+    for i in range(len(lista)):
+        if lista[i] == objetivo:
+            return i    # Devuelve la posición donde lo encontró
+    return -1           # -1 si no está
+
+numeros = [34, 7, 23, 32, 5, 62]
+pos = buscar(numeros, 23)
+print("Encontrado en posición:", pos)  # 2</code></pre></div>`
+            },
+            {
+                title: "Ordenamiento Burbuja: un algoritmo clásico",
+                content: `<p>El algoritmo de burbuja ordena una lista comparando pares de elementos adyacentes e intercambiándolos si están en el orden equivocado, repetidamente hasta que la lista quede ordenada.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def burbuja(lista):
+    n = len(lista)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if lista[j] > lista[j+1]:
+                # Intercambiar
+                lista[j], lista[j+1] = lista[j+1], lista[j]
+
+nums = [64, 34, 25, 12, 22, 11, 90]
+burbuja(nums)
+print(nums)   # [11, 12, 22, 25, 34, 64, 90]</code></pre></div>
+                <p>Python tiene <code>lista.sort()</code> que hace esto más rápido, pero entender el algoritmo detrás te hace mejor programador.</p>`
+            },
+            {
+                title: "Recursividad: funciones que se llaman a sí mismas",
+                content: `<p>Una función recursiva es la que se llama a sí misma. Es otra forma de hacer bucles, pero muy elegante para ciertos problemas. El truco es el <strong>caso base</strong>: la condición que para la recursión. Sin él, es un bucle infinito.</p>
+                <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def factorial(n):
+    if n == 0:          # CASO BASE: para la recursión
+        return 1
+    return n * factorial(n - 1)  # Se llama a sí misma
+
+print(factorial(5))    # 5 × 4 × 3 × 2 × 1 = 120
+print(factorial(0))    # 1</code></pre></div>`
+            },
+            {
+                title: "La mentalidad del programador",
+                content: `<p>La diferencia entre un principiante y un programador no es que uno sabe más comandos. Es que el programador <strong>piensa el algoritmo en papel antes de escribir una sola línea</strong>.</p>
+                <p>Cuando te den un problema, pregúntate:</p>
+                <ul class="ml-5 mt-2 space-y-2 list-disc">
+                    <li>¿Cuál es la entrada? ¿Cuál es la salida esperada?</li>
+                    <li>¿Qué pasos necesito para transformar la entrada en la salida?</li>
+                    <li>¿Hay casos borde? (lista vacía, número negativo, usuario que no escribe nada)</li>
+                    <li>¿Cómo pruebo que funciona?</li>
+                </ul>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "¿Qué es un algoritmo?", options: ["Un lenguaje de programación", "Pasos lógicos ordenados para resolver un problema", "Una función en Python", "Un error de código"], answer: "Pasos lógicos ordenados para resolver un problema" },
+            { type: "multiple-choice", question: "¿Qué hace la Búsqueda Lineal?", options: ["Busca solo en listas ordenadas", "Revisa cada elemento uno por uno hasta encontrarlo", "Divide la lista a la mitad", "Ordena la lista"], answer: "Revisa cada elemento uno por uno hasta encontrarlo" },
+            { type: "multiple-choice", question: "Dado: `l = [1,4,2,3] / l.sort() / print(l)`", options: ["[1,4,2,3]", "[4,3,2,1]", "[1, 2, 3, 4]", "Error"], answer: "[1, 2, 3, 4]" },
+            { type: "multiple-choice", question: "¿Qué es una función recursiva?", options: ["Una función con muchos parámetros", "Una función que se llama a sí misma", "Una función que no tiene return", "Una función importada"], answer: "Una función que se llama a sí misma" },
+            { type: "multiple-choice", question: "Dado: `def c(x): print(x) / if x>0: c(x-1) / c(2)` ¿Qué imprime?", options: ["2", "2 1 0", "2 1", "Error"], answer: "2 1 0" },
+            { type: "multiple-choice", question: "¿Qué pasa si una función recursiva no tiene caso base?", options: ["Funciona igual", "Stack Overflow: la PC agota la memoria de llamadas", "Termina en 100 llamadas", "Python lo detecta y para"], answer: "Stack Overflow: la PC agota la memoria de llamadas" },
+            { type: "multiple-choice", question: "En el algoritmo de burbuja, ¿qué se hace cuando dos elementos adyacentes están en orden incorrecto?", options: ["Se borran", "Se intercambian de posición", "Se suma el menor al mayor", "Se ignoran"], answer: "Se intercambian de posición" },
+            { type: "multiple-choice", question: "¿Cuál es el punto más importante para la recursión?", options: ["Que haya mucha RAM", "El caso base que para la recursión", "Usar variables globales", "Que la función tenga más de 5 líneas"], answer: "El caso base que para la recursión" },
+            { type: "multiple-choice", question: "`factorial(5)` = 5 × 4 × 3 × 2 × 1. ¿Cuánto da?", options: ["25", "15", "100", "120"], answer: "120" },
+            { type: "multiple-choice", question: "¿La habilidad más importante de un programador es...?", options: ["Memorizar todos los comandos", "Escribir código sin errores", "Descomponer problemas en pasos lógicos antes de escribir código", "Programar muy rápido"], answer: "Descomponer problemas en pasos lógicos antes de escribir código" }
+        ]
+    },
+    { // Nivel 20
+        title: "¡Examen Final de Lógica! (Nivel Boss)",
+        lesson: [
+            {
+                title: "Has llegado al final",
+                content: `<p>En 19 niveles recorriste todo el camino: desde crear tu primera variable, hasta construir clases con herencia, manejar errores, trabajar con archivos y entender algoritmos. Eso no es poco.</p>
+                <p>Este nivel final no tiene nueva teoría. Es un <strong>Examen de Boss</strong>: 10 preguntas que mezclan todo lo que aprendiste. Lee con calma, no hay prisa.</p>`
+            },
+            {
+                title: "Lo que dominas ahora",
+                content: `<p>Repasa mentalmente todo lo que ya sabes:</p>
+                <ul class="ml-5 mt-2 space-y-2 list-disc">
+                    <li><strong>Nivel 1-2:</strong> Variables, tipos de datos, operadores matemáticos, input/output</li>
+                    <li><strong>Nivel 3-5:</strong> Condicionales (if/elif/else), bucles while y for, range</li>
+                    <li><strong>Nivel 6-7:</strong> Funciones, parámetros, return, variables locales</li>
+                    <li><strong>Nivel 8-10:</strong> Listas, acceso por índice, diccionarios, recorridos</li>
+                    <li><strong>Nivel 11-12:</strong> Strings avanzados, slicing, f-strings, Sets y Tuplas</li>
+                    <li><strong>Nivel 13:</strong> Manejo de errores, try/except/finally</li>
+                    <li><strong>Nivel 14-16:</strong> Clases, objetos, __init__, métodos, herencia, super()</li>
+                    <li><strong>Nivel 17-19:</strong> Módulos, archivos, algoritmos, recursividad</li>
+                </ul>`
+            },
+            {
+                title: "Consejo para el Quiz Final",
+                content: `<p>Las preguntas finales son de <strong>deducción de lógica</strong>: te muestran código y tienes que predecir qué hace sin ejecutarlo. El truco es:</p>
+                <ol class="ml-5 mt-2 space-y-2 list-decimal">
+                    <li>Lee de arriba hacia abajo, línea por línea</li>
+                    <li>Simula las variables mentalmente (¿qué valor tiene X en cada paso?)</li>
+                    <li>Identifica si hay bucles (¿cuántas vueltas da?), funciones (¿devuelve qué?), o errores (¿puede explotar?)</li>
+                </ol>`
+            },
+            {
+                title: "¿Y ahora qué sigue?",
+                content: `<p>Terminar este curso no es el final, es el comienzo. Con esta base puedes explorar:</p>
+                <ul class="ml-5 mt-2 space-y-2 list-disc">
+                    <li><strong>Pygame:</strong> Crear videojuegos 2D con Python</li>
+                    <li><strong>Flask/Django:</strong> Crear aplicaciones web</li>
+                    <li><strong>Pandas + Matplotlib:</strong> Análisis de datos</li>
+                    <li><strong>Requests + APIs:</strong> Conectarse a servicios de internet</li>
+                </ul>
+                <p>El lenguaje es solo una herramienta. La lógica que desarrollaste aquí te seguirá a cualquier lenguaje que aprendas después.</p>`
+            },
+            {
+                title: "¡Adelante, programador!",
+                content: `<p>Has invertido tu tiempo y energía en aprender algo real. La mayoría de personas no llega hasta aquí. El hecho de que estés en el Nivel 20 ya dice mucho de ti.</p>
+                <p>Cuando el quiz aparezca, recuerda: no estás adivinando, estás <em>razonando</em>. Confía en lo que aprendiste. 🖤</p>`
+            }
+        ],
+        quiz: [
+            { type: "multiple-choice", question: "Dado: `z=0 / try: z+=5 / x=10/0 / z+=10 / except: z-=1 / print(z)` ¿Qué imprime?", options: ["15", "5", "4", "14"], answer: "4" },
+            { type: "multiple-choice", question: "Dado: `r=['A','B'] / for v in range(len(r)): r[v]='C' / print(r[1])` ¿Qué imprime?", options: ["A", "B", "C", "Error"], answer: "C" },
+            { type: "multiple-choice", question: "Dado: `class H: / def do(self): self.k=10 / hi = H() / print(hi.k)` ¿Qué pasa?", options: ["10", "None", "AttributeError: do() nunca fue llamado, entonces k no existe", "0"], answer: "AttributeError: do() nunca fue llamado, entonces k no existe" },
+            { type: "multiple-choice", question: "Dado: `d = {'w': [1,2,3]} / print(d['w'][-1])` ¿Qué imprime?", options: ["1", "2", "3", "Error"], answer: "3" },
+            { type: "multiple-choice", question: "Dado: `h = 'VerdaderaAcademia' / g = h[:7] / print(g.upper())` ¿Qué imprime?", options: ["VERDADER", "VERDADE", "ACADEMIA", "ERROR"], answer: "VERDADE" },
+            { type: "multiple-choice", question: "Dado: `a=0 / while True: a+=1 / if a==3: break / for k in range(a): print(k)` ¿Qué imprime el for?", options: ["0 1 2 3", "0 1 2", "1 2 3", "0 1"], answer: "0 1 2" },
+            { type: "multiple-choice", question: "Dado: `def c(x): return x*2 / def m(h): return c(h)+1 / print(m(2))` ¿Qué imprime?", options: ["4", "5", "6", "Error"], answer: "5" },
+            { type: "multiple-choice", question: "Dado: `x=(1,2) / y=list(x) / y.append(3) / x=tuple(y) / print(x)` ¿Qué imprime?", options: ["(1, 2)", "(1, 2, 3)", "[1, 2, 3]", "Error: Tupla inmutable"], answer: "(1, 2, 3)" },
+            { type: "multiple-choice", question: "Dado: `s='' / for i in ['A','B']: s+=i*2 / print(s)` ¿Qué imprime?", options: ["AB", "AABB", "ABAB", "Error"], answer: "AABB" },
+            { type: "multiple-choice", question: "Dado: `a={1,2} / b={2,3} / c=a.union(b) / print(c)` ¿Qué imprime?", options: ["{1,2,2,3}", "{2}", "{1,2,3}", "Error"], answer: "{1,2,3}" }
+        ]
+    }
+];
+
+console.log("✅ courseData loaded successfully", courseData.length);
+
+
+
+// --- LÓGICA DE QUIZ MEJORADA ---
+let currentQuizType = "";
+let currentQuizData = {};
+let userAnswers = {};
+let foundErrors = [];
+
+// --- LÓGICA DE LA APLICACIÓN (STRICT FIREBASE) ---
+let currentLevel = 0;
+let resultsScoreV = 0;
+let currentLessonStep = 0;
+let currentQuizQuestion = 0;
+let score = 0;
+let currentPracticeStep = 0;
+let userProgress = { completedLevels: [], quizScores: {} };
+const COURSE_ID = 'python';
+
+
+
+// INIT (Strict)
+document.addEventListener('DOMContentLoaded', async () => {
+    // Dynamic Import to ensure Firebase is loaded before proceeding
+    let firebaseTools;
+    try {
+        firebaseTools = await import('./assets/js/firebase-config.js');
+    } catch(e) {
+        console.error("Critical: Failed to load Firebase.", e);
+        // Intentar continuar sin Firebase en modo offline
+        console.warn('⚠️ Continuando en modo offline (sin sincronización con Firestore)');
+        
+        // Cargar datos desde localStorage
+        const localSession = JSON.parse(localStorage.getItem('currentUser'));
+        if (!localSession || !localSession.id) {
+            console.warn('⚠️ Sesión inválida en Python Course.');
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        // Cargar progreso desde localStorage
+        const savedProgress = localStorage.getItem('pythonCourseProgress');
+        if (savedProgress) {
+            try {
+                userProgress = JSON.parse(savedProgress);
+            } catch (e) {
+                console.error('❌ Error parsing saved progress:', e);
+                userProgress = { completedLevels: [], quizScores: {} };
+            }
+        } else {
+            console.log('🆕 Inicializando progreso Python vacío.');
+            userProgress = { completedLevels: [], quizScores: {} };
+        }
+        
+        // Renderizar interfaz
+        if (window.renderLevelSelection) renderLevelSelection();
+        if (window.showPanel) showPanel('levelSelection');
+        return;
+    }
+    
+    // Extract functions
+    const { showLoading, hideLoading, checkConnection, getUserFromFirestore } = firebaseTools;
+    
+    if (!checkConnection()) return;
+    if (showLoading) showLoading('Sincronizando curso Python...');
+    
+    const localSession = JSON.parse(localStorage.getItem('currentUser'));
+    if (!localSession || !localSession.id) {
+        console.warn('⚠️ Sesión inválida en Python Course.');
+        window.location.href = 'index.html';
+        return;
+    }
+    
+    try {
+        if (getUserFromFirestore) {
+            const firestoreUser = await getUserFromFirestore(localSession.id);
+            if (!firestoreUser) throw new Error('Usuario no encontrado en DB.');
+            
+            // Sync Local State
+            if (firestoreUser.pythonProgress) {
+                userProgress = firestoreUser.pythonProgress;
+                // Defaults
+                if (!userProgress.completedLevels) userProgress.completedLevels = [];
+                if (!userProgress.quizScores) userProgress.quizScores = {};
+            } else {
+                console.log('🆕 Inicializando progreso Python vacío.');
+                userProgress = { completedLevels: [], quizScores: {} };
+            }
+            
+            // Update Session Cache
+            localStorage.setItem('currentUser', JSON.stringify(firestoreUser));
+            localStorage.setItem('pythonCourseProgress', JSON.stringify(userProgress));
+        }
+        
+        // Initial Render
+        if (window.renderLevelSelection) renderLevelSelection();
+        if (window.showPanel) showPanel('levelSelection');
+        
+        
+        
+        if (hideLoading) hideLoading();
+        
+    } catch (e) {
+        console.error('❌ Error Init Python:', e);
+        
+        // Solo redirigir si es un error crítico (no de Pyodide/postMessage)
+        if (e.message && !e.message.includes('postMessage') && !e.message.includes('Pyodide')) {
+            alert('Error cargando curso: ' + e.message);
+            window.location.href = 'menu_inicio.html';
+        } else {
+            console.warn('⚠️ Error no crítico de Pyodide - continuando con la carga del curso');
+            // Intentar renderizar de todos modos
+            if (window.renderLevelSelection) renderLevelSelection();
+            if (window.showPanel) showPanel('levelSelection');
+            if (hideLoading) hideLoading();
+        }
+    }
+});
+
+async function saveProgress() {
+    // 1. Update Global wrapper variable if needed (userProgress IS valid here)
+    // 2. Sync to Firebase
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.id && window.updateCourseProgress) {
+        
+        // Prepare payload
+        const progressPayload = {
+            ...userProgress,
+            lastUpdated: new Date().toISOString()
+        };
+        
+        // Optimistic Cache Update
+        currentUser.pythonProgress = progressPayload;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        // localStorage.setItem('pythonCourseProgress', ...) -> Removed per user request (Strict Firebase)
+        
+        try {
+            await window.updateCourseProgress(currentUser.id, 'pythonProgress', progressPayload);
+            console.log('✅ Python Progress Saved to Firestore');
+        } catch (e) {
+            console.error('❌ Error saving python progress:', e);
+        }
+    }
+}
+
+// Deprecated: updateGlobalUserProgress was legacy local storage sync. 
+// We mapped functionality into saveProgress above. 
+// Keeping empty dummy if called elsewhere, or safely removing.
+function updateGlobalUserProgress() {
+    saveProgress(); 
+}
+
+function markLevelCompleted(levelIndex) {
+    if (!userProgress.completedLevels.includes(levelIndex)) {
+        userProgress.completedLevels.push(levelIndex);
+        saveProgress();
+        showLevelUpNotification();
+    }
+    renderLevelSelection();
+}
+
+function showLevelUpNotification() {
+    const notification = document.createElement('div');
+    notification.id = 'level-up-notification';
+    notification.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50';
+    notification.innerHTML = `
+        <div class="bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl text-center animate-bounce">
+            <div class="text-4xl mb-2">🎉</div>
+            <div class="text-xl font-bold">¡Nivel Completado!</div>
+            <div class="text-lg">+1 Nivel</div>
+        </div>
+    `;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        if (notification.parentNode) notification.parentNode.removeChild(notification);
+    }, 3000);
+}
+
+// ================= LÓGICA DEL TOUR EN LECCIONES =================
+
+
+window.monacoRequireConfigured = false;
+window.originalLessonHTML = ''; // Guardará el contenido original de la lección
+
+function ensureMonacoLoaded(callback) {
+    if (window.monaco) return callback();
+    if (!window.monacoRequireConfigured) {
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        window.monacoRequireConfigured = true;
+    }
+    require(['vs/editor/editor.main'], function() {
+        window.monaco = monaco;
+        if (window.themeManager) window.themeManager.defineCustomThemes();
+        callback();
+    });
+}
+
+const keywordDocs = {
+   "print": { 
+        title: "Comando print()", 
+        desc: "<p>Es la función más fundamental y utilizada de Python. Su propósito exclusivo es expulsar y mostrar información gráfica en la terminal, para que el operador logre leer los resultados generados por el código.</p><p>Puedes imprimir textos, variables e incluso cálculos directamente separados por comas.</p>", 
+        example: "print('¡Hola Academia!')\nprint(5 + 10) # En consola saldrá 15\nprint('Total:', 200)",
+        ref: "Nivel 1" 
+   },
+   "input": { 
+        title: "Comando input()", 
+        desc: "<p>Esta función representa la <strong>Pausa Suprema</strong>. Al activarse, detiene agresivamente el programa e inmoviliza la terminal a la espera de un humano.</p><p>Solo avanzará una vez que el espectador teclee algún texto y presione la tecla <code>ENTER</code>. Recuerda: cualquier tecla que presione el humano <strong>siempre</strong> se registrará pura y llanamente como Texto Crudo (String), nunca números nativos.</p>", 
+        example: "poder = input('Mide tu nivel: ')\n# Si tecleas 9000 será texto '9000'",
+        ref: "Nivel 1" 
+   },
+   "if": { 
+        title: "Bloque if (Si...)", 
+        desc: "<p>Es el guardia de seguridad central. Significa 'Solamente si pasa esto...'. Evalúa matemáticamente o de forma lógica una condición inmediata.</p><p>Si el sistema aprueba (sale <code>True</code>), las siguientes líneas indentadas (tabuladas) se ejecutarán obedientemente.</p>", 
+        example: "if energia < 20:\n    print('Tu batería se agota')",
+        ref: "Nivel 3" 
+   },
+   "elif": { 
+        title: "Bloque elif (Sino, si...)", 
+        desc: "<p>Es un <code>if</code> secundario o de repuesto. Se ejecuta únicamente si el <code>if</code> o los <code>elif</code> situados arriba fallaron. Sirve para enlazar inmensas cadenas lógicas y atrapar un bloque específico uno detrás del otro.</p>", 
+        example: "if color == 'Rojo':\n    print('Peligro')\nelif color == 'Amarillo':\n    print('Precaución')\nelse:\n    print('Siga')",
+        ref: "Nivel 3" 
+   },
+   "else": { 
+        title: "Bloque else (De lo contrario...)", 
+        desc: "<p>El plan final de respaldo o la red de seguridad del código. El bloque <code>else</code> captura literalmente todo caso paralelo que rebotó de los <code>if</code>. Por naturaleza, <strong>jamás admite</strong> condiciones escritas frente a él.</p>", 
+        example: "if edad >= 18:\n    print('Acceso Total')\nelse:\n    print('Acceso Denegado')",
+        ref: "Nivel 3" 
+   },
+   "while": { 
+        title: "Estructura while (Mientras...)", 
+        desc: "<p>Un espiral cósmico o <strong>bucle de condición</strong> indefinido. Repetirá la secuencia una, y otra, y otra vez, hasta que milagrosamente la condición que evalúa termine convertida en Falsa.</p><p>¡Si olvidas cambiar la variable que le das como tope, el bucle será infinito y tu computadora morirá del pánico colapsando!</p>", 
+        example: "ciclos = 3\nwhile ciclos > 0:\n    print('Faltan:', ciclos)\n    ciclos = ciclos - 1",
+        ref: "Nivel 4" 
+   },
+   "for": { 
+        title: "Estructura for (Para cada...)", 
+        desc: "<p>El más controlado y elegante de los bucles en el desarrollo diario. A diferencia del inestable <code>while</code>, un ciclo <code>for</code> recorre quirúrgicamente listas completas o textos hasta el final, iterando un objeto y procesándolo uno por uno de forma finita y sin riesgo de cierre mortal continuo.</p>", 
+        example: "for persona in ['Steven', 'Kurumi']:\n    print('Te veo, ' + persona)",
+        ref: "Nivel 5" 
+   },
+   "range": { 
+        title: "Generador range()", 
+        desc: "<p>Un generador aritmético veloz que escupe enormes fábricas de números. Crea una ráfaga secuencial instantánea.</p><p>Suele ir incrustado dentro de los <code>for</code> para enumerar veces específicas y determinar paradas matemáticas.</p>", 
+        example: "for numero in range(3):\n    print(numero) # Arroja 0, 1, 2",
+        ref: "Nivel 5" 
+   },
+   "int": { 
+        title: "Casting int()", 
+        desc: "<p>Significa Integer (Número Entero). Corta radicalmente los textos con números que metes en inputs y decapitada fracciones si le introduces decimales, quedándose únicamente con un número redondo válido en las mates.</p>", 
+        example: "base = int('200') # De Texto a Número\nala = int(10.9) # Termina siendo 10",
+        ref: "Nivel 2" 
+   },
+   "float": { 
+        title: "Casting float()", 
+        desc: "<p>Significa Número de Coma Flotante (Con decimales). Un conversor numérico preciso. Mantiene todo valor intacto para operar matemáticametne con exactitud microscópica, sin cercenar las fracciones.</p>", 
+        example: "peso = float('68.5') # Texto a Decimal matemático",
+        ref: "Nivel 2" 
+   },
+   "str": { 
+        title: "Casting str()", 
+        desc: "<p>Significa String (Cadena de Texto). Permite convertir números vivos o estados lógicos como True o False en simples letras pasivas, inhabilitadas para sumar y diseñadas exclusivamente para poder fundirlas con frases.</p>", 
+        example: "resultado = 500\nprint('Lograste ' + str(resultado))",
+        ref: "Nivel 2" 
+   },
+   "True": { 
+        title: "Booleano True (Verdadero)", 
+        desc: "<p>Absoluta Verdad en el procesador. Indica estado binario positivo. En una comparación, dictamina que el universo lógico ha cumplido tu afirmación.</p>", 
+        example: "es_mayor = True",
+        ref: "Nivel 3" 
+   },
+   "False": { 
+        title: "Booleano False (Falso)", 
+        desc: "<p>Negación bi-estado absoluta. Afirmación que falló miserablemente, o interruptor que está apagado temporalmente.</p>", 
+        example: "vivo = False",
+        ref: "Nivel 3" 
+   }
+};
+
+function restoreLessonContent() {
+    if (window.originalLessonHTML !== '') {
+        const contentDiv = document.getElementById('lesson-content');
+        contentDiv.style.opacity = '0';
+        setTimeout(() => {
+            contentDiv.innerHTML = window.originalLessonHTML;
+            contentDiv.style.opacity = '1';
+            window.originalLessonHTML = ''; // Limpiar estado
+            // Restaurar header
+            document.getElementById('lesson-narrator-title').textContent = 'Teoría y Conceptos';
+            document.getElementById('lesson-narrator-subtitle').textContent = 'Lectura';
+            document.getElementById('lesson-narrator-icon').innerHTML = '<i data-lucide="book-open" class="w-4 h-4"></i>';
+            lucide.createIcons();
+            
+            // Si el Monaco estaba resaltado, limpiamos las decoraciones
+            if (window.tourDecorations) window.tourDecorations.clear();
+        }, 200);
+    }
+}
+
+function showKeywordTooltip(word, posLine) {
+    const doc = keywordDocs[word];
+    if (!doc) return; 
+
+    const contentDiv = document.getElementById('lesson-content');
+    
+    // Guardar original solo la primera vez si no hay estado previo almacenado
+    if (window.originalLessonHTML === '') {
+        window.originalLessonHTML = contentDiv.innerHTML;
+    }
+    
+    // Resaltar suavemente la linea en Monaco (Ayuda visual)
+    if (window.lessonMainMonacoEditor && posLine) {
+        const decorations = [{
+            range: new monaco.Range(posLine, 1, posLine, 1),
+            options: { isWholeLine: true, className: 'bg-accent/30 border-l-4 border-accent' }
+        }];
+        if (!window.tourDecorations) window.tourDecorations = window.lessonMainMonacoEditor.createDecorationsCollection();
+        window.tourDecorations.set(decorations);
+        window.lessonMainMonacoEditor.revealLineInCenter(posLine);
+    }
+
+    // Adaptar Header del Panel
+    document.getElementById('lesson-narrator-title').textContent = 'Diccionario de Comandos';
+    document.getElementById('lesson-narrator-subtitle').textContent = 'Profundizando la información';
+    document.getElementById('lesson-narrator-icon').innerHTML = '<i data-lucide="book" class="w-4 h-4"></i>';
+    
+    // Animar la transición del texto
+    contentDiv.style.opacity = '0';
+    setTimeout(() => {
+        contentDiv.innerHTML = `
+            <div class="mb-4">
+                <button onclick="restoreLessonContent()" class="btn-secondary flex items-center gap-2 mb-6 px-4 py-2 text-sm bg-accent/20 border-accent/40 hover:bg-accent/40 text-accent transition">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Regresar a la Lección General
+                </button>
+            </div>
+            
+            <div class="glass p-6 rounded-xl border border-accent/40 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
+                
+                <h2 class="text-2xl font-bold font-mono text-white mb-4 flex items-center gap-3">
+                    <span class="text-accent">${word}</span> 
+                    <span class="text-xs px-2 py-1 rounded bg-white/10 text-gray-300 font-sans tracking-wide uppercase">Definición</span>
+                </h2>
+                
+                <div class="prose prose-invert prose-p:leading-relaxed text-gray-300 mb-6">
+                    ${doc.desc}
+                </div>
+                
+                <div class="bg-black/40 rounded-lg p-4 font-mono text-sm border-l-4 border-accent shadow-inner">
+                    <p class="text-gray-400 text-xs mb-2 uppercase tracking-wide">Ejemplo Práctico en código:</p>
+                    <pre class="bg-transparent m-0 p-0 overflow-x-auto"><code class="text-blue-300">${doc.example}</code></pre>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-sm font-bold text-gray-400">
+                    <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-accent"></i> Visto originalmente en ${doc.ref}</span>
+                </div>
+            </div>
+        `;
+        contentDiv.style.opacity = '1';
+        lucide.createIcons();
+    }, 200);
+}
+
+// ============== REESCRITURA COMPLETA DEL SISTEMA "TOUR" ==============
+function startLessonTour(tourSteps) { 
+    if (!tourSteps || tourSteps.length === 0) return;
+
+    const contentDiv = document.getElementById('lesson-content');
+    
+    // Guardar original si estamos empezando un tour limpio de cero
+    if (window.originalLessonHTML === '') {
+        window.originalLessonHTML = contentDiv.innerHTML;
+    }
+
+    let currentStep = 0;
+    
+    // Adaptar Header del Panel
+    document.getElementById('lesson-narrator-title').textContent = 'Guía Interactiva Paso a Paso';
+    document.getElementById('lesson-narrator-subtitle').textContent = 'Anatomía del código';
+    document.getElementById('lesson-narrator-icon').innerHTML = '<i data-lucide="microscope" class="w-4 h-4"></i>';
+
+    function renderTourUI(index) {
+        if (index >= tourSteps.length) {
+            restoreLessonContent();
+            return;
+        }
+
+        const step = tourSteps[index];
+
+        // Highlight en Monaco visualmente para anclar la pantalla al código
+        if (window.lessonMainMonacoEditor && step.line) {
+            const decorations = [{
+                range: new monaco.Range(step.line, 1, step.line, 1),
+                options: { isWholeLine: true, className: 'bg-accent/40 border-l-4 border-accent' }
+            }];
+            if (!window.tourDecorations) window.tourDecorations = window.lessonMainMonacoEditor.createDecorationsCollection();
+            window.tourDecorations.set(decorations);
+            window.lessonMainMonacoEditor.revealLineInCenter(step.line);
+        }
+
+        const btnText = index === tourSteps.length - 1 ? "Completar Análisis" : "Siguiente Línea";
+        const iconName = index === tourSteps.length - 1 ? "check-circle" : "arrow-down-circle";
+        
+        contentDiv.style.opacity = '0';
+        setTimeout(() => {
+            contentDiv.innerHTML = `
+                <div class="mb-4 flex flex-wrap gap-3 justify-between items-center">
+                    <button id="tour-back-btn" class="btn-secondary flex items-center gap-2 px-4 py-2 text-sm bg-accent/20 border-accent/40 hover:bg-accent/40 text-accent transition">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Regresar a la Lección
+                    </button>
+                    <span class="text-sm font-mono text-gray-400 bg-black/40 px-3 py-1 rounded-full border border-white/5">Paso ${index + 1} de ${tourSteps.length}</span>
+                </div>
+                
+                <div class="glass p-6 rounded-xl border border-accent/30 bg-black/20 shadow-xl relative mt-4">
+                    <div class="flex items-center gap-3 mb-4 border-b border-white/10 pb-3">
+                        <div class="w-10 h-10 rounded-full bg-accent/20 flex flex-shrink-0 items-center justify-center text-accent">
+                            <i data-lucide="focus" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">${step.title || "Explicando línea " + step.line}</h3>
+                    </div>
+                    
+                    <div class="prose prose-invert prose-p:leading-loose text-gray-200 mb-6 text-md">
+                        ${step.text}
+                    </div>
+                    
+                    <div class="flex justify-end pt-4 mt-2">
+                        <button id="tour-next-btn" class="btn-primary flex items-center gap-2">
+                            ${btnText} <i data-lucide="${iconName}" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-6 text-sm text-gray-500 text-center flex gap-2 items-center justify-center">
+                    <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i> También puedes clickear palabras clave azules en el código para ver el diccionario
+                </div>
+            `;
+            contentDiv.style.opacity = '1';
+            lucide.createIcons();
+
+            document.getElementById('tour-back-btn').onclick = restoreLessonContent;
+            document.getElementById('tour-next-btn').onclick = () => {
+                renderTourUI(index + 1);
+            };
+        }, 150);
+    }
+    
+    renderTourUI(currentStep);
+}
+
+// ================================================================
+
+const panels = { levelSelection: document.getElementById('level-selection-panel'), lesson: document.getElementById('lesson-panel'), quiz: document.getElementById('quiz-panel'), results: document.getElementById('results-panel'), practice: document.getElementById('practice-panel') };
+const savedTheme = localStorage.getItem('theme') || 'dark';
+if (savedTheme === 'light') document.documentElement.classList.remove('dark');
+
+function showPanel(panelName) { 
+    // Filtrar paneles null para evitar errores
+    Object.values(panels).filter(p => p !== null).forEach(p => p.classList.remove('active')); 
+    if(panels[panelName]) panels[panelName].classList.add('active'); 
+    lucide.createIcons(); 
+}
+
+function renderLevelSelection() {
+    const levelGrid = document.getElementById('level-grid');
+    if (!levelGrid) return;
+    
+    levelGrid.innerHTML = '';
+    levelGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.9rem; width: 100%; max-width: 860px; margin-bottom: 2rem;';
+    levelGrid.className = '';
+    
+    if (!userProgress.completedLevels) {
+        userProgress.completedLevels = [];
+    }
+    
+    const totalLevels = courseData.length;
+    const completedCount = userProgress.completedLevels.length;
+    const progressPercent = Math.round((completedCount / totalLevels) * 100);
+    
+    // Actualizar barra de progreso general
+    const progressBar = document.getElementById('overall-progress-bar');
+    const progressText = document.getElementById('overall-progress-text');
+    if (progressBar) progressBar.style.width = progressPercent + '%';
+    if (progressText) progressText.textContent = `${completedCount}/${totalLevels} niveles`;
+    
+    courseData.forEach((level, index) => {
+        const isUnlocked = index === 0 || userProgress.completedLevels.includes(index - 1);
+        const isCompleted = userProgress.completedLevels.includes(index);
+        
+        const levelNode = document.createElement('div');
+        levelNode.className = `level-node ${isUnlocked ? 'unlocked' : 'locked'} ${isCompleted ? 'completed' : ''}`;
+        
+        // Ribbon para niveles completados
+        if (isCompleted) {
+            const ribbon = document.createElement('div');
+            ribbon.className = 'status-ribbon';
+            ribbon.innerText = 'HECHO';
+            levelNode.appendChild(ribbon);
+        }
+        
+        // Icono dinámico brillante
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'node-icon';
+        const iconName = isCompleted ? 'check-circle' : isUnlocked ? 'play-circle' : 'lock';
+        iconDiv.innerHTML = `<i data-lucide="${iconName}"></i>`;
+        levelNode.appendChild(iconDiv);
+        
+        // Información del nivel
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'flex flex-col items-center gap-1';
+        infoDiv.innerHTML = `
+            <span class="node-number">Nivel ${index + 1}</span>
+            <div class="node-title">${level.title}</div>
+        `;
+        levelNode.appendChild(infoDiv);
+        
+        if (isUnlocked) {
+            levelNode.onclick = () => startLevel(index);
+        }
+        
+        levelGrid.appendChild(levelNode);
+    });
+    
+    if (window.lucide) window.lucide.createIcons();
+}
+
+function startLevel(levelIndex) { 
+    currentLevel = levelIndex; 
+    currentLessonStep = 0; 
+    
+    // Mostramos el panel primero para que el layout se asiente
+    showPanel('lesson'); 
+    
+    // Renderizamos la lección con un ligero delay para el Editor Monaco
+    setTimeout(() => {
+        renderLesson(); 
+    }, 50);
+}
+
+function renderLesson() {
+    // 1. Limpiar Monaco Editor previo si existe en el Code Panel
+    if (window.lessonMainMonacoEditor) {
+        window.lessonMainMonacoEditor.dispose();
+        window.lessonMainMonacoEditor = null;
+    }
+
+    const levelData = courseData[currentLevel];
+    const stepData = levelData.lesson[currentLessonStep];
+    
+    document.getElementById('lesson-title').textContent = `Nivel ${currentLevel + 1}: ${stepData.title || 'Lección'}`;
+    
+    const dialogPanel = document.getElementById('lesson-dialog-panel');
+    const codePanel = document.getElementById('lesson-code-panel');
+    const lessonContent = document.getElementById('lesson-content');
+
+    // 2. Animación de salida express
+    dialogPanel.style.opacity = '0';
+    dialogPanel.style.transform = 'translateY(10px)';
+
+    setTimeout(() => {
+        // 3. Evaluar el nuevo formato (Dialogo + Código) vs formato viejo (content)
+        if (stepData.dialogo) {
+            // Formato Nuevo (Nivel 1 reformulado)
+            lessonContent.innerHTML = stepData.dialogo;
+            
+            if (stepData.codigo) {
+                // Hay código para mostrar
+                codePanel.classList.remove('hidden');
+                codePanel.classList.add('flex');
+                dialogPanel.classList.replace('lg:w-full', 'lg:w-1/2');
+                
+                document.getElementById('lesson-code-filename').textContent = stepData.filename || 'ejemplo.py';
+                
+                // Boton tour: mostrar solo si hay tourSteps
+                const tourBtn = document.getElementById('code-tour-btn');
+                if (tourBtn) {
+                    if (stepData.tourSteps && stepData.tourSteps.length > 0) {
+                        tourBtn.classList.add('visible');
+                        tourBtn.onclick = () => startLessonTour(stepData.tourSteps);
+                        if (window.lucide) lucide.createIcons({ nodes: [tourBtn] });
+                    } else {
+                        tourBtn.classList.remove('visible');
+                        tourBtn.onclick = null;
+                    }
+                }
+                
+                // Renderizar Monaco Editor local
+                setTimeout(() => {
+                    const container = document.getElementById('lesson-monaco-container');
+                    if (container) {
+                        ensureMonacoLoaded(() => {
+                            window.lessonMainMonacoEditor = window.monaco.editor.create(container, {
+                                value: stepData.codigo.trim(),
+                                language: 'python',
+                                theme: 'tokyo-night',
+                                readOnly: true,
+                                minimap: { enabled: false },
+                                fontSize: 14,
+                                fontFamily: "'JetBrains Mono', monospace",
+                                scrollBeyondLastLine: false,
+                                padding: { top: 16 }, automaticLayout: true
+                            });
+
+                            // Attach listener interactivo al tocar keywords en cualquier nivel
+                            window.lessonMainMonacoEditor.onMouseDown(function (e) {
+                                if (e.target.type === window.monaco.editor.MouseTargetType.CONTENT_TEXT) {
+                                    var word = window.lessonMainMonacoEditor.getModel().getWordAtPosition(e.target.position);
+                                    if (word) {
+                                        showKeywordTooltip(word.word, e.target.position.lineNumber);
+                                    }
+                                }
+                            });
+
+                            // Autochain del tour o highlighter manual
+                            if (stepData.tourSteps && stepData.tourSteps.length > 0) {
+                                setTimeout(() => {
+                                    startLessonTour(stepData.tourSteps);
+                                }, 300);
+                            } else if (stepData.highlightLines && stepData.highlightLines.length > 0) {
+                                setTimeout(() => {
+                                    const decorations = stepData.highlightLines.map(line => ({
+                                        range: new window.monaco.Range(line, 1, line, 1),
+                                        options: { isWholeLine: true, className: 'bg-blue-500/30 border-l-4 border-blue-500' }
+                                    }));
+                                    window.lessonMainMonacoEditor.deltaDecorations([], decorations);
+                                }, 100);
+                            }
+                        });
+                    }
+                }, 100);
+            } else {
+                // Solo diálogo
+                codePanel.classList.add('hidden');
+                codePanel.classList.remove('flex');
+                dialogPanel.classList.replace('lg:w-1/2', 'lg:w-full');
+            }
+        } else {
+            // Formato Viejo (Fallback para Nivel 2-20)
+            codePanel.classList.add('hidden');
+            codePanel.classList.remove('flex');
+            dialogPanel.classList.replace('lg:w-1/2', 'lg:w-full');
+            
+            lessonContent.innerHTML = stepData.content;
+            
+            // Inicializar bloques viejos
+            setTimeout(() => {
+                initializeCodeBlockMonaco();
+                Prism.highlightAll();
+                
+                const consoles = document.querySelectorAll('#lesson-content [data-code-base64], #lesson-content [data-code]');
+                consoles.forEach(div => {
+                    if (div.dataset.codeBase64) {
+                         createInteractiveConsole(div.dataset.codeBase64, div.id, true);
+                    } else if (div.dataset.code) {
+                        createInteractiveConsole(div.dataset.code, div.id, false);
+                    }
+                });
+            }, 50);
+        }
+
+        // 4. Animación de Entrada
+        dialogPanel.style.opacity = '1';
+        dialogPanel.style.transform = 'translateY(0)';
+
+    }, 150); // Timeout para permitir render reflow
+
+    // 5. Actualizar barra de progreso y botones
+    document.getElementById('lesson-step').textContent = `${currentLessonStep + 1} / ${levelData.lesson.length}`;
+    const progress = ((currentLessonStep + 1) / levelData.lesson.length) * 100;
+    document.getElementById('lesson-progress').style.width = `${progress}%`;
+    
+    document.getElementById('prev-btn').disabled = currentLessonStep === 0;
+    
+    const nextBtn = document.getElementById('next-btn');
+    if (currentLessonStep === levelData.lesson.length - 1) {
+        nextBtn.innerHTML = `Iniciar Quiz <i data-lucide="zap" class="w-4 h-4 ml-2"></i>`;
+    } else {
+        nextBtn.innerHTML = `Siguiente <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>`;
+    }
+    
+    setTimeout(() => {
+        lucide.createIcons();
+        if(window.initializeClickToPlace) initializeClickToPlace();
+    }, 200);
+}
+
+function startQuiz() {
+    currentQuizQuestion = 0;
+    score = 0;
+    renderQuizQuestion();
+    showPanel('quiz');
+    // Bloquear chat durante el quiz
+    document.getElementById('chat-modal').classList.add('hidden');
+    document.getElementById('chat-toggle-btn').style.display = 'none';
+}
+
+function renderQuizQuestion() {
+    const levelData = courseData[currentLevel];
+    const questionData = levelData.quiz[currentQuizQuestion];
+    currentQuizData = questionData;
+    currentQuizType = questionData.type;
+
+    document.getElementById('quiz-level-title').textContent = `Quiz - Nivel ${currentLevel + 1}`;
+    document.getElementById('quiz-progress').textContent = `${currentQuizQuestion + 1}/${levelData.quiz.length}`;
+    document.getElementById('quiz-question').textContent = questionData.question;
+
+    // Actualizar indicador de tipo de pregunta
+    const typeNames = {
+        "multiple-choice": "Selección múltiple",
+    };
+    document.getElementById('quiz-type-indicator').textContent = typeNames[currentQuizType] || "Pregunta";
+
+    // Ocultar todos los contenedores primero
+    document.querySelectorAll('#quiz-content > div').forEach(container => {
+        container.classList.add('hidden');
+    });
+
+    // Limpiar respuestas anteriores
+    userAnswers = {};
+    foundErrors = [];
+    document.getElementById('quiz-feedback').classList.add('hidden');
+
+    // Mostrar el contenedor adecuado según el tipo de pregunta
+    renderMultipleChoice();
+
+
+    // Configurar botones
+    document.getElementById('quiz-hint-btn').onclick = showHint;
+}
+
+function renderMultipleChoice() {
+    const container = document.getElementById('multiple-choice-container');
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+
+    // Crear letras fijas en orden a, b, c, d
+    const letters = ['a', 'b', 'c', 'd'];
+
+    // Barajar las opciones antes de asignarlas a las letras
+    const shuffledOptions = [...currentQuizData.options].sort(() => Math.random() - 0.5);
+
+    // Crear opciones con letras fijas pero contenido aleatorio
+    letters.forEach((letter, index) => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = `${letter}) ${shuffledOptions[index]}`;
+        optionButton.className = 'quiz-option p-4 rounded-lg text-left';
+        optionButton.dataset.answer = shuffledOptions[index];
+        optionButton.dataset.isCorrect = shuffledOptions[index] === currentQuizData.answer ? 'true' : 'false';
+        optionButton.onclick = () => {
+            // Verificar si la respuesta es correcta y actualizar el score
+            if (optionButton.dataset.isCorrect === 'true') {
+                score++;
+            }
+            // Avanzar a la siguiente pregunta
+            currentQuizQuestion++;
+            if (currentQuizQuestion < courseData[currentLevel].quiz.length) {
+                renderQuizQuestion();
+            } else {
+                showResults();
+            }
+        };
+        container.appendChild(optionButton);
+    });
+}
+
+function renderCodeCompletion() {
+    const container = document.getElementById('code-completion-container');
+    container.classList.remove('hidden');
+
+    // Configurar el código con inputs
+    document.getElementById('code-completion-code').innerHTML = currentQuizData.code;
+
+    // Agregar event listeners a los inputs
+    setTimeout(() => {
+        document.querySelectorAll('.code-input').forEach(input => {
+            const inputElement = document.createElement('input');
+            inputElement.type = 'text';
+            inputElement.className = 'code-completion-input';
+            inputElement.dataset.answer = input.dataset.answer;
+            inputElement.addEventListener('input', function() {
+                userAnswers[input.dataset.answer] = this.value;
+            });
+            input.parentNode.replaceChild(inputElement, input);
+        });
+    }, 100);
+}
+
+function renderDragDrop() {
+    const container = document.getElementById('drag-drop-container');
+    container.classList.remove('hidden');
+
+    // Barajar opciones
+    const shuffledOptions = [...currentQuizData.options].sort(() => Math.random() - 0.5);
+
+    // Crear área de opciones
+    const optionsArea = document.createElement('div');
+    optionsArea.className = 'drag-drop-options';
+    optionsArea.innerHTML = '<h4 class="text-sm font-semibold mb-2">Opciones:</h4>';
+
+    shuffledOptions.forEach(option => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'drag-option';
+        optionElement.textContent = option;
+        optionElement.draggable = true;
+        optionElement.addEventListener('dragstart', handleDragStart);
+        optionsArea.appendChild(optionElement);
+    });
+
+    // Crear área de destino
+    const targetsArea = document.createElement('div');
+    targetsArea.className = 'drag-drop-targets';
+    targetsArea.innerHTML = '<h4 class="text-sm font-semibold mb-2">Arrastra aquí en orden:</h4>';
+
+    currentQuizData.correctOrder.forEach(() => {
+        const targetElement = document.createElement('div');
+        targetElement.className = 'drag-target';
+        targetElement.addEventListener('dragover', handleDragOver);
+        targetElement.addEventListener('drop', handleDrop);
+        targetsArea.appendChild(targetElement);
+    });
+
+    // Limpiar y agregar elementos
+    container.innerHTML = '';
+    container.appendChild(optionsArea);
+    container.appendChild(targetsArea);
+}
+
+function handleDragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.textContent);
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/plain');
+    const target = e.target.closest('.drag-target');
+
+    if (target && !target.querySelector('.drag-option')) {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'drag-option';
+        optionElement.textContent = data;
+        optionElement.draggable = false;
+        target.appendChild(optionElement);
+        target.classList.add('occupied');
+
+        // Guardar respuesta
+        const targetIndex = Array.from(target.parentNode.children).indexOf(target);
+        userAnswers[targetIndex] = data;
+    }
+}
+
+function renderMatching() {
+    const container = document.getElementById('matching-container');
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+
+    // Barajar pares
+    const shuffledPairs = [...currentQuizData.pairs].sort(() => Math.random() - 0.5);
+
+    // Crear columnas
+    const conceptsColumn = document.createElement('div');
+    const descriptionsColumn = document.createElement('div');
+
+    conceptsColumn.innerHTML = '<h4 class="text-sm font-semibold mb-2">Conceptos:</h4>';
+    descriptionsColumn.innerHTML = '<h4 class="text-sm font-semibold mb-2">Descripciones:</h4>';
+
+    shuffledPairs.forEach(pair => {
+        const conceptElement = document.createElement('div');
+        conceptElement.className = 'matching-item';
+        conceptElement.textContent = pair.concept;
+        conceptElement.dataset.concept = pair.concept;
+        conceptElement.addEventListener('click', () => selectMatchingItem(conceptElement, 'concept'));
+        conceptsColumn.appendChild(conceptElement);
+
+        const descriptionElement = document.createElement('div');
+        descriptionElement.className = 'matching-item';
+        descriptionElement.textContent = pair.description;
+        descriptionElement.dataset.concept = pair.concept;
+        descriptionElement.addEventListener('click', () => selectMatchingItem(descriptionElement, 'description'));
+        descriptionsColumn.appendChild(descriptionElement);
+    });
+
+    container.appendChild(conceptsColumn);
+    container.appendChild(descriptionsColumn);
+}
+
+let selectedConcept = null;
+let selectedDescription = null;
+
+function selectMatchingItem(element, type) {
+    if (type === 'concept') {
+        // Deseleccionar concepto anterior
+        if (selectedConcept) {
+            selectedConcept.classList.remove('selected');
+        }
+
+        selectedConcept = element;
+        element.classList.add('selected');
+    } else {
+        // Deseleccionar descripción anterior
+        if (selectedDescription) {
+            selectedDescription.classList.remove('selected');
+        }
+
+        selectedDescription = element;
+        element.classList.add('selected');
+    }
+
+    // Si ambos están seleccionados, verificar si coinciden
+    if (selectedConcept && selectedDescription) {
+        if (selectedConcept.dataset.concept === selectedDescription.dataset.concept) {
+            // Coinciden - marcarlos como emparejados
+            selectedConcept.classList.remove('selected');
+            selectedConcept.classList.add('matched');
+            selectedDescription.classList.remove('selected');
+            selectedDescription.classList.add('matched');
+
+            // Guardar emparejamiento
+            userAnswers[selectedConcept.dataset.concept] = true;
+
+            // Resetear selección
+            selectedConcept = null;
+            selectedDescription = null;
+        } else {
+            // No coinciden - quitar selección después de un breve momento
+            setTimeout(() => {
+                selectedConcept.classList.remove('selected');
+                selectedDescription.classList.remove('selected');
+                selectedConcept = null;
+                selectedDescription = null;
+            }, 1000);
+        }
+    }
+}
+
+function renderOrdering() {
+    const container = document.getElementById('ordering-container');
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+
+    // Barajar pasos
+    const shuffledSteps = [...currentQuizData.steps].sort(() => Math.random() - 0.5);
+
+    shuffledSteps.forEach(step => {
+        const stepElement = document.createElement('div');
+        stepElement.className = 'ordering-item';
+        stepElement.draggable = true;
+        stepElement.dataset.step = step;
+
+        const handleElement = document.createElement('div');
+        handleElement.className = 'ordering-handle';
+        handleElement.innerHTML = '<i data-lucide="grip-vertical"></i>';
+
+        stepElement.appendChild(handleElement);
+        stepElement.appendChild(document.createTextNode(step));
+
+        stepElement.addEventListener('dragstart', handleOrderingDragStart);
+        stepElement.addEventListener('dragover', handleOrderingDragOver);
+        stepElement.addEventListener('drop', handleOrderingDrop);
+        stepElement.addEventListener('dragend', handleOrderingDragEnd);
+
+        container.appendChild(stepElement);
+    });
+
+    setTimeout(() => lucide.createIcons(), 100);
+}
+
+let draggedElement = null;
+
+function handleOrderingDragStart(e) {
+    draggedElement = e.target;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.target.outerHTML);
+    e.target.classList.add('dragging');
+}
+
+function handleOrderingDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    const target = e.target.closest('.ordering-item');
+    if (target && target !== draggedElement) {
+        const rect = target.getBoundingClientRect();
+        const next = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
+        container.insertBefore(draggedElement, next ? target.nextSibling : target);
+    }
+}
+
+function handleOrderingDrop(e) {
+    e.preventDefault();
+}
+
+function handleOrderingDragEnd(e) {
+    e.target.classList.remove('dragging');
+
+    // Guardar orden actual
+    userAnswers.order = Array.from(document.querySelectorAll('.ordering-item')).map(item => item.dataset.step);
+}
+
+function renderErrorFinding() {
+    const container = document.getElementById('error-finding-container');
+    container.classList.remove('hidden');
+
+    // Crear contenedor de código con áreas clickeables para errores
+    const codeContainer = document.createElement('div');
+    codeContainer.className = 'error-code';
+
+    // Dividir el código en líneas
+    const lines = currentQuizData.code.split('\n');
+
+    lines.forEach((line, lineIndex) => {
+        const lineElement = document.createElement('div');
+        lineElement.className = 'flex';
+
+        // Número de línea
+        const lineNumber = document.createElement('div');
+        lineNumber.className = 'w-8 text-right pr-2 text-gray-500 select-none';
+        lineNumber.textContent = lineIndex + 1;
+        lineElement.appendChild(lineNumber);
+
+        // Contenido de la línea
+        const lineContent = document.createElement('div');
+        lineContent.className = 'flex-1 relative';
+        lineContent.innerHTML = `<code class="language-python">${line}</code>`;
+
+        // Agregar áreas clickeables para errores en esta línea
+        currentQuizData.errors.forEach(error => {
+            if (error.line === lineIndex + 1) {
+                const errorSpot = document.createElement('div');
+                errorSpot.className = 'error-spot';
+                errorSpot.style.left = `${error.start}ch`;
+                errorSpot.style.width = `${error.end - error.start}ch`;
+                errorSpot.style.height = '1.2em';
+                errorSpot.style.top = '0';
+                errorSpot.dataset.description = error.description;
+                errorSpot.addEventListener('click', () => markErrorFound(errorSpot, error.description));
+                lineContent.appendChild(errorSpot);
+            }
+        });
+
+        lineElement.appendChild(lineContent);
+        codeContainer.appendChild(lineElement);
+    });
+
+    container.innerHTML = '';
+    container.appendChild(codeContainer);
+
+    // Resaltar sintaxis
+    setTimeout(() => Prism.highlightAll(), 100);
+}
+
+function markErrorFound(errorSpot, description) {
+    if (!errorSpot.classList.contains('found')) {
+        errorSpot.classList.add('found');
+        foundErrors.push(description);
+        userAnswers.foundErrors = foundErrors;
+    }
+}
+
+function showHint() {
+    let hint = "";
+
+    switch(currentQuizType) {
+        case "multiple-choice":
+            hint = "Lee cuidadosamente todas las opciones antes de seleccionar una.";
+            break;
+        case "code-completion":
+            hint = "Piensa en qué función o palabra clave falta para que el código funcione correctamente.";
+            break;
+        case "drag-drop":
+            hint = "Recuerda la sintaxis básica de Python para formar sentencias válidas.";
+            break;
+        case "matching":
+            hint = "Haz clic primero en un concepto y luego en su descripción correspondiente.";
+            break;
+        case "ordering":
+            hint = "Piensa en el orden lógico de los pasos para ejecutar un programa Python.";
+            break;
+        case "error-finding":
+            hint = "Busca errores comunes como tipos de datos incorrectos o sintaxis mal formada.";
+            break;
+    }
+
+    alert(hint);
+}
+
+function checkAnswer() {
+    let isCorrect = false;
+    const feedback = document.getElementById('quiz-feedback');
+
+    switch(currentQuizType) {
+        case "multiple-choice":
+            isCorrect = userAnswers.selected === currentQuizData.answer;
+            break;
+        case "code-completion":
+            isCorrect = Object.values(userAnswers).includes(currentQuizData.answer);
+            break;
+        case "drag-drop":
+            const userOrder = Object.values(userAnswers);
+            isCorrect = JSON.stringify(userOrder) === JSON.stringify(currentQuizData.correctOrder);
+            break;
+        case "matching":
+            isCorrect = Object.keys(userAnswers).length === currentQuizData.pairs.length;
+            break;
+        case "ordering":
+            isCorrect = JSON.stringify(userAnswers.order) === JSON.stringify(currentQuizData.correctOrder);
+            break;
+        case "error-finding":
+            isCorrect = foundErrors.length === currentQuizData.errors.length;
+            break;
+    }
+
+    // Mostrar feedback
+    feedback.textContent = isCorrect ?
+        "¡Correcto! " + (currentQuizData.explanation || "Buen trabajo.") :
+        "Incorrecto. " + (currentQuizData.explanation || "Inténtalo de nuevo.");
+    feedback.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+    feedback.classList.remove('hidden');
+
+    // Si es correcto, avanzar después de un breve retraso
+    if (isCorrect) {
+        setTimeout(() => {
+            currentQuizQuestion++;
+            if (currentQuizQuestion < courseData[currentLevel].quiz.length) {
+                renderQuizQuestion();
+            } else {
+                showResults();
+            }
+        }, 2000);
+    }
+}
+
+function showResults() {
+    const totalQuestions = courseData[currentLevel].quiz.length;
+    const passed = score >= (totalQuestions * 0.7);
+    const percentage = Math.round((score / totalQuestions) * 100);
+
+    // Save Score logic
+    if (userProgress.quizScores === undefined) userProgress.quizScores = {};
+    if (userProgress.quizScores[currentLevel] === undefined || score > userProgress.quizScores[currentLevel]) {
+        userProgress.quizScores[currentLevel] = score;
+        saveProgress();
+        // Guardar quizScores para leaderboard
+        saveQuizScore(score, courseData[currentLevel].quiz.length, COURSE_ID, currentLevel + 1);
+        // Mostrar challenge si corresponde
+        checkAndShowChallenge(currentLevel, challengeMap);
+    }
+
+    const resultsTitle = document.getElementById('results-title');
+    const resultsScore = document.getElementById('results-score');
+    const resultsMessage = document.getElementById('results-message');
+    const resultsIcon = document.getElementById('results-icon');
+    const nextLevelBtn = document.getElementById('next-level-btn');
+    const challengeBtn = document.getElementById('code-challenge-btn');
+
+    resultsScore.textContent = `Puntuación: ${score}/${totalQuestions} (${percentage}%)`;
+
+    if (passed) {
+        resultsTitle.textContent = '¡Felicidades!';
+        resultsTitle.style.color = 'var(--green)';
+        resultsMessage.textContent = 'Has aprobado el cuestionario.';
+        resultsIcon.setAttribute('data-lucide', 'award');
+        resultsIcon.style.color = 'var(--green)';
+
+        // La lógica de checkAndShowChallenge en course_system.js se encarga del botón
+        if (!challengeMap[currentLevel]) {
+            challengeBtn.classList.add('hidden');
+            nextLevelBtn.classList.remove('hidden');
+            markLevelCompleted(currentLevel);
+        }
+
+    } else {
+        resultsTitle.textContent = '¡Inténtalo de nuevo!';
+        resultsTitle.style.color = 'var(--red)';
+        resultsMessage.textContent = 'Necesitas al menos 70% para aprobar.';
+        resultsIcon.setAttribute('data-lucide', 'refresh-cw');
+        resultsIcon.style.color = 'var(--red)';
+        nextLevelBtn.classList.add('hidden');
+        challengeBtn.classList.add('hidden');
+    }
+    
+    lucide.createIcons();
+    showPanel('results');
+    
+    // Desbloquear chat después del quiz (Removed)
+    // document.getElementById('chat-toggle-btn').style.display = 'block';
+}
+
+// Event Listeners
+document.getElementById('next-btn').addEventListener('click', () => { 
+    if (currentLessonStep < courseData[currentLevel].lesson.length - 1) { 
+        currentLessonStep++; 
+        renderLesson(); 
+    } else { 
+        startQuiz(); 
+    } 
+});
+
+document.getElementById('prev-btn').addEventListener('click', () => { 
+    if (currentLessonStep > 0) { 
+        currentLessonStep--; 
+        renderLesson(); 
+    } 
+});
+
+document.getElementById('close-lesson-btn').addEventListener('click', () => { 
+    renderLevelSelection(); 
+    showPanel('levelSelection'); 
+});
+
+document.getElementById('retry-lesson-btn').addEventListener('click', () => startLevel(currentLevel));
+
+document.getElementById('next-level-btn').addEventListener('click', () => {
+    if (currentLevel + 1 < courseData.length) {
+        startLevel(currentLevel + 1);
+    } else {
+        renderLevelSelection();
+        showPanel('levelSelection');
+    }
+});
+
+
+
+// Elemento 'close-practice-btn' no existe en el HTML - comentado para evitar error
+// document.getElementById('close-practice-btn').addEventListener('click', () => {
+//     renderLevelSelection();
+//     showPanel('levelSelection');
+// });
+
+// Theme toggle
+document.getElementById('theme-toggle').addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const icon = document.querySelector('#theme-toggle i');
+    icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+    lucide.createIcons();
+});
+
+// Chat functionality removed
+
+
+// Error finding functionality
+function initializeErrorFinding() {
+    // Check if elements exist before adding event listeners
+    const giveUpBtn1 = document.getElementById('give-up-1');
+    const giveUpBtn2 = document.getElementById('give-up-2');
+    
+    if (giveUpBtn1) {
+        giveUpBtn1.addEventListener('click', () => {
+            const solution1 = document.getElementById('solution-1');
+            if (solution1) {
+                solution1.classList.remove('hidden');
+            }
+        });
+    }
+    
+    if (giveUpBtn2) {
+        giveUpBtn2.addEventListener('click', () => {
+            const solution2 = document.getElementById('solution-2');
+            if (solution2) {
+                solution2.classList.remove('hidden');
+            }
+        });
+    }
+}
+
+function getErrorsForBlock(blockId) {
+    const errorMap = {
+        'error-code-1': ['input("Ingresa tu edad: ")', '"Hola {nombre}, tienes {edad} años!"'],
+        'error-code-2': ['input("Primer número: ")', 'input("Segundo número: ")', 'if num1 > num2', 'else num2 > num1:']
+    };
+    return errorMap[blockId] || [];
+}
+
+function checkAllErrorsFound(blockId) {
+    // Track found errors and update counter
+    const errorCounts = {
+        'error-code-1': 2,
+        'error-code-2': 4
+    };
+
+    // In a real implementation, track which errors have been found
+    // For now, just show encouragement
+    setTimeout(() => {
+        alert('¡Bien! Has encontrado un error. Sigue buscando los demás.');
+        updateCommandCounter(blockId);
+    }, 500);
+}
+
+function updateCommandCounter(blockId) {
+    const counterMap = {
+        'error-code-1': 'command-counter-1',
+        'error-code-2': 'command-counter-2'
+    };
+
+    const counterElement = document.getElementById(counterMap[blockId]);
+    if (counterElement) {
+        // Simulate finding errors - in real implementation, track actual found errors
+        const current = parseInt(counterElement.textContent.split(':')[1].split('/')[0]);
+        if (current < parseInt(counterElement.textContent.split('/')[1])) {
+            counterElement.textContent = `Usados: ${current + 1}/${counterElement.textContent.split('/')[1]}`;
+        }
+    }
+}
+
+// Code completion functionality
+function initializeCodeCompletion() {
+    // Initialize click-to-place for fill exercises
+    initializeClickToPlace();
+}
+
+let selectedCommand = null;
+
+function initializeClickToPlace() {
+    // Remove existing event listeners to avoid duplicates
+    document.querySelectorAll('.command-item').forEach(item => {
+        item.removeEventListener('click', handleCommandSelect);
+        item.addEventListener('click', handleCommandSelect);
+    });
+
+    // Make drop zones clickable for placement
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.removeEventListener('click', handleZoneClick);
+        zone.addEventListener('click', handleZoneClick);
+    });
+
+    // Reset buttons - only add if they exist
+    const resetBtn1 = document.getElementById('reset-fill-1');
+    const resetBtn2 = document.getElementById('reset-fill-2');
+    if (resetBtn1) {
+        resetBtn1.removeEventListener('click', () => resetFill(1));
+        resetBtn1.addEventListener('click', () => resetFill(1));
+    }
+    if (resetBtn2) {
+        resetBtn2.removeEventListener('click', () => resetFill(2));
+        resetBtn2.addEventListener('click', () => resetFill(2));
+    }
+}
+
+function handleCommandSelect(e) {
+    // Remove previous selection
+    document.querySelectorAll('.command-item.selected').forEach(item => {
+        item.classList.remove('selected');
+    });
+
+    // Select this command
+    selectedCommand = e.target.dataset.command;
+    e.target.classList.add('selected');
+
+    // Add visual feedback - command follows mouse
+    document.addEventListener('mousemove', followMouse);
+}
+
+function followMouse(e) {
+    if (selectedCommand) {
+        const selectedElement = document.querySelector('.command-item.selected');
+        if (selectedElement) {
+            // Create floating element that follows mouse
+            let floatingElement = document.getElementById('floating-command');
+            if (!floatingElement) {
+                floatingElement = document.createElement('div');
+                floatingElement.id = 'floating-command';
+                floatingElement.className = 'fixed bg-blue-500 text-white px-3 py-1 rounded shadow-lg pointer-events-none z-50';
+                floatingElement.textContent = selectedCommand;
+                document.body.appendChild(floatingElement);
+            }
+            floatingElement.style.left = (e.clientX + 10) + 'px';
+            floatingElement.style.top = (e.clientY + 10) + 'px';
+        }
+    }
+}
+
+function handleZoneClick(e) {
+    if (selectedCommand && !e.currentTarget.dataset.value) {
+        const dropZone = e.currentTarget;
+
+        // Clear previous content
+        dropZone.textContent = '';
+
+        // Add the command
+        const commandSpan = document.createElement('span');
+        commandSpan.textContent = selectedCommand;
+        commandSpan.className = 'bg-blue-500 text-white px-2 py-1 rounded text-sm';
+        dropZone.appendChild(commandSpan);
+
+        // Store the value
+        dropZone.dataset.value = selectedCommand;
+
+        // Hide the selected item
+        const selectedItem = document.querySelector('.command-item.selected');
+        if (selectedItem) {
+            selectedItem.style.display = 'none';
+            selectedItem.classList.remove('selected');
+        }
+
+        // Remove floating element
+        const floatingElement = document.getElementById('floating-command');
+        if (floatingElement) {
+            floatingElement.remove();
+        }
+
+        // Clear selection
+        selectedCommand = null;
+        document.removeEventListener('mousemove', followMouse);
+    }
+}
+
+function resetFill(exerciseNum) {
+    // Reset drop zones
+    document.querySelectorAll(`#practice-content .drop-zone`).forEach(zone => {
+        zone.textContent = '';
+        zone.dataset.value = '';
+        zone.style.backgroundColor = '';
+    });
+
+    // Show all command items
+    document.querySelectorAll('.command-item').forEach(item => {
+        item.style.display = 'inline-block';
+        item.style.opacity = '1';
+    });
+
+    // Reset feedback
+    const feedback = document.getElementById(`fill-feedback-${exerciseNum}`);
+    feedback.innerHTML = '';
+
+    // Reset counter
+    const counterElement = document.getElementById(`command-counter-fill-${exerciseNum}`);
+    if (counterElement) {
+        counterElement.textContent = `Completados: 0/${counterElement.textContent.split('/')[1]}`;
+    }
+}
+
+function checkFill(exerciseNum) {
+    const answers = {
+        1: ['input', 'int', 'input', 'f'],
+        2: ['float', 'input', 'float', 'input', 'f', 'if', 'f', 'elif', 'f', 'else']
+    };
+
+    const correct = answers[exerciseNum];
+    let allCorrect = true;
+    const feedback = document.getElementById(`fill-feedback-${exerciseNum}`);
+
+    // Check drop zones instead of inputs
+    const dropZones = document.querySelectorAll(`#practice-content .drop-zone`);
+    dropZones.forEach((zone, index) => {
+        const value = zone.dataset.value || '';
+        if (value === correct[index]) {
+            zone.style.borderColor = 'green';
+            zone.style.backgroundColor = 'rgba(158, 206, 106, 0.1)';
+        } else {
+            zone.style.borderColor = 'red';
+            zone.style.backgroundColor = 'rgba(247, 118, 142, 0.1)';
+            allCorrect = false;
+        }
+    });
+
+    if (allCorrect) {
+        feedback.innerHTML = '<span style="color: green;">¡Excelente! Todos los huecos están correctos.</span>';
+        updateFillCounter(exerciseNum, true);
+    } else {
+        feedback.innerHTML = '<span style="color: red;">Algunos huecos están incorrectos. Revisa y vuelve a intentar.</span>';
+        updateFillCounter(exerciseNum, false);
+    }
+}
+
+function updateFillCounter(exerciseNum, success) {
+    const counterElement = document.getElementById(`command-counter-fill-${exerciseNum}`);
+    if (counterElement) {
+        const total = parseInt(counterElement.textContent.split('/')[1]);
+        let current = parseInt(counterElement.textContent.split(':')[1].split('/')[0]);
+        if (success && current < total) {
+            current = total; // Mark as completed when all correct
+        }
+        counterElement.textContent = `Completados: ${current}/${total}`;
+    }
+}
+
+// ========================================
+// CONSOLA INTERACTIVA DE PYTHON CON MONACO EDITOR
+// ========================================
+
+let pyodide = null;
+let pyodideReady = false;
+let currentInputResolver = null;
+window.monacoEditors = {}; // Store editor instances
+let monacoRequireConfigured = false;
+
+// Inicializar Pyodide
+async function initPyodide() {
+    if (pyodideReady) return;
+    
+    try {
+        console.log('🐍 Inicializando Pyodide...');
+        pyodide = await loadPyodide({
+            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+        });
+        pyodideReady = true;
+        console.log('✅ Pyodide listo!');
+    } catch (error) {
+        console.error('❌ Error al cargar Pyodide:', error);
+    }
+}
+
+// Crear componente de consola interactiva con Monaco
+function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    let code = codeOrBase64;
+    if (isBase64) {
+        try {
+            code = atob(codeOrBase64);
+        } catch (e) {
+            console.error("Error decoding Base64 code:", e);
+            code = "# Error cargando código base";
+        }
+    }
+
+    const consoleHTML = `
+        <div class="python-interactive-container grid grid-cols-1 lg:grid-cols-2 gap-4 h-[500px]">
+            <!-- Panel de Código (Monaco) -->
+            <div class="code-display-panel flex flex-col h-full border-r border-gray-700/50">
+                <div class="code-display-header flex justify-between items-center p-2 bg-gray-900/50">
+                    <div class="flex items-center gap-2">
+                        <div class="dots flex gap-1">
+                            <span class="dot w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-yellow-500"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-green-500"></span>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 ml-2">main.py</span>
+                    </div>
+                    <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Read Only</span>
+                </div>
+                <!-- Container para Monaco -->
+                <div id="monaco-${containerId}" class="flex-1 w-full min-h-0 overflow-hidden"></div>
+            </div>
+
+            <!-- Panel de Consola -->
+            <div class="console-panel flex flex-col h-full bg-[#1a1b26]">
+                <div class="console-header flex justify-between items-center p-2 border-b border-gray-700/50">
+                    <div class="title flex items-center gap-2 text-gray-300 text-sm font-mono">
+                        <i data-lucide="terminal" class="w-4 h-4"></i>
+                        Terminal
+                    </div>
+                    <div class="console-controls flex gap-2">
+                         <button class="console-btn console-btn-run flex items-center gap-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs transition-colors" onclick="runPythonCode('${containerId}')">
+                            <i data-lucide="play" class="w-3 h-3"></i>
+                            Ejecutar
+                        </button>
+                        <button class="console-btn console-btn-clear p-1 hover:bg-gray-700 rounded text-gray-400 transition-colors" onclick="clearConsole('${containerId}')" title="Limpiar">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="console-output flex-1 p-4 overflow-y-auto font-mono text-sm" id="${containerId}-output">
+                    <div class="console-line info text-gray-500">>>> Esperando ejecución...</div>
+                </div>
+                <div class="console-input-prompt hidden flex items-center p-2 border-t border-gray-700/50 bg-gray-900/30" id="${containerId}-input-prompt">
+                    <span class="text-yellow-500 mr-2 font-mono">>>></span>
+                    <input type="text" class="console-input-field bg-transparent border-none outline-none text-white w-full font-mono text-sm" id="${containerId}-input" placeholder="Escribe aquí..." />
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = consoleHTML;
+    
+    if (window.lucide) lucide.createIcons();
+
+    // Setup input handler
+    const inputField = document.getElementById(`${containerId}-input`);
+    if (inputField) {
+        // Evitar duplicados usando flag en dataset en lugar de clonar
+        if (inputField.dataset.listenerAttached === 'true') {
+            return;
+        }
+        
+        inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const value = inputField.value;
+                console.log(`[Python Console] Input submitted for ${containerId}: "${value}"`);
+                
+                // Usar resolver específico del contenedor
+                if (window.consoleInputResolvers && window.consoleInputResolvers[containerId]) {
+                    window.consoleInputResolvers[containerId](value);
+                    delete window.consoleInputResolvers[containerId];
+                } else {
+                    console.warn(`[Python Console] No resolver found for ${containerId}. Input ignored.`);
+                }
+                
+                inputField.value = '';
+                document.getElementById(`${containerId}-input-prompt`).classList.add('hidden');
+            }
+        });
+        
+        inputField.dataset.listenerAttached = 'true';
+    }
+
+    // Inicializar Monaco Editor
+    if (!monacoRequireConfigured) {
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        monacoRequireConfigured = true;
+    }
+    require(['vs/editor/editor.main'], function() {
+        // Define themes first
+        if (window.themeManager) window.themeManager.defineCustomThemes();
+        
+        const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+        const userTheme = user.preferredTheme || 'vs-dark';
+
+        const editorElement = document.getElementById(`monaco-${containerId}`);
+        if(editorElement) {
+             window.monacoEditors[containerId] = monaco.editor.create(editorElement, {
+                value: code.trim(),
+                language: 'python',
+                theme: userTheme, 
+                automaticLayout: true,
+                minimap: { enabled: true },
+                fontSize: 14,
+                lineNumbers: 'on',
+                renderIndentGuides: true,       
+                guides: { indentation: true }, 
+                scrollBeyondLastLine: false,
+                roundedSelection: true,
+                padding: { top: 10 },
+                readOnly: true, // USER REQUEST: Prevent modification
+                domReadOnly: true // Ensure input is blocked
+            });
+        }
+    });
+}
+
+// Ejecutar código Python desde Monaco
+// Función para inicializar Monaco Editor en bloques de código estáticos (Ejemplos)
+// Convierte los .code-block en editores Monaco con tema Tokyo Night
+let codeBlockMonacoInstances = [];
+let codeBlockCounter = 0;
+
+function initializeCodeBlockMonaco() {
+    if (!window.monaco) return;
+
+    // Obtener todos los bloques de código en la lección actual (los que aún no tienen editor)
+    const codeBlocks = document.querySelectorAll('#lesson-content .code-block:not([data-monaco-initialized])');
+    
+    codeBlocks.forEach((block) => {
+        const codeElement = block.querySelector('pre code');
+        if (!codeElement) return;
+        
+        const codeText = codeElement.textContent || codeElement.innerText;
+        if (!codeText.trim()) return;
+
+        block.setAttribute('data-monaco-initialized', 'true');
+
+        // Detectar lenguaje
+        let language = 'python';
+        if (codeElement.className.includes('language-html')) language = 'html';
+        else if (codeElement.className.includes('language-css')) language = 'css';
+        else if (codeElement.className.includes('language-javascript')) language = 'javascript';
+
+        // Crear ID único
+        const uniqueId = `code-block-monaco-${codeBlockCounter++}`;
+        
+        // Calcular altura basada en líneas
+        const lines = codeText.split('\n').length;
+        const height = Math.min(Math.max(lines * 22 + 20, 100), 500);
+
+        // Limpiar contenedor pero mantener referencia
+        block.innerHTML = '';
+        
+        // Contenedor principal estilizado
+        const container = document.createElement('div');
+        container.className = 'code-block-monaco-wrapper';
+        container.style.cssText = 'border-radius: 12px; overflow: hidden; margin-top: 1rem; border: 1px solid #414868; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+
+        // Header estilo Tokyo Night
+        const header = document.createElement('div');
+        header.className = 'code-block-header';
+        header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: linear-gradient(135deg, #24283b 0%, #1a1b26 100%); border-bottom: 1px solid #414868;';
+        header.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+                <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'python' ? 'example.py' : language === 'html' ? 'index.html' : 'code.' + language}</span>
+            </div>
+            <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
+        `;
+
+        const monacoContainer = document.createElement('div');
+        monacoContainer.id = uniqueId;
+        monacoContainer.style.cssText = `width: 100%; height: ${height}px;`;
+
+        container.appendChild(header);
+        container.appendChild(monacoContainer);
+        block.appendChild(container);
+
+        const editor = monaco.editor.create(monacoContainer, {
+            value: codeText.trim(),
+            language: language,
+            theme: 'tokyo-night',
+            readOnly: true,
+            domReadOnly: true,
+            minimap: { enabled: false },
+            fontSize: 14,
+            fontFamily: "'JetBrains Mono', monospace",
+            lineNumbers: 'on',
+            scrollBeyondLastLine: false,
+            padding: { top: 10, bottom: 10 }
+        });
+
+        codeBlockMonacoInstances.push(editor);
+    });
+}
+
+// Re-inicializar los bloques de código cuando se cambia de paso
+const originalRenderLesson = typeof renderLesson === 'function' ? renderLesson : null;
+if (originalRenderLesson) {
+    window.renderLesson = function() {
+        // Limpiar instancias anteriores para liberar memoria
+        codeBlockMonacoInstances.forEach(editor => {
+            if (editor && typeof editor.dispose === 'function') editor.dispose();
+        });
+        codeBlockMonacoInstances = [];
+        
+        originalRenderLesson.apply(this, arguments);
+        setTimeout(initializeCodeBlockMonaco, 100);
+    };
+}
+
+async function runPythonCode(containerId) {
+    const outputDiv = document.getElementById(`${containerId}-output`);
+    const runBtn = document.querySelector(`#${containerId} .console-btn-run`);
+    
+    if (!outputDiv || !runBtn) return;
+
+    if (!pyodideReady) {
+        outputDiv.innerHTML = '<div class="console-loading"><div class="spinner"></div> Cargando...</div>';
+        runBtn.disabled = true;
+        await initPyodide();
+        runBtn.disabled = false;
+    }
+
+    const editor = window.monacoEditors[containerId];
+    if (!editor) return;
+    const code = editor.getValue();
+
+    outputDiv.innerHTML = '<div class="console-line info">🚀 Ejecutando...</div>';
+
+    try {
+        // Setup output redirect
+        pyodide.globals.set('print_output', (text, is_prompt = false) => {
+            const line = document.createElement('div');
+            line.className = `console-line ${is_prompt ? 'input' : 'output'}`;
+            line.textContent = text;
+            outputDiv.appendChild(line);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        });
+
+        // Setup input resolver
+        pyodide.globals.set('js_get_input', (prompt) => {
+            return getUserInput(containerId, prompt);
+        });
+
+        // Pre-configure Python environment
+        await pyodide.runPythonAsync(`
+import sys
+import builtins
+
+class CustomStdout:
+    def write(self, text):
+        if text.strip(): print_output(text)
+    def flush(self): pass
+
+sys.stdout = CustomStdout()
+sys.stderr = CustomStdout()
+
+async def async_input(prompt=''):
+    if prompt: print_output(prompt, True)
+    return await js_get_input(prompt)
+
+builtins.input = async_input
+        `);
+
+        // Transform user code to be async-safe
+        // We wrap it in a function if it contains 'input' to allow top-level await behavior
+        await pyodide.runPythonAsync(code.replace(/\binput\s*\(/g, 'await input('));
+        
+        const doneLine = document.createElement('div');
+        doneLine.className = 'console-line info';
+        doneLine.textContent = '✅ Ejecución completada';
+        outputDiv.appendChild(doneLine);
+
+    } catch (error) {
+        const errorLine = document.createElement('div');
+        errorLine.className = 'console-line error';
+        errorLine.textContent = `❌ Error: ${error.message}`;
+        outputDiv.appendChild(errorLine);
+    }
+    outputDiv.scrollTop = outputDiv.scrollHeight;
+}
+
+// Obtener input del usuario
+window.consoleInputResolvers = window.consoleInputResolvers || {};
+
+function getUserInput(containerId, prompt) {
+    return new Promise((resolve) => {
+        const inputPrompt = document.getElementById(`${containerId}-input-prompt`);
+        const inputField = document.getElementById(`${containerId}-input`);
+        
+        if (!inputPrompt || !inputField) {
+            resolve('');
+            return;
+        }
+
+        inputPrompt.classList.remove('hidden');
+        inputPrompt.style.display = 'flex';
+        
+        setTimeout(() => {
+            inputField.focus();
+            const outputDiv = document.getElementById(`${containerId}-output`);
+            if (outputDiv) outputDiv.scrollTop = outputDiv.scrollHeight;
+        }, 50);
+        
+        window.consoleInputResolvers[containerId] = resolve;
+    });
+}
+
+// Fin de la lógica de Monaco y Python
+
+
+</script>
