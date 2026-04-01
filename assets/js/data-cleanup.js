@@ -1,5 +1,5 @@
 export function purgeLocalStorage() {
-    console.log('🔥 EJECUTANDO LIMPIEZA AGRESIVA DE LOCALSTORAGE...');
+    console.log(' EJECUTANDO LIMPIEZA AGRESIVA DE LOCALSTORAGE...');
     
     // Lista blanca de keys que NO debemos borrar (configuración de UI)
     const whitelist = ['theme']; 
@@ -19,7 +19,7 @@ export function purgeLocalStorage() {
         }
     });
     
-    console.log(`✅ Limpieza completada. ${count} elementos eliminados.`);
+    console.log(` Limpieza completada. ${count} elementos eliminados.`);
     
     // Opcional: Si queremos forzar un reload limpio si se detectó basura crítica
     // window.location.reload(); 

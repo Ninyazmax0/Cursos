@@ -294,7 +294,7 @@
                 </div>
 
                 <div class="mt-8 text-center md:text-left text-xs text-gray-600">
-                    <p>&copy; 2025 Status Code 418. Hecho con ❤️ y mucha cafeína.</p>
+                    <p>&copy; 2025 Status Code 418. Hecho con  y mucha cafeína.</p>
                 </div>
             </div>
 
@@ -485,10 +485,10 @@
         // This ensures Steven and Amelia are always in the database
         initializePredefinedProfiles()
             .then(() => {
-                console.log('✅ Perfiles de fundadores verificados');
+                console.log(' Perfiles de fundadores verificados');
             })
             .catch(err => {
-                console.warn('⚠️ Error iniciando perfiles:', err);
+                console.warn(' Error iniciando perfiles:', err);
                 // Check specifically for permission errors
                 if (err.code === 'permission-denied' || (err.message && err.message.includes('Missing or insufficient permissions'))) {
                     showGlobalToast(
@@ -641,7 +641,8 @@
                         completedLevels: [],
                         achievements: [],
                         // Initialize empty progress containers for strict mode
-                        webProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
+                        introProgress: { unlockedLevel: 1, completedLevels: [], quizScores: {} },
+                            webProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
                         pythonProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
                         rubyProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },
                         databaseProgress: { completedLevels: [], unlockedLevel: 1, quizScores: {} },

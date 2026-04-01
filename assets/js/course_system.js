@@ -1,5 +1,5 @@
 // ==========================================
-// SISTEMA DE QUIZSCORES
+// SISTEMA DE QUIZSCORES & NEXT LEVEL
 // Sistema Universal para todos los cursos
 // ==========================================
 
@@ -17,44 +17,86 @@ async function saveQuizScore(score, total, courseId, levelNumber) {
         date: new Date().toISOString()
     };
 
-    // Intentar usar las funciones globales de Firebase si están disponibles
     if (window.getUserFromFirestore && window.updateCourseProgress) {
         try {
             const userDoc = await window.getUserFromFirestore(currentUser.id);
             let history = userDoc.quizHistory || [];
             history.push(newEntry);
             await window.updateCourseProgress(currentUser.id, 'quizHistory', history);
-            console.log(`✅ Quiz Score saved for ${courseId} Lvl ${levelNumber}`);
+            console.log(` Quiz Score saved for ${courseId} Lvl ${levelNumber}`);
         } catch (e) {
-            console.error('❌ Error saving quiz history:', e);
+            console.error(' Error saving quiz history:', e);
         }
     }
 }
 
-// Mostrar botón de challenge si corresponde
-function showChallengeButton(challenge, resultsMessageElement) {
+// ===== BOTÓN SIGUIENTE NIVEL =====
+// Muestra el botón "Siguiente Nivel" en el panel de resultados
+function showNextLevelButton(currentLevelIndex) {
+    // Ocultar el botón de challenge (ya no existe)
     const challengeBtn = document.getElementById('code-challenge-btn');
+    if (challengeBtn) challengeBtn.style.display = 'none';
+    
     const nextBtn = document.getElementById('next-level-btn');
-    if (challengeBtn) {
-        challengeBtn.classList.remove('hidden');
-        challengeBtn.onclick = () => {
-            window.location.href = challenge.url;
+    if (!nextBtn) return;
+
+    // Verificar si existe un nivel siguiente
+    const totalLevels = window.courseData ? window.courseData.length : 20;
+    if (currentLevelIndex < totalLevels - 1) {
+        nextBtn.classList.remove('hidden');
+        nextBtn.style.display = 'flex';
+        nextBtn.innerHTML = `Nivel ${currentLevelIndex + 2} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        nextBtn.onclick = () => {
+            if (window.startLevel) {
+                window.startLevel(currentLevelIndex + 1);
+            } else {
+                if (window.showPanel) window.showPanel('levelSelection');
+            }
         };
-        if (nextBtn) nextBtn.classList.add('hidden');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     } else {
-        resultsMessageElement.insertAdjacentElement('afterend', challengeBtn);
+        // Último nivel - mensaje especial
+        nextBtn.classList.remove('hidden');
+        nextBtn.style.display = 'flex';
+        nextBtn.innerHTML = ` ¡Curso Completado! <i data-lucide="check-circle" class="w-4 h-4"></i>`;
+        nextBtn.onclick = () => { if (window.showPanel) window.showPanel('levelSelection'); };
+        nextBtn.classList.remove('btn-primary');
+        nextBtn.classList.add('btn-success');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        
+        // Disparar logro de curso maestro al ver este boton 
+        try {
+            if (window.COURSE_ID) {
+                import('./achievements.js').then(m => {
+                    if (window.COURSE_ID === 'python') m.checkAchievement('python_master');
+                    if (window.COURSE_ID === 'ruby') m.checkAchievement('ruby_master');
+                    if (window.COURSE_ID === 'web') m.checkAchievement('web_master');
+                    if (window.COURSE_ID === 'database') m.checkAchievement('db_master');
+                });
+            }
+        } catch(e){}
     }
-
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-// Verificar y mostrar challenge si corresponde
-function checkAndShowChallenge(levelIndex, challengeMap) {
-    const challenge = challengeMap[levelIndex];
-    if (challenge) {
-        const resultsMessage = document.getElementById('results-message');
-        if (resultsMessage) {
-            showChallengeButton(challenge, resultsMessage);
+    
+    // Logro de medio camino
+    try {
+        if (currentLevelIndex === 9) {
+            import('./achievements.js').then(m => m.checkAchievement('half_way'));
         }
-    }
+    } catch(e){}
 }
+
+// Global Achievement hook for Quiz Genius (10/10)
+window.tryAwardQuizGenius = async function() {
+    try {
+        const m = await import('./achievements.js');
+        m.checkAchievement('quiz_genius');
+    } catch(e){}
+};
+
+// Global achievement hook for Sanbox
+window.tryAwardSandboxExplorer = async function() {
+    try {
+        const m = await import('./achievements.js');
+        m.checkAchievement('sandbox_explorer');
+    } catch(e){}
+};

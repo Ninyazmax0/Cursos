@@ -246,7 +246,7 @@
                 <!-- Gemini AI Agent -->
                 <div class="admin-card ring-1 ring-purple-500/20 relative overflow-hidden">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2" style="color: #bb9af7;">
-                        <span>🤖</span> Gemini Oracle (Daily Challenge)
+                        <span></span> Gemini Oracle (Daily Challenge)
                     </h3>
                     <div class="space-y-4 mb-6">
                         <div>
@@ -271,7 +271,7 @@
                              </div>
                              <div class="w-1/2 flex items-end">
                                  <button id="btn-generate-daily" class="w-full bg-purple-500/10 hover:bg-purple-500 hover:text-white border border-purple-500 text-purple-500 font-bold py-3 rounded transition-all duration-300">
-                                     ✨ Generate
+                                      Generate
                                  </button>
                              </div>
                         </div>
@@ -303,7 +303,7 @@
 
                 <!-- ZONA DE PELIGRO -->
                 <div class="admin-card" style="border: 1px solid var(--red);">
-                    <h3 class="text-xl font-bold mb-4" style="color: var(--red);">⚠️ Zona de Peligro</h3>
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--red);"> Zona de Peligro</h3>
                     <p class="text-sm text-gray-400 mb-4">Acciones destructivas e irreversibles.</p>
                     <button id="purge-users-btn" class="btn-action w-full" style="background-color: var(--red);">
                         <i data-lucide="trash-2" class="w-4 h-4 inline mr-2"></i> PURGAR TODO (Menos Owners)
@@ -451,7 +451,7 @@
                         <div class="admin-card">
                             <div class="flex items-center gap-2 mb-3">
                                 <input type="checkbox" id="course-ruby" class="course-checkbox w-4 h-4" checked>
-                                <label for="course-ruby" class="font-bold" style="color: var(--red);">💎 Ruby</label>
+                                <label for="course-ruby" class="font-bold" style="color: var(--red);"> Ruby</label>
                             </div>
                             <div class="flex items-center gap-2">
                                 <label class="text-sm">Nivel:</label>
@@ -1268,7 +1268,7 @@
                      if (rubyChecked) updatedCourses.push(`Ruby (${document.getElementById('level-ruby').value})`);
                      if (databaseChecked) updatedCourses.push(`Database (${document.getElementById('level-database').value})`);
 
-                     alert(`✅ Niveles actualizados exitosamente:\n${updatedCourses.join('\n')}`);
+                     alert(` Niveles actualizados exitosamente:\n${updatedCourses.join('\n')}`);
                      document.getElementById('level-select-modal').classList.add('hidden');
                  } catch(e) {
                      alert('Error al guardar: ' + e.message);
@@ -1319,7 +1319,7 @@
         if (purgeBtn) {
             purgeBtn.addEventListener('click', async () => {
                 // Doble confirmación de seguridad
-                if (!confirm('☠️ ¿ESTÁS SEGURO? \n\nEsto borrará PERMANENTEMENTE a todos los usuarios de la base de datos, EXCEPTO a Steven y Amelia.\n\nEsta acción NO SE PUEDE DESHACER.')) return;
+                if (!confirm(' ¿ESTÁS SEGURO? \n\nEsto borrará PERMANENTEMENTE a todos los usuarios de la base de datos, EXCEPTO a Steven y Amelia.\n\nEsta acción NO SE PUEDE DESHACER.')) return;
                 
                 const code = prompt('Escribe "ELIMINAR" para confirmar:');
                 if (code !== 'ELIMINAR') {
@@ -1340,7 +1340,7 @@
                     return;
                 }
 
-                if(!confirm(`⚠️ ATENCIÓN: Se van a eliminar ${usersToDelete.length} usuarios.\n\nEsto incluye clones o duplicados con nombres repetidos pero IDs diferentes.\n\n¿PROCEDER?`)) return;
+                if(!confirm(` ATENCIÓN: Se van a eliminar ${usersToDelete.length} usuarios.\n\nEsto incluye clones o duplicados con nombres repetidos pero IDs diferentes.\n\n¿PROCEDER?`)) return;
 
                 alert(`Iniciando purga de ${usersToDelete.length} usuarios...`);
 
@@ -1355,7 +1355,7 @@
                             console.log(`🗑️ Eliminado: ${user.name} (ID: ${user.id})`);
                         }
                     } catch (e) {
-                        console.error(`❌ Error eliminando a ${user.name}:`, e);
+                        console.error(` Error eliminando a ${user.name}:`, e);
                         errors++;
                     }
                 }

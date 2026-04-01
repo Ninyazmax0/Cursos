@@ -762,11 +762,11 @@
         // EMOJI DATA
         // ============================================
         const EMOJI_CATEGORIES = {
-            '😀': ['😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊','😋','😎','🥸','😏','😒','😞','😔','😟','😕','🙁','😣','😖','😫','😩','🥺','😢','😭','😤','😠','😡','🤬','😈','👿','💀','☠️','💩','🤡','👹','👺','👻','👽','👾','🤖'],
-            '❤️': ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💞','💓','💗','💖','💘','💝','💟','♥️','🫶','🤝','👍','👎','✌️','🤞','🫰','🤟','🤘','🤙','👋','✋','🙌','👏','🫡'],
-            '🎮': ['🎮','🎲','🧩','🎯','🎪','🎨','🎬','🎤','🎧','🎵','🎶','🎹','🥁','🎸','🎺','🎻','🎭','🏆','🥇','🥈','🥉','⚽','🏀','🏈','⚾','🎾','🏐','🎱','🏓','🏸','🥊'],
+            '😀': ['😀','😁','😂','🤣','😃','😄','😅','😆','','','','','🥸','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''],
+            '': ['','','','','','','','','','','','💕','💞','','','','💘','💝','💟','♥️','🫶','','','','','','🫰','','','','','','','','🫡'],
+            '🎮': ['🎮','🎲','🧩','🎯','🎪','🎨','🎬','🎤','🎧','🎵','🎶','🎹','🥁','🎸','🎺','🎻','🎭','','🥇','🥈','🥉','⚽','🏀','🏈','⚾','🎾','🏐','🎱','🏓','🏸','🥊'],
             '💻': ['💻','🖥️','⌨️','🖱️','🖨️','📱','📲','☎️','📞','📟','📠','🔋','🔌','💡','🔦','🕯️','🧯','🗑️','💾','💿','📀','📁','📂','🗂️','📊','📈','📉','🔑','🔒','🔓','🔐'],
-            '🌟': ['⭐','🌟','✨','💫','🔥','💥','🎉','🎊','🎁','🎀','🎈','🎗️','🏅','🎖️','🎄','🎃','🎆','🎇','🧨','☀️','🌙','⚡','❄️','🌈','🍀','🌸','🌺','🌻','🌹','🌷'],
+            '': ['','','','💫','','💥','🎉','🎊','🎁','🎀','🎈','🎗️','🏅','🎖️','🎄','','🎆','🎇','🧨','☀️','🌙','⚡','❄️','🌈','🍀','🌸','🌺','🌻','🌹','🌷'],
             '🍕': ['🍕','🍔','🍟','🌭','🍿','🧂','🥚','🍞','🥐','🧀','🥩','🍗','🍖','🌮','🌯','🥙','🍝','🍜','🍲','🍛','🍣','🍱','🥟','🍤','🍙','🍘','🍥','🥠','🍦','🍧','🎂','🍰','🧁','🍩','🍪','🍫','🍬','🍭','☕','🍵','🧃','🥤','🧋','🍺','🍻','🥂']
         };
 
@@ -841,14 +841,14 @@
             try {
                 currentUser = await getUserFromFirestore(localSession.id);
                 if (!currentUser) {
-                    alert('Sesión expirada');
+                    showGlobalToast('Sesión expirada', 'Tu sesión ha expirado.', 'error');
                     window.location.href = 'index.html';
                     return;
                 }
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
                 if (!hasReachedLevel5(currentUser)) {
-                    alert('Necesitas nivel 5 en algún curso para usar el chat.');
+                    showGlobalToast('Acceso denegado', 'Necesitas nivel 5 en algún curso para usar el chat.', 'error');
                     window.location.href = 'estudiantes.html';
                     return;
                 }
@@ -861,7 +861,7 @@
 
                 chatWithUser = await getUserFromFirestore(chatWith.id);
                 if (!chatWithUser) {
-                    alert('Usuario no encontrado.');
+                    showGlobalToast('Error', 'Usuario no encontrado.', 'error');
                     window.location.href = 'inbox.html';
                     return;
                 }
@@ -895,7 +895,7 @@
 
             } catch (err) {
                 console.error('Init error:', err);
-                alert('Error cargando el chat.');
+                showGlobalToast('Error', 'Error cargando el chat.', 'error');
             }
         }
 
@@ -1106,13 +1106,13 @@
         async function handleFileUpload(file) {
             // Block videos
             if (file.type.startsWith('video/')) {
-                alert('No se permiten videos en el chat.');
+                showGlobalToast('No permitido', 'No se permiten videos en el chat.', 'error');
                 return;
             }
 
             // Size limit: 2MB
             if (file.size > 2 * 1024 * 1024) {
-                alert('El archivo es muy grande. Máximo 2MB.');
+                showGlobalToast('Archivo muy grande', 'El archivo es muy grande. Máximo 2MB.', 'error');
                 return;
             }
 
@@ -1125,6 +1125,10 @@
                     const { uploadToFirebaseStorage } = await import('./assets/js/firebase-storage.js');
                     fileData = await uploadToFirebaseStorage(file);
                 } else {
+                    if (file.size > 500 * 1024) {
+                        showGlobalToast('Archivo muy grande', 'Los archivos no-imagen no pueden superar 500KB (se guardan en Firestore, límite 1MB).', 'error');
+                        return;
+                    }
                     fileData = await fileToBase64(file);
                 }
 
@@ -1152,7 +1156,7 @@
 
             } catch (err) {
                 console.error('Upload error:', err);
-                alert('Error al subir el archivo.');
+                showGlobalToast('Error', 'Error al subir el archivo.', 'error');
             }
         }
 

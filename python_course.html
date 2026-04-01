@@ -16,6 +16,7 @@
     <script type="module" src="assets/js/firebase-storage.js"></script>
 
     <script src="assets/js/course_system.js"></script>
+    <script src="assets/js/dictionaries.js"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     <!-- Monaco Editor Loader -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
@@ -1271,10 +1272,7 @@
             <div class="flex gap-3 mt-4">
                 <button id="retry-lesson-btn" class="btn-secondary flex items-center gap-2"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> Repetir</button>
                 <button id="next-level-btn" class="btn-primary hidden flex items-center gap-2">Siguiente Nivel <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
-                <a id="code-challenge-btn" href="#" class="btn-primary hidden" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                    <i data-lucide="code"></i> Ir al Desafío
-                </a>
-        </div>
+                </div>
     </div>
 
     <!-- Panel de Práctica -->
@@ -1587,7 +1585,7 @@ const courseData = [
                 title: "Importante: El Peligro de input()",
                 dialogo: `<p>Acá existe un detalle técnico fundamental con los teclados:</p>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
-                    <strong class="text-red-400">🔥 ALERTA INMINENTE:</strong>
+                    <strong class="text-red-400"> ALERTA INMINENTE:</strong>
                     <p class="text-sm">Todo texto o número que ingrese por input() es capturado como puramente Texto crudo (String) y no es posible usarlo para hacer cálculos matemáticos directos. <code>" "</code>.</p>
                 </div>`,
                 codigo: "edad = input(\"Dime tu edad: \")\n" +
@@ -1802,7 +1800,7 @@ const courseData = [
                 title: "El bucle infinito y persistente del While",
                 dialogo: `<p>El término reservado <code>while</code> significa en español "Mientras que". Su poder consiste en ejecutar el bloque interno que indentes MIENTRAS su condición siga regresando <code>True</code>.</p>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
-                    <strong class="text-red-400">🔥 ALERTA INMINENTE:</strong>
+                    <strong class="text-red-400"> ALERTA INMINENTE:</strong>
                     <p class="text-sm">Si dejas un bucle que nunca cambia a falso, tu computadora congelará la pestaña o el software por una eternidad intentando correrlo.</p>
                 </div>`,
                 codigo: "while True:\n" +
@@ -2024,12 +2022,12 @@ def saludar():
 def saludar():
     print("Hola")
 
-saludar()        # ✅ Python ya sabe qué es 'saludar'</code></pre></div>`,
+saludar()        #  Python ya sabe qué es 'saludar'</code></pre></div>`,
                 codigo: `# ESTO FUNCIONA:
 def saludar():
     print("Hola")
 
-saludar()        # ✅ Python ya sabe qué es 'saludar'`,
+saludar()        #  Python ya sabe qué es 'saludar'`,
                 tourSteps: [
                     { text: `Se define la función <code>saludar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 2 },
                     { text: `<code>print()</code> muestra el resultado en la terminal.`, line: 3 }
@@ -2091,14 +2089,14 @@ mostrar_instrucciones()`,
     print("¡Hola,", nombre, "!")
 
 saludar("Steven")    # Imprime: ¡Hola, Steven !
-saludar("Kurumi")    # Imprime: ¡Hola, Kurumi !
+saludar("System")    # Imprime: ¡Hola, System !
 saludar("Luigi")     # Imprime: ¡Hola, Luigi !</code></pre></div>
                 <p>Al llamar la función, el valor que le pases ("Steven") se copia dentro de la variable parámetro (<code>nombre</code>) por ese instante.</p>`,
                 codigo: `def saludar(nombre):         # 'nombre' es el parámetro
     print("¡Hola,", nombre, "!")
 
 saludar("Steven")    # Imprime: ¡Hola, Steven !
-saludar("Kurumi")    # Imprime: ¡Hola, Kurumi !
+saludar("System")    # Imprime: ¡Hola, System !
 saludar("Luigi")     # Imprime: ¡Hola, Luigi !`,
                 tourSteps: [
                     { text: `Se define la función <code>saludar()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
@@ -2157,8 +2155,8 @@ print(verificar(50))   # Imprime: Sigues vivo</code></pre></div>`
     secreto = 999      # Solo existe mientras calcular() corre
     return secreto
 
-print(calcular())      # ✅ Imprime: 999
-print(secreto)         # ❌ Error: 'secreto' no existe aquí afuera</code></pre></div>
+print(calcular())      #  Imprime: 999
+print(secreto)         #  Error: 'secreto' no existe aquí afuera</code></pre></div>
                 <div class="mt-4 p-4 bg-red-900/30 border border-red-500 rounded-lg">
                     <strong class="text-red-400">🚧 Error Común:</strong>
                     <p class="text-sm">Intentar acceder a una variable creada dentro de una función desde afuera. Python lanzará <code>NameError</code>. Si necesitas el valor, usa <code>return</code> para sacarlo.</p>
@@ -2167,8 +2165,8 @@ print(secreto)         # ❌ Error: 'secreto' no existe aquí afuera</code></pre
     secreto = 999      # Solo existe mientras calcular() corre
     return secreto
 
-print(calcular())      # ✅ Imprime: 999
-print(secreto)         # ❌ Error: 'secreto' no existe aquí afuera`,
+print(calcular())      #  Imprime: 999
+print(secreto)         #  Error: 'secreto' no existe aquí afuera`,
                 tourSteps: [
                     { text: `Se define la función <code>calcular()</code>. El bloque indentado que sigue no se ejecuta aún, solo se guarda en memoria.`, line: 1 },
                     { text: `Se asigna un valor a <code>secreto</code>. Esto queda guardado en memoria para usarse después.`, line: 2 },
@@ -2400,26 +2398,26 @@ print("Promedio:", promedio)   # Promedio: 86.6`,
                 <p>Para modificar la lista de verdad, necesitas acceder por índice usando <code>range(len())</code>.</p>
                 <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">precios = [10, 20, 30]
 
-# ❌ Esto NO modifica la lista:
+#  Esto NO modifica la lista:
 for p in precios:
     p = p * 2    # Solo cambia la copia 'p'
 
 print(precios)   # [10, 20, 30] — sin cambios
 
-# ✅ Esto SÍ modifica la lista:
+#  Esto SÍ modifica la lista:
 for i in range(len(precios)):
     precios[i] = precios[i] * 2
 
 print(precios)   # [20, 40, 60]</code></pre></div>`,
                 codigo: `precios = [10, 20, 30]
 
-# ❌ Esto NO modifica la lista:
+#  Esto NO modifica la lista:
 for p in precios:
     p = p * 2    # Solo cambia la copia 'p'
 
 print(precios)   # [10, 20, 30] — sin cambios
 
-# ✅ Esto SÍ modifica la lista:
+#  Esto SÍ modifica la lista:
 for i in range(len(precios)):
     precios[i] = precios[i] * 2
 
@@ -3381,11 +3379,11 @@ print(p.descripcion())    # Jugador Steven en nivel 15`,
     def __init__(self, modelo):
         self.modelo = modelo
     
-    # ❌ Definición mal: falta self
+    #  Definición mal: falta self
     # def hablar(texto):
     #     print(texto)
     
-    # ✅ Correcto: self primero, luego los parámetros extra
+    #  Correcto: self primero, luego los parámetros extra
     def hablar(self, texto):
         print(f"Robot {self.modelo} dice: {texto}")
 
@@ -4046,7 +4044,7 @@ print(factorial(0))    # 1`,
             },            {
                 title: `¡Adelante, programador!`,
                 dialogo: `<p>Has invertido tu tiempo y energía en aprender algo real. La mayoría de personas no llega hasta aquí. El hecho de que estés en el Nivel 20 ya dice mucho de ti.</p>
-                <p>Cuando el quiz aparezca, recuerda: no estás adivinando, estás <em>razonando</em>. Confía en lo que aprendiste. 🖤</p>`
+                <p>Cuando el quiz aparezca, recuerda: no estás adivinando, estás <em>razonando</em>. Confía en lo que aprendiste. </p>`
             }
         ],
         quiz: [
@@ -4064,7 +4062,8 @@ print(factorial(0))    # 1`,
     }
 ];
 
-console.log("✅ courseData loaded successfully", courseData.length);
+window.courseData = courseData;
+console.log(" courseData loaded successfully", courseData.length);
 
 
 
@@ -4095,12 +4094,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch(e) {
         console.error("Critical: Failed to load Firebase.", e);
         // Intentar continuar sin Firebase en modo offline
-        console.warn('⚠️ Continuando en modo offline (sin sincronización con Firestore)');
+        console.warn(' Continuando en modo offline (sin sincronización con Firestore)');
         
         // Cargar datos desde localStorage
         const localSession = JSON.parse(localStorage.getItem('currentUser'));
         if (!localSession || !localSession.id) {
-            console.warn('⚠️ Sesión inválida en Python Course.');
+            console.warn(' Sesión inválida en Python Course.');
             window.location.href = 'index.html';
             return;
         }
@@ -4111,7 +4110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 userProgress = JSON.parse(savedProgress);
             } catch (e) {
-                console.error('❌ Error parsing saved progress:', e);
+                console.error(' Error parsing saved progress:', e);
                 userProgress = { completedLevels: [], quizScores: {} };
             }
         } else {
@@ -4133,7 +4132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const localSession = JSON.parse(localStorage.getItem('currentUser'));
     if (!localSession || !localSession.id) {
-        console.warn('⚠️ Sesión inválida en Python Course.');
+        console.warn(' Sesión inválida en Python Course.');
         window.location.href = 'index.html';
         return;
     }
@@ -4168,14 +4167,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (hideLoading) hideLoading();
         
     } catch (e) {
-        console.error('❌ Error Init Python:', e);
+        console.error(' Error Init Python:', e);
         
         // Solo redirigir si es un error crítico (no de Pyodide/postMessage)
         if (e.message && !e.message.includes('postMessage') && !e.message.includes('Pyodide')) {
             alert('Error cargando curso: ' + e.message);
             window.location.href = 'menu_inicio.html';
         } else {
-            console.warn('⚠️ Error no crítico de Pyodide - continuando con la carga del curso');
+            console.warn(' Error no crítico de Pyodide - continuando con la carga del curso');
             // Intentar renderizar de todos modos
             if (window.renderLevelSelection) renderLevelSelection();
             if (window.showPanel) showPanel('levelSelection');
@@ -4203,9 +4202,9 @@ async function saveProgress() {
         
         try {
             await window.updateCourseProgress(currentUser.id, 'pythonProgress', progressPayload);
-            console.log('✅ Python Progress Saved to Firestore');
+            console.log(' Python Progress Saved to Firestore');
         } catch (e) {
-            console.error('❌ Error saving python progress:', e);
+            console.error(' Error saving python progress:', e);
         }
     }
 }
@@ -4303,7 +4302,7 @@ const keywordDocs = {
    "for": { 
         title: "Estructura for (Para cada...)", 
         desc: "<p>El más controlado y elegante de los bucles en el desarrollo diario. A diferencia del inestable <code>while</code>, un ciclo <code>for</code> recorre quirúrgicamente listas completas o textos hasta el final, iterando un objeto y procesándolo uno por uno de forma finita y sin riesgo de cierre mortal continuo.</p>", 
-        example: "for persona in ['Steven', 'Kurumi']:\n    print('Te veo, ' + persona)",
+        example: "for persona in ['Steven', 'System']:\n    print('Te veo, ' + persona)",
         ref: "Nivel 5" 
    },
    "range": { 
@@ -4365,7 +4364,9 @@ function restoreLessonContent() {
 }
 
 function showKeywordTooltip(word, posLine) {
-    const doc = keywordDocs[word];
+    // Use global dictionary for the correct course language
+    const langDict = (window.globalDictionary && window.globalDictionary['python']) || {};
+    const doc = langDict[word] || (typeof keywordDocs !== 'undefined' ? keywordDocs[word] : null);
     if (!doc) return; 
 
     const contentDiv = document.getElementById('lesson-content');
@@ -5208,10 +5209,7 @@ function showResults() {
     if (userProgress.quizScores[currentLevel] === undefined || score > userProgress.quizScores[currentLevel]) {
         userProgress.quizScores[currentLevel] = score;
         saveProgress();
-        // Guardar quizScores para leaderboard
         saveQuizScore(score, courseData[currentLevel].quiz.length, COURSE_ID, currentLevel + 1);
-        // Mostrar challenge si corresponde
-        checkAndShowChallenge(currentLevel, challengeMap);
     }
 
     const resultsTitle = document.getElementById('results-title');
@@ -5219,32 +5217,36 @@ function showResults() {
     const resultsMessage = document.getElementById('results-message');
     const resultsIcon = document.getElementById('results-icon');
     const nextLevelBtn = document.getElementById('next-level-btn');
-    const challengeBtn = document.getElementById('code-challenge-btn');
 
-    resultsScore.textContent = `Puntuación: ${score}/${totalQuestions} (${percentage}%)`;
+    resultsScore.textContent = `Puntuacion: ${score}/${totalQuestions} (${percentage}%)`;
 
     if (passed) {
-        resultsTitle.textContent = '¡Felicidades!';
+        resultsTitle.textContent = 'Felicidades!';
         resultsTitle.style.color = 'var(--green)';
         resultsMessage.textContent = 'Has aprobado el cuestionario.';
         resultsIcon.setAttribute('data-lucide', 'award');
         resultsIcon.style.color = 'var(--green)';
+        nextLevelBtn.classList.remove('hidden');
+        markLevelCompleted(currentLevel);
+        
+        // --- ACHIEVEMENTS ---
+        try {
+            import('./assets/js/achievements.js').then(m => {
+                if (currentLevel === 0) m.checkAchievement('first_blood');
+                if (score === courseData[currentLevel].quiz.length) m.checkAchievement('quiz_genius');
+            });
+        } catch(e) {}
 
-        // La lógica de checkAndShowChallenge en course_system.js se encarga del botón
-        if (!challengeMap[currentLevel]) {
-            challengeBtn.classList.add('hidden');
-            nextLevelBtn.classList.remove('hidden');
-            markLevelCompleted(currentLevel);
-        }
+        // Show Next Level Button
+        showNextLevelButton(currentLevel);
 
     } else {
-        resultsTitle.textContent = '¡Inténtalo de nuevo!';
+        resultsTitle.textContent = 'Intentalo de nuevo!';
         resultsTitle.style.color = 'var(--red)';
         resultsMessage.textContent = 'Necesitas al menos 70% para aprobar.';
         resultsIcon.setAttribute('data-lucide', 'refresh-cw');
         resultsIcon.style.color = 'var(--red)';
         nextLevelBtn.classList.add('hidden');
-        challengeBtn.classList.add('hidden');
     }
     
     lucide.createIcons();
@@ -5563,9 +5565,9 @@ async function initPyodide() {
             indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
         });
         pyodideReady = true;
-        console.log('✅ Pyodide listo!');
+        console.log(' Pyodide listo!');
     } catch (error) {
-        console.error('❌ Error al cargar Pyodide:', error);
+        console.error(' Error al cargar Pyodide:', error);
     }
 }
 
@@ -5751,7 +5753,16 @@ function initializeCodeBlockMonaco() {
                 <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
                 <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'python' ? 'example.py' : language === 'html' ? 'index.html' : 'code.' + language}</span>
             </div>
-            <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
+            <div class="flex items-center gap-2">
+                <button 
+                    onclick="(function(btn){ const edId = btn.closest('.code-block-monaco-wrapper').querySelector('[id^=code-block-monaco]')?.id; const ed = monaco.editor.getEditors ? monaco.editor.getEditors().find(e => e.getContainerDomNode()?.id === edId || e.getContainerDomNode()?.parentElement?.id === edId) : null; const code = ed ? ed.getValue() : ''; const lang = btn.dataset.lang || 'python'; try{window.tryAwardSandboxExplorer?.()}catch(e){}; window.open('sandbox.html?lang=' + lang + '&code=' + btoa(unescape(encodeURIComponent(code))), '_blank'); })(this)" 
+                    data-lang="python"
+                    class="flex items-center gap-1 px-2 py-1 bg-accent/20 hover:bg-accent/40 text-accent text-xs rounded border border-accent/30 transition-all"
+                    title="Abrir en Sandbox">
+                    <i data-lucide="external-link" class="w-3 h-3"></i> Sandbox
+                </button>
+                <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
+            </div>
         `;
 
         const monacoContainer = document.createElement('div');
@@ -5855,13 +5866,13 @@ builtins.input = async_input
         
         const doneLine = document.createElement('div');
         doneLine.className = 'console-line info';
-        doneLine.textContent = '✅ Ejecución completada';
+        doneLine.textContent = ' Ejecución completada';
         outputDiv.appendChild(doneLine);
 
     } catch (error) {
         const errorLine = document.createElement('div');
         errorLine.className = 'console-line error';
-        errorLine.textContent = `❌ Error: ${error.message}`;
+        errorLine.textContent = ` Error: ${error.message}`;
         outputDiv.appendChild(errorLine);
     }
     outputDiv.scrollTop = outputDiv.scrollHeight;

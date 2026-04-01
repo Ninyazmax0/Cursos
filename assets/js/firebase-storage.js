@@ -97,10 +97,10 @@ async function uploadWithProgress(imageFile, onProgress) {
         
         const base64 = await uploadToFirebaseStorage(imageFile);
         
-        if (onProgress) onProgress('¡Listo! ✨');
+        if (onProgress) onProgress('¡Listo! ');
         return base64;
     } catch (error) {
-        if (onProgress) onProgress('Error ❌');
+        if (onProgress) onProgress('Error ');
         throw error;
     }
 }

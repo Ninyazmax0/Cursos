@@ -13,7 +13,7 @@ const STEVEN_PROFILE = {
     password: 'admin123',
     email: 'steven@statuscode418.dev',
     avatar: 'https://i.ibb.co/9HGqpf0B/Captura-de-pantalla-2025-06-21-205156.png',
-    bio: 'Frontend perfectionist. Si hay un píxel fuera de lugar, no duermo hasta arreglarlo. Fundador de Status Code 418. 💙',
+    bio: 'Frontend perfectionist. Si hay un píxel fuera de lugar, no duermo hasta arreglarlo. Fundador de Status Code 418. ',
     tags: ['Frontend', 'UX/UI', 'Design', 'Perfectionist', 'Coffee'],
     socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: '' },
     isAdmin: true,
@@ -25,6 +25,7 @@ const STEVEN_PROFILE = {
     registeredAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     // Desbloquear todo
+    introProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
     webProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
     pythonProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
     rubyProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
@@ -38,7 +39,7 @@ const AMELIA_PROFILE = {
     password: 'admin123',
     email: 'amelia@statuscode418.dev',
     avatar: 'https://cdn.myanimelist.net/images/characters/8/239523.jpg',
-    bio: 'Backend wizard. Drama queen con 5 copias de seguridad de tus copias de seguridad. Coffee addict. Co-fundadora de Status Code 418. 💜',
+    bio: 'Backend wizard. Drama queen con 5 copias de seguridad de tus copias de seguridad. Coffee addict. Co-fundadora de Status Code 418. ',
     tags: ['Backend', 'Firebase', 'Architecture', 'Coffee', 'TypeScript'],
     socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: '' },
     isAdmin: true,
@@ -49,6 +50,7 @@ const AMELIA_PROFILE = {
     registeredAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     // Desbloquear todo
+    introProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
     webProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
     pythonProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
     rubyProgress: { unlockedLevel: 99, completedLevels: Array.from({ length: 20 }, (_, i) => i), quizScores: {} },
@@ -84,14 +86,14 @@ export async function initializePredefinedProfiles() {
         // Check Steven
         const stevenSnap = await getDoc(stevenRef);
         if (!stevenSnap.exists()) {
-            console.log('✨ Inicializando perfil de Steven...');
+            console.log(' Inicializando perfil de Steven...');
             await setDoc(stevenRef, { ...STEVEN_PROFILE, id: 'steven' });
         }
 
         // Check Amelia
         const ameliaSnap = await getDoc(ameliaRef);
         if (!ameliaSnap.exists()) {
-            console.log('✨ Inicializando perfil de Amelia...');
+            console.log(' Inicializando perfil de Amelia...');
             await setDoc(ameliaRef, { ...AMELIA_PROFILE, id: 'amelia' });
         }
         

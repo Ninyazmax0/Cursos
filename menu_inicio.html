@@ -75,8 +75,6 @@
     <link rel="stylesheet" href="assets/css/auras.css">
     <link rel="stylesheet" href="assets/css/theme.css">
     
-    <link rel="stylesheet" href="assets/css/theme.css">
-    
     <!-- Theme Init (Prevent Flash) -->
     <script>
         (function() {
@@ -515,7 +513,8 @@
         } from './assets/js/firebase-config.js';
         
         import { showGlobalToast } from './assets/js/ui-utils.js';
-        
+        window.showGlobalToast = showGlobalToast;
+
         // Course Data
         const courses = {
             intro: { 
@@ -639,7 +638,7 @@
                                 await syncUserToFirestore(freshUser);
                                 localStorage.setItem('currentUser', JSON.stringify(freshUser));
                                 document.getElementById('sidebar-user-avatar').src = newAvatar;
-                                alert('Avatar actualizado correctamente ✨');
+                                alert('Avatar actualizado correctamente ');
                             } catch (err) {
                                 console.error('Error updating avatar:', err);
                                 alert('Error actualizando avatar.');
@@ -773,24 +772,25 @@
                     // Filter out current user
                     const otherUsers = users.filter(u => u.id !== userId);
                     
-                    let totalUnread = 0;
-                    
+                    const unreadCounts = {};
+
                     // Listen to each chat
                     otherUsers.forEach(otherUser => {
                         const chatId = [userId, otherUser.id].sort().join('_');
                         const messagesRef = collection(db, 'chats', chatId, 'messages');
-                        
+
                         onSnapshot(messagesRef, (snapshot) => {
                             let unreadCount = 0;
-                            
+
                             snapshot.forEach(doc => {
                                 const message = doc.data();
                                 if (message.senderId !== userId && !message.read) {
                                     unreadCount++;
                                 }
                             });
-                            
-                            totalUnread += unreadCount;
+
+                            unreadCounts[chatId] = unreadCount;
+                            const totalUnread = Object.values(unreadCounts).reduce((sum, c) => sum + c, 0);
                             updateUnreadCount(totalUnread);
                         });
                     });

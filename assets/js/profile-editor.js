@@ -314,7 +314,7 @@ export async function saveProfileChanges(userId) {
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
         }
         
-        console.log('✅ Perfil actualizado');
+        console.log(' Perfil actualizado');
         closeEditProfileModal();
         
         // Recargar página para ver cambios
