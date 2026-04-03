@@ -42,7 +42,7 @@ class CosmeticEffects {
         this.initialized = true;
         this.lastUpdateTime = 0;
         this.throttleTimer = 0;
-        console.log(' Cosmetic Effects Initialized (Optimized)');
+        console.log('✨ Cosmetic Effects Initialized (Optimized)');
     }
 
     resize() {

@@ -7,716 +7,1131 @@
     <link rel="stylesheet" href="assets/css/tailwind.min.css">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-    <!-- Initialize CSS variables immediately to prevent flicker -->
-    <script>
-        (function() {
-            const bgNight = 'https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif';
-            document.documentElement.style.setProperty('--bg-night', `url('${bgNight}')`);
-        })();
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --background: #1a1b26;
-            --foreground: #a9b1d6;
-            --card-background: #24283b;
-            --accent: #f7768e;
-            --border: #414868;
+            --tokyo-bg: #1a1b26;
+            --tokyo-fg: #a9b1d6;
+            --tokyo-card: #24283b;
+            --tokyo-border: #414868;
+            --tokyo-blue: #7aa2f7;
+            --tokyo-cyan: #7dcfff;
+            --tokyo-magenta: #bb9af7;
+            --tokyo-green: #9ece6a;
+            --tokyo-red: #f7768e;
+            --tokyo-yellow: #e0af68;
+            --tokyo-orange: #ff9e64;
         }
+
+        * { box-sizing: border-box; }
+
         body { 
-            background-color: var(--background); 
-            color: var(--foreground); 
             font-family: 'Inter', sans-serif;
+            background: var(--tokyo-bg);
+            color: var(--tokyo-fg);
             overflow-x: hidden;
         }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Fondo animado */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
 
-        .background-night {
+        /* ========== FONDO ANIMADO ========== */
+        .bg-animated {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: var(--tokyo-bg);
+        }
+        .bg-animated::before {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #1a1b26;
-            background-image: var(--bg-night, url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif'));
+            inset: 0;
+            background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.15;
-            will-change: opacity;
-            transition: opacity 0.3s ease;
+            opacity: 0.1;
+        }
+        .bg-animated::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, 
+                var(--tokyo-bg) 0%, 
+                transparent 15%,
+                transparent 85%, 
+                var(--tokyo-bg) 100%
+            );
         }
 
-        /* Efecto de partículas sutiles */
-        .particles {
+        /* ========== GRID DE FONDOS ========== */
+        .grid-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: -1;
-            pointer-events: none;
+            background-image: 
+                linear-gradient(rgba(65, 72, 104, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(65, 72, 104, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
         }
 
-        .particle {
-            position: absolute;
-            background: rgba(247, 118, 142, 0.2);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
+        /* ========== NAVEGACIÓN LATERAL ========== */
+        .side-nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 60px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 0;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
-        }
-
-        /* Navegación lateral */
-        .nav-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #414868;
-            border-radius: 50%;
-            transition: all 0.3s ease;
+        .nav-item {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(36, 40, 59, 0.6);
+            border: 1px solid rgba(65, 72, 104, 0.3);
+            position: relative;
         }
 
-        .nav-dot.active {
-            background-color: #f7768e;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(247, 118, 142, 0.5);
+        .nav-item:hover {
+            background: rgba(122, 162, 247, 0.2);
+            border-color: var(--tokyo-blue);
+            transform: scale(1.1);
         }
 
-        .nav-label {
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--tokyo-magenta), var(--tokyo-blue));
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(187, 154, 247, 0.4);
+        }
+
+        .nav-item::before {
+            content: attr(data-label);
             position: absolute;
-            left: 30px;
-            background-color: rgba(36, 40, 59, 0.9);
-            padding: 4px 12px;
-            border-radius: 6px;
+            left: 60px;
+            background: var(--tokyo-card);
+            padding: 8px 14px;
+            border-radius: 8px;
             font-size: 12px;
+            font-weight: 500;
             white-space: nowrap;
             opacity: 0;
             transform: translateX(-10px);
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             pointer-events: none;
-            border: 1px solid #414868;
+            border: 1px solid var(--tokyo-border);
         }
 
-        .nav-dot:hover .nav-label {
+        .nav-item:hover::before {
             opacity: 1;
             transform: translateX(0);
         }
 
-        /* Tarjetas con efecto de vidrio */
-        .glass-card {
-            background: rgba(36, 40, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(65, 72, 104, 0.3);
-            border-radius: 16px;
+        /* ========== HEADER HERO ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
         }
 
-        /* Timeline vertical */
-        .timeline-track {
-            position: relative;
-            width: 2px;
-            background: linear-gradient(to bottom, transparent, #414868, transparent);
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background: rgba(187, 154, 247, 0.1);
+            border: 1px solid rgba(187, 154, 247, 0.3);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--tokyo-magenta);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--tokyo-fg) 50%, var(--tokyo-magenta) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--tokyo-fg);
+            opacity: 0.7;
+            max-width: 600px;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-card {
+            padding: 1.25rem 1.75rem;
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(36, 40, 59, 0.8), rgba(26, 27, 38, 0.8));
+            border: 1px solid rgba(65, 72, 104, 0.4);
+            text-align: center;
+            min-width: 140px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--tokyo-magenta);
+            box-shadow: 0 10px 40px rgba(187, 154, 247, 0.2);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--tokyo-fg);
+            opacity: 0.6;
+            margin-top: 0.25rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ========== CAPÍTULOS ========== */
+        .chapters-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .timeline-node {
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-line {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tokyo-magenta), var(--tokyo-blue));
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .chapter-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            background: linear-gradient(145deg, rgba(36, 40, 59, 0.7), rgba(26, 27, 38, 0.7));
+            border: 1px solid rgba(65, 72, 104, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border-color: var(--chapter-color, var(--tokyo-magenta));
+        }
+
+        .chapter-number {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 3px solid #24283b;
-            z-index: 2;
+            top: -20px;
+            right: 2rem;
+            font-size: 8rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0.05;
+            line-height: 1;
+            pointer-events: none;
         }
 
-        /* Animaciones de entrada */
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease forwards;
+        .chapter-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--chapter-color, var(--tokyo-magenta));
+        }
+
+        .chapter-content {
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .chapter-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chapter-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--chapter-color, var(--tokyo-magenta));
+            color: var(--chapter-color, var(--tokyo-magenta));
+        }
+
+        .chapter-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .chapter-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--tokyo-fg);
+            opacity: 0.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .chapter-text {
+            color: var(--tokyo-fg);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .chapter-text p {
+            margin-bottom: 1rem;
+        }
+
+        .chapter-visual {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .chapter-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--chapter-color, var(--tokyo-magenta)), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .chapter-icon {
+            width: 60px;
+            height: 60px;
+            opacity: 0.9;
+        }
+
+        /* ========== CAPÍTULOS ALTERNADOS ========== */
+        .chapter-card:nth-child(even) .chapter-content {
+            direction: rtl;
+        }
+        .chapter-card:nth-child(even) .chapter-content > * {
+            direction: ltr;
+        }
+
+        /* ========== FEATURES GRID ========== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(65, 72, 104, 0.3);
+            transition: all 0.2s;
+        }
+
+        .feature-item:hover {
+            background: rgba(158, 206, 106, 0.1);
+            border-color: var(--tokyo-green);
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(158, 206, 106, 0.2);
+            color: var(--tokyo-green);
+            flex-shrink: 0;
+        }
+
+        /* ========== PERSONAJES ========== */
+        .characters-section {
+            padding: 4rem 2rem 6rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .character-card {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(36, 40, 59, 0.8), rgba(26, 27, 38, 0.8));
+            border: 1px solid rgba(65, 72, 104, 0.4);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .character-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .character-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .character-avatar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            border: 2px solid var(--char-color, var(--tokyo-magenta));
+            opacity: 0.5;
+        }
+
+        .character-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .character-role {
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            padding: 0.35rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: var(--char-color, var(--tokyo-magenta));
+            color: white;
+        }
+
+        .character-info {
+            flex: 1;
+        }
+
+        .character-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .character-title {
+            font-size: 0.85rem;
+            color: var(--char-color, var(--tokyo-magenta));
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .character-desc {
+            font-size: 0.9rem;
+            color: var(--tokyo-fg);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(65, 72, 104, 0.3);
+        }
+
+        .footer-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-copy {
+            font-size: 0.85rem;
+            color: var(--tokyo-fg);
+            opacity: 0.5;
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--tokyo-border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--tokyo-magenta); }
+
+        /* ========== ANIMACIONES ========== */
+        .fade-in {
             opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Scroll personalizado */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* ========== BACK BUTTON ========== */
+        .back-btn {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            background: rgba(36, 40, 59, 0.8);
+            border: 1px solid rgba(65, 72, 104, 0.4);
+            color: var(--tokyo-fg);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(36, 40, 59, 0.5);
-            border-radius: 10px;
+        .back-btn:hover {
+            background: var(--tokyo-magenta);
+            border-color: var(--tokyo-magenta);
+            color: white;
+            transform: translateX(-4px);
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #414868;
-            border-radius: 10px;
+        /* ========== TEAM BANNER ========== */
+        .team-banner {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(122, 162, 247, 0.1), rgba(187, 154, 247, 0.1), rgba(125, 207, 255, 0.1));
+            border: 1px solid rgba(187, 154, 247, 0.3);
+            margin-top: 2rem;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #f7768e;
+        .team-formula {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--tokyo-blue), var(--tokyo-magenta), var(--tokyo-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .team-tagline {
+            font-size: 0.85rem;
+            color: var(--tokyo-fg);
+            opacity: 0.6;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
     <!-- Fondo animado -->
-    <div class="background-container">
-        <div class="background-night"></div>
-        <div class="particles" id="particles"></div>
-    </div>
+    <div class="bg-animated"></div>
+    <div class="grid-bg"></div>
+
+    <!-- Botón volver -->
+    <a href="menu_inicio.html" class="back-btn">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Volver</span>
+    </a>
 
     <!-- Navegación lateral -->
-    <nav class="fixed left-6 top-1/2 transform -translate-y-1/2 z-40 hidden md:flex flex-col gap-6">
-        <div class="relative nav-dot active" data-section="header">
-            <span class="nav-label">Inicio</span>
+    <nav class="side-nav">
+        <div class="nav-item active" data-section="hero" data-label="Inicio">
+            <i data-lucide="home" class="w-5 h-5"></i>
         </div>
-        <div class="relative nav-dot" data-section="chapter1">
-            <span class="nav-label">El Comienzo</span>
+        <div class="nav-item" data-section="chapters" data-label="Capitulos">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
         </div>
-        <div class="relative nav-dot" data-section="chapter2">
-            <span class="nav-label">La Verdad</span>
-        </div>
-        <div class="relative nav-dot" data-section="chapter3">
-            <span class="nav-label">El Camino Fácil</span>
-        </div>
-        <div class="relative nav-dot" data-section="chapter4">
-            <span class="nav-label">El Refuerzo</span>
-        </div>
-        <div class="relative nav-dot" data-section="chapter5">
-            <span class="nav-label">La Identidad</span>
-        </div>
-        <div class="relative nav-dot" data-section="chapter6">
-            <span class="nav-label">La Evolución</span>
-        </div>
-        <div class="relative nav-dot" data-section="chapter7">
-            <span class="nav-label">La Magia</span>
-        </div>
-        <div class="relative nav-dot" data-section="chapter7-5">
-            <span class="nav-label">La Crisis</span>
-        </div>
-        <div class="relative nav-dot" data-section="chapter8">
-            <span class="nav-label">Hoy</span>
-        </div>
-        <div class="relative nav-dot" data-section="characters">
-            <span class="nav-label">Protagonistas</span>
+        <div class="nav-item" data-section="characters" data-label="Personajes">
+            <i data-lucide="users" class="w-5 h-5"></i>
         </div>
     </nav>
 
-    <!-- Botón de regreso -->
-    <a href="menu_inicio.html" class="fixed top-6 left-6 z-40 inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors group glass-card px-4 py-2 rounded-full">
-        <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
-        <span class="text-sm font-medium">Volver al Hub</span>
-    </a>
-
-    <!-- Contenedor principal -->
-    <main class="container mx-auto px-4 md:px-24 py-12">
+    <!-- ========== HERO SECTION ========== -->
+    <section id="hero" class="hero">
+        <div class="hero-badge">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            La Historia Completa
+        </div>
         
-        <!-- Header -->
-        <section id="header" class="min-h-screen flex flex-col justify-center mb-20 fade-in-up">
-            <div class="glass-card p-8 md:p-12 rounded-2xl border border-gray-700/30 max-w-4xl mx-auto">
-                <div class="mb-8">
-                    <span class="text-pink-500 font-mono text-sm tracking-widest uppercase">La Historia</span>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mt-2 mb-6 leading-tight">
-                        Status Code <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500">418</span>
-                    </h1>
-                    <p class="text-xl text-gray-400 max-w-2xl leading-relaxed">
-                        Una historia sobre bugs, café, teteras y dos amigos que no sabían en qué se estaban metiendo.
-                    </p>
-                </div>
+        <h1 class="hero-title">Status Code<br>418</h1>
+        
+        <p class="hero-subtitle">
+            Una historia sobre bugs, cafe, teteras y dos amigos que no sabian en que se estaban metiendo cuando crearon una academia de programacion.
+        </p>
 
-                <!-- Resumen de la historia -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                    <div class="glass-card p-6 rounded-xl border border-blue-500/20">
-                        <div class="text-blue-400 mb-2">
-                            <i data-lucide="calendar" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-white font-bold mb-2">4 Meses</h3>
-                        <p class="text-sm text-gray-400">Desde la primera línea de código hasta hoy</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl border border-purple-500/20">
-                        <div class="text-purple-400 mb-2">
-                            <i data-lucide="code" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-white font-bold mb-2">2 Developers</h3>
-                        <p class="text-sm text-gray-400">Frontend y backend trabajando juntos</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl border border-green-500/20">
-                        <div class="text-green-400 mb-2">
-                            <i data-lucide="coffee" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-white font-bold mb-2">418 Errores</h3>
-                        <p class="text-sm text-gray-400">Y contando. I'm a teapot</p>
-                    </div>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(122, 162, 247, 0.2); color: var(--tokyo-blue);">
+                    <i data-lucide="calendar" class="w-6 h-6"></i>
                 </div>
+                <div class="stat-value text-white">8</div>
+                <div class="stat-label">Meses</div>
             </div>
-        </section>
-
-        <!-- Timeline -->
-        <div class="relative max-w-4xl mx-auto mb-32">
-            <!-- Línea vertical -->
-            <div class="timeline-track h-full absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0"></div>
-            
-            <!-- Capítulos organizados en timeline -->
-            <!-- Capítulo 1 -->
-            <div id="chapter1" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
-                    <div class="glass-card p-8 rounded-2xl border border-blue-500/20">
-                        <span class="text-blue-400 font-mono text-sm tracking-widest uppercase">El Comienzo</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Solo era una "Academia".</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            7 de Agosto, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            Todo empezó con un archivo <code class="px-2 py-1 bg-black/30 rounded text-accent">index.html</code> y una idea simple: crear una página para aprender programación. Sin nombre elegante, sin grandes planes. Solo "Academia". Diseño básico con luces azules, tema oscuro, y toda la información hardcodeada en el HTML.
-                        </p>
-                        <p class="mt-4 text-gray-300 italic">
-                            "No sabía que esto era solo el primer borrador de algo mucho más grande."
-                        </p>
-                    </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(187, 154, 247, 0.2); color: var(--tokyo-magenta);">
+                    <i data-lucide="code-2" class="w-6 h-6"></i>
                 </div>
-                <div class="md:w-1/2 order-1 md:order-2 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #3b82f6;"></div>
-                    <div class="ml-8 md:ml-0 md:pl-12">
-                        <div class="text-5xl font-bold text-blue-500/30">01</div>
-                    </div>
-                </div>
+                <div class="stat-value text-white">2</div>
+                <div class="stat-label">Developers</div>
             </div>
-
-            <!-- Capítulo 2 -->
-            <div id="chapter2" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pl-12 order-2">
-                    <div class="glass-card p-8 rounded-2xl border border-red-500/20">
-                        <span class="text-red-400 font-mono text-sm tracking-widest uppercase">La Verdad</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Era basura. Punto.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            30 de Agosto, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            Después de tres semanas mirando esa página, llegué a una conclusión brutal: era una completa basura. El diseño era feo, la lógica era un desastre, y cada vez que intentaba agregar algo nuevo, todo se rompía.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Así que el 30 de agosto tomé la decisión más liberadora: borrar todo y empezar de nuevo. Sin remordimientos.
-                        </p>
-                    </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(247, 118, 142, 0.2); color: var(--tokyo-red);">
+                    <i data-lucide="coffee" class="w-6 h-6"></i>
                 </div>
-                <div class="md:w-1/2 order-1 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #ef4444;"></div>
-                    <div class="mr-8 md:mr-0 md:text-right md:pr-12">
-                        <div class="text-5xl font-bold text-red-500/30">02</div>
-                    </div>
-                </div>
+                <div class="stat-value text-[#f7768e]">418+</div>
+                <div class="stat-label">Errores</div>
             </div>
-
-            <!-- Capítulo 3 -->
-            <div id="chapter3" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
-                    <div class="glass-card p-8 rounded-2xl border border-purple-500/20">
-                        <span class="text-purple-400 font-mono text-sm tracking-widest uppercase">El Camino Fácil</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Code Lingua nace.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            4 de Septiembre, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            Cinco días después, empecé de nuevo. Esta vez con herramientas modernas: Tailwind CSS para no morir con CSS vanilla, fondos de pantalla animados para darle vida, y una estructura más limpia.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Le puse un nombre genérico: Code Lingua. Sonaba profesional, aunque después descubrí que había como 50 páginas con ese nombre.
-                        </p>
-                        <div class="mt-4 p-4 bg-purple-500/10 rounded-lg border-l-4 border-purple-500">
-                            <p class="text-sm"><strong class="text-purple-400">Nota:</strong> En ese momento, trabajaba completamente solo. 70% frontend, 30% backend. Y se notaba.</p>
-                        </div>
-                    </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(158, 206, 106, 0.2); color: var(--tokyo-green);">
+                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
                 </div>
-                <div class="md:w-1/2 order-1 md:order-2 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #a855f7;"></div>
-                    <div class="ml-8 md:ml-0 md:pl-12">
-                        <div class="text-5xl font-bold text-purple-500/30">03</div>
-                    </div>
-                </div>
+                <div class="stat-value text-[#9ece6a]">7</div>
+                <div class="stat-label">Cursos</div>
             </div>
+        </div>
 
-            <!-- Capítulo 4 -->
-            <div id="chapter4" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pl-12 order-2">
-                    <div class="glass-card p-8 rounded-2xl border border-green-500/20">
-                        <span class="text-green-400 font-mono text-sm tracking-widest uppercase">El Refuerzo</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Amelia al rescate.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Mediados de Septiembre, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            Después de dos semanas trabajando solo, me di cuenta de algo: necesitaba ayuda. Especialmente con el backend. Firebase era un misterio para mí, y quería que la plataforma dejara de ser solo local.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Contacté a Amelia. Le mostré lo que tenía: un menú básico y 6 cursos separados. Le expliqué la idea. Y para mi sorpresa, le gustó.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Ella llegó con su expertise: 70% backend, 30% frontend. El complemento perfecto.
-                        </p>
-                    </div>
-                </div>
-                <div class="md:w-1/2 order-1 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #10b981;"></div>
-                    <div class="mr-8 md:mr-0 md:text-right md:pr-12">
-                        <div class="text-5xl font-bold text-green-500/30">04</div>
-                    </div>
-                </div>
-            </div>
+        <div class="scroll-indicator">
+            <span class="text-xs opacity-50">Scroll</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 opacity-50"></i>
+        </div>
+    </section>
 
-            <!-- Capítulo 5 -->
-            <div id="chapter5" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
-                    <div class="glass-card p-8 rounded-2xl border border-cyan-500/20">
-                        <span class="text-cyan-400 font-mono text-sm tracking-widest uppercase">La Identidad</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Status Code 418.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Finales de Septiembre, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            "Code Lingua es demasiado genérico", dijo Amelia un día. Tenía razón. Había docenas de páginas con ese nombre.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Después de buscar nombres únicos, ella sugirió: Status Code 418. El famoso error "I'm a teapot" del protocolo HTTP. Un código de error que técnicamente no debería existir, pero existe.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            No queríamos ser otra página aburrida con 4 paletas de colores y tecnicismos elevados. Queríamos algo con personalidad.
-                        </p>
-                    </div>
-                </div>
-                <div class="md:w-1/2 order-1 md:order-2 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #06b6d4;"></div>
-                    <div class="ml-8 md:ml-0 md:pl-12">
-                        <div class="text-5xl font-bold text-cyan-500/30">05</div>
-                    </div>
-                </div>
-            </div>
+    <!-- ========== CAPÍTULOS ========== -->
+    <section id="chapters" class="chapters-section">
+        <div class="section-header fade-in">
+            <h2 class="section-title">La Linea del Tiempo</h2>
+            <div class="section-line"></div>
+        </div>
 
-            <!-- Capítulo 6 -->
-            <div id="chapter6" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pl-12 order-2">
-                    <div class="glass-card p-8 rounded-2xl border border-yellow-500/20">
-                        <span class="text-yellow-400 font-mono text-sm tracking-widest uppercase">La Evolución</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Llevándolo a la nube.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Octubre, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            La academia funcionaba, pero todo el progreso se guardaba localmente. Si alguien cambiaba de dispositivo, perdía todo. Eso no podía seguir así.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Amelia tomó el control del backend. Configuró Firebase Firestore, reestructuró la arquitectura de datos, y creó el sistema de autenticación. Yo me aseguré de que la UI siguiera viéndose bien mientras todo cambiaba por dentro.
-                        </p>
+        <!-- Capítulo 1 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #7aa2f7;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">01</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="play" class="w-3 h-3"></i>
+                        Capitulo I
+                    </div>
+                    <h3 class="chapter-title">Solo era una "Academia".</h3>
+                    <div class="chapter-date">7 de Agosto, 2025</div>
+                    <div class="chapter-text">
+                        <p>Todo empezó con un archivo <code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.5rem; border-radius: 4px; color: var(--tokyo-red);">index.html</code> y una idea simple: crear una página para aprender programación. Sin nombre elegante, sin grandes planes. Solo "Academia". Diseño básico con luces azules, tema oscuro, y toda la información hardcodeada en el HTML como si fuera 1999.</p>
+                        <p style="color: var(--tokyo-fg); opacity: 0.7; font-style: italic;">"No sabía que esto era solo el primer borrador de algo mucho más grande. Un borrón con suerte."</p>
                     </div>
                 </div>
-                <div class="md:w-1/2 order-1 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #eab308;"></div>
-                    <div class="mr-8 md:mr-0 md:text-right md:pr-12">
-                        <div class="text-5xl font-bold text-yellow-500/30">06</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Capítulo 7 -->
-            <div id="chapter7" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
-                    <div class="glass-card p-8 rounded-2xl border border-purple-500/20">
-                        <span class="text-purple-400 font-mono text-sm tracking-widest uppercase">La Magia</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Todo en vivo.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Noviembre, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            Amelia implementó sincronización en tiempo real. Abrió dos ventanas del navegador, completó un nivel en una y, casi al instante, la tabla de posiciones en la otra se actualizó sola. Sin refrescar. Sin recargar.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Agregamos un leaderboard en vivo, un sistema de logros, y una Sala de Trofeos. Ya no era solo una plataforma de cursos. Era una experiencia.
-                        </p>
-                    </div>
-                </div>
-                <div class="md:w-1/2 order-1 md:order-2 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #8b5cf6;"></div>
-                    <div class="ml-8 md:ml-0 md:pl-12">
-                        <div class="text-5xl font-bold text-purple-500/30">07</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Capítulo 7.5 -->
-            <div id="chapter7-5" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pl-12 order-2">
-                    <div class="glass-card p-8 rounded-2xl border border-orange-500/20">
-                        <span class="text-orange-400 font-mono text-sm tracking-widest uppercase">La Crisis</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Cuando todo dejó de funcionar.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            Finales de Noviembre, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            Después de migrar todo a la nube, algo salió mal. El mapa de niveles no aparecía, los perfiles no cargaban, y había errores por todas partes.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Pasamos horas revisando cada línea de código. Amelia encontró el primer problema: una función que nunca se estaba ejecutando. Lo arreglamos y los niveles aparecieron.
-                        </p>
-                        <p class="mt-4 text-gray-300">
-                            Al final de la noche, todo funcionaba perfectamente. Sin errores, sin problemas. Solo dos personas muy cansadas y una plataforma que finalmente estaba completa.
-                        </p>
-                    </div>
-                </div>
-                <div class="md:w-1/2 order-1 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #f97316;"></div>
-                    <div class="mr-8 md:mr-0 md:text-right md:pr-12">
-                        <div class="text-5xl font-bold text-orange-500/30">08</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Capítulo 8 -->
-            <div id="chapter8" class="relative flex flex-col md:flex-row items-center mb-32 fade-in-up">
-                <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
-                    <div class="glass-card p-8 rounded-2xl border border-pink-500/20">
-                        <span class="text-pink-400 font-mono text-sm tracking-widest uppercase">Hoy</span>
-                        <h2 class="text-2xl font-bold text-white mt-2 mb-4">Status Code 418: En vivo.</h2>
-                        <div class="mt-4 text-sm text-gray-500 font-mono border border-border p-2 rounded inline-block">
-                            14 de Diciembre, 2025
-                        </div>
-                        <p class="mt-4 text-gray-300 leading-relaxed">
-                            Han pasado poco más de cuatro meses desde que empecé con aquella primera "Academia" que terminó en la basura. Hoy, Status Code 418 es una plataforma completa con perfiles de usuario, leaderboards en tiempo real, 4 cursos interactivos, modo Sandbox para practicar código, y una obsesión poco sana con el modo oscuro.
-                        </p>
-                        <div class="mt-6 p-6 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-cyan-500/10 rounded-2xl border border-pink-500/30">
-                            <h3 class="text-xl font-bold text-white mb-4">Lo que Status Code 418 es HOY</h3>
-                            <ul class="space-y-2 text-gray-300 text-sm">
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>4 Cursos Maestros: Web, Python, Ruby, Database</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Infraestructura Real con Firebase Firestore</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Sistema de Logros con 60 recompensas desbloqueables</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Modo Sandbox interactivo para practicar</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Sistema de Chat en tiempo real entre usuarios</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Tienda de Auras y efectos cosméticos</span></li>
-                                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> <span>Fondos personalizados y Tokyo Night theme</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-1/2 order-1 md:order-2 mb-8 md:mb-0 relative">
-                    <div class="timeline-node" style="background-color: #ec4899;"></div>
-                    <div class="ml-8 md:ml-0 md:pl-12">
-                        <div class="text-5xl font-bold text-pink-500/30">09</div>
-                    </div>
+                <div class="chapter-visual" style="--chapter-color: #7aa2f7;">
+                    <i data-lucide="file-code" class="chapter-icon" style="color: #7aa2f7;"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Protagonistas -->
-        <section id="characters" class="max-w-4xl mx-auto mb-20 fade-in-up">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-white mb-4">Los Protagonistas</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">El equipo detrás de Status Code 418</p>
+        <!-- Capítulo 2 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #f7768e;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">02</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="trash-2" class="w-3 h-3"></i>
+                        Capitulo II
+                    </div>
+                    <h3 class="chapter-title">Era basura. Punto.</h3>
+                    <div class="chapter-date">30 de Agosto, 2025</div>
+                    <div class="chapter-text">
+                        <p>Después de tres semanas mirando esa página, llegué a una conclusión brutal: era una completa basura. El diseño era feo, la lógica era un desastre de condicionales imposibles, y cada vez que intentaba agregar algo nuevo, todo se rompía como un castillo de naipes bajo la lluvia.</p>
+                        <p>Así que el 30 de agosto tomé la decisión más liberadora de mi vida: borrar todo y empezar de nuevo. Sin remordimientos, sin mirar atrás.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #f7768e;">
+                    <i data-lucide="trash" class="chapter-icon" style="color: #f7768e;"></i>
+                </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Steven -->
-                <div onclick="window.location.href='perfil_usuario.html?id=steven'" class="glass-card p-8 rounded-2xl border border-blue-500/30 hover:border-blue-500/60 transition-all duration-300 cursor-pointer group hover:transform hover:-translate-y-1">
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-                        <div class="relative">
-                            <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-blue-500/50 group-hover:border-blue-500 transition-colors">
-                                <img id="steven-story-img" src="https://i.ibb.co/9HGqpf0B/Captura-de-pantalla-2025-06-21-205156.png" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Capítulo 3 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #bb9af7;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">03</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="sparkles" class="w-3 h-3"></i>
+                        Capitulo III
+                    </div>
+                    <h3 class="chapter-title">Code Lingua nace.</h3>
+                    <div class="chapter-date">4 de Septiembre, 2025</div>
+                    <div class="chapter-text">
+                        <p>Cinco días después del genocidio de código, empecé de nuevo. Esta vez con herramientas modernas: Tailwind CSS para no morir con CSS vanilla, fondos de pantalla animados para darle vida al asunto, y una estructura más limpia que permitía respirar.</p>
+                        <p>Le puse un nombre genérico: Code Lingua. Sonaba profesional, corporativo, importante. Aunque después descubrí que habían como 47 páginas exactamente con ese nombre. Ironía level: Máximo.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #bb9af7;">
+                    <i data-lucide=" Languages" class="chapter-icon" style="color: #bb9af7;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 4 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #9ece6a;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">04</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="user-plus" class="w-3 h-3"></i>
+                        Capitulo IV
+                    </div>
+                    <h3 class="chapter-title">Amelia al rescate.</h3>
+                    <div class="chapter-date">Mediados de Septiembre, 2025</div>
+                    <div class="chapter-text">
+                        <p>Después de dos semanas trabajando solo, con ojeras que podían verse desde el espacio, me di cuenta de algo: necesitaba ayuda. Especialmente con el backend. Firebase era un misterio para mí.</p>
+                        <p>Contacté a Amelia. Le mostré lo que tenía: un menú básico, 4 cursos funcionando a medias, y una desesperación visible. Le expliqué la idea. Y para mi sorpresa total, le gustó. Le gustó el caos.</p>
+                        <p>Ella llegó con su expertise: 70% backend, 30% frontend. El complemento perfecto.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #9ece6a;">
+                    <i data-lucide="shield" class="chapter-icon" style="color: #9ece6a;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 5 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #7dcfff;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">05</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="coffee" class="w-3 h-3"></i>
+                        Capitulo V
+                    </div>
+                    <h3 class="chapter-title">Status Code 418.</h3>
+                    <div class="chapter-date">Finales de Septiembre, 2025</div>
+                    <div class="chapter-text">
+                        <p>"Code Lingua es demasiado genérico", dijo Amelia un día. Tenía razón. Existían docenas de páginas con ese nombre, todas igualmente olvidables.</p>
+                        <p>Después de buscar nombres únicos durante horas, ella sugirió: Status Code 418. El famoso error HTTP "I'm a teapot". Un código de error que técnicamente no debería existir, pero existe porque el April Fools' de 1998 fue demasiado gracioso.</p>
+                        <p>No queríamos ser otra página aburrida con 4 paletas de colores. Queríamos algo con personalidad.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #7dcfff;">
+                    <i data-lucide="cup-soda" class="chapter-icon" style="color: #7dcfff;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 6 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #e0af68;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">06</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="cloud" class="w-3 h-3"></i>
+                        Capitulo VI
+                    </div>
+                    <h3 class="chapter-title">Llevándolo a la nube.</h3>
+                    <div class="chapter-date">Octubre, 2025</div>
+                    <div class="chapter-text">
+                        <p>La academia funcionaba, pero todo el progreso se guardaba localmente. Si alguien cambiaba de dispositivo, perdía todo. Si el navegador se actualizaba, puff, todo se perdía. Eso no podía seguir así.</p>
+                        <p>Amelia tomó el control del backend como un general toma una fortaleza. Configuró Firebase Firestore, reestructuró la arquitectura de datos, creó el sistema de autenticación, y convirtió todo en algo que sobrevivía entre sesiones.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #e0af68;">
+                    <i data-lucide="cloud-cog" class="chapter-icon" style="color: #e0af68;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 7 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #bb9af7;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">07</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="zap" class="w-3 h-3"></i>
+                        Capitulo VII
+                    </div>
+                    <h3 class="chapter-title">Todo en vivo.</h3>
+                    <div class="chapter-date">Noviembre, 2025</div>
+                    <div class="chapter-text">
+                        <p>Amelia implementó sincronización en tiempo real. Abrió dos ventanas del navegador, completó un nivel en una, y casi al instante, la tabla de posiciones en la otra se actualizó sola. Sin refrescar. Sin recargar. Sin magia visible. Solo código bien hecho.</p>
+                        <p>Agregamos un leaderboard en vivo, un sistema de logros que daba satisfacción instantánea, y una Sala de Trofeos para los que llegaban primero. Ya no era solo una plataforma de cursos. Era una experiencia.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #bb9af7;">
+                    <i data-lucide="radio" class="chapter-icon" style="color: #bb9af7;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 8 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #ff9e64;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">08</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                        Capitulo VIII
+                    </div>
+                    <h3 class="chapter-title">Cuando todo dejó de funcionar.</h3>
+                    <div class="chapter-date">Finales de Noviembre, 2025</div>
+                    <div class="chapter-text">
+                        <p>Después de migrar todo a la nube con fanfarrias y confeti imaginarios, algo salió terriblemente mal. El mapa de niveles no aparecía, los perfiles no cargaban, y había errores por todas partes como si un gato hubiera caminado sobre el teclado.</p>
+                        <p>Pasamos horas revisando cada línea de código, tomando café como si fuera agua. Amelia encontró el primer problema: una función que nunca se estaba ejecutando. Lo arreglamos y los niveles aparecieron. Para la una de la mañana, todo funcionaba.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #ff9e64;">
+                    <i data-lucide="bug" class="chapter-icon" style="color: #ff9e64;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 9 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #f7768e;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">09</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="gem" class="w-3 h-3"></i>
+                        Capitulo IX
+                    </div>
+                    <h3 class="chapter-title">El rubí que faltaba.</h3>
+                    <div class="chapter-date">Enero, 2026</div>
+                    <div class="chapter-text">
+                        <p>Empezamos el año con una idea loca: no bastaba con Python y Web. Queríamos que Status Code 418 fuera una academia de verdad. Así que Amelia sugirió agregar Ruby.</p>
+                        <p>El curso de Ruby creció hasta convertirse en algo impresionante. Con su sintaxis elegante y misteriosa, sus gemas brillantes, y esa filosofía de "hay más de una forma de hacerlo".</p>
+                        <p>Y no paramos ahí. También agregamos Database, el curso de Introducción para absolute beginners, y mejoramos el de Web hasta que brilló como nunca antes.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #f7768e;">
+                    <i data-lucide="gem" class="chapter-icon" style="color: #f7768e;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 10 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #9ece6a;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">10</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="palette" class="w-3 h-3"></i>
+                        Capitulo X
+                    </div>
+                    <h3 class="chapter-title">Vanidad 101.</h3>
+                    <div class="chapter-date">Febrero, 2026</div>
+                    <div class="chapter-text">
+                        <p>Los cursos estaban completos, el sistema funcionaba, pero algo faltaba. Personalidad. Expresión. Una forma de que cada usuario se sintiera único dentro de la academia.</p>
+                        <p>Así que nacieron los cosméticos. Auras que brillan alrededor del avatar, fondos personalizados para el perfil, efectos visuales que hacen que cada usuario sea irrepetible.</p>
+                        <p>"Los cosméticos no dan poderes", le dije a Amelia. "No", respondió ella, "dan estatus. Y el estatus es poder."</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #9ece6a;">
+                    <i data-lucide="sparkles" class="chapter-icon" style="color: #9ece6a;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 11 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #bb9af7;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">11</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="crown" class="w-3 h-3"></i>
+                        Capitulo XI
+                    </div>
+                    <h3 class="chapter-title">La academia se completa.</h3>
+                    <div class="chapter-date">Abril, 2026</div>
+                    <div class="chapter-text">
+                        <p>Ocho meses. Ocho meses desde aquel primer index.html hasta esto. Status Code 418 ya no es un proyecto. Es una academia. Una comunidad. Un lugar donde gente de todas partes viene a aprender programación.</p>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>7 Cursos: Web, Python, Ruby, Database, Intro</span>
                             </div>
-                            <div class="absolute -bottom-2 -right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">Frontend</div>
-                        </div>
-                        <div class="flex-1 text-center md:text-left">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                                <h3 class="text-2xl font-bold text-white">Steven</h3>
-                                <span class="text-sm font-mono text-blue-400 px-3 py-1 bg-blue-500/10 rounded-full">EL DESARROLLADOR</span>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Infraestructura Firebase en la nube</span>
                             </div>
-                            <p class="text-gray-300 mt-3">
-                                Encargado del diseño visual, experiencia de usuario y la implementación frontend. Transforma ideas en interfaces funcionales, priorizando la estética y usabilidad.
-                            </p>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Sistema de Logros con 60+ recompensas</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Modo Sandbox para practicar codigo</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Chat en tiempo real entre usuarios</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Tienda de Auras y cosmeticos unicos</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Fondos personalizados y temas</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Hub de Desafios con 3 tipos de juegos</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Sistema de Monedas y XP</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Panel de Estudiantes</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Guia Kurumi para aprender</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span>Leaderboards en vivo</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Amelia -->
-                <div onclick="window.location.href='perfil_usuario.html?id=amelia'" class="glass-card p-8 rounded-2xl border border-red-500/30 hover:border-red-500/60 transition-all duration-300 cursor-pointer group hover:transform hover:-translate-y-1">
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-                        <div class="relative">
-                            <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-red-500/50 group-hover:border-red-500 transition-colors">
-                                <img src="https://cdn.myanimelist.net/images/characters/8/239523.jpg" class="w-full h-full object-cover">
-                            </div>
-                            <div class="absolute -bottom-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Backend</div>
-                        </div>
-                        <div class="flex-1 text-center md:text-left">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                                <h3 class="text-2xl font-bold text-white">Amelia</h3>
-                                <span class="text-sm font-mono text-red-400 px-3 py-1 bg-red-500/10 rounded-full">LA ARQUITECTA</span>
-                            </div>
-                            <p class="text-gray-300 mt-3">
-                                Responsable de la infraestructura backend, lógica de negocio y sincronización en tiempo real. Asegura que la plataforma sea escalable, segura y funcione sin problemas.
-                            </p>
-                        </div>
-                    </div>
+                <div class="chapter-visual" style="--chapter-color: #bb9af7;">
+                    <i data-lucide="building-2" class="chapter-icon" style="color: #bb9af7;"></i>
                 </div>
             </div>
-            
-            <div class="glass-card p-8 rounded-2xl border border-gray-700/30 mt-6 text-center">
-                <p class="text-lg text-gray-300">
-                    <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500">Steven + Amelia = Status Code 418</span>
-                </p>
-            </div>
-        </section>
+        </div>
 
-    </main>
+        <!-- Capítulo 12 -->
+        <div class="chapter-card fade-in" style="--chapter-color: #7dcfff;">
+            <div class="chapter-accent"></div>
+            <span class="chapter-number">12</span>
+            <div class="chapter-content">
+                <div>
+                    <div class="chapter-meta">
+                        <i data-lucide="swords" class="w-3 h-3"></i>
+                        Capitulo XII
+                    </div>
+                    <h3 class="chapter-title">El campo de batalla.</h3>
+                    <div class="chapter-date">Abril, 2026</div>
+                    <div class="chapter-text">
+                        <p>Los cursos están bien, pero aprender sin practicar es como leer libros de karate sin nunca pelear. Así que Amelia tuvo otra idea brillante: un Hub de Desafíos donde poner a prueba todo lo aprendido.</p>
+                        <p>Nació el sistema de desafíos con tres modalidades distintas:</p>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                            <span style="padding: 0.35rem 0.75rem; border-radius: 6px; background: rgba(125, 207, 255, 0.2); color: #7dcfff; font-size: 0.8rem; font-weight: 600;">Puzzles</span>
+                            <span style="padding: 0.35rem 0.75rem; border-radius: 6px; background: rgba(255, 158, 100, 0.2); color: #ff9e64; font-size: 0.8rem; font-weight: 600;">Bug Hunters</span>
+                            <span style="padding: 0.35rem 0.75rem; border-radius: 6px; background: rgba(224, 175, 104, 0.2); color: #e0af68; font-size: 0.8rem; font-weight: 600;">Predice la Salida</span>
+                        </div>
+                        <p style="margin-top: 1rem;">Cada nivel completado otorga XP y monedas para la tienda. Ya no era solo aprender. Era demostrar que realmente sabías.</p>
+                    </div>
+                </div>
+                <div class="chapter-visual" style="--chapter-color: #7dcfff;">
+                    <i data-lucide="gamepad-2" class="chapter-icon" style="color: #7dcfff;"></i>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ========== PERSONAJES ========== -->
+    <section id="characters" class="characters-section">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Los Protagonistas</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <!-- Steven -->
+        <div class="character-card fade-in" style="--char-color: #7aa2f7;" onclick="window.location.href='perfil_usuario.html?id=steven'">
+            <div class="character-avatar" style="--char-color: #7aa2f7;">
+                <img src="https://i.ibb.co/9HGqpf0B/Captura-de-pantalla-2025-06-21-205156.png" alt="Steven">
+                <span class="character-role" style="background: #7aa2f7;">Frontend</span>
+            </div>
+            <div class="character-info">
+                <h3 class="character-name">Steven</h3>
+                <p class="character-title">EL DESARROLLADOR</p>
+                <p class="character-desc">Encargado del diseño visual, experiencia de usuario y la implementación frontend. Transforma ideas en interfaces funcionales, priorizando la estética y usabilidad. Cuando no está acomodando píxeles, está pensando en cómo acomodar más píxeles.</p>
+            </div>
+        </div>
+
+        <!-- Amelia -->
+        <div class="character-card fade-in" style="--char-color: #f7768e;" onclick="window.location.href='perfil_usuario.html?id=amelia'">
+            <div class="character-avatar" style="--char-color: #f7768e;">
+                <img src="https://cdn.myanimelist.net/images/characters/8/239523.jpg" alt="Amelia">
+                <span class="character-role" style="background: #f7768e;">Backend</span>
+            </div>
+            <div class="character-info">
+                <h3 class="character-name">Amelia</h3>
+                <p class="character-title">LA ARQUITECTA</p>
+                <p class="character-desc">Responsable de la infraestructura backend, lógica de negocio y sincronización en tiempo real. Asegura que la plataforma sea escalable, segura y funcione sin problemas. Cuando el código falla, ella es quien encuentra el why.</p>
+            </div>
+        </div>
+
+        <div class="team-banner fade-in">
+            <p class="team-formula">Steven + Amelia = Status Code 418</p>
+            <p class="team-tagline">Dos mentes, una tetera, 418 errores y contando.</p>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="text-center text-gray-600 text-sm pb-8 font-mono">
-        &copy; 2025 Status Code 418.
+    <footer class="footer">
+        <p class="footer-logo">Status Code <span style="color: var(--tokyo-magenta);">418</span></p>
+        <p class="footer-copy">2025-2026. I'm a teapot.</p>
     </footer>
 
     <script>
-        // Inicializar iconos de Lucide
         lucide.createIcons();
 
-        // Crear partículas animadas
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            if (!particlesContainer) return;
-            
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Tamaño aleatorio
-                const size = Math.random() * 6 + 1;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // Posición inicial aleatoria
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                
-                // Retraso de animación aleatorio
-                particle.style.animationDelay = `${Math.random() * 15}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Navegación por puntos
-        function setupNavigation() {
-            const dots = document.querySelectorAll('.nav-dot');
-            const sections = document.querySelectorAll('section[id], #header');
-            
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    const sectionId = dot.getAttribute('data-section');
-                    const targetSection = sectionId === 'header' 
-                        ? document.getElementById('header') 
-                        : document.getElementById(sectionId);
-                    
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
+        // Navegación
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const section = item.dataset.section;
+                document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
             });
-            
-            // Actualizar punto activo al hacer scroll
-            window.addEventListener('scroll', () => {
-                let current = '';
-                
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    
-                    if (scrollY >= (sectionTop - 300)) {
-                        current = section.getAttribute('id') || 'header';
-                    }
-                });
-                
-                dots.forEach(dot => {
-                    dot.classList.remove('active');
-                    if (dot.getAttribute('data-section') === current) {
-                        dot.classList.add('active');
-                    }
-                });
-            });
-        }
-
-        // Animar elementos al entrar en vista
-        function setupScrollAnimations() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            document.querySelectorAll('.fade-in-up').forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            setupNavigation();
-            setupScrollAnimations();
-            
-            // Cargar avatar de Steven si está logueado
-            const savedUser = localStorage.getItem('currentUser');
-            if(savedUser) {
-                try {
-                    const user = JSON.parse(savedUser);
-                    if(user.name && user.name.toLowerCase().includes('steven')) {
-                        const stevenImg = document.getElementById('steven-story-img');
-                        if(stevenImg && user.avatar) stevenImg.src = user.avatar;
-                    }
-                } catch(e) {}
-            }
-
-            // Trigger para el achievement "teapot"
-            const headerTitle = document.querySelector('h1 span');
-            if(headerTitle) {
-                let clicks = 0;
-                headerTitle.addEventListener('click', () => {
-                    clicks++;
-                    if(clicks === 5) {
-                        // checkAchievement('teapot'); // Descomentar cuando exista el archivo
-                        alert("I'm a teapot!");
-                    }
-                });
-            }
         });
+
+        // Scroll spy para navegación
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 300) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Animaciones al scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>

@@ -8,25 +8,39 @@ import { db } from "./firebase-config.js";
 
 // === ACHIEVEMENT DEFINITIONS ===
 export const achievements = [
-    // --- BASICS ---
+    // --- BÁSICOS ---
     { id: 'first_login', name: 'Hola Mundo', desc: 'Inicia sesión por primera vez.', hint: 'El primer paso siempre es el más difícil.', rarity: 'common', icon: 'log-in' },
     { id: 'first_blood', name: 'First Blood', desc: 'Completa el Nivel 1 de cualquier curso.', hint: 'Supera el primer cuestionario.', rarity: 'common', icon: 'sword' },
+    { id: 'profile_updated', name: 'Nueva Identidad', desc: 'Cambia tu nombre desde el Perfil.', hint: 'Reinventarse.', rarity: 'common', icon: 'user-cog' },
+    { id: 'explorer', name: 'Visitante', desc: 'Explora 5 páginas diferentes de la academia.', hint: 'Descubre todo lo que hay.', rarity: 'common', icon: 'compass' },
     
-    // --- COURSES ---
+    // --- CURSOS ---
     { id: 'polyglot_starter', name: 'Políglota Curioso', desc: 'Inicia los 4 cursos.', hint: 'Python, Ruby, Web, DB... ¿por qué elegir?', rarity: 'common', icon: 'languages' },
     { id: 'half_way', name: 'A Medio Camino', desc: 'Alcanza el Nivel 10 de cualquier curso.', hint: 'Ya estás entendiendo la lógica de los lenguajes.', rarity: 'rare', icon: 'zap' },
+    { id: 'bug_master', name: 'Maestro Cazador', desc: 'Completa 5 niveles de Bug Hunter.', hint: 'Encuentra los errores ocultos.', rarity: 'rare', icon: 'bug' },
     
+    // --- MAESTROS ---
     { id: 'web_master', name: 'Lord of the DOM', desc: 'Completa el curso de Desarrollo Web.', hint: 'Domina el HTML y CSS.', rarity: 'epic', icon: 'globe' },
     { id: 'python_master', name: 'Parsel Tongue', desc: 'Completa el curso de Python.', hint: 'Habla con las serpientes.', rarity: 'epic', icon: 'code-2' },
     { id: 'ruby_master', name: 'Gem Collector', desc: 'Completa el curso de Ruby.', hint: 'Brilla como un rubí.', rarity: 'epic', icon: 'gem' },
     { id: 'db_master', name: 'Query King', desc: 'Completa el curso de Bases de Datos.', hint: 'SELECT * FROM knowledge.', rarity: 'epic', icon: 'database' },
     
-    // --- EXPERT ---
+    // --- DESAFÍOS ---
+    { id: 'quiz_genius', name: 'Cerebro Supremo', desc: 'Consigue 10/10 en el Examen Final (Nivel 20).', hint: 'No margen de error en el nivel definitivo.', rarity: 'legendary', icon: 'brain' },
     { id: 'sandbox_explorer', name: 'Hacker de Sandbox', desc: 'Abre el entorno de pruebas Sandbox.', hint: 'Experimentar fuera del curso.', rarity: 'rare', icon: 'terminal' },
-    { id: 'quiz_genius', name: 'Cerebro Supremo', desc: 'Consigue 10/10 puntos en el Examen Final (Nivel 20).', hint: 'No margen de error en el nivel definitivo.', rarity: 'legendary', icon: 'brain' },
-    { id: 'profile_updated', name: 'Nueva Identidad', desc: 'Cambiarse el nombre desde el Perfil.', hint: 'Reinventarse.', rarity: 'common', icon: 'user-cog' },
-
-    // --- DIVINE ACHIEVEMENTS (Founders) ---
+    
+    // --- TIENDA ---
+    { id: 'buyer', name: 'Comprador', desc: 'Compra tu primer aura en la tienda.', hint: 'Invierte en tu estilo.', rarity: 'common', icon: 'shopping-cart' },
+    { id: 'collector', name: 'Coleccionista', desc: 'Posee 5 auras diferentes.', hint: 'Variedad es el arte.', rarity: 'rare', icon: 'gem' },
+    
+    // --- SOCIAL ---
+    { id: 'social_butterfly', name: 'Sociable', desc: 'Envía tu primer mensaje en el chat.', hint: 'Conéctate con otros.', rarity: 'common', icon: 'message-circle' },
+    
+    // --- RACHA ---
+    { id: 'streak_3', name: 'Consistente', desc: 'Completa 1 nivel por día durante 3 días seguidos.', hint: 'La práctica diaria hace al maestro.', rarity: 'rare', icon: 'flame' },
+    { id: 'streak_7', name: 'Dedicado', desc: 'Mantén una racha de 7 días completos.', hint: 'Una semana de dedicación.', rarity: 'epic', icon: 'trophy' },
+    
+    // --- ESPECIAL (Fundadores) ---
     { id: 'steven_moon', name: 'Mi Luna', desc: 'Solo hay una luna en este cielo...', hint: 'Una recompensa por un momento especial.', rarity: 'legendary', icon: 'moon-star' },
     { id: 'marriage_contract', name: 'Mi Prometido', desc: 'Un juramento que el tiempo no podrá borrar.', hint: 'Para el dueño de mis latidos.', rarity: 'legendary', icon: 'heart' },
     { id: 'founder_stalker', name: 'Stalker', desc: 'Visitaste a los creadores.', hint: 'Visitaste los perfiles de Steven y Amelia.', rarity: 'rare', icon: 'eye' }
@@ -133,7 +147,16 @@ function showToast(achId, reward) {
 
 // === GLOBAL LISTENERS ===
 export function initAchievementListeners() {
-    // 4. FOUNDER STALKER CHECK
+    // 1. EXPLORER - Rastrear páginas visitadas
+    const visitedPages = JSON.parse(localStorage.getItem('visitedPages') || '[]');
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    if (!visitedPages.includes(currentPage)) {
+        visitedPages.push(currentPage);
+        localStorage.setItem('visitedPages', JSON.stringify(visitedPages));
+        if (visitedPages.length >= 5) checkAchievement('explorer');
+    }
+    
+    // 2. FOUNDER STALKER CHECK
     if (window.location.href.includes('perfil_usuario.html')) {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get('id') || urlParams.get('user');
@@ -147,4 +170,118 @@ export function initAchievementListeners() {
             }
         }
     }
+    
+    // 3. PROFILE UPDATED - Se llama desde perfil_usuario.html cuando renombra
+    window.checkProfileUpdated = () => checkAchievement('profile_updated');
+    
+    // 4. BUG MASTER - Se llama desde los challenges
+    window.checkBugMaster = () => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) return;
+        const bugLevels = currentUser.challengeProgress?.bug_hunter || 0;
+        if (bugLevels >= 5) checkAchievement('bug_master');
+    };
+    
+    // 5. BUYER - Se llama desde la tienda
+    window.checkBuyerAchievement = () => checkAchievement('buyer');
+    
+    // 6. COLLECTOR - Se llama cuando equipar aura
+    window.checkCollectorAchievement = () => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) return;
+        const inventory = currentUser.inventory?.auras || [];
+        if (inventory.length >= 5) checkAchievement('collector');
+    };
+    
+    // 7. SOCIAL BUTTERFLY - Se llama desde chat
+    window.checkSocialAchievement = () => checkAchievement('social_butterfly');
+    
+    // 8. STREAK - Se llama cuando completa un nivel
+    window.checkStreakAchievement = () => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) return;
+        
+        const today = new Date().toDateString();
+        const lastActive = currentUser.lastActiveDate;
+        const streak = currentUser.streak || 0;
+        
+        if (lastActive === today) return; // Ya activity hoy
+        
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        let newStreak = 1;
+        if (lastActive === yesterday.toDateString()) {
+            newStreak = streak + 1;
+        }
+        
+        currentUser.lastActiveDate = today;
+        currentUser.streak = newStreak;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        if (newStreak >= 3) checkAchievement('streak_3');
+        if (newStreak >= 7) checkAchievement('streak_7');
+    };
+    
+    // 9. SECRET UNLOCKS - Verificar condiciones de secretos
+    window.checkSecretUnlocks = () => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) return;
+        
+        const achievementsList = currentUser.achievements || [];
+        
+        // Verificar Void (10 logros)
+        if (achievementsList.length >= 10) {
+            // Desbloquear aura-secret-void
+            if (!currentUser.inventory?.auras?.includes('aura-secret-void')) {
+                if (!currentUser.inventory) currentUser.inventory = { auras: [] };
+                currentUser.inventory.auras.push('aura-secret-void');
+                checkAchievement('secret_void');
+            }
+        }
+        
+        // Verificar Course Completions para secretos
+        const webLevels = currentUser.webProgress?.completedLevels?.length || 0;
+        const pyLevels = currentUser.pythonProgress?.completedLevels?.length || 0;
+        
+        if (webLevels >= 20) {
+            if (!currentUser.inventory?.auras?.includes('aura-secret-hacker')) {
+                if (!currentUser.inventory) currentUser.inventory = { auras: [] };
+                currentUser.inventory.auras.push('aura-secret-hacker');
+            }
+        }
+        
+        if (pyLevels >= 20) {
+            if (!currentUser.inventory?.auras?.includes('aura-secret-fire')) {
+                if (!currentUser.inventory) currentUser.inventory = { auras: [] };
+                currentUser.inventory.auras.push('aura-secret-fire');
+            }
+        }
+    };
 }
+
+// Konami Code Listener
+let konamiCode = ['w', 'a', 's', 'd', 'a', 'b', 'a', 'b'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+    if (key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                if (!currentUser.inventory) currentUser.inventory = { auras: [] };
+                if (!currentUser.inventory.auras.includes('aura-secret-nature')) {
+                    currentUser.inventory.auras.push('aura-secret-nature');
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    checkAchievement('secret_nature');
+                    alert('✨ ¡Secreto desbloqueado! Has obtenido el aura Life Cycle');
+                }
+            }
+            konamiIndex = 0;
+        }
+    } else {
+        konamiIndex = 0;
+    }
+});

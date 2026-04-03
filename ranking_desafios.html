@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salón del Prestigio - Academia</title>
+    <link rel="stylesheet" href="assets/css/tailwind.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script type="module" src="assets/js/firebase-secondary.js"></script>
+
+    <style>
+        :root {
+            --bg-tokyo: #1a1b26;
+            --fg-tokyo: #a9b1d6;
+            --card-tokyo: rgba(36, 40, 59, 0.7);
+            --border-tokyo: rgba(65, 72, 104, 0.4);
+            
+            /* Tokyo Night Accents */
+            --blue: #7aa2f7;
+            --cyan: #7dcfff;
+            --magenta: #bb9af7;
+            --pink: #f7768e;
+            --green: #9ece6a;
+            --yellow: #e0af68;
+            --orange: #ff9e64;
+
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            color: var(--fg-tokyo);
+            font-family: var(--font-sans);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ========== FONDO ANIMADO ========== */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .background-day, .background-night {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1s ease;
+        }
+        .background-day { background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif'); }
+        .background-night { background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif'); }
+        .dark .background-night { opacity: 1; }
+        .background-day { opacity: 1; }
+
+        /* ========== OVERLAY Y TOPBAR ========== */
+        .page-wrapper {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, rgba(26,27,38,0.3) 0%, rgba(26,27,38,0.9) 100%);
+        }
+
+        .refined-topbar {
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(26, 27, 38, 0.4);
+            backdrop-filter: blur(12px);
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--fg-tokyo);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .back-nav:hover { color: var(--magenta); }
+
+        /* ========== ELEGANT RANKING MAIN CONTENT ========== */
+        .ranking-container {
+            flex: 1;
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .header-title h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--magenta) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-title p {
+            font-size: 1.1rem;
+            color: var(--fg-tokyo);
+            opacity: 0.7;
+        }
+
+        /* ========== PODIUM SECTION ========== */
+        .podium-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            height: 350px;
+            padding: 0 2rem;
+        }
+
+        .podium-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .podium-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .podium-card .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: -15px; /* Pull it up out of the card slightly visually by overlapping */
+            position: absolute;
+            top: -45px;
+            border: 4px solid var(--bg-tokyo);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background: var(--card-tokyo);
+        }
+
+        .podium-card.rank-1 {
+            height: 280px; /* Tallest */
+            border-color: rgba(224, 175, 104, 0.3);
+            box-shadow: 0 0 40px rgba(224, 175, 104, 0.1), inset 0 0 20px rgba(224, 175, 104, 0.05);
+        }
+        .podium-card.rank-1 .avatar { border-color: var(--yellow); width: 110px; height: 110px; top: -55px; }
+        
+        .podium-card.rank-2 {
+            height: 240px;
+            border-color: rgba(125, 207, 255, 0.2);
+        }
+        .podium-card.rank-2 .avatar { border-color: var(--cyan); }
+
+        .podium-card.rank-3 {
+            height: 210px;
+            border-color: rgba(255, 158, 100, 0.2);
+        }
+        .podium-card.rank-3 .avatar { border-color: var(--orange); }
+
+        .podium-content {
+            margin-top: 3.5rem; /* Space for the absolute avatar */
+            width: 100%;
+        }
+        .rank-1 .podium-content { margin-top: 4.5rem; }
+
+        .user-name { font-weight: 600; font-size: 1.25rem; color: #fff; margin-bottom: 0.25rem; }
+        .user-xp { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--blue); }
+        .rank-1 .user-xp { color: var(--yellow); font-size: 2rem;}
+        
+        .user-stats {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--fg-tokyo);
+            font-size: 0.85rem;
+            opacity: 0.8;
+            background: rgba(0,0,0,0.2);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        .user-stats i { color: var(--magenta); width: 14px;}
+
+        /* ========== LIST SECTION ========== */
+        .ranking-list {
+            background: rgba(36, 40, 59, 0.4);
+            border: 1px solid var(--border-tokyo);
+            border-radius: 20px;
+            backdrop-filter: blur(24px);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .list-header {
+            display: grid;
+            grid-template-columns: 60px 2fr 1fr 1fr;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--fg-tokyo);
+            font-weight: 600;
+            opacity: 0.6;
+        }
+
+        .list-row {
+            display: grid;
+            grid-template-columns: 60px 2fr 1fr 1fr;
+            padding: 1.25rem 2rem;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            transition: background 0.2s;
+        }
+        .list-row:hover { background: rgba(255,255,255,0.02); }
+        .list-row:last-child { border-bottom: none; }
+
+        .row-rank { font-family: var(--font-mono); font-size: 1.1rem; color: var(--border-tokyo); font-weight: 700; }
+        
+        .row-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .row-user img {
+            width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+            border: 1px solid var(--border-tokyo);
+        }
+        .row-user span { font-weight: 500; color: #fff; font-size: 1.05rem; }
+
+        .row-flawless { display: flex; align-items: center; gap: 0.5rem; color: var(--magenta); font-size: 0.95rem; }
+        .row-flawless i { width: 16px; }
+
+        .row-xp { font-family: var(--font-mono); color: var(--blue); font-weight: 600; font-size: 1.1rem; }
+
+        /* Loader */
+        .initial-loader {
+            text-align: center;
+            padding: 4rem;
+            color: var(--magenta);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-container">
+        <div class="background-day"></div>
+        <div class="background-night"></div>
+    </div>
+
+    <div class="page-wrapper">
+        <nav class="refined-topbar">
+            <div class="back-nav" onclick="window.location.href='desafios_hub.html'">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Descender al Hub
+            </div>
+            <div class="text-sm font-mono text-gray-500 tracking-wider">STATUS CODE 418_</div>
+        </nav>
+
+        <main class="ranking-container">
+            <div class="header-title">
+                <h1>Salón del Prestigio</h1>
+                <p>La cúpula arquitectónica donde residen las mentes más brillantes de la Arcadia.</p>
+            </div>
+
+            <!-- Podio dinámico -->
+            <div class="podium-grid" id="podium-container" style="display: none;">
+                <!-- 2do Lugar -->
+                <div class="podium-card rank-2" id="podium-2">
+                    <img src="" class="avatar" id="avatar-2">
+                    <div class="podium-content">
+                        <div class="user-name" id="name-2">Cargando</div>
+                        <div class="user-xp" id="xp-2">--</div>
+                        <div class="user-stats"><i data-lucide="zap"></i> <span id="perfects-2">0</span> perfectas</div>
+                    </div>
+                </div>
+
+                <!-- 1er Lugar -->
+                <div class="podium-card rank-1" id="podium-1">
+                    <img src="" class="avatar" id="avatar-1">
+                    <div class="podium-content">
+                        <div class="user-name" id="name-1">Cargando</div>
+                        <div class="user-xp" id="xp-1">--</div>
+                        <div class="user-stats"><i data-lucide="zap"></i> <span id="perfects-1">0</span> perfectas</div>
+                    </div>
+                </div>
+
+                <!-- 3er Lugar -->
+                <div class="podium-card rank-3" id="podium-3">
+                    <img src="" class="avatar" id="avatar-3">
+                    <div class="podium-content">
+                        <div class="user-name" id="name-3">Cargando</div>
+                        <div class="user-xp" id="xp-3">--</div>
+                        <div class="user-stats"><i data-lucide="zap"></i> <span id="perfects-3">0</span> perfectas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de restantes -->
+            <div class="ranking-list" id="ranking-list-container" style="display: none;">
+                <div class="list-header">
+                    <div>Rango</div>
+                    <div>Estudiante</div>
+                    <div>Flawless Runs</div>
+                    <div>Total XP</div>
+                </div>
+                <div id="list-body">
+                    <!-- Injectado por JS -->
+                </div>
+            </div>
+
+            <div class="initial-loader" id="loader">
+                <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-4"></i>
+                <p class="font-mono text-sm tracking-widest">Sincronizando con ArcadiaDB...</p>
+            </div>
+
+        </main>
+    </div>
+
+    <script type="module">
+        lucide.createIcons();
+        import { getGlobalRanking } from './assets/js/firebase-secondary.js';
+
+        async function initRanking() {
+            try {
+                const rankingData = await getGlobalRanking(50);
+                document.getElementById('loader').style.display = 'none';
+
+                if (!rankingData || rankingData.length === 0) {
+                    renderMockDataFallback();
+                    return;
+                }
+
+                renderRanking(rankingData);
+            } catch (error) {
+                console.error("No se pudo contactar al Firebase secundario:", error);
+                document.getElementById('loader').style.display = 'none';
+                renderMockDataFallback();
+            }
+        }
+
+        function renderRanking(data) {
+            document.getElementById('podium-container').style.display = 'grid';
+            document.getElementById('ranking-list-container').style.display = 'block';
+
+            // Top 3 for podium
+            const top3 = data.slice(0, 3);
+            
+            if (top3[0]) fillPodium(1, top3[0]);
+            if (top3[1]) fillPodium(2, top3[1]);
+            else document.getElementById('podium-2').style.opacity = '0.3';
+            
+            if (top3[2]) fillPodium(3, top3[2]);
+            else document.getElementById('podium-3').style.opacity = '0.3';
+
+            // The rest for the list
+            const theRest = data.slice(3);
+            const listBody = document.getElementById('list-body');
+            
+            if (theRest.length === 0) {
+                listBody.innerHTML = `<div class="p-8 text-center text-gray-500 text-sm">No hay más contendientes en la lista.</div>`;
+            } else {
+                listBody.innerHTML = theRest.map((user, idx) => `
+                    <div class="list-row">
+                        <div class="row-rank">#${idx + 4}</div>
+                        <div class="row-user">
+                            <img src="${user.userAvatar || 'https://ui-avatars.com/api/?name=' + user.userName}">
+                            <span>${user.userName}</span>
+                        </div>
+                        <div class="row-flawless"><i data-lucide="zap"></i> ${user.perfectRuns || 0}</div>
+                        <div class="row-xp">${user.totalXP} XP</div>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        function fillPodium(rank, data) {
+            document.getElementById(`avatar-${rank}`).src = data.userAvatar || 'https://ui-avatars.com/api/?name=' + data.userName;
+            document.getElementById(`name-${rank}`).innerText = data.userName;
+            document.getElementById(`xp-${rank}`).innerText = `${data.totalXP} XP`;
+            document.getElementById(`perfects-${rank}`).innerText = data.perfectRuns || 0;
+        }
+
+        function renderMockDataFallback() {
+            // Un fallback puramente visual para que el usuario aprecie el diseño 
+            // antes de que haya datos reales en la base nueva.
+            const mockData = [
+                { userName: "Steven-san", totalXP: 1420, perfectRuns: 45, userAvatar: "https://ui-avatars.com/api/?name=Steven" },
+                { userName: "Kurumi_Elite", totalXP: 1250, perfectRuns: 30, userAvatar: "https://ui-avatars.com/api/?name=Kurumi" },
+                { userName: "Alex_Code", totalXP: 980, perfectRuns: 15, userAvatar: "https://ui-avatars.com/api/?name=Alex" },
+                { userName: "DevMaster", totalXP: 820, perfectRuns: 10, userAvatar: "https://ui-avatars.com/api/?name=Dev" },
+                { userName: "Junior418", totalXP: 450, perfectRuns: 3, userAvatar: "https://ui-avatars.com/api/?name=Junior" }
+            ];
+            renderRanking(mockData);
+        }
+
+        // Run
+        initRanking();
+
+    </script>
+</body>
+</html>

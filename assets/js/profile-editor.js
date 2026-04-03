@@ -77,15 +77,37 @@ export function openEditProfileModal(userData) {
                                 <!-- Injected via JS -->
                             </div>
                             
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs text-gray-500 whitespace-nowrap">O URL propia:</span>
-                                <input
-                                    type="url"
-                                    id="edit-avatar-url"
-                                    value="${userData.avatar && userData.avatar.startsWith('http') ? userData.avatar : ''}"
-                                    class="w-full bg-transparent border-none text-sm text-gray-300 placeholder-gray-600 focus:ring-0 p-0"
-                                    placeholder="https://..."
-                                >
+                            <div class="space-y-3">
+                                <!-- Subir imagen desde dispositivo -->
+                                <div class="flex items-center gap-2">
+                                    <label for="avatar-upload" class="cursor-pointer px-3 py-2 bg-accent/20 hover:bg-accent/30 text-accent rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+                                        <i data-lucide="upload" class="w-4 h-4"></i>
+                                        Subir imagen
+                                    </label>
+                                    <input type="file" id="avatar-upload" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
+                                    <span id="upload-status" class="text-xs text-gray-500"></span>
+                                </div>
+                                
+                                <!-- Preview de imagen subida -->
+                                <div id="avatar-preview-container" class="hidden items-center gap-3 p-2 bg-[#1a1b26] rounded-lg">
+                                    <img id="avatar-preview" class="w-12 h-12 rounded-full object-cover border-2 border-accent">
+                                    <div class="flex-1">
+                                        <p class="text-xs text-gray-400">Vista previa</p>
+                                        <button type="button" onclick="clearAvatarUpload()" class="text-xs text-red-400 hover:text-red-300">Eliminar</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- URL manual -->
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs text-gray-500 whitespace-nowrap">O URL propia:</span>
+                                    <input
+                                        type="url"
+                                        id="edit-avatar-url"
+                                        value="${userData.avatar && userData.avatar.startsWith('http') ? userData.avatar : ''}"
+                                        class="w-full bg-transparent border-none text-sm text-gray-300 placeholder-gray-600 focus:ring-0 p-0"
+                                        placeholder="https://..."
+                                    >
+                                </div>
                             </div>
                         </div>
 
@@ -280,12 +302,17 @@ export function renderTags() {
 // Guardar cambios
 export async function saveProfileChanges(userId) {
     const bio = document.getElementById('edit-bio').value.trim();
-    const avatarUrl = document.getElementById('edit-avatar-url').value.trim();
+    let avatarUrl = document.getElementById('edit-avatar-url').value.trim();
     const github = document.getElementById('edit-github').value.trim();
     const instagram = document.getElementById('edit-instagram').value.trim();
     const twitter = document.getElementById('edit-twitter').value.trim();
     const linkedin = document.getElementById('edit-linkedin').value.trim();
     const website = document.getElementById('edit-website').value.trim();
+    
+    // Si subió imagen, usar ese URL
+    if (uploadedAvatarDataUrl) {
+        avatarUrl = uploadedAvatarDataUrl;
+    }
     
     const updatedData = {
         bio,
@@ -297,8 +324,8 @@ export async function saveProfileChanges(userId) {
             linkedin,
             website
         },
-        equippedAura: document.getElementById('edit-frame-input').value,
-        // Si hay URL de avatar manual, actualizar también
+        equippedAura: document.getElementById('edit-frame-input')?.value || 'aura-none',
+        // Si hay URL de avatar manual o subida, actualizar
         ...(avatarUrl ? { avatar: avatarUrl } : {})
     };
     
@@ -314,7 +341,7 @@ export async function saveProfileChanges(userId) {
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
         }
         
-        console.log(' Perfil actualizado');
+        console.log('✅ Perfil actualizado');
         closeEditProfileModal();
         
         // Recargar página para ver cambios
@@ -330,3 +357,54 @@ export function initializeModalTags(tags) {
     currentTags = tags || [];
     renderTags();
 }
+
+// ========================================
+// SUBIR IMAGEN DE PERFIL
+// ========================================
+
+let uploadedAvatarDataUrl = null;
+
+window.handleAvatarUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Validar tipo de archivo
+    if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona una imagen válida.');
+        return;
+    }
+    
+    // Validar tamaño (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        alert('La imagen debe ser menor a 2MB.');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedAvatarDataUrl = e.target.result;
+        
+        // Mostrar preview
+        const preview = document.getElementById('avatar-preview');
+        const previewContainer = document.getElementById('avatar-preview-container');
+        const status = document.getElementById('upload-status');
+        
+        if (preview && previewContainer) {
+            preview.src = uploadedAvatarDataUrl;
+            previewContainer.classList.remove('hidden');
+            previewContainer.classList.add('flex');
+            status.textContent = '✓ Imagen seleccionada';
+            status.className = 'text-xs text-green-400';
+        }
+    };
+    
+    reader.readAsDataURL(file);
+};
+
+window.clearAvatarUpload = function() {
+    uploadedAvatarDataUrl = null;
+    document.getElementById('avatar-upload').value = '';
+    document.getElementById('avatar-preview-container').classList.add('hidden');
+    document.getElementById('avatar-preview-container').classList.remove('flex');
+    document.getElementById('upload-status').textContent = '';
+};

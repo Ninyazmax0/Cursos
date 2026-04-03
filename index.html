@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Firebase Modules -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script type="module" src="assets/js/firebase-config.js"></script>
     <script type="module" src="assets/js/firebase-storage.js"></script>
     <script type="module" src="assets/js/data-cleanup.js"></script>
@@ -294,7 +294,7 @@
                 </div>
 
                 <div class="mt-8 text-center md:text-left text-xs text-gray-600">
-                    <p>&copy; 2025 Status Code 418. Hecho con  y mucha cafeína.</p>
+                    <p>&copy; 2025 Status Code 418. Hecho con ❤️ y mucha cafeína.</p>
                 </div>
             </div>
 
@@ -485,10 +485,10 @@
         // This ensures Steven and Amelia are always in the database
         initializePredefinedProfiles()
             .then(() => {
-                console.log(' Perfiles de fundadores verificados');
+                console.log('✅ Perfiles de fundadores verificados');
             })
             .catch(err => {
-                console.warn(' Error iniciando perfiles:', err);
+                console.warn('⚠️ Error iniciando perfiles:', err);
                 // Check specifically for permission errors
                 if (err.code === 'permission-denied' || (err.message && err.message.includes('Missing or insufficient permissions'))) {
                     showGlobalToast(

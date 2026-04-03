@@ -453,8 +453,17 @@
         <main class="main-content">
             <!-- Top Bar -->
             <div class="top-bar">
-                <h1 class="text-3xl font-bold text-white">Mis Cursos</h1>
+                <div class="flex items-center gap-3">
+                    <button class="resume-btn" style="width: auto; padding: 0.5rem; margin-right: 1rem;" onclick="window.location.href='menu_inicio.html'">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-red-500 transition-all hover:scale-105 cursor-default">Arcadia de Desafíos</h1>
+                </div>
                 <div class="flex items-center gap-4">
+                    <!-- Ranking Button -->
+                    <button class="resume-btn" style="padding: 0.4rem 1rem; border-color: #f472b6; color: #f472b6;" onclick="window.location.href='ranking_desafios.html'" title="Salón del Prestigio">
+                        <i data-lucide="trophy" class="w-5 h-5 inline mr-1"></i> Ránking
+                    </button>
                     <!-- Inbox Button -->
                     <button id="inbox-btn" class="relative p-2 rounded-lg hover:bg-white/10 transition-colors" onclick="window.location.href='inbox.html'" title="Bandeja de Entrada">
                         <i data-lucide="inbox" class="w-5 h-5 text-white"></i>
@@ -515,61 +524,56 @@
         import { showGlobalToast } from './assets/js/ui-utils.js';
         window.showGlobalToast = showGlobalToast;
 
-        // Course Data
-        const courses = {
-            arcadia: { 
-                title: "Arcadia de Desafíos", 
-                subtitle: "Minijuegos Rápidos",
-                icon: "gamepad-2", 
-                url: "desafios_hub.html", 
-                color: "bg-pink-500/20",
-                iconColor: "text-pink-400",
-                key: "arcadia"
-            },
-            intro: { 
-                title: "Introducción a la Programación", 
-                subtitle: "Fundamentos de Lógica",
-                icon: "lightbulb", 
-                url: "intro_course.html", 
-                color: "bg-purple-500/20",
-                iconColor: "text-purple-400",
-                key: "intro"
-            },
-            web: { 
-                title: "Desarrollo Web", 
-                subtitle: "HTML · CSS · JavaScript",
-                icon: "code", 
-                url: "web_course.html", 
-                color: "bg-blue-500/20",
-                iconColor: "text-blue-400",
-                key: "web"
-            },
+        // Arcadia Games Data
+        const arcadiaCourses = {
             python: { 
-                title: "Python", 
-                subtitle: "Lógica y Algoritmos",
+                title: "Python Games", 
+                subtitle: "Lógica y Rastreo de Bugs (20 Niveles)",
                 icon: "cpu", 
-                url: "python_course.html", 
+                url: "challenge_python.html", 
                 color: "bg-yellow-500/20",
                 iconColor: "text-yellow-400",
-                key: "python"
+                key: "python",
+                locked: false
             },
-            ruby: { 
-                title: "Ruby on Rails", 
-                subtitle: "Desarrollo Rápido",
-                icon: "gem", 
-                url: "ruby_course.html", 
-                color: "bg-red-500/20",
-                iconColor: "text-red-400",
-                key: "ruby"
+            web: { 
+                title: "Web Builder Pro", 
+                subtitle: "Frontend y DOM (20 Niveles)",
+                icon: "code", 
+                url: "challenge_web.html", 
+                color: "bg-blue-500/20",
+                iconColor: "text-blue-400",
+                key: "web",
+                locked: false
+            },
+            ruby: {
+                title: "Ruby Ninja",
+                subtitle: "Próximamente...",
+                icon: "gem",
+                color: "bg-[rgba(244,63,94,0.1)]",
+                iconColor: "text-rose-400",
+                locked: false,
+                url: "challenge_ruby.html"
             },
             db: { 
-                title: "Bases de Datos", 
-                subtitle: "SQL y Diseño",
+                title: "SQL Detective", 
+                subtitle: "Bases de Datos y SQL (20 Niveles)",
                 icon: "database", 
-                url: "database_course.html", 
+                url: "challenge_db.html", 
                 color: "bg-green-500/20",
                 iconColor: "text-green-400",
-                key: "db"
+                key: "db",
+                locked: false
+            },
+            intro: { 
+                title: "Lógica Pura", 
+                subtitle: "Algoritmos y Pensamiento (20 Niveles)",
+                icon: "lightbulb", 
+                url: "challenge_intro.html", 
+                color: "bg-purple-500/20",
+                iconColor: "text-purple-400",
+                key: "intro",
+                locked: false
             }
         };
 
@@ -686,69 +690,55 @@
 
         function renderCourses(user) {
             const coursesGrid = document.getElementById('courses-grid');
+            coursesGrid.innerHTML = '';
             
-            Object.keys(courses).forEach(key => {
-                const course = courses[key];
-                
-                // Use original structure: webProgress, pythonProgress, rubyProgress, databaseProgress
-                const progressKey = key === 'db' ? 'databaseProgress' : course.key + 'Progress';
-                const progressObj = user[progressKey] || {};
-                
-                // Count completed levels
-                let completedCount = progressObj.completedLevels ? progressObj.completedLevels.length : 0;
-                const totalLevels = 20;
-                
-                if (completedCount > totalLevels) completedCount = totalLevels;
-                
-                // Current unlocked level
-                let currentLevel = progressObj.unlockedLevel || 1;
-                if (currentLevel > totalLevels) currentLevel = totalLevels;
-                
-                let percentage = 0;
-                if (completedCount > 0) {
-                    percentage = Math.min(100, Math.round((completedCount / totalLevels) * 100));
-                }
-                
-                let nextLesson = '';
-                let progressHtml = '';
-                
-                if (key === 'arcadia') {
-                    nextLesson = '¡Pon a prueba tu poder!';
-                    progressHtml = `
-                    <div class="progress-bar-container" style="background: transparent;"></div>
-                    <p class="text-xs text-pink-400 font-bold mb-3"> Games</p>`;
-                } else {
-                    nextLesson = (completedCount === totalLevels) 
-                        ? '¡Curso Completado!' 
-                        : `Siguiente: Nivel ${currentLevel}`;
-                    progressHtml = `
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: ${percentage}%"></div>
-                    </div>
-                    <p class="text-xs text-gray-400 mb-3">${percentage}% Completado</p>`;
-                }
+            Object.keys(arcadiaCourses).forEach(key => {
+                const course = arcadiaCourses[key];
                 
                 const card = document.createElement('div');
                 card.className = 'course-card-new';
-                if (key === 'arcadia') {
-                    card.style.border = '1px solid rgba(236, 72, 153, 0.4)';
-                    card.style.boxShadow = 'inset 0 0 10px rgba(236,72,153,0.1), 0 0 15px rgba(236,72,153,0.1)';
+                card.style.border = '1px solid rgba(236, 72, 153, 0.4)';
+                
+                let buttonHtml = `<button class="resume-btn" style="border-color:#f472b6;color:#f472b6" onclick="window.location.href='${course.url}'">Entrar al Desafío</button>`;
+                
+                if (course.locked) {
+                    card.style.opacity = '0.5';
+                    card.style.filter = 'grayscale(0.5)';
+                    buttonHtml = `<button class="resume-btn" style="opacity:0.6; cursor:not-allowed; border-color:#6b7280; color:#9ca3af" disabled>Próximamente</button>`;
                 }
-                card.id = `course-card-${key}`;
+                
+                card.id = `arcadia-card-${key}`;
                 card.innerHTML = `
                     <div class="course-icon-wrapper ${course.color}">
                         <i data-lucide="${course.icon}" class="w-8 h-8 ${course.iconColor}"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-1">${course.title}</h3>
                     <p class="text-sm text-gray-400 mb-3">${course.subtitle}</p>
-                    ${progressHtml}
-                    <p class="text-sm text-gray-300 mb-4">${nextLesson}</p>
-                    <button class="resume-btn" style="${key==='arcadia'?'border-color:#f472b6;color:#f472b6':''}" onclick="window.location.href='${course.url}'">${key==='arcadia'?'Entrar a la Arcadia':'Continuar'}</button>
+                    <div class="progress-bar-container" style="background: transparent; height: 10px;"></div>
+                    <p class="text-xs text-pink-400 font-bold mb-4">🏆 Niveles Completados: <span class="text-white" id="record-${key}">0 / 20</span></p>
+                    ${buttonHtml}
                 `;
                 coursesGrid.appendChild(card);
             });
             
             lucide.createIcons();
+            
+            // Iniciar sincronización de Progreso con Firebase Secundaria
+            import('./assets/js/firebase-secondary.js').then(async module => {
+                console.log('ArcadiaDB Lista para leer estadísticas');
+                if(module.getUserChallengeProgress) {
+                    const coursesKeys = Object.keys(arcadiaCourses);
+                    for (let cKey of coursesKeys) {
+                        if (!arcadiaCourses[cKey].locked) {
+                            const completados = await module.getUserChallengeProgress(cKey);
+                            const recordTarget = document.getElementById(`record-${cKey}`);
+                            if (recordTarget) {
+                                recordTarget.innerText = `${completados.length} / 20`;
+                            }
+                        }
+                    }
+                }
+            }).catch(e => console.warn('Aun sin firebase-secondary.js', e));
         }
 
         function startRealTimeUpdates() {

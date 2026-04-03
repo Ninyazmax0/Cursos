@@ -68,7 +68,7 @@
                         font-size: 48px;
                         margin-bottom: 15px;
                         animation: float 3s ease-in-out infinite;
-                    "></div>
+                    ">🎓</div>
                     <h2 style="
                         color: #7aa2f7;
                         font-size: 28px;
@@ -121,7 +121,7 @@
                         border-left: 4px solid #ff9e64;
                         border-radius: 8px;
                     ">
-                        <div style="font-size: 24px;"></div>
+                        <div style="font-size: 24px;">⚠️</div>
                         <div>
                             <h3 style="
                                 color: #ff9e64;
@@ -167,7 +167,7 @@
                                 font-size: 13px;
                                 margin: 0;
                                 font-style: italic;
-                            "> Tip: Visita la tienda para personalizar tu perfil con auras exclusivas.</p>
+                            ">✨ Tip: Visita la tienda para personalizar tu perfil con auras exclusivas.</p>
                         </div>
                     </div>
                 </div>

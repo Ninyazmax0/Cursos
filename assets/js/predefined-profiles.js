@@ -13,7 +13,7 @@ const STEVEN_PROFILE = {
     password: 'admin123',
     email: 'steven@statuscode418.dev',
     avatar: 'https://i.ibb.co/9HGqpf0B/Captura-de-pantalla-2025-06-21-205156.png',
-    bio: 'Frontend perfectionist. Si hay un píxel fuera de lugar, no duermo hasta arreglarlo. Fundador de Status Code 418. ',
+    bio: 'Frontend perfectionist. Si hay un píxel fuera de lugar, no duermo hasta arreglarlo. Fundador de Status Code 418. 💙',
     tags: ['Frontend', 'UX/UI', 'Design', 'Perfectionist', 'Coffee'],
     socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: '' },
     isAdmin: true,
@@ -39,7 +39,7 @@ const AMELIA_PROFILE = {
     password: 'admin123',
     email: 'amelia@statuscode418.dev',
     avatar: 'https://cdn.myanimelist.net/images/characters/8/239523.jpg',
-    bio: 'Backend wizard. Drama queen con 5 copias de seguridad de tus copias de seguridad. Coffee addict. Co-fundadora de Status Code 418. ',
+    bio: 'Backend wizard. Drama queen con 5 copias de seguridad de tus copias de seguridad. Coffee addict. Co-fundadora de Status Code 418. 💜',
     tags: ['Backend', 'Firebase', 'Architecture', 'Coffee', 'TypeScript'],
     socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: '' },
     isAdmin: true,
@@ -86,14 +86,14 @@ export async function initializePredefinedProfiles() {
         // Check Steven
         const stevenSnap = await getDoc(stevenRef);
         if (!stevenSnap.exists()) {
-            console.log(' Inicializando perfil de Steven...');
+            console.log('✨ Inicializando perfil de Steven...');
             await setDoc(stevenRef, { ...STEVEN_PROFILE, id: 'steven' });
         }
 
         // Check Amelia
         const ameliaSnap = await getDoc(ameliaRef);
         if (!ameliaSnap.exists()) {
-            console.log(' Inicializando perfil de Amelia...');
+            console.log('✨ Inicializando perfil de Amelia...');
             await setDoc(ameliaRef, { ...AMELIA_PROFILE, id: 'amelia' });
         }
         
@@ -157,9 +157,11 @@ export const PROFILE_AURAS = [
     { id: 'aura-founder-amelia', name: 'The Abyss', cssClass: 'aura-founder-amelia', price: 999999, rarity: 'legendary', unlockCondition: 'is_amelia', desc: 'Reina del Caos.' },
 
     // === TIER 8: SECRET (Hidden Unlocks) ===
-    { id: 'aura-secret-nature', name: 'Life Cycle', cssClass: 'aura-secret-nature', price: 0, rarity: 'secret', unlockCondition: 'secret_konami', desc: 'Hojas que caen eternamente.' },
-    { id: 'aura-secret-fire', name: 'Eternal Flame', cssClass: 'aura-secret-fire', price: 0, rarity: 'secret', unlockCondition: 'secret_fire', desc: 'Nunca se apaga.' },
-    { id: 'aura-secret-hacker', name: 'Zero Day', cssClass: 'aura-secret-hacker', price: 0, rarity: 'secret', unlockCondition: 'secret_hack', desc: '01010101.' },
+    { id: 'aura-secret-nature', name: 'Life Cycle', cssClass: 'aura-secret-nature', price: 0, rarity: 'secret', unlockCondition: 'secret_nature', desc: '🎮 Presiona W,A,S,D,A,B,A,B en el teclado' },
+    { id: 'aura-secret-time', name: 'Chronos', cssClass: 'aura-secret-time', price: 0, rarity: 'secret', unlockCondition: 'secret_time', desc: '⏰ Completa 5 niveles de Bug Hunter' },
+    { id: 'aura-secret-fire', name: 'Eternal Flame', cssClass: 'aura-secret-fire', price: 0, rarity: 'secret', unlockCondition: 'secret_fire', desc: '🐍 Completa todos los niveles de Python' },
+    { id: 'aura-secret-hacker', name: 'Zero Day', cssClass: 'aura-secret-hacker', price: 0, rarity: 'secret', unlockCondition: 'secret_hack', desc: '🌐 Completa todos los niveles de Web' },
+    { id: 'aura-secret-void', name: 'The Void', cssClass: 'aura-secret-void', price: 0, rarity: 'secret', unlockCondition: 'secret_void', desc: '⭐ Consigue 10 logros diferentes' },
     
     // === TIER 9: DIVINE (The Moon) ===
     { id: 'aura-divine-moon', name: 'Luna Eterna', cssClass: 'aura-divine-moon', price: 0, rarity: 'secret', unlockCondition: 'steven_moon', desc: 'La única luna en su cielo nocturno.' },

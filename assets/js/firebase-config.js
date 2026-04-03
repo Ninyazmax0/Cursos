@@ -25,7 +25,7 @@ window.firebaseAnalytics = analytics;
 window.firebaseDb = db;
 window.firebaseStorage = storage;
 
-console.log(' Firebase inicializado correctamente');
+console.log('🔥 Firebase inicializado correctamente');
 
 // ==================== FUNCIONES DE USUARIOS ====================
 
@@ -41,9 +41,9 @@ async function syncUserToFirestore(user) {
             lastUpdated: new Date().toISOString()
         }, { merge: true });
         
-        console.log(' Usuario sincronizado a Firestore:', user.name);
+        console.log('✅ Usuario sincronizado a Firestore:', user.name);
     } catch (error) {
-        console.error(' Error al sincronizar usuario:', error);
+        console.error('❌ Error al sincronizar usuario:', error);
         throw error;
     }
 }
@@ -64,7 +64,7 @@ async function getUserFromFirestore(userId) {
             return null;
         }
     } catch (error) {
-        console.error(' Error al obtener usuario:', error);
+        console.error('❌ Error al obtener usuario:', error);
         return null;
     }
 }
@@ -85,7 +85,7 @@ async function getAllUsersFromFirestore() {
         
         return users;
     } catch (error) {
-        console.error(' Error al obtener usuarios:', error);
+        console.error('❌ Error al obtener usuarios:', error);
         return [];
     }
 }
@@ -105,13 +105,13 @@ function listenToUsers(callback) {
                 users.push(doc.data());
             });
             
-            console.log(' Actualización en tiempo real detectada:', users.length, 'usuarios');
+            console.log('🔥 Actualización en tiempo real detectada:', users.length, 'usuarios');
             callback(users);
         });
         
         return unsubscribe;
     } catch (error) {
-        console.error(' Error al configurar listener:', error);
+        console.error('❌ Error al configurar listener:', error);
         return () => {};
     }
 }
@@ -133,9 +133,9 @@ async function updateCourseProgress(userId, courseKey, progressData) {
             lastUpdated: new Date().toISOString()
         });
         
-        console.log(` Progreso de ${courseKey} actualizado`);
+        console.log(`✅ Progreso de ${courseKey} actualizado`);
     } catch (error) {
-        console.error(' Error al actualizar progreso:', error);
+        console.error('❌ Error al actualizar progreso:', error);
         throw error;
     }
 }
@@ -196,7 +196,7 @@ async function deleteUserFromFirestore(userId) {
         await deleteDoc(userRef);
         console.log('🗑️ Usuario eliminado de Firestore:', userId);
     } catch (error) {
-        console.error(' Error al eliminar usuario:', error);
+        console.error('❌ Error al eliminar usuario:', error);
         throw error;
     }
 }
@@ -260,10 +260,10 @@ async function saveSubmission(submission) {
         // Aseguramos fecha de servidor para ordenamiento fiable si se requiere, 
         // pero por ahora usamos la fecha del cliente o simple string ISO.
         const docRef = await addDoc(submissionsRef, submission);
-        console.log(' Submission guardada en Firestore:', docRef.id);
+        console.log('✅ Submission guardada en Firestore:', docRef.id);
         return docRef.id;
     } catch (error) {
-        console.error(' Error guardando submission:', error);
+        console.error('❌ Error guardando submission:', error);
         throw error;
     }
 }
@@ -325,7 +325,7 @@ async function checkFirestoreConnection() {
         await getDoc(docRef); 
         return true;
     } catch (error) {
-        console.error(" Firestore Check Failed:", error.code, error.message);
+        console.error("🔥 Firestore Check Failed:", error.code, error.message);
         return false;
     }
 }

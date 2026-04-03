@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcadia - Web Games</title>
+    <link rel="stylesheet" href="assets/css/tailwind.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script type="module" src="assets/js/firebase-secondary.js"></script>
+
+    <style>
+        :root {
+            --tokyo-bg: #1a1b26;
+            --tokyo-fg: #a9b1d6;
+            --tokyo-card: #24283b;
+            --tokyo-border: #414868;
+            --tokyo-blue: #7aa2f7;
+            --tokyo-cyan: #7dcfff;
+            --tokyo-magenta: #bb9af7;
+            --tokyo-green: #9ece6a;
+            --tokyo-red: #f7768e;
+            --tokyo-yellow: #e0af68;
+            --tokyo-orange: #ff9e64;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+            height: 100vh;
+            background: var(--tokyo-bg);
+            color: var(--tokyo-fg);
+        }
+
+        /* ========== FONDO ANIMADO ========== */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .background-day, .background-night {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .background-day { background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif'); }
+        .background-night { background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif'); }
+        .dark .background-night { opacity: 1; }
+        .background-day { opacity: 1; }
+
+        /* ========== CONTENT BOX ========== */
+        .content-box {
+            position: fixed;
+            inset: 1.5rem;
+            background: rgba(26, 27, 38, 0.88);
+            border: 1px solid rgba(122, 162, 247, 0.15);
+            border-radius: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(24px) saturate(150%);
+            -webkit-backdrop-filter: blur(24px) saturate(150%);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(122, 162, 247, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        /* ========== VIEWS ========== */
+        .view-panel {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            animation: panelFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .view-panel.active { display: flex; flex-direction: column; }
+
+        @keyframes panelFade {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== LEVEL GRID ========== */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .level-node {
+            aspect-ratio: 1;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-node::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(36, 40, 59, 0.9), rgba(26, 27, 38, 0.9));
+            z-index: -1;
+        }
+
+        .level-node::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            border: 1px solid var(--tokyo-border);
+            transition: all 0.3s;
+            z-index: -1;
+        }
+
+        .level-node.type-puzzle:hover:not(.locked) {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 0 30px rgba(125, 207, 255, 0.3), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .level-node.type-puzzle:hover:not(.locked)::after {
+            border-color: var(--tokyo-cyan);
+            box-shadow: inset 0 0 20px rgba(125, 207, 255, 0.1);
+        }
+
+        .level-node.type-bug_hunter:hover:not(.locked) {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 0 30px rgba(255, 158, 100, 0.3), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .level-node.type-bug_hunter:hover:not(.locked)::after {
+            border-color: var(--tokyo-orange);
+            box-shadow: inset 0 0 20px rgba(255, 158, 100, 0.1);
+        }
+
+        .level-node.locked {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .level-node.completed::after {
+            border-color: var(--tokyo-green) !important;
+            box-shadow: 0 0 20px rgba(158, 206, 106, 0.2) !important;
+        }
+
+        /* ========== GAME ENGINE AREA ========== */
+        .game-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+            padding-bottom: 2rem;
+        }
+
+        /* Código Base Aesthetic */
+        .code-display {
+            background: linear-gradient(145deg, #1a1b26, #16161e);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #c0caf5;
+            border: 1px solid rgba(65, 72, 104, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--tokyo-blue), var(--tokyo-magenta), var(--tokyo-cyan));
+        }
+
+        /* Bug Hunter */
+        .bug-line {
+            display: block;
+            padding: 0.25rem 0.75rem;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            margin-left: -0.75rem;
+        }
+        .bug-line:hover { 
+            background: rgba(255, 158, 100, 0.1);
+            border-left-color: rgba(255, 158, 100, 0.3);
+        }
+        .bug-line.selected { 
+            background: rgba(255, 158, 100, 0.2);
+            border-left-color: var(--tokyo-orange);
+        }
+
+        /* Puzzle Holes */
+        .hole {
+            display: inline-block;
+            min-width: 60px;
+            height: 28px;
+            border-bottom: 2px dashed var(--tokyo-cyan);
+            margin: 0 0.25rem;
+            vertical-align: middle;
+            text-align: center;
+            color: var(--tokyo-cyan);
+            cursor: pointer;
+            background: rgba(26, 27, 38, 0.9);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 4px 4px 0 0;
+            line-height: 28px;
+            font-weight: 500;
+        }
+        .hole:hover { 
+            background: rgba(125, 207, 255, 0.15);
+            border-bottom-style: solid;
+            transform: scale(1.05);
+        }
+        .hole.active { 
+            background: rgba(125, 207, 255, 0.25);
+            border-bottom-style: solid;
+            box-shadow: 0 0 15px rgba(125, 207, 255, 0.4);
+            transform: scale(1.08);
+        }
+        .hole.filled {
+            border-bottom-color: var(--tokyo-green);
+            color: var(--tokyo-green);
+        }
+
+        .output-option.selected {
+            border-color: var(--tokyo-blue);
+            background: rgba(122, 162, 247, 0.15);
+        }
+
+        .output-option.correct {
+            border-color: var(--tokyo-green) !important;
+            background: rgba(158, 206, 106, 0.2) !important;
+            color: var(--tokyo-green) !important;
+        }
+
+        .output-option.incorrect {
+            border-color: var(--tokyo-red) !important;
+            background: rgba(247, 118, 142, 0.2) !important;
+            color: var(--tokyo-red) !important;
+        }
+
+        /* Tools Panel */
+        .tools-panel {
+            background: linear-gradient(145deg, rgba(36, 40, 59, 0.7), rgba(26, 27, 38, 0.7));
+            border-radius: 1rem;
+            padding: 1.25rem;
+            border: 1px solid rgba(65, 72, 104, 0.3);
+        }
+
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tool-btn {
+            background: rgba(26, 27, 38, 0.9);
+            border: 1px solid rgba(122, 162, 247, 0.3);
+            color: var(--tokyo-blue);
+            padding: 0.5rem 0.85rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tool-btn:hover { 
+            background: var(--tokyo-blue);
+            color: #1a1b26;
+            border-color: var(--tokyo-blue);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(122, 162, 247, 0.3);
+        }
+        .tool-btn.selected {
+            background: var(--tokyo-cyan);
+            color: #1a1b26;
+            border-color: var(--tokyo-cyan);
+        }
+
+        /* ========== GRADE OVERLAY ========== */
+        #grade-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 1.25rem;
+        }
+        
+        .grade-box {
+            background: linear-gradient(145deg, rgba(36, 40, 59, 0.95), rgba(26, 27, 38, 0.95));
+            border: 1px solid var(--tokyo-magenta);
+            padding: 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 0 60px rgba(187, 154, 247, 0.25), 0 25px 60px rgba(0,0,0,0.5);
+            max-width: 480px;
+            animation: panelFade 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Particles */
+        #particles-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(65, 72, 104, 0.6); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--tokyo-blue); }
+
+        /* Animations */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(122, 162, 247, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(122, 162, 247, 0.4); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--tokyo-blue), #5b7dd4);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(122, 162, 247, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(26, 27, 38, 0.8);
+            border: 1px solid rgba(122, 162, 247, 0.4);
+            color: var(--tokyo-blue);
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-secondary:hover {
+            background: var(--tokyo-blue);
+            color: #1a1b26;
+            box-shadow: 0 0 20px rgba(122, 162, 247, 0.3);
+        }
+
+        .btn-success {
+            background: rgba(26, 27, 38, 0.8);
+            border: 1px solid rgba(187, 154, 247, 0.4);
+            color: var(--tokyo-magenta);
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-success:hover {
+            background: var(--tokyo-magenta);
+            color: #1a1b26;
+            box-shadow: 0 0 20px rgba(187, 154, 247, 0.3);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-puzzle {
+            background: rgba(125, 207, 255, 0.15);
+            color: var(--tokyo-cyan);
+            border: 1px solid rgba(125, 207, 255, 0.3);
+        }
+        .badge-bug {
+            background: rgba(255, 158, 100, 0.15);
+            color: var(--tokyo-orange);
+            border: 1px solid rgba(255, 158, 100, 0.3);
+        }
+        .badge-completed {
+            background: rgba(158, 206, 106, 0.15);
+            color: var(--tokyo-green);
+            border: 1px solid rgba(158, 206, 106, 0.3);
+        }
+
+        .badge-output {
+            background: rgba(224, 175, 104, 0.15);
+            color: var(--tokyo-yellow);
+            border: 1px solid rgba(224, 175, 104, 0.3);
+        }
+
+        .level-node.type-output:hover:not(.locked) {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 0 30px rgba(224, 175, 104, 0.3), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .level-node.type-output:hover:not(.locked)::after {
+            border-color: var(--tokyo-yellow);
+            box-shadow: inset 0 0 20px rgba(224, 175, 104, 0.1);
+        }
+        .badge-locked {
+            background: rgba(65, 72, 104, 0.2);
+            color: #565f89;
+            border: 1px solid rgba(65, 72, 104, 0.3);
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(36, 40, 59, 0.6), rgba(26, 27, 38, 0.6));
+            border: 1px solid rgba(65, 72, 104, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--tokyo-blue), var(--tokyo-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ========== FIREBASE LOADER ========== */
+        #firebase-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 27, 38, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(122, 162, 247, 0.2);
+            border-top-color: var(--tokyo-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+    </style>
+</head>
+<body>
+    <!-- PANTALLA DE CARGA -->
+    <div id="firebase-loader">
+        <div class="loader-spinner"></div>
+        <h2 class="text-xl font-mono text-white font-bold tracking-wider">Conectando a ArcadiaDB...</h2>
+        <p class="text-[#a9b1d6] mt-2 text-sm text-center">Sincronizando progreso validado en la nube<br>Por favor espera</p>
+    </div>
+
+    <!-- Background Animado idéntico a la academia -->
+    <div class="background-container">
+        <div class="background-day"></div>
+        <div class="background-night"></div>
+    </div>
+    <div id="particles-container"></div>
+
+    <div class="content-box">
+        <!-- Top Bar -->
+        <header class="flex items-center justify-between px-6 py-4 bg-[rgba(36,40,59,0.5)] border-b border-[rgba(187,154,247,0.15)]">
+            <div class="flex items-center gap-4">
+                <button class="btn-secondary" onclick="window.location.href='desafios_hub.html'">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    <span class="hidden sm:inline">Volver</span>
+                </button>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7aa2f7] to-[#bb9af7] flex items-center justify-center">
+                        <i data-lucide="layout" class="w-5 h-5 text-[#1a1b26]"></i>
+                    </div>
+                    <h1 class="text-xl font-bold font-mono tracking-wide">
+                        <span class="text-white">WEB</span><span class="text-[#7dcfff]">_BUILDER</span>
+                    </h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="px-4 py-2 rounded-xl bg-[rgba(36,40,59,0.8)] border border-[rgba(122,162,247,0.2)]">
+                    <span class="text-xs text-[#a9b1d6] font-medium">Completados:</span>
+                    <span id="completed-count" class="ml-2 text-lg font-bold font-mono text-[#bb9af7]">0</span>
+                    <span class="text-[#565f89] text-sm">/20</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN VIEW: Grid Selection -->
+        <div id="view-grid" class="view-panel active p-6">
+            <div class="text-center mb-8 max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold mb-3 text-white">Selección de Desafío</h2>
+                <p class="text-[#a9b1d6]">Demuestra tu conocimiento en Arquitectura Web. La dificultad escala conforme avances en los niveles.</p>
+            </div>
+
+            <div class="level-grid" id="levels-container">
+                <!-- Injectado por JS -->
+            </div>
+        </div>
+
+        <!-- CHALLENGE VIEW: Game Engine -->
+        <div id="view-game" class="view-panel p-6">
+            <div class="max-w-5xl mx-auto w-full mb-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-6 pb-4 border-b border-[rgba(65,72,104,0.4)]">
+                    <div>
+                        <span id="game-subtitle" class="text-xs font-mono tracking-widest uppercase mb-2 block text-[#bb9af7]">NIVEL 1</span>
+                        <h2 id="game-title" class="text-2xl font-bold text-white">Título del Juego</h2>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="px-4 py-2 rounded-xl bg-[rgba(26,27,38,0.9)] border border-[rgba(65,72,104,0.4)]">
+                            <span class="text-xs text-[#a9b1d6] font-mono">INTENTOS:</span>
+                            <span id="game-attempts" class="ml-2 text-white font-bold font-mono">0</span>
+                        </div>
+                    </div>
+                </div>
+                <p id="game-desc" class="text-[#a9b1d6] text-base">Instrucciones aquí.</p>
+            </div>
+
+            <div class="game-container" id="game-container">
+                <!-- Left: Elemento de Juego -->
+                <div class="flex flex-col gap-4">
+                    <div id="code-area" class="code-display"></div>
+                    <div class="flex justify-end">
+                        <button class="btn-primary text-base px-8 py-3" onclick="evaluateGame()">
+                            <i data-lucide="play" class="w-5 h-5"></i>
+                            EVALUAR
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right: Herramientas -->
+                <div id="tools-area" class="tools-panel hidden">
+                    <h3 class="text-xs uppercase tracking-widest mb-4 font-bold border-b border-[rgba(65,72,104,0.4)] pb-3 text-[#7aa2f7]">
+                        <i data-lucide="wrench" class="w-4 h-4 inline mr-2"></i>Comandos Disponibles
+                    </h3>
+                    <div id="tools-list" class="tools-list"></div>
+                    <p class="text-xs text-[#565f89] mt-6 italic">Selecciona un hueco y luego un comando.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SILENT GRADE OVERLAY -->
+        <div id="grade-overlay">
+            <div class="grade-box">
+                <h2 class="text-xs font-mono uppercase tracking-widest text-[#565f89] mb-2">Evaluación Final</h2>
+                <div id="grade-number" class="text-8xl font-black font-mono leading-none mb-4 text-[#bb9af7]">10</div>
+                <p id="grade-feedback" class="text-base text-[#a9b1d6] mb-6 leading-relaxed">¡Feedback aquí!</p>
+                <div class="inline-block mb-6 px-5 py-3 rounded-xl bg-[rgba(26,27,38,0.8)] border border-[rgba(187,154,247,0.3)]">
+                    <p id="grade-xp" class="text-sm font-mono font-bold text-[#bb9af7]">+10 XP REGISTRADOS</p>
+                </div>
+                <button class="btn-success w-full justify-center py-3" onclick="returnToGrid()">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    VOLVER A LA ARENA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        lucide.createIcons();
+        import { saveChallengeScore, getUserChallengeProgress } from './assets/js/firebase-secondary.js';
+
+        const CHALLENGES = [
+            { level: 1, type: "bug_hunter", title: "Cimientos Rotos", subtitle: "NIVEL 1 - PRINCIPIANTE", desc: "El navegador está llorando. Descubre por qué esta etiqueta destruye la página.", codeLines: ["<div class=\"contenedor\">", "    <h1>Título Princiapl</h1>", "    <p>Un texto aquí.</p>", "    <button>Clickeame<button>", "</div>"], solution: 3, solutionExpl: "¡Error! La etiqueta button no se cerró apropiadamente. Debe ser `</button>`." },
+            { level: 2, type: "puzzle", title: "La Trinidad Web", subtitle: "NIVEL 2 - BÁSICO", desc: "Sella los enlaces externos fundamentales para vincular CSS a nuestro documento HTML.", template: "<!DOCTYPE html>\n<html>\n<head>\n    <title>Página</title>\n    <{h1} rel=\"{h2}\" {h3}=\"style.css\">\n</head>\n</html>", holes: { "h1": "link", "h2": "stylesheet", "h3": "href" }, tools: ["link", "script", "stylesheet", "href", "src", "style"] },
+            { level: 3, type: "bug_hunter", title: "Diseño Sangrante", subtitle: "NIVEL 3 - INTERMEDIO", desc: "Una sola gota del código arruinará el vestido. Localiza la regla CSS inválida.", codeLines: [".tarjeta {", "    display: flex;", "    align-items: center;", "    float: center;", "    color: white;", "}"], solution: 3, solutionExpl: "Propiedad Inexistente. En CSS puro, el float solo acepta `left`, `right` o `none`. `center` no existe. Además, usar float dentro de flexbox es contraproducente." },
+            { level: 4, type: "puzzle", title: "El Inyector Lógico", subtitle: "NIVEL 4 - INTERMEDIO", desc: "Inyecta un EventListener dinámico al botón de la página.", template: "const btn = document.query{h1}('#boton');\n\nbtn.{h2}('click', () => {\n    alert('Disparado');\n});", holes: { "h1": "Selector", "h2": "addEventListener" }, tools: ["Select", "Selector", "addEventListener", "onclick", "listen", "Event"] },
+            { level: 5, type: "output", title: "Guerra de Especificidad", subtitle: "NIVEL 5 - INTERMEDIO", desc: "Analiza el CSS e identifica de qué color quedará el texto.", code: "<div id=\"hero\" class=\"box\">\n  <p class=\"text\">Hola</p>\n</div>\n<style>\n  div p { color: blue; }\n  .box .text { color: red; }\n  #hero p { color: green; }\n</style>", options: ["Azul (blue)", "Rojo (red)", "Verde (green)", "Negro"], solution: 2, solutionExpl: "La especificidad es verde: Un ID (`#hero p`) vale 1-0-1 puntos. Las clases (`.box .text`) valen 0-2-0 puntos. El ID gana contundentemente siempre a las clases." },
+            { level: 6, type: "bug_hunter", title: "Referencia Fantasma", subtitle: "NIVEL 6 - INTERMEDIO", desc: "Este Javascript pretende alterar HTML, pero el motor rechaza sintaxis de captura vacía.", codeLines: ["const titulo = document.getElementById(titulo_principal);", "titulo.style.color = 'red';", "titulo.innerHTML = 'Hacheado';", "console.log('Finalizado');"], solution: 0, solutionExpl: "ReferenceError. Si `titulo_principal` no está declarada como variable previa, la función `getElementById` requiere recibir un String literal (entre comillas) con el nombre del ID." },
+            { level: 7, type: "puzzle", title: "Mutación de Nodo", subtitle: "NIVEL 7 - INTERMEDIO", desc: "Crea dinámicamente un elemento de lista <li> desde cero e insértalo.", template: "const li = document.{h1}('{h2}');\nli.{h3} = 'Nuevo Item';\nul.append(li);", holes: { "h1": "createElement", "h2": "li", "h3": "textContent" }, tools: ["createElement", "li", "node", "innerHTML", "textContent", "innerText"] },
+            { level: 8, type: "bug_hunter", title: "Espejismo Flexbox", subtitle: "NIVEL 8 - INTERMEDIO", desc: "Alguien intentó centrar con Flexbox, pero los ejes colindan y el código miente.", codeLines: [".contenedor-centrado {", "    display: flex;", "    justify-content: center;", "    align-items: middle;", "}"], solution: 3, solutionExpl: "Valor Inexistente. `align-items` usa `center` para el centrado transversal. `middle` se utiliza únicamente en flexbox-align legado o vertical-align." },
+            { level: 9, type: "output", title: "Cierres Mentales", subtitle: "NIVEL 9 - AVANZADO", desc: "El infame problema del asincronismo y var. ¿Qué imprimirá este bucle JS?", code: "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 1000);\n}", options: ["0, 1, 2", "3, 3, 3", "0, 0, 0", "Error de memoria"], solution: 1, solutionExpl: "Clásico error de Javascript. `var` no respeta el alcance de bloque. Para cuando el `setTimeout` se dispara, el bucle ya terminó y la variable `i` global quedó en 3." },
+            { level: 10, type: "puzzle", title: "Llamada Asíncrona", subtitle: "NIVEL 10 - AVANZADO", desc: "Termina el ritual de invocación de la API (Fetch).", template: "{h1} function obtener() {\n  const res = {h2} fetch('/api/data');\n  const obj = await res.{h3}();\n}", holes: { "h1": "async", "h2": "await", "h3": "json" }, tools: ["async", "await", "then", "catch", "parse", "json"] },
+            { level: 11, type: "bug_hunter", title: "Destructor de Objetos", subtitle: "NIVEL 11 - AVANZADO", desc: "Una función flecha JS destruye al navegador devolviendo undefined.", codeLines: ["const getUser = () => {", "    nombre: 'Zafkiel',", "    nivel: 99", "};", "console.log(getUser());"], solution: 0, solutionExpl: "Syntax Error. Las funciones flecha confunden las llaves `{ }` con apertura de bloque lógico, NO de objeto. Para devolver un objeto debe ser `() => ({ nombre: 'z' })`." },
+            { level: 12, type: "output", title: "Pirámide Z-Index", subtitle: "NIVEL 12 - AVANZADO", desc: "Presta atención al contexto de apilamiento en CSS para saber quién se dibuja encima.", code: "<div style='position:relative; z-index: 10'>\n    <div style='position:absolute; z-index: 999'>Hijo A</div>\n</div>\n<div style='position:relative; z-index: 20'>\n    <div style='position:absolute; z-index: 1'>Hijo B</div>\n</div>", options: ["Hijo A queda encima", "Hijo B queda encima", "Quedan emparejados", "Hijo A desaparece"], solution: 1, solutionExpl: "Magia del Stacking Context. Al estar en padres relativos, el contexto del Hijo B se monta sobre un padre Z-Index=20, superando matemáticamente al padre Z-Index=10 del Hijo A." },
+            { level: 13, type: "puzzle", title: "Grilla Bidimensional", subtitle: "NIVEL 13 - EXPERTO", desc: "Declara un contenedor CSS Grid de 3 columnas de igual tamaño usando fracciones.", template: ".grid-box {\n    display: {h1};\n    grid-template-columns: {h2}(3, {h3});\n    gap: 10px;\n}", holes: { "h1": "grid", "h2": "repeat", "h3": "1fr" }, tools: ["grid", "flex", "repeat", "1fr", "auto", "columns"] },
+            { level: 14, type: "bug_hunter", title: "Tragedia Prometida", subtitle: "NIVEL 14 - EXPERTO", desc: "Un Async/Await inofensivo está bloqueando fatalmente en lugar de esperar.", codeLines: ["async function cargar() {", "    const userData = fetch('/user');", "    const info = await userData.json();", "    return info;", "}"], solution: 1, solutionExpl: "La letalidad de Await. Al intentar usar `.json()`, estallará porque a `fetch` no le pusieron un `await` inicial, por lo tanto `userData` es una Promesa cruda sin resolver." },
+            { level: 15, type: "output", title: "Bubbling Oculto", subtitle: "NIVEL 15 - EXPERTO", desc: "¿Qué pasará si damos 'clic' exclusivamente a el HIJO?", code: "padre.addEventListener('click', () => print('Padre'));\nhijo.addEventListener('click', (e) => {\n    print('Hijo');\n    e.stopPropagation();\n});", options: ["Padre", "Hijo", "Padre -> Hijo", "Hijo -> Padre"], solution: 1, solutionExpl: "Propagación interceptada. Al ejecutar `e.stopPropagation()` mágicamente impedimos que el evento trepe (Bubble Up) y le avise al elemento Padre." },
+            { level: 16, type: "puzzle", title: "Persistencia Memórica", subtitle: "NIVEL 16 - MAGISTER", desc: "Guarda forzosamente un objeto vivo en el Storage local.", template: "const config = { modo: 'oscuro' };\nlocalStorage.{h1}('config', JSON.{h2}({h3}));", holes: { "h1": "setItem", "h2": "stringify", "h3": "config" }, tools: ["setItem", "getItem", "stringify", "parse", "config", "data"] },
+            { level: 17, type: "bug_hunter", title: "Sombra del Efecto", subtitle: "NIVEL 17 - MAGISTER", desc: "Un hook useEffect falso en React está rompiendo las reglas del render.", codeLines: ["function Componente() {", "    if (usuarioLogueado) {", "        useEffect(() => {", "            cargarData();", "        }, []);", "    }"], solution: 2, solutionExpl: "Regla Violada. Los Hooks de vida de Javascript/React NUNCA deben ejecutarse dentro de bucles condicionales `if` o funciones anidadas." },
+            { level: 18, type: "output", title: "Contexto Desgarrado", subtitle: "NIVEL 18 - LEYENDA", desc: "¿A qué elemento apunta `this` de una función flecha dentro de un objeto tradicional?", code: "const ninja = {\n    nombre: 'Zafkiel',\n    atacar: () => {\n        return this.nombre;\n    }\n};\nconsole.log(ninja.atacar());", options: ["'Zafkiel'", "undefined", "Error absoluto", "Un objeto ninja genérico"], solution: 1, solutionExpl: "Traidor `this`. Las Arrow Functions (=>) NO crean su propio contexto, heredando el exterior (Window/undefined). Jamás deberías usarlas como métodos puros de objetos." },
+            { level: 19, type: "puzzle", title: "Mutación Inmutable", subtitle: "NIVEL 19 - LEYENDA", desc: "Clona profundamente un objeto destructurándolo y editándolo al vuelo.", template: "const a = { x: 1, y: 2 };\nconst b = { {h1}{h2}, y: 99 };\n// b.y es 99 sin alterar 'a'", holes: { "h1": "...", "h2": "a" }, tools: ["...", "*", "a", "object", "clone", "super"] },
+            { level: 20, type: "puzzle", title: "Dios del DOM (Boss Mítico)", subtitle: "NIVEL 20 - DIOS DE LA WEB", desc: "Destruye la lentitud insertando un Fragmento para evitar miles de reflows visuales.", template: "const frac = document.{h1}();\nfor(let i=0; i<100; i++) {\n    let p = document.createElement('p');\n    frac.{h2}(p);\n}\ndocument.body.{h2}({h3});", holes: { "h1": "createDocumentFragment", "h2": "append", "h3": "frac" }, tools: ["createDocumentFragment", "Fragment", "append", "attach", "frac", "div"] }
+        ];
+
+
+        let currentLevel = null;
+        let activeHole = null;
+        let selectedTool = null;
+        let userState = {}; 
+        let attempts = 0;
+        let completedLevels = new Set();
+        
+        const typeConfig = {
+            'puzzle': { icon: 'puzzle', label: 'PUZZLE', class: 'badge-puzzle' },
+            'bug_hunter': { icon: 'bug', label: 'BUG', class: 'badge-bug' },
+            'output': { icon: 'terminal', label: 'OUTPUT', class: 'badge-output' }
+        };
+
+        const grid = document.getElementById('levels-container');
+        CHALLENGES.forEach(c => {
+            const isFirst = c.level === 1;
+            const node = document.createElement('div');
+            node.className = `level-node type-${c.type} ${isFirst ? '' : 'locked'}`;
+            node.id = `node-level-${c.level}`;
+            
+            const config = typeConfig[c.type] || typeConfig['puzzle'];
+            
+            node.innerHTML = `
+                <span class="text-3xl font-bold font-mono text-white mb-1">${c.level}</span>
+                <span class="badge ${isFirst ? config.class : 'badge-locked'}">
+                    <i data-lucide="${isFirst ? config.icon : 'lock'}" class="w-3 h-3"></i>
+                    ${isFirst ? config.label : 'BLOQUEADO'}
+                </span>
+            `;
+            
+            if (isFirst) {
+                node.onclick = () => loadGame(c.level);
+            }
+            
+            grid.appendChild(node);
+        });
+
+        async function initProgress() {
+            const completed = await getUserChallengeProgress("web");
+            completed.forEach(lvl => completedLevels.add(lvl));
+            document.getElementById('completed-count').innerText = completedLevels.size;
+            
+            CHALLENGES.forEach(c => {
+                const node = document.getElementById(`node-level-${c.level}`);
+                if (!node) return;
+                
+                const isCompleted = completedLevels.has(c.level);
+                const isUnlocked = c.level === 1 || completedLevels.has(c.level - 1);
+                const config = typeConfig[c.type] || typeConfig['puzzle'];
+                
+                if (isCompleted) {
+                    node.classList.remove('locked');
+                    node.classList.add('completed');
+                    node.innerHTML = `
+                        <span class="text-3xl font-bold font-mono text-white mb-1">${c.level}</span>
+                        <span class="badge badge-completed">
+                            <i data-lucide="check" class="w-3 h-3"></i>
+                            HECHO
+                        </span>
+                    `;
+                    node.onclick = () => loadGame(c.level);
+                } else if (isUnlocked) {
+                    node.classList.remove('locked');
+                    node.innerHTML = `
+                        <span class="text-3xl font-bold font-mono text-white mb-1">${c.level}</span>
+                        <span class="badge ${config.class}">
+                            <i data-lucide="${config.icon}" class="w-3 h-3"></i>
+                            ${config.label}
+                        </span>
+                    `;
+                    node.onclick = () => loadGame(c.level);
+                }
+            });
+            lucide.createIcons();
+            
+            // Ocultar Loader de Firebase
+            const loader = document.getElementById('firebase-loader');
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }
+        }
+        initProgress();
+
+        window.loadGame = (levelNum) => {
+            const game = CHALLENGES.find(c => c.level === levelNum);
+            currentLevel = game;
+            userState = game.type === 'puzzle' ? { holes: {} } : (game.type === 'output' ? { selected_option: undefined } : { bug_line: null });
+            activeHole = null;
+            selectedTool = null;
+            attempts = 0;
+            document.getElementById('game-attempts').innerText = attempts;
+            
+            document.getElementById('view-grid').classList.remove('active');
+            document.getElementById('view-game').classList.add('active');
+            document.getElementById('game-title').innerText = game.title;
+            document.getElementById('game-subtitle').innerText = game.subtitle;
+            document.getElementById('game-desc').innerText = game.desc;
+            
+            const codeArea = document.getElementById('code-area');
+            const toolsArea = document.getElementById('tools-area');
+            const toolsList = document.getElementById('tools-list');
+            
+            if (game.type === 'bug_hunter') {
+                toolsArea.classList.add('hidden');
+                
+                codeArea.innerHTML = game.codeLines.map((line, idx) => 
+                    `<div class="bug-line" data-idx="${idx}">
+                        <span class="text-[#3b4261] mr-4 w-6 inline-block select-none text-right">${idx+1}</span>
+                        ${line.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/ /g, '&nbsp;')}
+                    </div>`
+                ).join('');
+                
+                document.querySelectorAll('.bug-line').forEach(el => {
+                    el.onclick = () => {
+                        document.querySelectorAll('.bug-line').forEach(e => e.classList.remove('selected'));
+                        el.classList.add('selected');
+                        userState.bug_line = parseInt(el.getAttribute('data-idx'));
+                    };
+                });
+            } else if (game.type === 'puzzle') {
+                toolsArea.classList.remove('hidden');
+                
+                let htmlTemplate = game.template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                Object.keys(game.holes).forEach(holeKey => {
+                    htmlTemplate = htmlTemplate.replace(`{${holeKey}}`, `<span class="hole" data-hole="${holeKey}">___</span>`);
+                });
+                
+                htmlTemplate = htmlTemplate.replace(/\n/g, '<br>').replace(/    /g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+                codeArea.innerHTML = htmlTemplate;
+                
+                toolsList.innerHTML = game.tools.map(tool => 
+                    `<button class="tool-btn" data-tool="${tool}" onclick="selectTool('${tool}')">${tool}</button>`
+                ).join('');
+                
+                document.querySelectorAll('.hole').forEach(el => {
+                    el.onclick = () => {
+                        document.querySelectorAll('.hole').forEach(e => e.classList.remove('active'));
+                        el.classList.add('active');
+                        activeHole = el.getAttribute('data-hole');
+                    };
+                });
+            } else if (game.type === 'output') {
+                toolsArea.classList.add('hidden');
+                
+                codeArea.innerHTML = `
+                    <div class="mb-4 pb-4 border-b border-[rgba(65,72,104,0.3)]">
+                        <span class="text-xs text-[#bb9af7] font-mono uppercase tracking-wider">Código Web</span>
+                    </div>
+                    <pre class="text-sm leading-relaxed">${game.code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                    <div class="mt-5 pt-4 border-t border-[rgba(65,72,104,0.3)]">
+                        <span class="text-xs text-[#7dcfff] font-mono uppercase tracking-wider">¿Qué imprimirá este código?</span>
+                    </div>
+                `;
+                
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'mt-4 space-y-3';
+                optionsContainer.id = 'output-options';
+                
+                game.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'output-option w-full text-left px-4 py-3 rounded-lg border border-[rgba(65,72,104,0.4)] bg-[rgba(26,27,38,0.6)] hover:border-[#7aa2f7] hover:bg-[rgba(122,162,247,0.1)] transition-all duration-200 font-mono text-sm';
+                    btn.innerHTML = `<span class="text-[#565f89] mr-3">►</span> ${opt}`;
+                    btn.onclick = () => {
+                        document.querySelectorAll('.output-option').forEach(e => {
+                            e.classList.remove('border-[#7aa2f7]', 'bg-[rgba(122,162,247,0.15)]', 'text-[#7aa2f7]');
+                            e.querySelector('span').textContent = '►';
+                        });
+                        btn.classList.add('border-[#7aa2f7]', 'bg-[rgba(122,162,247,0.15)]', 'text-[#7aa2f7]');
+                        btn.querySelector('span').textContent = '▶';
+                        userState.selected_option = idx;
+                    };
+                    optionsContainer.appendChild(btn);
+                });
+                
+                codeArea.appendChild(optionsContainer);
+            }
+            lucide.createIcons();
+        };
+
+        window.selectTool = (tool) => {
+            if (!activeHole) return;
+            
+            document.querySelectorAll('.tool-btn').forEach(e => e.classList.remove('selected'));
+            event.target.classList.add('selected');
+            
+            userState.holes[activeHole] = tool;
+            
+            const holeEl = document.querySelector(`.hole[data-hole="${activeHole}"]`);
+            holeEl.innerText = tool;
+            holeEl.classList.remove('active');
+            holeEl.classList.add('filled');
+            activeHole = null;
+            
+            document.querySelectorAll('.tool-btn').forEach(e => e.classList.remove('selected'));
+        };
+
+        window.evaluateGame = async () => {
+            if (currentLevel.type === 'bug_hunter' && userState.bug_line === null) return;
+            if (currentLevel.type === 'output' && userState.selected_option === undefined) return;
+            
+            attempts++;
+            document.getElementById('game-attempts').innerText = attempts;
+            
+            let isCorrect = false;
+            let note = 0;
+            
+            if (currentLevel.type === 'bug_hunter') {
+                isCorrect = (userState.bug_line === currentLevel.solution);
+            } else if (currentLevel.type === 'puzzle') {
+                isCorrect = true;
+                Object.keys(currentLevel.holes).forEach(key => {
+                    if (userState.holes[key] !== currentLevel.holes[key]) isCorrect = false;
+                });
+            } else if (currentLevel.type === 'output') {
+                isCorrect = (userState.selected_option === currentLevel.solution);
+                
+                document.querySelectorAll('.output-option').forEach((btn, idx) => {
+                    btn.disabled = true;
+                    if (idx === currentLevel.solution) {
+                        btn.classList.add('correct');
+                        btn.querySelector('span').textContent = '✓';
+                    } else if (idx === userState.selected_option && !isCorrect) {
+                        btn.classList.add('incorrect');
+                        btn.querySelector('span').textContent = '✗';
+                    }
+                });
+            }
+            
+            if (isCorrect) {
+                if (attempts === 1) note = 10;
+                else if (attempts === 2) note = 8;
+                else if (attempts === 3) note = 6;
+                else note = 3;
+                
+                const isFirstTime = !completedLevels.has(currentLevel.level);
+                showGrade(note, currentLevel.solutionExpl || "Lógica compendiada con éxito.", isFirstTime);
+                if (isFirstTime) {
+                    await saveChallengeScore("web", currentLevel.level, note, currentLevel.type);
+                    completedLevels.add(currentLevel.level);
+                }
+            } else {
+                const ce = document.getElementById('code-area');
+                ce.style.borderColor = "var(--tokyo-red)";
+                setTimeout(() => ce.style.borderColor = "rgba(65, 72, 104, 0.4)", 500);
+            }
+        };
+
+        function showGrade(note, feedbackText, isFirstTime = true) {
+            const overlay = document.getElementById('grade-overlay');
+            const gradeEl = document.getElementById('grade-number');
+            const xpEl = document.getElementById('grade-xp');
+            
+            gradeEl.innerText = note;
+            if (note === 10) {
+                gradeEl.style.color = "var(--tokyo-green)";
+            } else if (note >= 6) {
+                gradeEl.style.color = "var(--tokyo-yellow)";
+            } else {
+                gradeEl.style.color = "var(--tokyo-red)";
+            }
+            
+            const feedback = note === 10 ? "Flawless Execution." : 
+                note >= 6 ? "Ejecución lograda." : 
+                "Funciona, pero hay margen de mejora.";
+                
+            document.getElementById('grade-feedback').innerText = feedback + "\n\n" + feedbackText;
+            
+            if (isFirstTime) {
+                xpEl.innerText = `+${note} XP REGISTRADOS`;
+                xpEl.parentElement.style.borderColor = "rgba(187, 154, 247, 0.3)";
+            } else {
+                xpEl.innerText = `NIVEL YA COMPLETADO`;
+                xpEl.style.color = "var(--tokyo-orange)";
+                xpEl.parentElement.style.borderColor = "rgba(255, 158, 100, 0.3)";
+            }
+            
+            overlay.style.display = 'flex';
+        }
+
+        window.returnToGrid = async () => {
+            document.getElementById('grade-overlay').style.display = 'none';
+            document.getElementById('view-game').classList.remove('active');
+            document.getElementById('view-grid').classList.add('active');
+            
+            document.getElementById('completed-count').innerText = completedLevels.size;
+            
+            // Unlock next level visually if exists
+            const nextLevel = currentLevel.level + 1;
+            const nextNode = document.getElementById(`node-level-${nextLevel}`);
+            if (nextNode) {
+                const isNextCompleted = completedLevels.has(nextLevel);
+                if (!isNextCompleted) {
+                    const nextGame = CHALLENGES.find(c => c.level === nextLevel);
+                    if (nextGame) {
+                        nextNode.classList.remove('locked');
+                        const config = typeConfig[nextGame.type] || typeConfig['puzzle'];
+                        nextNode.innerHTML = `
+                            <span class="text-3xl font-bold font-mono text-white mb-1">${nextLevel}</span>
+                            <span class="badge ${config.class}">
+                                <i data-lucide="${config.icon}" class="w-3 h-3"></i>
+                                ${config.label}
+                            </span>
+                        `;
+                        nextNode.onclick = () => loadGame(nextLevel);
+                    }
+                }
+            }
+            
+            const nodes = document.querySelectorAll('.level-node');
+            if (nodes[currentLevel.level - 1]) {
+                nodes[currentLevel.level - 1].classList.add('completed');
+                nodes[currentLevel.level - 1].innerHTML = `
+                    <span class="text-3xl font-bold font-mono text-white mb-1">${currentLevel.level}</span>
+                    <span class="badge badge-completed">
+                        <i data-lucide="check" class="w-3 h-3"></i>
+                        HECHO
+                    </span>
+                `;
+                lucide.createIcons();
+            }
+        };
+
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            if (!container) return;
+            const colors = ['rgba(122, 162, 247, 0.5)', 'rgba(187, 154, 247, 0.5)', 'rgba(125, 207, 255, 0.5)', 'rgba(158, 206, 106, 0.5)'];
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                const size = Math.random() * 3 + 1.5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                p.style.cssText = `
+                    position: absolute; width: ${size}px; height: ${size}px;
+                    background: ${color}; border-radius: 50%;
+                    left: ${Math.random() * window.innerWidth}px; top: ${Math.random() * window.innerHeight}px;
+                    animation: float ${Math.random() * 20 + 15}s ease-in-out infinite;
+                    opacity: ${Math.random() * 0.6 + 0.2};
+                `;
+                container.appendChild(p);
+            }
+        }
+        createParticles();
+    </script>
+</body>
+</html>

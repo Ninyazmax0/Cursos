@@ -1657,12 +1657,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch(e) {
         console.error("Critical: Failed to load Firebase.", e);
         // Intentar continuar sin Firebase en modo offline
-        console.warn(' Continuando en modo offline (sin sincronización con Firestore)');
+        console.warn('⚠️ Continuando en modo offline (sin sincronización con Firestore)');
         
         // Cargar datos desde localStorage
         const localSession = JSON.parse(localStorage.getItem('currentUser'));
         if (!localSession || !localSession.id) {
-            console.warn(' Sesión inválida en Introducción Course.');
+            console.warn('⚠️ Sesión inválida en Introducción Course.');
             window.location.href = 'index.html';
             return;
         }
@@ -1673,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 userProgress = JSON.parse(savedProgress);
             } catch (e) {
-                console.error(' Error parsing saved progress:', e);
+                console.error('❌ Error parsing saved progress:', e);
                 userProgress = { completedLevels: [], quizScores: {} };
             }
         } else {
@@ -1695,7 +1695,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const localSession = JSON.parse(localStorage.getItem('currentUser'));
     if (!localSession || !localSession.id) {
-        console.warn(' Sesión inválida en Introducción Course.');
+        console.warn('⚠️ Sesión inválida en Introducción Course.');
         window.location.href = 'index.html';
         return;
     }
@@ -1730,14 +1730,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (hideLoading) hideLoading();
         
     } catch (e) {
-        console.error(' Error Init Introducción:', e);
+        console.error('❌ Error Init Introducción:', e);
         
         // Solo redirigir si es un error crítico (no de Pyodide/postMessage)
         if (e.message && !e.message.includes('postMessage') && !e.message.includes('Pyodide')) {
             alert('Error cargando curso: ' + e.message);
             window.location.href = 'menu_inicio.html';
         } else {
-            console.warn(' Error no crítico de Pyodide - continuando con la carga del curso');
+            console.warn('⚠️ Error no crítico de Pyodide - continuando con la carga del curso');
             // Intentar renderizar de todos modos
             if (window.renderLevelSelection) renderLevelSelection();
             if (window.showPanel) showPanel('levelSelection');
@@ -1765,9 +1765,9 @@ async function saveProgress() {
         
         try {
             await window.updateCourseProgress(currentUser.id, 'introProgress', progressPayload);
-            console.log(' Introducción Progress Saved to Firestore');
+            console.log('✅ Introducción Progress Saved to Firestore');
         } catch (e) {
-            console.error(' Error saving Introducción Progress:', e);
+            console.error('❌ Error saving Introducción Progress:', e);
         }
     }
 }
@@ -3116,9 +3116,9 @@ async function initPyodide() {
             indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
         });
         pyodideReady = true;
-        console.log(' Pyodide listo!');
+        console.log('✅ Pyodide listo!');
     } catch (error) {
-        console.error(' Error al cargar Pyodide:', error);
+        console.error('❌ Error al cargar Pyodide:', error);
     }
 }
 
@@ -3408,13 +3408,13 @@ builtins.input = async_input
         
         const doneLine = document.createElement('div');
         doneLine.className = 'console-line info';
-        doneLine.textContent = ' Ejecución completada';
+        doneLine.textContent = '✅ Ejecución completada';
         outputDiv.appendChild(doneLine);
 
     } catch (error) {
         const errorLine = document.createElement('div');
         errorLine.className = 'console-line error';
-        errorLine.textContent = ` Error: ${error.message}`;
+        errorLine.textContent = `❌ Error: ${error.message}`;
         outputDiv.appendChild(errorLine);
     }
     outputDiv.scrollTop = outputDiv.scrollHeight;

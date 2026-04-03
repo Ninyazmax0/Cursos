@@ -203,30 +203,52 @@
                     if (isOwned) isLocked = false;
 
                     const card = document.createElement('div');
-                    card.className = `glass-panel p-6 flex flex-col items-center text-center transition-all hover:-translate-y-2 relative overflow-hidden ${isOwned ? 'border-accent shadow-[0_0_15px_rgba(122,162,247,0.3)]' : canAfford && !isLocked ? 'border-gray-600' : 'border-red-900/50 opacity-80'}`;
+                    const rarityColors = {
+                        'common': { border: 'border-[#565f89]', bg: 'bg-[#24283b]', accent: '#7aa2f7', glow: 'shadow-[#565f89]/20' },
+                        'rare': { border: 'border-[#7dcfff]', bg: 'bg-[#1a2035]', accent: '#7dcfff', glow: 'shadow-[#7dcfff]/30' },
+                        'epic': { border: 'border-[#bb9af7]', bg: 'bg-[#1e1b35]', accent: '#bb9af7', glow: 'shadow-[#bb9af7]/30' },
+                        'legendary': { border: 'border-[#e0af68]', bg: 'bg-[#251e15]', accent: '#e0af68', glow: 'shadow-[#e0af68]/40' },
+                        'secret': { border: 'border-[#f7768e]', bg: 'bg-[#251520]', accent: '#f7768e', glow: 'shadow-[#f7768e]/30' }
+                    };
+                    const rarityStyle = rarityColors[aura.rarity] || rarityColors['common'];
+                    
+                    card.className = `p-5 flex flex-col items-center text-center transition-all hover:-translate-y-2 relative overflow-hidden rounded-2xl ${rarityStyle.border} ${rarityStyle.bg} border-2 hover:shadow-xl ${rarityStyle.glow}`;
                     
                     // Button Logic
                     let btnHtml = '';
                     if (isEquipped) {
-                        btnHtml = `<button class="w-full py-2 bg-green-600/20 text-green-400 border border-green-500 rounded-lg font-bold cursor-default flex justify-center items-center gap-2"><i data-lucide="check"></i> Equipado</button>`;
+                        btnHtml = `<button class="w-full py-2 bg-[#9ece6a]/20 text-[#9ece6a] border border-[#9ece6a] rounded-lg font-bold cursor-default flex justify-center items-center gap-2"><i data-lucide="check"></i> Equipado</button>`;
                     } else if (isOwned) {
-                        btnHtml = `<button onclick="window.equipAura('${aura.id}')" class="w-full py-2 bg-accent text-white rounded-lg font-bold hover:bg-accent-dark transition shadow-lg shadow-accent/20">Equipar</button>`;
+                        btnHtml = `<button onclick="window.equipAura('${aura.id}')" class="w-full py-2 ${rarityStyle.bg} text-white border border-white/20 rounded-lg font-bold hover:bg-white/10 transition">Equipar</button>`;
                     } else if (isLocked) {
-                        btnHtml = `<button disabled class="w-full py-2 bg-gray-800 text-gray-500 border border-gray-700 rounded-lg font-bold cursor-not-allowed text-xs flex flex-col items-center justify-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> ${lockedReason}</button>`;
+                        btnHtml = `<button disabled class="w-full py-2 bg-[#1a1b26] text-gray-500 border border-gray-700 rounded-lg font-bold cursor-not-allowed text-xs flex flex-col items-center justify-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> ${lockedReason}</button>`;
                     } else if (canAfford) {
-                        btnHtml = `<button onclick="window.buyAura('${aura.id}', ${price})" class="w-full py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-lg font-bold transition flex justify-center items-center gap-2 shadow-lg shadow-yellow-600/20"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Comprar</button>`;
+                        btnHtml = `<button onclick="window.buyAura('${aura.id}', ${price})" class="w-full py-2 bg-[#e0af68] hover:bg-[#f0b870] text-[#1a1b26] rounded-lg font-bold transition flex justify-center items-center gap-2 shadow-lg"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Comprar</button>`;
                     } else {
-                         btnHtml = `<button disabled class="w-full py-2 bg-gray-700 text-gray-400 rounded-lg font-bold cursor-not-allowed">Insuficiente</button>`;
+                         btnHtml = `<button disabled class="w-full py-2 bg-[#24283b] text-gray-500 rounded-lg font-bold cursor-not-allowed">Insuficiente</button>`;
                     }
 
                     // Price Badge
                     let priceDisplay = '';
-                    if (price === 0 && !isOwned) priceDisplay = '<span class="text-green-400 font-bold">RECOMPENSA</span>';
+                    if (price === 0 && !isOwned) priceDisplay = '<span class="text-[#9ece6a] font-bold">RECOMPENSA</span>';
                     else if (price === 0 && isOwned) priceDisplay = '<span class="text-gray-400 font-bold">ADQUIRIDO</span>';
-                    else priceDisplay = `<span class="text-yellow-400 font-bold">${price} 🪙</span>`;
+                    else priceDisplay = `<span class="text-[#e0af68] font-bold">${price} 🪙</span>`;
+
+                    const tierLabels = {
+                        'common': 'COMÚN',
+                        'rare': 'RARO',
+                        'epic': 'ÉPICO',
+                        'legendary': 'LEGENDARIO',
+                        'secret': 'SECRETO'
+                    };
 
                     card.innerHTML = `
-                        <div class="mb-6 mt-2 relative w-24 h-24 flex items-center justify-center mx-auto">
+                        <div class="absolute top-2 right-2">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${rarityStyle.bg} ${rarityStyle.border} border text-white">
+                                ${tierLabels[aura.rarity] || 'COMÚN'}
+                            </span>
+                        </div>
+                        <div class="mb-4 mt-2 relative w-24 h-24 flex items-center justify-center mx-auto">
                             <div class="avatar-aura-container ${aura.cssClass}">
                                 <img src="${currentUser.avatar || 'assets/default-avatar.png'}" class="w-20 h-20 rounded-full object-cover">
                             </div>
@@ -235,7 +257,7 @@
                         <h3 class="text-lg font-bold text-white mb-1">${aura.name}</h3>
                         <p class="text-xs text-gray-400 mb-4 h-8 flex items-center justify-center">${aura.desc}</p>
                         
-                        <div class="font-mono text-lg mb-6 bg-black/30 px-4 py-1 rounded-full border border-white/10">
+                        <div class="font-mono text-sm mb-4 bg-[#1a1b26] px-3 py-1.5 rounded-lg border border-white/10 w-full">
                             ${priceDisplay}
                         </div>
                         
