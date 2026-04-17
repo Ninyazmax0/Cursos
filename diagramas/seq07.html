@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secuencia CU-07</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:transparent;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;font-family:"Segoe UI",sans-serif;}
+.diagram-box{width:100%;text-align:center;}
+pre.mermaid{background:transparent !important;}
+
+</style></head><body>
+<div class="diagram-box">
+<pre class="mermaid">
+sequenceDiagram
+    autonumber
+    box rgba(255,179,186,0.3) Actor
+    actor A as Administrador
+    end
+    box rgba(186,225,255,0.3) Aplicación
+    participant S as Sistema
+    end
+    box rgba(186,255,201,0.3) Persistencia
+    participant BD as Base de Datos
+    end
+    A->>S: Seleccionar tipo de reporte
+    S->>BD: Consultar datos y generar reporte
+    BD-->>S: Reporte generado
+    S-->>A: Mostrar vista previa
+    A->>S: Confirmar exportación
+    S->>BD: Exportar reporte
+    BD-->>S: Reporte exportado
+    S-->>A: Mostrar confirmación
+</pre>
+</div>
+<script>
+mermaid.initialize({startOnLoad:true,theme:"base",themeVariables:{
+background:"transparent",primaryColor:"#e3f2fd",primaryBorderColor:"#1565c0",
+primaryTextColor:"#0d47a1",lineColor:"#546e7a",secondaryColor:"#f1faf2",
+tertiaryColor:"#fff8f8",mainBkg:"#e3f2fd",nodeBorder:"#1565c0"
+}});
+</script></body></html>

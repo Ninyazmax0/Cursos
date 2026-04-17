@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#fff;padding:20px;min-height:100vh;}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.header h1{font-size:18px;display:flex;align-items:center;gap:8px;}
+.btn-add{padding:10px 18px;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;border-radius:10px;color:#fff;font-weight:600;font-size:13px;cursor:pointer;}
+.pos{display:grid;grid-template-columns:2fr 1fr;gap:16px;}
+.left-panel,.right-panel{background:rgba(30,41,59,.6);border:1px solid #334155;border-radius:14px;padding:16px;}
+.search-bar{width:100%;padding:10px 14px;background:rgba(15,23,42,.6);border:1px solid #334155;border-radius:10px;color:#fff;font-size:13px;outline:none;margin-bottom:12px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{padding:8px;background:rgba(15,23,42,.5);text-align:left;color:#94a3b8;font-size:11px;text-transform:uppercase;}
+tbody td{padding:8px;border-bottom:1px solid rgba(51,65,85,.3);}
+.qty{width:50px;padding:6px;background:rgba(15,23,42,.6);border:1px solid #334155;border-radius:6px;color:#fff;text-align:center;font-size:12px;}
+.btn-rm{background:rgba(239,68,68,.15);color:#ef4444;border:none;padding:5px 8px;border-radius:6px;font-size:11px;cursor:pointer;}
+.right-panel h3{font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(51,65,85,.3);font-size:13px;}
+.info-row .label{color:#94a3b8;}
+.total-row{display:flex;justify-content:space-between;padding:12px 0;font-size:18px;font-weight:700;color:#10b981;border-top:2px solid #334155;margin-top:8px;}
+.payment{margin-top:14px;}
+.payment label{display:block;color:#94a3b8;font-size:12px;margin-bottom:6px;}
+.payment select{width:100%;padding:10px;background:rgba(15,23,42,.6);border:1px solid #334155;border-radius:10px;color:#fff;font-size:13px;margin-bottom:12px;}
+.btn-sell{width:100%;padding:13px;background:linear-gradient(135deg,#10b981,#14b8a6);border:none;border-radius:12px;color:#fff;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 20px rgba(16,185,129,.25);}
+.vendor{font-size:12px;color:#64748b;margin-top:10px;text-align:center;}
+</style></head><body>
+<div class="header"><h1>🛒 Punto de Venta</h1><span style="color:#94a3b8;font-size:13px;">Venta #0013</span></div>
+<div class="pos">
+    <div class="left-panel">
+        <input class="search-bar" placeholder="Buscar producto..." value="">
+        <table>
+            <thead><tr><th>Producto</th><th>Precio</th><th>Cant.</th><th>Subtotal</th><th></th></tr></thead>
+            <tbody>
+                <tr><td><b>Acetaminofén 500mg</b><br><span style="color:#64748b;font-size:11px">Analgésicos</span></td><td>$1.00</td><td><input class="qty" value="3" readonly></td><td>$3.00</td><td><button class="btn-rm">✕</button></td></tr>
+                <tr><td><b>Amoxicilina 500mg</b><br><span style="color:#64748b;font-size:11px">Antibióticos</span></td><td>$2.50</td><td><input class="qty" value="2" readonly></td><td>$5.00</td><td><button class="btn-rm">✕</button></td></tr>
+                <tr><td><b>Omeprazol 20mg</b><br><span style="color:#64748b;font-size:11px">Gastrointestinales</span></td><td>$2.10</td><td><input class="qty" value="1" readonly></td><td>$2.10</td><td><button class="btn-rm">✕</button></td></tr>
+                <tr><td><b>Loratadina 10mg</b><br><span style="color:#64748b;font-size:11px">Antialérgicos</span></td><td>$1.50</td><td><input class="qty" value="4" readonly></td><td>$6.00</td><td><button class="btn-rm">✕</button></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="right-panel">
+        <h3>🧾 Resumen de Venta</h3>
+        <div class="info-row"><span class="label">Subtotal</span><span>$16.10</span></div>
+        <div class="info-row"><span class="label">Artículos</span><span>4 productos</span></div>
+        <div class="info-row"><span class="label">Unidades</span><span>10 und</span></div>
+        <div class="total-row"><span>TOTAL</span><span>$16.10</span></div>
+        <div class="payment">
+            <label>Método de Pago</label>
+            <select><option selected>Efectivo</option><option>Tarjeta</option></select>
+        </div>
+        <button class="btn-sell">💰 Confirmar Venta</button>
+        <p class="vendor">Vendedor: Joel Mendoza</p>
+    </div>
+</div>
+</body></html>

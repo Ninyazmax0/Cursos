@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: Arial, sans-serif; background:white; padding: 20px; overflow: hidden; display: flex; justify-content: center; align-items: center; min-height: 100vh; scale: 0.85; transform-origin: center; }
+.document { max-width:1200px; margin:0 auto; background:#fff; }
+.pkg-row { display:flex; align-items:stretch; gap:0; }
+.pkg { flex:1; border:2px solid #999; border-radius:0 8px 8px 8px; position:relative; padding:12px 10px 14px; background:#fafbfc; display:flex; flex-direction:column; gap:8px; }
+.pkg-tab { position:absolute; top:-28px; left:-2px; height:28px; padding:0 14px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; border-radius:6px 6px 0 0; border:2px solid; border-bottom:none; line-height:1.1; white-space:nowrap; }
+.pkg-stereo { font-size:9px; font-weight:400; letter-spacing:0; }
+.pkg-view { border-color:#2e7d32; background:#f1faf2; }
+.pkg-view .pkg-tab { background:#2e7d32; border-color:#2e7d32; color:#fff; }
+.pkg-ctrl { border-color:#c62828; background:#fff8f8; }
+.pkg-ctrl .pkg-tab { background:#c62828; border-color:#c62828; color:#fff; }
+.pkg-model { border-color:#1565c0; background:#f2f7ff; }
+.pkg-model .pkg-tab { background:#1565c0; border-color:#1565c0; color:#fff; }
+.pkg-db { border-color:#283593; background:#f3f4ff; }
+.pkg-db .pkg-tab { background:#283593; border-color:#283593; color:#fff; }
+.comp { display:flex; align-items:center; gap:8px; background:#fff; border:1.5px solid #ccc; border-radius:4px; padding:6px 8px; font-size:11.5px; min-height:36px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.comp-icon { flex-shrink:0; }
+.comp-text { flex:1; }
+.comp-name { font-weight:700; font-size:11.5px; }
+.comp-detail { font-size:10px; color:#78909c; margin-top:1px; }
+.pkg-view .comp { border-color:#a5d6a7; } .pkg-view .comp-name { color:#1b5e20; }
+.pkg-ctrl .comp { border-color:#ef9a9a; } .pkg-ctrl .comp-name { color:#7f0000; }
+.pkg-model .comp { border-color:#90caf9; } .pkg-model .comp-name { color:#0d47a1; }
+.pkg-db .comp { border-color:#9fa8da; } .pkg-db .comp-name { color:#1a237e; }
+.gutter { display:flex; flex-direction:column; justify-content:flex-start; align-items:center; width:46px; flex-shrink:0; padding-top:42px; gap:8px; }
+.arr { display:flex; align-items:center; height:36px; }
+.arr-line { width:30px; height:2px; background:#888; position:relative; }
+.arr-line::after { content:''; position:absolute; right:-5px; top:-4px; border-left:7px solid #888; border-top:5px solid transparent; border-bottom:5px solid transparent; }
+.legend { display:flex; justify-content:center; gap:24px; flex-wrap:wrap; margin-top:28px; padding:12px 20px; background:#f0f4f8; border-radius:8px; border:1px solid #dde3ea; }
+.legend-item { display:flex; align-items:center; gap:7px; font-size:11.5px; color:#37474f; }
+.ldot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+</style>
+</head>
+<body>
+<div class="document">
+    <div class="pkg-row">
+        <div class="pkg pkg-view">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;subsystem&raquo;</span>VISTA</div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Login</div><div class="comp-detail">Acceso</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Dashboard</div><div class="comp-detail">Principal</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Productos</div><div class="comp-detail">Catálogo</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Compras</div><div class="comp-detail">Registro</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Ventas</div><div class="comp-detail">Caja</div></div></div>
+        </div>
+        <div class="gutter">
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+        </div>
+        <div class="pkg pkg-ctrl">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;subsystem&raquo;</span>CONTROLADOR</div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">AuthController</div><div class="comp-detail">Lógica</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">InventoryController</div><div class="comp-detail">Procesos</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">VentaController</div><div class="comp-detail">Cálculos</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">CompraController</div><div class="comp-detail">Stock</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">ReportController</div><div class="comp-detail">PDFs</div></div></div>
+        </div>
+        <div class="gutter">
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr" style="visibility:hidden;"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr" style="visibility:hidden;"><div class="arr-line"></div></div>
+        </div>
+        <div class="pkg pkg-model">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;subsystem&raquo;</span>MODELO</div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Usuario</div><div class="comp-detail">Entidad</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Producto</div><div class="comp-detail">Entidad</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Venta</div><div class="comp-detail">Entidad</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Compra</div><div class="comp-detail">Entidad</div></div></div>
+        </div>
+        <div class="gutter">
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+        </div>
+        <div class="pkg pkg-db">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;database&raquo;</span>BD</div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">MySQL</div><div class="comp-detail">Persistencia</div></div></div>
+            <div class="comp"><div class="comp-text"><div class="comp-name">Tablas</div><div class="comp-detail">Relacional</div></div></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

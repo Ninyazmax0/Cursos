@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquitectura MVC</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:transparent;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;font-family:"Segoe UI",sans-serif;}
+.diagram-box{width:100%;text-align:center;}
+pre.mermaid{background:transparent !important;}
+</style></head><body>
+<div class="diagram-box">
+<pre class="mermaid">
+flowchart LR
+    subgraph V["&#127912; VISTA"]
+    V1[Usuario]
+    end
+    subgraph C["&#9881; CONTROLADOR"]
+    C1[Logica]
+    end
+    subgraph M["&#128451; MODELO"]
+    M1[Datos]
+    end
+    subgraph B["&#128215; BASE DE DATOS"]
+    B1[SQLite]
+    end
+    V -->|1| C -->|2| M -->|3| B
+    B -->|4| M -->|5| C -->|6| V
+    style V fill:#1e3a5f,stroke:#00d9ff,stroke-width:3px,color:#fff
+    style C fill:#3a1e5f,stroke:#a855f7,stroke-width:3px,color:#fff
+    style M fill:#1e5f3a,stroke:#4ade80,stroke-width:3px,color:#fff
+    style B fill:#5f3a1e,stroke:#fbbf24,stroke-width:3px,color:#fff
+</pre>
+</div>
+<script>
+mermaid.initialize({startOnLoad:true,theme:"base",themeVariables:{
+background:"transparent",primaryColor:"#e3f2fd",primaryBorderColor:"#1565c0",
+primaryTextColor:"#0d47a1",lineColor:"#00d9ff",secondaryColor:"#f1faf2",
+tertiaryColor:"#fff8f8",mainBkg:"#e3f2fd",nodeBorder:"#1565c0"
+}});
+</script></body></html>

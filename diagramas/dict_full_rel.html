@@ -1,0 +1,32 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Arial', sans-serif; line-height: 1.5; color: #333; background: white; padding: 18px; }
+.section-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 3px solid #000; text-transform: uppercase; letter-spacing: 1px; }
+.rel-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.rel-table th { background: #1a3a5c; color: white; padding: 8px 10px; border: 1px solid #1a3a5c; text-align: center; }
+.rel-table td { padding: 6px 9px; border: 1px solid #bbb; vertical-align: top; }
+.rel-table tbody tr:nth-child(odd) td { background: #fff; }
+.rel-table tbody tr:nth-child(even) td { background: #eaf1fb; }
+.rel-nm td { background: #eafaf1 !important; }
+p.note { font-size: 11px; color: #555; margin-bottom: 8px; }
+</style></head><body>
+    <div class="section-title">Relaciones entre Tablas</div>
+    <p class="note">
+        <strong>1 → *</strong> Un registro puede relacionarse con muchos de la otra tabla, pero no al revés. &nbsp;|&nbsp;
+        <strong>N : M</strong> Muchos a muchos, resuelto con tabla intermedia.
+    </p>
+    <table class="rel-table">
+        <tr><th>#</th><th>Tabla Origen</th><th>Cardinalidad</th><th>Tabla Destino</th><th>Descripción</th></tr>
+        <tr><td>R1</td><td>Usuario</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>Compra</td><td>Un usuario registra muchas compras.</td></tr>
+        <tr><td>R2</td><td>Usuario</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>Venta</td><td>Un usuario procesa muchas ventas.</td></tr>
+        <tr><td>R3</td><td>Proveedor</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>Compra</td><td>Un proveedor tiene muchas órdenes de compra.</td></tr>
+        <tr><td>R4</td><td>Categoria</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>Producto</td><td>Una categoría agrupa muchos productos.</td></tr>
+        <tr><td>R5</td><td>Compra</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>DetalleCompra</td><td>Una compra tiene muchas líneas de detalle.</td></tr>
+        <tr><td>R6</td><td>Producto</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>DetalleCompra</td><td>Un producto puede aparecer en muchos detalles.</td></tr>
+        <tr><td>R7</td><td>Venta</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>DetalleVenta</td><td>Una venta tiene muchas líneas de medicamentos.</td></tr>
+        <tr><td>R8</td><td>Producto</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>DetalleVenta</td><td>Un producto puede venderse en muchas ocasiones.</td></tr>
+        <tr><td>R9</td><td>Producto</td><td style="text-align:center;font-weight:bold;">1 → *</td><td>Alerta</td><td>Un producto puede generar múltiples alertas.</td></tr>
+        <tr class="rel-nm"><td>—</td><td>Compra + Producto</td><td style="text-align:center;font-weight:bold;">N : M</td><td>DetalleCompra</td><td>Muchos a muchos resuelto con tabla intermedia.</td></tr>
+        <tr class="rel-nm"><td>—</td><td>Venta + Producto</td><td style="text-align:center;font-weight:bold;">N : M</td><td>DetalleVenta</td><td>Muchos a muchos resuelto con tabla intermedia.</td></tr>
+    </table>
+</body></html>

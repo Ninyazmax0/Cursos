@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#fff;padding:20px;min-height:100vh;}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.top h1{font-size:20px;} .top .date{color:#94a3b8;font-size:13px;}
+.top .user{color:#94a3b8;font-size:13px;} .top .user b{color:#10b981;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.stat{background:rgba(30,41,59,.6);border:1px solid #334155;border-radius:14px;padding:16px;}
+.stat .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.stat .ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.stat .change{font-size:12px;font-weight:600;}
+.stat .val{font-size:26px;font-weight:700;margin-bottom:2px;}
+.stat .lbl{color:#94a3b8;font-size:12px;}
+.g1 .ico{background:rgba(16,185,129,.15);} .g1 .change{color:#10b981;}
+.g2 .ico{background:rgba(59,130,246,.15);} .g2 .change{color:#3b82f6;}
+.g3 .ico{background:rgba(239,68,68,.15);} .g3 .change{color:#ef4444;}
+.g4 .ico{background:rgba(245,158,11,.15);} .g4 .change{color:#f59e0b;}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.panel{background:rgba(30,41,59,.6);border:1px solid #334155;border-radius:14px;padding:16px;}
+.panel .title{font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.row{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(15,23,42,.5);border-radius:10px;margin-bottom:6px;}
+.row .left{display:flex;align-items:center;gap:10px;}
+.row .dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.row .name{font-size:13px;font-weight:500;} .row .sub{font-size:11px;color:#64748b;}
+.row .amt{font-size:13px;font-weight:600;text-align:right;} .row .time{font-size:11px;color:#64748b;}
+.row .stock{color:#ef4444;font-weight:600;font-size:13px;} .row .min{font-size:11px;color:#64748b;}
+.bottom{background:rgba(30,41,59,.6);border:1px solid #334155;border-radius:14px;padding:16px;}
+.bottom .title{font-size:14px;font-weight:600;margin-bottom:14px;}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.sum-card{text-align:center;padding:16px;border-radius:12px;border:1px solid;}
+.sc1{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.2);}
+.sc2{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);}
+.sc3{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2);}
+.sum-card .big{font-size:24px;font-weight:700;margin-bottom:4px;}
+.sc1 .big{color:#10b981;} .sc2 .big{color:#3b82f6;} .sc3 .big{color:#a855f7;}
+.sum-card .lbl{color:#94a3b8;font-size:12px;}
+</style></head><body>
+<div class="top">
+    <div><h1>Bienvenido, <span style="color:#10b981">Stiven López</span></h1><p class="user">Resumen del estado de la farmacia</p></div>
+    <div class="date">8 de Abril, 2026</div>
+</div>
+<div class="stats">
+    <div class="stat g1"><div class="head"><div class="ico">📦</div><span class="change">↑ +5%</span></div><div class="val">147</div><div class="lbl">Total Productos</div></div>
+    <div class="stat g2"><div class="head"><div class="ico">💵</div><span class="change">↑ +12%</span></div><div class="val">$284.50</div><div class="lbl">Ventas Hoy</div></div>
+    <div class="stat g3"><div class="head"><div class="ico">⚠️</div><span class="change">↓ -2</span></div><div class="val">8</div><div class="lbl">Stock Bajo</div></div>
+    <div class="stat g4"><div class="head"><div class="ico">⏰</div><span class="change">↓ -1</span></div><div class="val">5</div><div class="lbl">Próximos a Vencer</div></div>
+</div>
+<div class="panels">
+    <div class="panel"><div class="title">📈 Ventas Recientes</div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(16,185,129,.15)">💰</div><div><div class="name">#0012</div><div class="sub">Stiven López</div></div></div><div><div class="amt">$45.80</div><div class="time">14:32</div></div></div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(16,185,129,.15)">💰</div><div><div class="name">#0011</div><div class="sub">Joel Mendoza</div></div></div><div><div class="amt">$23.50</div><div class="time">13:15</div></div></div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(16,185,129,.15)">💰</div><div><div class="name">#0010</div><div class="sub">Tiffany Sermeño</div></div></div><div><div class="amt">$67.20</div><div class="time">11:48</div></div></div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(16,185,129,.15)">💰</div><div><div class="name">#0009</div><div class="sub">Guadalupe Romero</div></div></div><div><div class="amt">$31.00</div><div class="time">10:22</div></div></div>
+    </div>
+    <div class="panel"><div class="title">🔴 Alertas de Stock</div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(239,68,68,.15)">💊</div><div><div class="name">Amoxicilina 500mg</div><div class="sub">Antibióticos</div></div></div><div><div class="stock">3 und</div><div class="min">Mín: 10</div></div></div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(239,68,68,.15)">💊</div><div><div class="name">Ibuprofeno 400mg</div><div class="sub">Analgésicos</div></div></div><div><div class="stock">5 und</div><div class="min">Mín: 15</div></div></div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(239,68,68,.15)">💊</div><div><div class="name">Omeprazol 20mg</div><div class="sub">Gastrointestinales</div></div></div><div><div class="stock">2 und</div><div class="min">Mín: 8</div></div></div>
+        <div class="row"><div class="left"><div class="dot" style="background:rgba(239,68,68,.15)">💊</div><div><div class="name">Loratadina 10mg</div><div class="sub">Antialérgicos</div></div></div><div><div class="stock">4 und</div><div class="min">Mín: 12</div></div></div>
+    </div>
+</div>
+<div class="bottom"><div class="title">🛒 Resumen del Mes</div>
+    <div class="summary">
+        <div class="sum-card sc1"><div class="big">$4,285.00</div><div class="lbl">Ventas del mes</div></div>
+        <div class="sum-card sc2"><div class="big">$2,140.00</div><div class="lbl">Compras del mes</div></div>
+        <div class="sum-card sc3"><div class="big">$2,145.00</div><div class="lbl">Ganancia estimada</div></div>
+    </div>
+</div>
+</body></html>

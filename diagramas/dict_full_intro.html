@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Arial', sans-serif; line-height: 1.5; color: #333; background: white; padding: 20px; }
+.section-title { font-size: 18px; font-weight: bold; margin-bottom: 12px; padding-bottom: 5px; border-bottom: 3px solid #000; text-transform: uppercase; letter-spacing: 1px; }
+.info-box { border: 1px solid #bbb; padding: 12px 16px; margin: 10px 0; background: #f9f9f9; font-size: 12px; }
+.legend { display: flex; gap: 20px; flex-wrap: wrap; margin: 12px 0; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+.res-pk { color: #c0392b; font-weight: bold; font-size: 12px; }
+.res-fk { color: #1a5ea8; font-weight: bold; font-size: 12px; }
+.res-nn { color: #1e8449; font-size: 12px; }
+.res-def { color: #555; font-size: 12px; }
+.res-uq { color: #b7950b; font-weight: bold; font-size: 12px; }
+</style></head><body>
+    <div class="section-title">Diccionario de Datos</div>
+    <div class="info-box">
+        El presente Diccionario de Datos describe de forma detallada cada una de las tablas y sus campos que conforman la base de datos del sistema de inventario de la <strong>Farmacia Santa Cruz</strong>. Para cada campo se especifica: nombre, tipo de dato, longitud, descripción funcional y restricciones aplicadas.
+    </div>
+    <div class="section-title" style="font-size:14px; margin-top:18px;">Leyenda de Restricciones</div>
+    <div class="legend">
+        <div class="legend-item"><span class="res-pk">PK</span> &nbsp;Llave Primaria</div>
+        <div class="legend-item"><span class="res-fk">FK → Tabla(campo)</span> &nbsp;Llave Foránea</div>
+        <div class="legend-item"><span class="res-nn">NOT NULL</span> &nbsp;Obligatorio</div>
+        <div class="legend-item"><span class="res-def">AUTO_INCREMENT</span> &nbsp;Auto generado</div>
+        <div class="legend-item"><span class="res-uq">UNIQUE</span> &nbsp;Valor único</div>
+    </div>
+    <div class="info-box" style="background:#eaf1fb; border-color:#2e6da4;">
+        <strong>9 tablas</strong> conforman el sistema: Usuario, Proveedor, Categoria, Producto, Compra, DetalleCompra, Venta, DetalleVenta, Alerta.
+    </div>
+</body></html>

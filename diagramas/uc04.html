@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CU-04 Registrar Ventas</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:transparent;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;font-family:"Segoe UI",sans-serif;}
+.diagram-box{width:100%;text-align:center;}
+pre.mermaid{background:transparent !important;}
+
+</style></head><body>
+<div class="diagram-box">
+<pre class="mermaid">
+flowchart LR
+    Act(["&#129489; Vendedor"])
+    CU(["CU-04: Registrar Ventas"])
+    Act --> CU
+    I0("Buscar productos")
+    CU -. "include" .-> I0
+    I1("Verificar stock")
+    CU -. "include" .-> I1
+    I2("Calcular total")
+    CU -. "include" .-> I2
+    I3("Generar factura")
+    CU -. "include" .-> I3
+    I4("Aplicar descuento")
+    CU -. "include" .-> I4
+    I5("Registrar pago")
+    CU -. "include" .-> I5
+    E0("Anular venta")
+    E0 -. "extend" .-> CU
+    E1("Devolver productos")
+    E1 -. "extend" .-> CU
+    E2("Consultar historial")
+    E2 -. "extend" .-> CU
+    style CU fill:#1e293b,stroke:#00d9ff,stroke-width:2px,color:#fff
+    style I0 fill:#334155,color:#fff,stroke:#94a3b8
+    style I1 fill:#334155,color:#fff,stroke:#94a3b8
+    style I2 fill:#334155,color:#fff,stroke:#94a3b8
+    style I3 fill:#334155,color:#fff,stroke:#94a3b8
+    style I4 fill:#334155,color:#fff,stroke:#94a3b8
+    style I5 fill:#334155,color:#fff,stroke:#94a3b8
+    style E0 fill:#475569,color:#fff,stroke:#ff6b9d,stroke-dasharray: 5 5
+    style E1 fill:#475569,color:#fff,stroke:#ff6b9d,stroke-dasharray: 5 5
+    style E2 fill:#475569,color:#fff,stroke:#ff6b9d,stroke-dasharray: 5 5
+</pre>
+</div>
+<script>
+mermaid.initialize({startOnLoad:true,theme:"base",themeVariables:{
+background:"transparent",primaryColor:"#e3f2fd",primaryBorderColor:"#1565c0",
+primaryTextColor:"#0d47a1",lineColor:"#546e7a",secondaryColor:"#f1faf2",
+tertiaryColor:"#fff8f8",mainBkg:"#e3f2fd",nodeBorder:"#1565c0"
+}});
+</script></body></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Arial', sans-serif; line-height: 1.5; color: #333; background: white; padding: 18px; }
+.table-block { page-break-inside: avoid; margin-bottom: 18px; }
+.table-name { font-size: 14px; font-weight: bold; background: #1a3a5c; color: white; padding: 7px 12px; }
+.dict-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.dict-table .col-header th { background: #2e6da4; color: white; font-weight: bold; text-align: center; padding: 7px 8px; border: 1px solid #1a3a5c; font-size: 12px; }
+.dict-table td { padding: 6px 8px; border: 1px solid #bbb; vertical-align: top; }
+.dict-table tbody tr:nth-child(odd) td { background: #fff; }
+.dict-table tbody tr:nth-child(even) td { background: #eaf1fb; }
+.res-pk { color: #c0392b; font-weight: bold; font-size: 11px; }
+.res-fk { color: #1a5ea8; font-weight: bold; font-size: 11px; }
+.res-nn { color: #1e8449; font-size: 11px; }
+.res-def { color: #555; font-size: 11px; }
+</style></head><body>
+<div class="table-block">
+    <div class="table-name">Tabla: Venta</div>
+    <table class="dict-table">
+        <tr class="col-header"><th>Campo</th><th>Tipo de Dato</th><th>Long.</th><th>Descripción</th><th>Restricciones</th></tr>
+        <tbody>
+        <tr><td>id_venta</td><td>INT</td><td>—</td><td>Identificador único de la transacción de venta.</td><td class="res-pk">PK, NOT NULL, AUTO_INCREMENT</td></tr>
+        <tr><td>id_usuario</td><td>INT</td><td>—</td><td>Empleado o vendedor que procesó el cobro.</td><td class="res-fk">FK → Usuario(id_usuario), NOT NULL</td></tr>
+        <tr><td>fecha_venta</td><td>DATETIME</td><td>—</td><td>Fecha y hora exacta del despacho.</td><td class="res-def">NOT NULL, DEFAULT NOW()</td></tr>
+        <tr><td>total</td><td>DECIMAL</td><td>10,2</td><td>Monto total cobrado. Suma de subtotales.</td><td class="res-nn">NOT NULL</td></tr>
+        <tr><td>metodo_pago</td><td>ENUM</td><td>—</td><td>Forma de pago: 'efectivo' o 'tarjeta'.</td><td class="res-nn">NOT NULL</td></tr>
+        </tbody>
+    </table>
+</div>
+<div class="table-block">
+    <div class="table-name">Tabla: DetalleVenta &nbsp;— Tabla intermedia N:M (Venta ↔ Producto)</div>
+    <table class="dict-table">
+        <tr class="col-header"><th>Campo</th><th>Tipo de Dato</th><th>Long.</th><th>Descripción</th><th>Restricciones</th></tr>
+        <tbody>
+        <tr><td>id_detalle_venta</td><td>INT</td><td>—</td><td>Identificador único de cada línea de producto.</td><td class="res-pk">PK, NOT NULL, AUTO_INCREMENT</td></tr>
+        <tr><td>id_venta</td><td>INT</td><td>—</td><td>Venta a la que pertenece este detalle.</td><td class="res-fk">FK → Venta(id_venta), NOT NULL</td></tr>
+        <tr><td>id_producto</td><td>INT</td><td>—</td><td>Medicamento despachado. Su stock_actual disminuye.</td><td class="res-fk">FK → Producto(id_producto), NOT NULL</td></tr>
+        <tr><td>cantidad</td><td>INT</td><td>—</td><td>Número de unidades del medicamento vendidas.</td><td class="res-nn">NOT NULL</td></tr>
+        <tr><td>precio_unitario</td><td>DECIMAL</td><td>10,2</td><td>Precio por unidad al momento de la venta.</td><td class="res-nn">NOT NULL</td></tr>
+        <tr><td>subtotal</td><td>DECIMAL</td><td>10,2</td><td>Resultado de: cantidad × precio_unitario.</td><td class="res-nn">NOT NULL</td></tr>
+        </tbody>
+    </table>
+</div>
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrama ER</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:transparent;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;font-family:"Segoe UI",sans-serif;}
+.diagram-box{width:100%;text-align:center;}
+pre.mermaid{background:transparent !important;}
+
+</style></head><body>
+<div class="diagram-box">
+<pre class="mermaid">
+erDiagram
+    USUARIO {
+        int id_usuario PK
+        string nombre
+        string usuario
+        string contrasena
+        string rol
+        boolean activo
+    }
+    
+    CATEGORIA {
+        int id_categoria PK
+        string nombre
+        text descripcion
+        boolean activo
+    }
+    
+    PRODUCTO {
+        int id_producto PK
+        string codigo_barras
+        string nombre
+        int id_categoria FK
+        string laboratorio
+        decimal precio_costo
+        decimal precio_venta
+        int stock_actual
+        int stock_minimo
+        date fecha_vencimiento
+        boolean activo
+    }
+    
+    PROVEEDOR {
+        int id_proveedor PK
+        string nombre
+        string contacto
+        string telefono
+        string email
+        text direccion
+        boolean activo
+    }
+    
+    COMPRA {
+        int id_compra PK
+        int id_proveedor FK
+        int id_usuario FK
+        string numero_factura
+        datetime fecha_compra
+        decimal total
+        string metodo_pago
+    }
+    
+    VENTA {
+        int id_venta PK
+        int id_usuario FK
+        datetime fecha_venta
+        decimal total
+        string metodo_pago
+    }
+    
+    ALERTA {
+        int id_alerta PK
+        int id_producto FK
+        string tipo_alerta
+        text mensaje
+        datetime fecha_alerta
+        boolean leida
+    }
+    
+    DETALLE_COMPRA {
+        int id_detalle_compra PK
+        int id_compra FK
+        int id_producto FK
+        int cantidad
+        decimal precio_unitario
+        decimal subtotal
+    }
+    
+    DETALLE_VENTA {
+        int id_detalle_venta PK
+        int id_venta FK
+        int id_producto FK
+        int cantidad
+        decimal precio_unitario
+        decimal subtotal
+    }
+    
+    USUARIO ||--o{ COMPRA : "1 : N"
+    USUARIO ||--o{ VENTA : "1 : N"
+    PROVEEDOR ||--o{ COMPRA : "1 : N"
+    CATEGORIA ||--o{ PRODUCTO : "1 : N"
+    PRODUCTO ||--o{ ALERTA : "1 : N"
+    COMPRA ||--o{ DETALLE_COMPRA : "1 : N"
+    PRODUCTO ||--o{ DETALLE_COMPRA : "N : M"
+    VENTA ||--o{ DETALLE_VENTA : "1 : N"
+    PRODUCTO ||--o{ DETALLE_VENTA : "N : M"
+</pre>
+</div>
+<script>
+mermaid.initialize({startOnLoad:true,theme:"base",themeVariables:{
+background:"transparent",primaryColor:"#e3f2fd",primaryBorderColor:"#1565c0",
+primaryTextColor:"#0d47a1",lineColor:"#546e7a",secondaryColor:"#f1faf2",
+tertiaryColor:"#fff8f8",mainBkg:"#e3f2fd",nodeBorder:"#1565c0"
+}});
+</script></body></html>

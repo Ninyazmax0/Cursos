@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Arial', sans-serif; line-height: 1.5; color: #333; background: white; padding: 15px; }
+.section-title { font-size: 18px; font-weight: bold; margin-bottom: 12px; padding-bottom: 5px; border-bottom: 2px solid #000; text-transform: uppercase; }
+.table-block { margin-bottom: 20px; }
+.table-name { font-size: 14px; font-weight: bold; background: #1a3a5c; color: white; padding: 6px 10px; }
+.dict-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.dict-table th { background: #2e6da4; color: white; font-weight: bold; padding: 6px; border: 1px solid #1a3a5c; }
+.dict-table td { padding: 5px; border: 1px solid #bbb; }
+.dict-table tbody tr:nth-child(even) td { background: #eaf1fb; }
+.res-pk { color: #c0392b; font-weight: bold; }
+.res-fk { color: #1a5ea8; font-weight: bold; }
+.res-nn { color: #1e8449; }
+.legend { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+.legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; }
+.rel-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.rel-table th { background: #1a3a5c; color: white; padding: 7px; border: 1px solid #1a3a5c; }
+.rel-table td { padding: 5px; border: 1px solid #bbb; }
+</style></head><body>
+    <div class="table-block"><div class="table-name">Tabla: Venta / Compra</div><table class="dict-table">
+    <tr><th>Campo</th><th>Tipo</th><th>Desc.</th><th>Restr.</th></tr>
+    <tr><td>id_venta/compra</td><td>INT</td><td>ID único</td><td class="res-pk">PK</td></tr>
+    <tr><td>id_usuario</td><td>INT</td><td>Quién registra</td><td class="res-fk">FK</td></tr>
+    <tr><td>total</td><td>DECIMAL</td><td>Monto total</td><td class="res-nn">NN</td></tr>
+    <tr><td>fecha</td><td>DATETIME</td><td>Registro</td><td class="res-nn">NN</td></tr>
+    </table></div>
+    <div class="table-block"><div class="table-name">Tablas Detalle (N:M)</div><p style="font-size:10px;">DetalleCompra / DetalleVenta: Relacionan productos con transacciones.</p></div>
+    </body></html>

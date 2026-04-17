@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: Arial, sans-serif; background:white; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:16px; }
+.document { max-width:1200px; width:100%; }
+.diag-title { font-size:16px; font-weight:900; text-transform:uppercase; letter-spacing:1px; text-align:center; margin-bottom:3px; }
+.diag-sub { text-align:center; font-size:11px; color:#78909c; margin-bottom:20px; }
+
+.pkg-row { display:flex; align-items:stretch; gap:0; }
+.pkg { flex:1; border:2px solid #999; border-radius:0 8px 8px 8px; position:relative; padding:10px 8px 12px; background:#fafbfc; display:flex; flex-direction:column; gap:6px; }
+.pkg-tab { position:absolute; top:-24px; left:-2px; height:24px; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; border-radius:6px 6px 0 0; border:2px solid; border-bottom:none; line-height:1.1; white-space:nowrap; }
+.pkg-stereo { font-size:8px; font-weight:400; letter-spacing:0; }
+
+.pkg-view  { border-color:#2e7d32; background:#f1faf2; }
+.pkg-view  .pkg-tab { background:#2e7d32; border-color:#2e7d32; color:#fff; }
+.pkg-ctrl  { border-color:#c62828; background:#fff8f8; }
+.pkg-ctrl  .pkg-tab { background:#c62828; border-color:#c62828; color:#fff; }
+.pkg-model { border-color:#1565c0; background:#f2f7ff; }
+.pkg-model .pkg-tab { background:#1565c0; border-color:#1565c0; color:#fff; }
+.pkg-db    { border-color:#283593; background:#f3f4ff; }
+.pkg-db    .pkg-tab { background:#283593; border-color:#283593; color:#fff; }
+
+.comp { display:flex; align-items:center; gap:6px; background:#fff; border:1.5px solid #ccc; border-radius:4px; padding:4px 6px; font-size:10px; min-height:30px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.comp-text { flex:1; }
+.comp-name { font-weight:700; font-size:10px; }
+.comp-detail { font-size:9px; color:#78909c; margin-top:1px; }
+
+.pkg-view  .comp { border-color:#a5d6a7; } .pkg-view  .comp-name { color:#1b5e20; }
+.pkg-ctrl  .comp { border-color:#ef9a9a; } .pkg-ctrl  .comp-name { color:#7f0000; }
+.pkg-model .comp { border-color:#90caf9; } .pkg-model .comp-name { color:#0d47a1; }
+.pkg-db    .comp { border-color:#9fa8da; } .pkg-db    .comp-name { color:#1a237e; }
+
+/* UML icon */
+.ci { flex-shrink:0; }
+
+/* CONNECTORS */
+.gutter { display:flex; flex-direction:column; justify-content:flex-start; align-items:center; width:34px; flex-shrink:0; padding-top:34px; gap:6px; }
+.arr { display:flex; align-items:center; height:30px; }
+/* Simple straight line, no arrowheads */
+.arr-line { width:22px; height:2px; background:#999; }
+
+.legend { display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-top:18px; padding:8px 14px; background:#f0f4f8; border-radius:8px; border:1px solid #dde3ea; }
+.legend-item { display:flex; align-items:center; gap:5px; font-size:10px; color:#37474f; }
+.ldot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+</style>
+</head>
+<body>
+<div class="document">
+    <div class="diag-title">Diagrama de Componentes — MVC</div>
+    <div class="diag-sub">Sistema de Inventario · Farmacia Santa Cruz · Arquitectura de 4 capas</div>
+
+    <div class="pkg-row" style="margin-top:32px;">
+
+        <!-- ══ VISTA ══ -->
+        <div class="pkg pkg-view">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;subsystem&raquo;</span>VISTA</div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Login</div><div class="comp-detail">Formulario de acceso</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Dashboard</div><div class="comp-detail">Panel principal</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Productos</div><div class="comp-detail">Catálogo y búsqueda</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Categorías</div><div class="comp-detail">Tipos de medicamento</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Compras</div><div class="comp-detail">Registro de órdenes</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Ventas</div><div class="comp-detail">Despacho al cliente</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Alertas</div><div class="comp-detail">Vencimiento / stock bajo</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Proveedores</div><div class="comp-detail">Directorio distribuidores</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Reportes</div><div class="comp-detail">Informes y estadísticas</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#2e7d32" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Usuarios</div><div class="comp-detail">Gestión de cuentas y roles</div></div></div>
+        </div>
+
+        <!-- GUTTER V→C: 10 arrows for 10 vista components, but only 9 ctrl comps so last one is just a line -->
+        <div class="gutter">
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+        </div>
+
+        <!-- ══ CONTROLADOR ══ -->
+        <div class="pkg pkg-ctrl">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;subsystem&raquo;</span>CONTROLADOR</div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">AuthController</div><div class="comp-detail">iniciarSesion(), cerrarSesion()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">ProductoController</div><div class="comp-detail">crear(), editar(), buscar()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">CategoriaController</div><div class="comp-detail">crear(), listar(), activar()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">CompraController</div><div class="comp-detail">registrar(), verDetalle()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">VentaController</div><div class="comp-detail">registrar(), verDetalle()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">AlertaController</div><div class="comp-detail">verificarStock(), verificarVenc()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">ProveedorController</div><div class="comp-detail">crear(), actualizar(), listar()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">ReporteController</div><div class="comp-detail">generar(), filtrar(), exportar()</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#c62828" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">UsuarioController</div><div class="comp-detail">crear(), asignarRol(), desactivar()</div></div></div>
+        </div>
+
+        <!-- GUTTER C→M: 9 ctrl comps → 9 model comps, first hidden since AuthCtrl has no direct model -->
+        <div class="gutter">
+            <div class="arr" style="visibility:hidden;"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+        </div>
+
+        <!-- ══ MODELO ══ -->
+        <div class="pkg pkg-model">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;subsystem&raquo;</span>MODELO</div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Usuario</div><div class="comp-detail">id, nombre, rol, activo</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Producto</div><div class="comp-detail">stock, precio, vencimiento</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Categoria</div><div class="comp-detail">nombre, descripcion</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Compra</div><div class="comp-detail">id_proveedor, id_usuario, total</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">DetalleCompra</div><div class="comp-detail">cantidad, precio_unitario</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Venta</div><div class="comp-detail">id_usuario, total, metodo_pago</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">DetalleVenta</div><div class="comp-detail">cantidad, precio_unitario</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Proveedor</div><div class="comp-detail">nombre, contacto, telefono</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#1565c0" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">Alerta</div><div class="comp-detail">tipo, mensaje, leida</div></div></div>
+        </div>
+
+        <!-- GUTTER M→DB: 9 model comps → 9 db tables -->
+        <div class="gutter">
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+            <div class="arr"><div class="arr-line"></div></div>
+        </div>
+
+        <!-- ══ BASE DE DATOS ══ -->
+        <div class="pkg pkg-db">
+            <div class="pkg-tab"><span class="pkg-stereo">&laquo;database&raquo;</span>BASE DE DATOS</div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_usuarios</div><div class="comp-detail">PK: id_usuario</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_productos</div><div class="comp-detail">PK: id_producto · FK: id_categoria</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_categorias</div><div class="comp-detail">PK: id_categoria</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_compras</div><div class="comp-detail">FK: id_proveedor, id_usuario</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_detalle_compra</div><div class="comp-detail">FK: id_compra, id_producto</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_ventas</div><div class="comp-detail">FK: id_usuario</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_detalle_venta</div><div class="comp-detail">FK: id_venta, id_producto</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_proveedores</div><div class="comp-detail">PK: id_proveedor</div></div></div>
+            <div class="comp"><svg class="ci" width="18" height="14" viewBox="0 0 22 17"><rect x="5" y="0" width="17" height="17" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="3" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/><rect x="0" y="10" width="9" height="4" rx="1" fill="#fff" stroke="#283593" stroke-width="1.4"/></svg><div class="comp-text"><div class="comp-name">tabla_alertas</div><div class="comp-detail">FK: id_producto</div></div></div>
+        </div>
+
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend">
+        <div class="legend-item"><div class="ldot" style="background:#2e7d32;"></div> Vista — Interfaz de usuario</div>
+        <div class="legend-item"><div class="ldot" style="background:#c62828;"></div> Controlador — Lógica del negocio</div>
+        <div class="legend-item"><div class="ldot" style="background:#1565c0;"></div> Modelo — Entidades de datos</div>
+        <div class="legend-item"><div class="ldot" style="background:#283593;"></div> Base de Datos — MySQL</div>
+        <div class="legend-item">
+            <svg width="20" height="4" viewBox="0 0 20 4"><line x1="0" y1="2" x2="20" y2="2" stroke="#999" stroke-width="2"/></svg>
+            Dependencia entre componentes
+        </div>
+    </div>
+</div>
+</body>
+</html>

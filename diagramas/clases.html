@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrama de Clases</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:transparent;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;font-family:"Segoe UI",sans-serif;}
+.diagram-box{width:100%;text-align:center;}
+pre.mermaid{background:transparent !important;}
+
+</style></head><body>
+<div class="diagram-box">
+<pre class="mermaid">
+classDiagram
+    direction LR
+
+    class Usuario {
+        -int idUsuario
+        -string usuario
+        -string contrasena
+        -string rol
+        -DateTime ultimoAcceso
+        +iniciarSesion() bool
+        +cerrarSesion() void
+        +cambiarContrasena() void
+    }
+
+    class Proveedor {
+        -int idProveedor
+        -string nombre
+        -string contacto
+        -string telefono
+        -string email
+        -string direccion
+        -boolean activo
+        +actualizarDatos() void
+        +listar() List
+    }
+
+    class Categoria {
+        -int idCategoria
+        -string nombre
+        -string descripcion
+        -boolean activo
+        +agregarProducto() void
+        +obtenerProductos() List
+    }
+
+    class Producto {
+        -int idProducto
+        -int idCategoria
+        -string codigoBarras
+        -string nombre
+        -string laboratorio
+        -decimal precioCosto
+        -decimal precioVenta
+        -int stockActual
+        -int stockMinimo
+        -Date fechaVencimiento
+        -boolean estaActivo
+        +reducirStock(int cantidad) void
+        +aumentarStock(int cantidad) void
+        +verificarVencimiento() bool
+        +calcularGanancia() decimal
+        +estaBajoStock() bool
+        +actualizarPrecio() void
+    }
+
+    class Compra {
+        -int idCompra
+        -int idProveedor
+        -int idUsuario
+        -string numeroOrden
+        -DateTime fechaHora
+        -decimal subtotal
+        -decimal descuento
+        -decimal total
+        -string metodoPago
+        -string estado
+        +calcularTotal() decimal
+        +recibirMercancia() void
+        +generarOrden() void
+        +anularCompra() void
+    }
+
+    class DetalleCompra {
+        -int idDetalle
+        -int idCompra
+        -int idProducto
+        -int cantidad
+        -decimal precioUnitario
+        -decimal subtotal
+        +calcularSubtotal() decimal
+    }
+
+    class Venta {
+        -int idVenta
+        -int idUsuario
+        -string numeroFactura
+        -DateTime fechaHora
+        -decimal subtotal
+        -decimal descuento
+        -decimal total
+        -string metodoPago
+        -string estado
+        +calcularTotal() decimal
+        +aplicarDescuento() void
+        +generarFactura() void
+        +anularVenta() void
+    }
+
+    class DetalleVenta {
+        -int idDetalle
+        -int idVenta
+        -int idProducto
+        -int cantidad
+        -decimal precioUnitario
+        -decimal subtotal
+        +calcularSubtotal() decimal
+    }
+
+    class Alerta {
+        -int idAlerta
+        -int idProducto
+        -string tipo
+        -string mensaje
+        -DateTime fechaGenerada
+        -boolean estaLeida
+        +marcarLeida() void
+        +eliminar() void
+    }
+
+    class Reporte {
+        -int idReporte
+        -string tipo
+        -DateTime fechaGeneracion
+        -string parametros
+        +generar() void
+        +exportar() void
+    }
+
+    Usuario "1" --> "0..*" Venta : registra
+    Usuario "1" --> "0..*" Compra : autoriza
+    Proveedor "1" --> "0..*" Compra : suministra
+    Categoria "1" --> "1..*" Producto : clasifica
+    Compra "1" *-- "1..*" DetalleCompra : contiene
+    Venta "1" *-- "1..*" DetalleVenta : contiene
+    DetalleCompra "0..*" --> "1" Producto : referencia
+    DetalleVenta "0..*" --> "1" Producto : referencia
+    Producto "1" o-- "0..*" Alerta : genera
+    Reporte "1" o-- "0..*" Venta : consolida
+    Reporte "1" o-- "0..*" Compra : consolida
+    Reporte "1" o-- "0..*" Producto : incluye
+</pre>
+</div>
+<script>
+mermaid.initialize({startOnLoad:true,theme:"base",themeVariables:{
+background:"transparent",primaryColor:"#e3f2fd",primaryBorderColor:"#1565c0",
+primaryTextColor:"#0d47a1",lineColor:"#546e7a",secondaryColor:"#f1faf2",
+tertiaryColor:"#fff8f8",mainBkg:"#e3f2fd",nodeBorder:"#1565c0"
+}});
+</script></body></html>
