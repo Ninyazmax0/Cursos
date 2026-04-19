@@ -604,10 +604,24 @@
 
         /* ---- RESPONSIVE ---- */
         @media (max-width: 768px) {
-            .chat-sidebar { display: none; }
+            .chat-sidebar { 
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100%;
+                z-index: 100;
+            }
+            .chat-sidebar.open { display: flex; }
             .msg-group { max-width: 88%; }
             .messages-container { padding: 1rem; }
             .input-bar { padding: 0.6rem 0.75rem; }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.chat-sidebar');
+            sidebar.classList.toggle('open');
         }
 
         /* Hidden utility */
@@ -666,6 +680,9 @@
         <div class="chat-main">
             <!-- Top Bar -->
             <div class="chat-top-bar">
+                <button class="sidebar-back-btn" onclick="toggleSidebar()" style="display:none" id="mobile-menu-btn" title="Menú">
+                    <i data-lucide="menu" style="width:16px;height:16px"></i>
+                </button>
                 <button class="sidebar-back-btn" onclick="window.location.href='inbox.html'" style="display:none" id="mobile-back-btn">
                     <i data-lucide="arrow-left" style="width:16px;height:16px"></i>
                 </button>
@@ -880,9 +897,10 @@
                 document.getElementById('loading-overlay').style.display = 'none';
                 document.getElementById('chat-app').classList.remove('hidden');
 
-                // Mobile back button
+                // Mobile buttons
                 if (window.innerWidth <= 768) {
                     document.getElementById('mobile-back-btn').style.display = 'flex';
+                    document.getElementById('mobile-menu-btn').style.display = 'flex';
                 }
 
                 // Logout
@@ -1219,21 +1237,30 @@
             });
         }
 
+        let heartbeatInterval = null;
+
         function startHeartbeat() {
-            // Update immediately
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
+            
             if (currentUser.id) updateHeartbeat(currentUser.id);
 
-            // Then every 30 seconds
-            setInterval(() => {
+            heartbeatInterval = setInterval(() => {
                 if (currentUser.id) updateHeartbeat(currentUser.id);
             }, 30000);
-
-            // Set offline on page unload
-            window.addEventListener('beforeunload', async () => {
-                const { setOffline } = await import('./assets/js/firebase-config.js');
-                if (currentUser.id) setOffline(currentUser.id);
-            });
         }
+
+        function stopHeartbeat() {
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                heartbeatInterval = null;
+            }
+        }
+
+        window.addEventListener('beforeunload', async () => {
+            stopHeartbeat();
+            const { setOffline } = await import('./assets/js/firebase-config.js');
+            if (currentUser.id) setOffline(currentUser.id);
+        });
 
         // ============================================
         // TYPING INDICATOR

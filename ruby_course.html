@@ -1093,7 +1093,7 @@
                 <i data-lucide="loader-2" class="w-8 h-8 text-white animate-pulse"></i>
             </div>
         </div>
-        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">CARGANDO PYTHON...</p>
+        <p id="loading-message" class="text-xl font-bold text-white tracking-wider animate-pulse">CARGANDO RUBY...</p>
     </div>
 
 <div class="content-box">
@@ -1122,8 +1122,8 @@
             
             <!-- Título del curso -->
             <div class="course-header">
-                <h1>🐍 Curso de Ruby</h1>
-                <p>Aprende Python desde cero — uno de los lenguajes más populares y versátiles del mundo.</p>
+                <h1>💎 Curso de Ruby</h1>
+                <p>Aprende Ruby desde cero — el lenguaje elegante, productivo y favorito de los programadores felices.</p>
             </div>
 
             <!-- Barra de progreso general -->
@@ -1190,7 +1190,7 @@
                      <div class="code-block-header px-4 py-2 flex justify-between items-center" style="background: rgba(36,40,59,0.8); border-bottom: 1px solid rgba(65,72,104,0.3);">
                          <div class="flex items-center gap-2">
                              <span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                             <span class="text-xs font-mono ml-2" style="color: var(--foreground); opacity: 0.5;" id="lesson-code-filename">ejemplo.py</span>
+                             <span class="text-xs font-mono ml-2" style="color: var(--foreground); opacity: 0.5;" id="lesson-code-filename">ejemplo.rb</span>
                          </div>
                          <button id="code-tour-btn" class="tour-code-btn" title="Ver explicacion paso a paso">
                              <i data-lucide="book-marked"></i>
@@ -1293,34 +1293,36 @@ const practiceData = [
         content: `<h3>Ejercicios Básicos</h3>
         <p>Crea un programa que:</p>
         <ol>
-        <li>Pida al usuario su nombre y edad usando input()</li>
+        <li>Pida al usuario su nombre y edad usando gets.chomp</li>
         <li>Convierta la edad a entero</li>
         <li>Muestre un mensaje personalizado</li>
         </ol>
         <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby"># Tu código aquí
-nombre = input("Ingresa tu nombre: ")
-edad = int(input("Ingresa tu edad: "))
-print(f"Hola {nombre}, tienes {edad} años!")</code></pre></div>`
+print "Ingresa tu nombre: "
+nombre = gets.chomp
+print "Ingresa tu edad: "
+edad = gets.chomp.to_i
+puts "Hola #{nombre}, tienes #{edad} años!"</code></pre></div>`
     },
     {
         title: "Práctica 1.1: Encontrar Errores",
         content: `<h3>Encuentra los Errores</h3>
         <p>Haz clic en las partes del código que están incorrectas para corregirlas.</p>
         <div class="command-list mt-2 mb-2">
-            <strong>Comandos disponibles:</strong> input, int, print, f-string
+            <strong>Comandos disponibles:</strong> gets, chomp, to_i, puts, f-string
             <div class="command-counter mt-1">
                 <span id="command-counter-1">Usados: 0/4</span>
             </div>
         </div>
-        <div id="error-code-1" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby">nombre = input("Ingresa tu nombre: ")
-edad = input("Ingresa tu edad: ")
-print("Hola {nombre}, tienes {edad} años!")</code></pre></div>
+        <div id="error-code-1" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby">nombre = leer("Ingresa tu nombre: ")
+edad = leer_entero("Ingresa tu edad: ")
+imprimir("Hola {nombre}, tienes {edad} años!")</code></pre></div>
         <button id="give-up-1" class="btn-primary mt-4">Rendirme y Ver Solución</button>
         <div id="solution-1" class="hidden mt-4">
             <p><strong>Solución:</strong></p>
-            <pre><code class="language-ruby">nombre = input("Ingresa tu nombre: ")
-edad = int(input("Ingresa tu edad: "))
-print(f"Hola {nombre}, tienes {edad} años!")</code></pre>
+            <pre><code class="language-ruby">nombre = gets.chomp
+edad = gets.chomp.to_i
+puts "Hola #{nombre}, tienes #{edad} años!"</code></pre>
         </div>`
     },
     {
@@ -1330,19 +1332,19 @@ print(f"Hola {nombre}, tienes {edad} años!")</code></pre>
         <div class="command-list mt-2 mb-2">
             <strong>Comandos disponibles:</strong>
             <div class="command-palette mt-2 flex flex-wrap gap-2" id="command-palette-1">
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="input">input</div>
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="int">int</div>
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="print">print</div>
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="f">f</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="gets">gets</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="to_i">to_i</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="puts">puts</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="chomp">chomp</div>
             </div>
             <div class="command-counter mt-1">
                 <span id="command-counter-fill-1">Completados: 0/4</span>
             </div>
         </div>
         <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby"># Tu código aquí
-nombre = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="1"></span>("Ingresa tu nombre: ")
-edad = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="2"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="3"></span>("Ingresa tu edad: "))
-print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="4"></span>("Hola {nombre}, tienes {edad} años!"))</code></pre></div>
+nombre = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="1"></span>.<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="2"></span>
+edad = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="3"></span>.<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="4"></span>.to_i
+puts "Hola #{nombre}, tienes #{edad} años!"</code></pre></div>
         <div class="mt-4">
             
             <button id="reset-fill-1" class="btn-primary ml-2">Reiniciar</button>
@@ -1359,59 +1361,61 @@ print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded"
         <li>Determine cuál es mayor</li>
         </ol>
         <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby"># Tu código aquí
-num1 = float(input("Primer número: "))
-num2 = float(input("Segundo número: "))
-print(f"Suma: {num1 + num2}")
-print(f"Resta: {num1 - num2}")
-print(f"Multiplicación: {num1 * num2}")
-if num2 != 0:
-   print(f"División: {num1 / num2}")
-else:
-   print("No se puede dividir por cero")
-if num1 > num2:
-   print(f"{num1} es mayor")
-elif num2 > num1:
-   print(f"{num2} es mayor")
-else:
-   print("Son iguales")</code></pre></div>`
+print "Primer número: "
+num1 = gets.chomp.to_f
+print "Segundo número: "
+num2 = gets.chomp.to_f
+puts "Suma: #{num1 + num2}"
+puts "Resta: #{num1 - num2}"
+puts "Multiplicación: #{num1 * num2}"
+if num2 != 0
+   puts "División: #{num1 / num2}"
+else
+   puts "No se puede dividir por cero"
+end
+if num1 > num2
+   puts "#{num1} es mayor"
+elsif num2 > num1
+   puts "#{num2} es mayor"
+else
+   puts "Son iguales"
+end</code></pre></div>`
     },
     {
         title: "Práctica 2.1: Encontrar Errores en Condicionales",
         content: `<h3>Encuentra los Errores</h3>
         <p>Haz clic en las partes del código que están incorrectas.</p>
         <div class="command-list mt-2 mb-2">
-            <strong>Comandos disponibles:</strong> float, input, print, f-string, if, elif, else
+            <strong>Comandos disponibles:</strong> to_f, gets, puts, if, elsif, else
             <div class="command-counter mt-1">
                 <span id="command-counter-2">Usados: 0/7</span>
             </div>
         </div>
-        <div id="error-code-2" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby">num1 = input("Primer número: ")
-num2 = input("Segundo número: ")
-print(f"Suma: {num1 + num2}")
+        <div id="error-code-2" class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span><span class="text-xs text-gray-400 ml-2 font-mono">example.rb</span></div><pre class="p-4"><code class="language-ruby">print "Primer número: "
+num1 = gets.chomp.to_f
+print "Segundo número: "
+num2 = gets.chomp.to_f
+puts "Suma: #{num1 + num2}"
 if num1 > num2
-   print(f"{num1} es mayor")
-else num2 > num1:
-   print(f"{num2} es mayor")
-else:
-   print("Son iguales")</code></pre></div>
+   puts "#{num1} es mayor"
+elsif num2 > num1
+   puts "#{num2} es mayor"
+else
+   puts "Son iguales"
+end</code></pre></div>
         <button id="give-up-2" class="btn-primary mt-4">Rendirme y Ver Solución</button>
         <div id="solution-2" class="hidden mt-4">
             <p><strong>Solución:</strong></p>
-            <pre><code class="language-ruby">num1 = float(input("Primer número: "))
-num2 = float(input("Segundo número: "))
-print(f"Suma: {num1 + num2}")
-print(f"Resta: {num1 - num2}")
-print(f"Multiplicación: {num1 * num2}")
-if num2 != 0:
-   print(f"División: {num1 / num2}")
-else:
-   print("No se puede dividir por cero")
-if num1 > num2:
-   print(f"{num1} es mayor")
-elif num2 > num1:
-   print(f"{num2} es mayor")
-else:
-   print("Son iguales")</code></pre>
+            <pre><code class="language-ruby">num1 = gets.chomp.to_f
+num2 = gets.chomp.to_f
+puts "Suma: #{num1 + num2}"
+if num1 > num2
+   puts "#{num1} es mayor"
+elsif num2 > num1
+   puts "#{num2} es mayor"
+else
+   puts "Son iguales"
+end</code></pre>
         </div>`
     },
     {
@@ -1421,33 +1425,32 @@ else:
         <div class="command-list mt-2 mb-2">
             <strong>Comandos disponibles:</strong>
             <div class="command-palette mt-2 flex flex-wrap gap-2" id="command-palette-2">
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="float">float</div>
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="input">input</div>
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="print">print</div>
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="f">f</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="to_f">to_f</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="gets">gets</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="puts">puts</div>
                 <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="if">if</div>
-                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="elif">elif</div>
+                <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="elsif">elsif</div>
                 <div class="command-item bg-blue-500 text-white px-3 py-1 rounded cursor-move" draggable="true" data-command="else">else</div>
             </div>
             <div class="command-counter mt-1">
                 <span id="command-counter-fill-2">Completados: 0/14</span>
             </div>
         </div>
-        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby">num1 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="5"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="6"></span>("Primer número: "))
-num2 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="7"></span>(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="8"></span>("Segundo número: "))
-print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="9"></span>("Suma: {num1 + num2}"))
-print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="10"></span>("Resta: {num1 - num2}"))
-print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="11"></span>("Multiplicación: {num1 * num2}"))
-<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="12"></span> num2 != 0:
-   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="13"></span>("División: {num1 / num2}"))
-<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="14"></span>:
-   print("No se puede dividir por cero")
-<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="15"></span> num1 > num2:
-   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="16"></span>("{num1} es mayor"))
-<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="17"></span> num2 > num1:
-   print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="18"></span>("{num2} es mayor"))
-<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="19"></span>:
-   print("Son iguales")</code></pre></div>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby">num1 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="5"></span>.<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="6"></span>.to_f
+num2 = <span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="7"></span>.<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="8"></span>.to_f
+puts "Suma: #{num1 + num2}"
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="12"></span> num2 != 0
+   puts "División: #{num1 / num2}"
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="14"></span>
+   puts "No se puede dividir por cero"
+end
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="15"></span> num1 > num2
+   puts "#{num1} es mayor"
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="17"></span> num2 > num1
+   puts "#{num2} es mayor"
+<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded" data-fill="19"></span>
+   puts "Son iguales"
+end</code></pre></div>
         <div class="mt-4">
             
             <button id="reset-fill-2" class="btn-primary ml-2">Reiniciar</button>
@@ -1461,12 +1464,14 @@ print(<span class="drop-zone border-2 border-dashed border-gray-400 p-1 rounded"
         <ol>
         <li>Pida un número al usuario</li>
         <li>Muestre la tabla de multiplicar de ese número (del 1 al 10)</li>
-        <li>Use un bucle for</li>
+        <li>Use un bucle each</li>
         </ol>
         <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby"># Tu código aquí
-numero = int(input("Ingresa un número: "))
-for i in range(1, 11):
-    print(f"{numero} x {i} = {numero * i}")</code></pre></div>`
+print "Ingresa un número: "
+numero = gets.chomp.to_i
+(1..10).each do |i|
+    puts "#{numero} x #{i} = #{numero * i}"
+end</code></pre></div>`
     },
     {
         title: "Práctica 4: Listas y Funciones",
@@ -1478,16 +1483,18 @@ for i in range(1, 11):
         <li>Encuentre el número mayor</li>
         </ol>
         <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby"># Tu código aquí
-def calcular_promedio(numeros):
-    return sum(numeros) / len(numeros)
+def calcular_promedio(numeros)
+    numeros.sum / numeros.length.to_f
+end
 
-def encontrar_mayor(numeros):
-    return max(numeros)
+def encontrar_mayor(numeros)
+    numeros.max
+end
 
 # Prueba las funciones
 lista = [10, 20, 30, 40, 50]
-print(f"Promedio: {calcular_promedio(lista)}")
-print(f"Mayor: {encontrar_mayor(lista)}")</code></pre></div>`
+puts "Promedio: #{calcular_promedio(lista)}"
+puts "Mayor: #{encontrar_mayor(lista)}"</code></pre></div>`
     },
     {
         title: "Práctica 5: Proyecto Final",
@@ -1502,706 +1509,62 @@ print(f"Mayor: {encontrar_mayor(lista)}")</code></pre></div>`
         <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-ruby"># Tu código aquí
 estudiantes = []
 
-def agregar_estudiante():
-    nombre = input("Nombre del estudiante: ")
+def agregar_estudiante
+    print "Nombre del estudiante: "
+    nombre = gets.chomp
     calificaciones = []
-    for i in range(3):
-        calif = float(input(f"Calificación {i+1}: "))
-        calificaciones.append(calif)
-    estudiantes.append({"nombre": nombre, "calificaciones": calificaciones})
+    3.times do |i|
+        print "Calificación #{i+1}: "
+        calificaciones << gets.chomp.to_f
+    end
+    estudiantes << {nombre: nombre, calificaciones: calificaciones}
+end
 
-def calcular_promedio(calificaciones):
-    return sum(calificaciones) / len(calificaciones)
+def calcular_promedio(calificaciones)
+    calificaciones.sum / calificaciones.length.to_f
+end
 
 # Agregar algunos estudiantes
-for _ in range(2):
-    agregar_estudiante()
+2.times { agregar_estudiante }
 
 # Mostrar resultados
-for estudiante in estudiantes:
-    prom = calcular_promedio(estudiante["calificaciones"])
-    print(f"{estudiante['nombre']}: {prom:.2f}")
+estudiantes.each do |estudiante|
+    prom = calcular_promedio(estudiante[:calificaciones])
+    puts "#{estudiante[:nombre]}: #{prom.round(2)}"
+end
 
 # Ordenar por promedio
-estudiantes.sort(key=lambda x: calcular_promedio(x["calificaciones"]), reverse=True)
-print("\\nOrdenados por promedio:")
-for estudiante in estudiantes:
-    prom = calcular_promedio(estudiante["calificaciones"])
-    print(f"{estudiante['nombre']}: {prom:.2f}")</code></pre></div>`
-    }
+estudiantes.sort_by! { |e| calcular_promedio(e[:calificaciones]) }.reverse!
+puts "\nOrdenados por promedio:"
+estudiantes.each do |estudiante|
+    prom = calcular_promedio(estudiante[:calificaciones])
+    puts "#{estudiante[:nombre]}: #{prom.round(2)}"
+end</code></pre></div>`
+}
 ];
 
-const courseData = [
-    {
-        "title": "Nivel 1: Conceptos Básicos Ruby",
-        "lesson": [
-            {
-                "title": "Simplicidad como Bandera",
-                "dialogo": "<p>Ruby fue diseñado con un propósito claro: la felicidad del programador. Yukihiro 'Matz' Matsumoto creó Ruby combinando partes de Perl, Smalltalk y Lisp. Su filosofía establece que las máquinas deben trabajar para nosotros, no al revés.</p>\n                      <p>Para imprimir un texto amigable en la consola terminal con un salto de línea automático integrado, utilizamos el método universal <code class='text-red-400'>puts</code>.</p>",
-                "codigo": "puts \"Hola mundo ¡Saludos a todo el mundo de Ruby!\"\nprint \"Este texto no crea saltos de línea...\"\nprint \" ...hasta que introduces el guión de nueva línea explícito \\n\"",
-                "tourSteps": [
-                    {
-                        "text": "A diferencia de `print` estático de JS, `puts` empuja un String al buffer y luego manda un retorno de carro.",
-                        "line": 1
-                    }
-                ]
-            },
-            {
-                "title": "Todo es un Objeto",
-                "dialogo": "<p>En Ruby no existen variables primitivas puras (int de C, boolean de Java). Todo número, toda cadena de texto e incluso los valores Nulos son objetos completos portando métodos heredados extremadamente lujosos y poderosos de la clase base <code class='text-purple-400'>Object</code>.</p>",
-                "codigo": "numero = -5\n\n# Como es un objeto completo, podemos preguntarle cosas:\nputs numero.abs            # 5\nputs numero.zero?          # false\nputs numero.class          # Integer",
-                "tourSteps": [
-                    {
-                        "text": "En lugar de llamar funciones externas Math.abs(-5), en Ruby todo objeto carga su propia balística y métodos nativos integrados en un diseño poético Orientado a Objetos Puro.",
-                        "line": 4
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Qué dictamina la filosofía canónica primigenia detrás de la fundación de la arquitectura base del núcleo Ruby?",
-                "options": [
-                    "Maximum machine compute efficiency and raw pointer speed at compilation",
-                    "Productividad y felicidad humana del que escribe el código mediante un parseador expresivo poético y naturalista enfocado en la usabilidad",
-                    "Interoperatibilidad estricta con drivers nativos hard de sistemas embebidos de bajo nivel en IoT",
-                    "Proveer el motor de base de datos más rápido de la web moderna."
-                ],
-                "answer": "Productividad y felicidad humana del que escribe el código mediante un parseador expresivo poético y naturalista enfocado en la usabilidad"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 2: Interpolación y Variables",
-        "lesson": [
-            {
-                "title": "Cadenas Inteligentes",
-                "dialogo": "<p>A la hora de tejer mensajes en variables, no tenemos que encadenar tediosos signos <code>+</code> que exigen convertir los enteros a texto o arriesgar sumar variables rotas.</p>\n                      <p>Para interpelar o inyectar ruby directamente en un string usamos <code>#{ }</code> siempre dentro de comillas <b>DOBLES</b>.</p>",
-                "codigo": "nombre = \"Steven\"\nedad_futura = 16 + 1\n\nputs \"¡Hola, soy #{nombre}! El otro año tendré #{edad_futura} velitas.\"\nputs 'Las comillas simples no interpolan código: #{nombre}'",
-                "tourSteps": [
-                    {
-                        "text": "La interpolación exige rigorosamente comillas dobles, de lo contrario Ruby las tratará como un string llano aburrido.",
-                        "line": 4
-                    },
-                    {
-                        "text": "String literal crudo, aquí se leerán los hashtags y llaves tal y como el teclado los trazó.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿A diferencia de ES6 JS Backticks o de Python f-strings, qué símbolo exacto arranca la sintaxis de la interpolación léxica de variables de forma nativa en un archivo rb estandar alojado en memoria local?",
-                "options": [
-                    "${x}",
-                    "#{variable}",
-                    "%var%",
-                    "echo(nombre)"
-                ],
-                "answer": "#{variable}"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 3: Condicionales y Estilos",
-        "lesson": [
-            {
-                "title": "If vs Unless",
-                "dialogo": "<p>Como Ruby adora la semántica del lenguaje humano (inglés explícito), ofrece <code class='text-accent'>unless</code>, la contraparte simétrica lógica del viejo y aburrido <code>if</code>. Se entiende como \"a menos que esto sea cierto\".</p>",
-                "codigo": "baneado = false\n\nunless baneado\n  puts \"Eres bienvenido en mi reino.\"\nend\n\n# Un equivalente directo en una sola línea (Sintaxis Ruby Mágica):\nputs \"Disfruta tu poder.\" if true",
-                "tourSteps": [
-                    {
-                        "text": "Revisando directamente el valor False lógico puro.",
-                        "line": 3
-                    },
-                    {
-                        "text": "Modificadores de una sola línea al final (Inline-Conditionals). Evitan tener que encajar los 'end' cuando es un if básico de una línea de código ejecutor, es hermoso para la vista.",
-                        "line": 8
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Qué representa a rajatabla la instrucción nativa Unless frente a una evaluación de contexto lógico booleana estándar?",
-                "options": [
-                    "Un bucle idéntico al while",
-                    "Es la contraparte inversa idéntica a ejecutar formalmente en binario: if No es cierto(not/!) { ... }",
-                    "Manda señales directas a bash the background exception handler",
-                    "Termina la compilación inmediata"
-                ],
-                "answer": "Es la contraparte inversa idéntica a ejecutar formalmente en binario: if No es cierto(not/!) { ... }"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 4: Arrays y El Iterador Supremo (Each)",
-        "lesson": [
-            {
-                "title": "Despidiendo al 'for'",
-                "dialogo": "<p>El viejo bucle <code>for(int i=0)</code> existe en Ruby pero casi jamás la verás usar por veteranos. Todo el mundo usa <code class='text-yellow-400'>.each</code>.</p>",
-                "codigo": "arsenal = [\"Espada\", \"Rifle\", \"Arco\"]\n\narsenal.each do |arma|\n  puts \"Cargando #{arma}...\"\nend\n\n# Mismo impacto pero en una línea usando llaves\narsenal.each { |a| puts \"Sacando mi #{a}\" }",
-                "tourSteps": [
-                    {
-                        "text": "El iterador nativo Each desenvuelve la caja de Arsenal y nos entrega temporalmente 1 componente a la vez envuelto en nuestras tuberías de inyección local |x|.",
-                        "line": 3
-                    },
-                    {
-                        "text": "Bloque de una línea con llaves { }, usado masivamente para algoritmos funcionales cortos encadenados map filter reduce.",
-                        "line": 8
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Por convención y estandarización mundial estricta desde The Ruby Style Guide, qué reemplaza a nivel iterativo funcional en listas todo lo que se hacía pesadamente con FOR o WHILE bucles crudos?",
-                "options": [
-                    "Recursión tail end",
-                    "Método polimórfico object method .each { |element| ... block ... }",
-                    "Métodos iter select raw parameters bounds pointer object",
-                    "Do... While C style wrapper bindings map function"
-                ],
-                "answer": "Método polimórfico object method .each { |element| ... block ... }"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 5: Diccionarios de Datos (Hashes) y Symbols",
-        "lesson": [
-            {
-                "title": "Símbolos vs Strings",
-                "dialogo": "<p>Los <strong>Hashes</strong> (diccionarios y colecciones K:V) de Ruby alojan estructuras indexadas. Lo exquisito aquí son los <code class='text-purple-400'>Símbolos</code>.</p>\n                      <p>Un Símbolo (ej. <code>:nombre</code>) es similar a un String pero es **Inmutable** y alojado globalmente bajo **el mismo puntero de Memoria RAM** a diferencia del string que regenera un byte nuevo cada vez que invocas la palabra 'nombre'.</p>",
-                "codigo": "perfil = {\n  :nombre => \"System\",\n  :edad => 16\n}\n\n# La sintaxis de Ruby moderno que se parece mas a JSON web api:\nmodern_perfil = { nombre: \"Steven\", poder: \"Absoluto\" }\nputs modern_perfil[:poder]",
-                "tourSteps": [
-                    {
-                        "text": "The Ruby Hash Rocket literal (=>). Usado clásicamente y aún vigente para mapear K,V con strings raros o clases completas siendo keys.",
-                        "line": 2
-                    },
-                    {
-                        "text": "El atajo mágico del símbolo (nombre:) empata perfecto para integraciones JSON API standards sin usar el cohete explícitamente y nos regala eficiencia O(1) in-memory de acceso instantáneo vía symbol base.",
-                        "line": 7
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Por qué estructuralmente y a nivel memoria física en el MRI (Ruby C Engine) solemos usar un ::Symbol en vez de un string como Key de un Hash Object de millones de campos?",
-                "options": [
-                    "Solamente por sintaxis sugar",
-                    "Porque el string ('x') asigna en RAM O.S. y memoria de V8 interpreter un nuevo lugar por cada invocación destruyendo memoria para la misma etiqueta, a diferencia del symbol que siempre aloca y referencia exactamente en todo el ciclo de runtime al mismo slot RAM unívoco estático ID number parameter limit memory logic filter address.",
-                    "Es más fácil de leer.",
-                    "Imposibilita los garbage collector runs event thread background rules boundaries parameter attribute variables filter restrictions rules limitations condition variables rules properties sizes limit variables rule values limitation properties constraints lengths values fields"
-                ],
-                "answer": "Porque el string ('x') asigna en RAM O.S. y memoria de V8 interpreter un nuevo lugar por cada invocación destruyendo memoria para la misma etiqueta, a diferencia del symbol que siempre aloca y referencia exactamente en todo el ciclo de runtime al mismo slot RAM unívoco estático ID number parameter limit memory logic filter address."
-            }
-        ]
-    },
-    {
-        "title": "Nivel 6: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 6",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 7: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 7",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 8: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 8",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 9: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 9",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 10: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 10",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 11: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 11",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 12: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 12",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 13: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 13",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 14: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 14",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 15: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 15",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 16: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 16",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 17: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 17",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 18: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 18",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 19: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 19",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    },
-    {
-        "title": "Nivel 20: OOP & Metaprogamming",
-        "lesson": [
-            {
-                "title": "Orientación a Objetos Avanzada 20",
-                "dialogo": "<p>Aquí forjaremos <strong>Clases</strong> (con el constructor implícito <code>initialize</code> en Ruby). Ruby brilla al no tener que gestionar 'this' explícito, manejando las variables de estado global de la clase o instancia bajo el bello símbolo <code>@</code>.</p>",
-                "codigo": "class Spirit\n  attr_reader :fuerza\n\n  def initialize(fuerza_base)\n    @fuerza = fuerza_base\n  end\n\n  def atacar!\n    puts \"Daño ejecutado: #{@fuerza}\"\n  end\nend\n\nSystem = Spirit.new(9999)\nSystem.atacar!",
-                "tourSteps": [
-                    {
-                        "text": "El constructor (el equivalente a def __init__ the old python design pero más orgánico en ruby the initialize protocol).",
-                        "line": 4
-                    },
-                    {
-                        "text": "La varibable local @ arranca el scope the instance attribute. Pertenece localmente pero persiste the whole lifecycle object instance state of the variable properties state values properties state limits requirements parameters conditions values rule attributes restrictions condition filter rules variables property restriction condition sizes value strings fields limit dimension lengths values strings strings parameters condition parameters restrictions boundary property restrictions strings lengths variable values sizes characteristic criterion dimension sizes bounds limitations constraints arrays dimension sizes bound dimensions limitation variable condition values dimension dimension arrays fields rule boundaries attribute variables strings limit boundaries constraints parameters characteristics criterion variable arrays limitations criteria characteristics restrictions property sizes sizes matching strings constraints lengths fields arrays.",
-                        "line": 5
-                    }
-                ]
-            }
-        ],
-        "quiz": [
-            {
-                "type": "multiple-choice",
-                "question": "¿Cómo se llama el método reservado que desencadena automáticamente el runtime the vm system parameters upon invocation by .new of any raw defined structured class base definition of objects in modern ruby logic execution order mechanism architecture?",
-                "options": [
-                    "constructor()",
-                    "__init__",
-                    "begin",
-                    "initialize"
-                ],
-                "answer": "initialize"
-            }
-        ]
-    }
-];
-window.courseData = courseData;
-console.log(" courseData loaded successfully", courseData.length);
+// Cargar los nuevos 20 niveles de Ruby desde archivo externo
+function loadRubyLevels() {
+    return new Promise((resolve, reject) => {
+        // Eliminar script anterior si existe
+        const oldScript = document.getElementById('ruby-levels-script');
+        if (oldScript) oldScript.remove();
+
+        const script = document.createElement('script');
+        script.id = 'ruby-levels-script';
+        script.src = 'ruby_course_new_levels.js?v=' + Date.now();
+        script.onload = () => {
+            console.log(" courseData loaded successfully", window.courseData ? window.courseData.length : 0);
+            resolve();
+        };
+        script.onerror = (e) => {
+            console.error("Error cargando niveles:", e);
+            reject(e);
+        };
+        document.head.appendChild(script);
+    });
+}
+loadRubyLevels();
 
 
 
@@ -2340,7 +1703,7 @@ async function saveProgress() {
         
         try {
             await window.updateCourseProgress(currentUser.id, 'rubyProgress', progressPayload);
-            console.log(' Python Progress Saved to Firestore');
+            console.log(' Ruby Progress Saved to Firestore');
         } catch (e) {
             console.error(' Error saving ruby progress:', e);
         }
@@ -2401,83 +1764,53 @@ function ensureMonacoLoaded(callback) {
 }
 
 const keywordDocs = {
-   "print": { 
-        title: "Comando print()", 
-        desc: "<p>Es la función más fundamental y utilizada de Python. Su propósito exclusivo es expulsar y mostrar información gráfica en la terminal, para que el operador logre leer los resultados generados por el código.</p><p>Puedes imprimir textos, variables e incluso cálculos directamente separados por comas.</p>", 
-        example: "print('¡Hola Academia!')\nprint(5 + 10) # En consola saldrá 15\nprint('Total:', 200)",
+   "puts": { 
+        title: "Comando puts", 
+        desc: "<p>Es el método universal para expulsar y mostrar información en la terminal. A diferencia de otros lenguajes, <code>puts</code> añade automáticamente un salto de línea al final de cada ejecución.</p>", 
+        example: "puts \"¡Hola Ruby!\"\nputs 5 + 10 # En consola saldrá 15",
         ref: "Nivel 1" 
    },
-   "input": { 
-        title: "Comando input()", 
-        desc: "<p>Esta función representa la <strong>Pausa Suprema</strong>. Al activarse, detiene agresivamente el programa e inmoviliza la terminal a la espera de un humano.</p><p>Solo avanzará una vez que el espectador teclee algún texto y presione la tecla <code>ENTER</code>. Recuerda: cualquier tecla que presione el humano <strong>siempre</strong> se registrará pura y llanamente como Texto Crudo (String), nunca números nativos.</p>", 
-        example: "poder = input('Mide tu nivel: ')\n# Si tecleas 9000 será texto '9000'",
+   "gets": { 
+        title: "Comando gets", 
+        desc: "<p>Esta función detiene el programa a la espera de que el usuario escriba algo y presione <code>ENTER</code>. Siempre captura la entrada como un String (texto).</p>", 
+        example: "nombre = gets.chomp # .chomp elimina el salto de línea final",
         ref: "Nivel 1" 
    },
    "if": { 
         title: "Bloque if (Si...)", 
-        desc: "<p>Es el guardia de seguridad central. Significa 'Solamente si pasa esto...'. Evalúa matemáticamente o de forma lógica una condición inmediata.</p><p>Si el sistema aprueba (sale <code>True</code>), las siguientes líneas indentadas (tabuladas) se ejecutarán obedientemente.</p>", 
-        example: "if energia < 20:\n    print('Tu batería se agota')",
+        desc: "<p>Es el guardia de seguridad central. Evalúa una condición. Si el sistema aprueba (sale <code>True</code>), las líneas indentadas se ejecutarán.</p>", 
+        example: "if energia < 20\n    puts 'Tu batería se agota'\nend",
         ref: "Nivel 3" 
    },
-   "elif": { 
-        title: "Bloque elif (Sino, si...)", 
-        desc: "<p>Es un <code>if</code> secundario o de repuesto. Se ejecuta únicamente si el <code>if</code> o los <code>elif</code> situados arriba fallaron. Sirve para enlazar inmensas cadenas lógicas y atrapar un bloque específico uno detrás del otro.</p>", 
-        example: "if color == 'Rojo':\n    print('Peligro')\nelif color == 'Amarillo':\n    print('Precaución')\nelse:\n    print('Siga')",
+   "elsif": { 
+        title: "Bloque elsif (Sino, si...)", 
+        desc: "<p>Es un <code>if</code> secundario. Se ejecuta únicamente si el <code>if</code> o los <code>elsif</code> situados arriba fallaron.</p>", 
+        example: "if color == 'Rojo'\n    puts 'Peligro'\nelsif color == 'Amarillo'\n    puts 'Precaución'\nend",
         ref: "Nivel 3" 
    },
    "else": { 
         title: "Bloque else (De lo contrario...)", 
-        desc: "<p>El plan final de respaldo o la red de seguridad del código. El bloque <code>else</code> captura literalmente todo caso paralelo que rebotó de los <code>if</code>. Por naturaleza, <strong>jamás admite</strong> condiciones escritas frente a él.</p>", 
-        example: "if edad >= 18:\n    print('Acceso Total')\nelse:\n    print('Acceso Denegado')",
+        desc: "<p>El plan final de respaldo. El bloque <code>else</code> captura todo caso que rebotó de los <code>if</code>.</p>", 
+        example: "if edad >= 18\n    puts 'Acceso Total'\nelse\n    puts 'Acceso Denegado'\nend",
         ref: "Nivel 3" 
    },
-   "while": { 
-        title: "Estructura while (Mientras...)", 
-        desc: "<p>Un espiral cósmico o <strong>bucle de condición</strong> indefinido. Repetirá la secuencia una, y otra, y otra vez, hasta que milagrosamente la condición que evalúa termine convertida en Falsa.</p><p>¡Si olvidas cambiar la variable que le das como tope, el bucle será infinito y tu computadora morirá del pánico colapsando!</p>", 
-        example: "ciclos = 3\nwhile ciclos > 0:\n    print('Faltan:', ciclos)\n    ciclos = ciclos - 1",
+   "each": { 
+        title: "Iterador each", 
+        desc: "<p>El iterador más elegante de Ruby. Recorre colecciones (como Arrays) y ejecuta un bloque de código para cada elemento.</p>", 
+        example: "['A', 'B'].each do |letra|\n    puts letra\nend",
         ref: "Nivel 4" 
    },
-   "for": { 
-        title: "Estructura for (Para cada...)", 
-        desc: "<p>El más controlado y elegante de los bucles en el desarrollo diario. A diferencia del inestable <code>while</code>, un ciclo <code>for</code> recorre quirúrgicamente listas completas o textos hasta el final, iterando un objeto y procesándolo uno por uno de forma finita y sin riesgo de cierre mortal continuo.</p>", 
-        example: "for persona in ['Steven', 'System']:\n    print('Te veo, ' + persona)",
-        ref: "Nivel 5" 
-   },
-   "range": { 
-        title: "Generador range()", 
-        desc: "<p>Un generador aritmético veloz que escupe enormes fábricas de números. Crea una ráfaga secuencial instantánea.</p><p>Suele ir incrustado dentro de los <code>for</code> para enumerar veces específicas y determinar paradas matemáticas.</p>", 
-        example: "for numero in range(3):\n    print(numero) # Arroja 0, 1, 2",
-        ref: "Nivel 5" 
-   },
-   "int": { 
-        title: "Casting int()", 
-        desc: "<p>Significa Integer (Número Entero). Corta radicalmente los textos con números que metes en inputs y decapitada fracciones si le introduces decimales, quedándose únicamente con un número redondo válido en las mates.</p>", 
-        example: "base = int('200') # De Texto a Número\nala = int(10.9) # Termina siendo 10",
+   "to_i": { 
+        title: "Conversión to_i", 
+        desc: "<p>Convierte un objeto (usualmente un String) a un número entero (Integer).</p>", 
+        example: "edad = '25'.to_i",
         ref: "Nivel 2" 
    },
-   "float": { 
-        title: "Casting float()", 
-        desc: "<p>Significa Número de Coma Flotante (Con decimales). Un conversor numérico preciso. Mantiene todo valor intacto para operar matemáticametne con exactitud microscópica, sin cercenar las fracciones.</p>", 
-        example: "peso = float('68.5') # Texto a Decimal matemático",
+   "to_f": { 
+        title: "Conversión to_f", 
+        desc: "<p>Convierte un objeto a un número de punto flotante (decimal).</p>", 
+        example: "precio = '19.99'.to_f",
         ref: "Nivel 2" 
-   },
-   "str": { 
-        title: "Casting str()", 
-        desc: "<p>Significa String (Cadena de Texto). Permite convertir números vivos o estados lógicos como True o False en simples letras pasivas, inhabilitadas para sumar y diseñadas exclusivamente para poder fundirlas con frases.</p>", 
-        example: "resultado = 500\nprint('Lograste ' + str(resultado))",
-        ref: "Nivel 2" 
-   },
-   "True": { 
-        title: "Booleano True (Verdadero)", 
-        desc: "<p>Absoluta Verdad en el procesador. Indica estado binario positivo. En una comparación, dictamina que el universo lógico ha cumplido tu afirmación.</p>", 
-        example: "es_mayor = True",
-        ref: "Nivel 3" 
-   },
-   "False": { 
-        title: "Booleano False (Falso)", 
-        desc: "<p>Negación bi-estado absoluta. Afirmación que falló miserablemente, o interruptor que está apagado temporalmente.</p>", 
-        example: "vivo = False",
-        ref: "Nivel 3" 
    }
 };
 
@@ -2773,7 +2106,7 @@ function renderLesson() {
                 codePanel.classList.add('flex');
                 dialogPanel.classList.replace('lg:w-full', 'lg:w-1/2');
                 
-                document.getElementById('lesson-code-filename').textContent = stepData.filename || 'ejemplo.py';
+                document.getElementById('lesson-code-filename').textContent = stepData.filename || 'ejemplo.rb';
                 
                 // Boton tour: mostrar solo si hay tourSteps
                 const tourBtn = document.getElementById('code-tour-btn');
@@ -3275,13 +2608,13 @@ function showHint() {
             hint = "Piensa en qué función o palabra clave falta para que el código funcione correctamente.";
             break;
         case "drag-drop":
-            hint = "Recuerda la sintaxis básica de Python para formar sentencias válidas.";
+            hint = "Recuerda la sintaxis básica de Ruby para formar sentencias válidas.";
             break;
         case "matching":
             hint = "Haz clic primero en un concepto y luego en su descripción correspondiente.";
             break;
         case "ordering":
-            hint = "Piensa en el orden lógico de los pasos para ejecutar un programa Python.";
+            hint = "Piensa en el orden lógico de los pasos para ejecutar un programa Ruby.";
             break;
         case "error-finding":
             hint = "Busca errores comunes como tipos de datos incorrectos o sintaxis mal formada.";
@@ -3376,337 +2709,26 @@ function showResults() {
         } catch(e) {}
 
         // Show Next Level Button
-        showNextLevelButton(currentLevel);
-
+        nextLevelBtn.classList.remove('hidden');
     } else {
-        resultsTitle.textContent = 'Intentalo de nuevo!';
+        resultsTitle.textContent = 'Sigue intentando!';
         resultsTitle.style.color = 'var(--red)';
         resultsMessage.textContent = 'Necesitas al menos 70% para aprobar.';
-        resultsIcon.setAttribute('data-lucide', 'refresh-cw');
+        resultsIcon.setAttribute('data-lucide', 'x-circle');
         resultsIcon.style.color = 'var(--red)';
         nextLevelBtn.classList.add('hidden');
     }
     
     lucide.createIcons();
-    showPanel('results');
-    
-    // Desbloquear chat después del quiz (Removed)
-    // document.getElementById('chat-toggle-btn').style.display = 'block';
+    switchPanel('results-panel');
 }
-
-// Event Listeners
-document.getElementById('next-btn').addEventListener('click', () => { 
-    if (currentLessonStep < courseData[currentLevel].lesson.length - 1) { 
-        currentLessonStep++; 
-        renderLesson(); 
-    } else { 
-        startQuiz(); 
-    } 
-});
-
-document.getElementById('prev-btn').addEventListener('click', () => { 
-    if (currentLessonStep > 0) { 
-        currentLessonStep--; 
-        renderLesson(); 
-    } 
-});
-
-document.getElementById('close-lesson-btn').addEventListener('click', () => { 
-    renderLevelSelection(); 
-    showPanel('levelSelection'); 
-});
-
-document.getElementById('retry-lesson-btn').addEventListener('click', () => startLevel(currentLevel));
-
-document.getElementById('next-level-btn').addEventListener('click', () => {
-    if (currentLevel + 1 < courseData.length) {
-        startLevel(currentLevel + 1);
-    } else {
-        renderLevelSelection();
-        showPanel('levelSelection');
-    }
-});
-
-
-
-// Elemento 'close-practice-btn' no existe en el HTML - comentado para evitar error
-// document.getElementById('close-practice-btn').addEventListener('click', () => {
-//     renderLevelSelection();
-//     showPanel('levelSelection');
-// });
-
-// Theme toggle
-document.getElementById('theme-toggle').addEventListener('click', () => {
-    const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    const icon = document.querySelector('#theme-toggle i');
-    icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-    lucide.createIcons();
-});
-
-// Chat functionality removed
-
-
-// Error finding functionality
-function initializeErrorFinding() {
-    // Check if elements exist before adding event listeners
-    const giveUpBtn1 = document.getElementById('give-up-1');
-    const giveUpBtn2 = document.getElementById('give-up-2');
-    
-    if (giveUpBtn1) {
-        giveUpBtn1.addEventListener('click', () => {
-            const solution1 = document.getElementById('solution-1');
-            if (solution1) {
-                solution1.classList.remove('hidden');
-            }
-        });
-    }
-    
-    if (giveUpBtn2) {
-        giveUpBtn2.addEventListener('click', () => {
-            const solution2 = document.getElementById('solution-2');
-            if (solution2) {
-                solution2.classList.remove('hidden');
-            }
-        });
-    }
-}
-
-function getErrorsForBlock(blockId) {
-    const errorMap = {
-        'error-code-1': ['input("Ingresa tu edad: ")', '"Hola {nombre}, tienes {edad} años!"'],
-        'error-code-2': ['input("Primer número: ")', 'input("Segundo número: ")', 'if num1 > num2', 'else num2 > num1:']
-    };
-    return errorMap[blockId] || [];
-}
-
-function checkAllErrorsFound(blockId) {
-    // Track found errors and update counter
-    const errorCounts = {
-        'error-code-1': 2,
-        'error-code-2': 4
-    };
-
-    // In a real implementation, track which errors have been found
-    // For now, just show encouragement
-    setTimeout(() => {
-        alert('¡Bien! Has encontrado un error. Sigue buscando los demás.');
-        updateCommandCounter(blockId);
-    }, 500);
-}
-
-function updateCommandCounter(blockId) {
-    const counterMap = {
-        'error-code-1': 'command-counter-1',
-        'error-code-2': 'command-counter-2'
-    };
-
-    const counterElement = document.getElementById(counterMap[blockId]);
-    if (counterElement) {
-        // Simulate finding errors - in real implementation, track actual found errors
-        const current = parseInt(counterElement.textContent.split(':')[1].split('/')[0]);
-        if (current < parseInt(counterElement.textContent.split('/')[1])) {
-            counterElement.textContent = `Usados: ${current + 1}/${counterElement.textContent.split('/')[1]}`;
-        }
-    }
-}
-
-// Code completion functionality
-function initializeCodeCompletion() {
-    // Initialize click-to-place for fill exercises
-    initializeClickToPlace();
-}
-
-let selectedCommand = null;
-
-function initializeClickToPlace() {
-    // Remove existing event listeners to avoid duplicates
-    document.querySelectorAll('.command-item').forEach(item => {
-        item.removeEventListener('click', handleCommandSelect);
-        item.addEventListener('click', handleCommandSelect);
-    });
-
-    // Make drop zones clickable for placement
-    document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.removeEventListener('click', handleZoneClick);
-        zone.addEventListener('click', handleZoneClick);
-    });
-
-    // Reset buttons - only add if they exist
-    const resetBtn1 = document.getElementById('reset-fill-1');
-    const resetBtn2 = document.getElementById('reset-fill-2');
-    if (resetBtn1) {
-        resetBtn1.removeEventListener('click', () => resetFill(1));
-        resetBtn1.addEventListener('click', () => resetFill(1));
-    }
-    if (resetBtn2) {
-        resetBtn2.removeEventListener('click', () => resetFill(2));
-        resetBtn2.addEventListener('click', () => resetFill(2));
-    }
-}
-
-function handleCommandSelect(e) {
-    // Remove previous selection
-    document.querySelectorAll('.command-item.selected').forEach(item => {
-        item.classList.remove('selected');
-    });
-
-    // Select this command
-    selectedCommand = e.target.dataset.command;
-    e.target.classList.add('selected');
-
-    // Add visual feedback - command follows mouse
-    document.addEventListener('mousemove', followMouse);
-}
-
-function followMouse(e) {
-    if (selectedCommand) {
-        const selectedElement = document.querySelector('.command-item.selected');
-        if (selectedElement) {
-            // Create floating element that follows mouse
-            let floatingElement = document.getElementById('floating-command');
-            if (!floatingElement) {
-                floatingElement = document.createElement('div');
-                floatingElement.id = 'floating-command';
-                floatingElement.className = 'fixed bg-blue-500 text-white px-3 py-1 rounded shadow-lg pointer-events-none z-50';
-                floatingElement.textContent = selectedCommand;
-                document.body.appendChild(floatingElement);
-            }
-            floatingElement.style.left = (e.clientX + 10) + 'px';
-            floatingElement.style.top = (e.clientY + 10) + 'px';
-        }
-    }
-}
-
-function handleZoneClick(e) {
-    if (selectedCommand && !e.currentTarget.dataset.value) {
-        const dropZone = e.currentTarget;
-
-        // Clear previous content
-        dropZone.textContent = '';
-
-        // Add the command
-        const commandSpan = document.createElement('span');
-        commandSpan.textContent = selectedCommand;
-        commandSpan.className = 'bg-blue-500 text-white px-2 py-1 rounded text-sm';
-        dropZone.appendChild(commandSpan);
-
-        // Store the value
-        dropZone.dataset.value = selectedCommand;
-
-        // Hide the selected item
-        const selectedItem = document.querySelector('.command-item.selected');
-        if (selectedItem) {
-            selectedItem.style.display = 'none';
-            selectedItem.classList.remove('selected');
-        }
-
-        // Remove floating element
-        const floatingElement = document.getElementById('floating-command');
-        if (floatingElement) {
-            floatingElement.remove();
-        }
-
-        // Clear selection
-        selectedCommand = null;
-        document.removeEventListener('mousemove', followMouse);
-    }
-}
-
-function resetFill(exerciseNum) {
-    // Reset drop zones
-    document.querySelectorAll(`#practice-content .drop-zone`).forEach(zone => {
-        zone.textContent = '';
-        zone.dataset.value = '';
-        zone.style.backgroundColor = '';
-    });
-
-    // Show all command items
-    document.querySelectorAll('.command-item').forEach(item => {
-        item.style.display = 'inline-block';
-        item.style.opacity = '1';
-    });
-
-    // Reset feedback
-    const feedback = document.getElementById(`fill-feedback-${exerciseNum}`);
-    feedback.innerHTML = '';
-
-    // Reset counter
-    const counterElement = document.getElementById(`command-counter-fill-${exerciseNum}`);
-    if (counterElement) {
-        counterElement.textContent = `Completados: 0/${counterElement.textContent.split('/')[1]}`;
-    }
-}
-
-function checkFill(exerciseNum) {
-    const answers = {
-        1: ['input', 'int', 'input', 'f'],
-        2: ['float', 'input', 'float', 'input', 'f', 'if', 'f', 'elif', 'f', 'else']
-    };
-
-    const correct = answers[exerciseNum];
-    let allCorrect = true;
-    const feedback = document.getElementById(`fill-feedback-${exerciseNum}`);
-
-    // Check drop zones instead of inputs
-    const dropZones = document.querySelectorAll(`#practice-content .drop-zone`);
-    dropZones.forEach((zone, index) => {
-        const value = zone.dataset.value || '';
-        if (value === correct[index]) {
-            zone.style.borderColor = 'green';
-            zone.style.backgroundColor = 'rgba(158, 206, 106, 0.1)';
-        } else {
-            zone.style.borderColor = 'red';
-            zone.style.backgroundColor = 'rgba(247, 118, 142, 0.1)';
-            allCorrect = false;
-        }
-    });
-
-    if (allCorrect) {
-        feedback.innerHTML = '<span style="color: green;">¡Excelente! Todos los huecos están correctos.</span>';
-        updateFillCounter(exerciseNum, true);
-    } else {
-        feedback.innerHTML = '<span style="color: red;">Algunos huecos están incorrectos. Revisa y vuelve a intentar.</span>';
-        updateFillCounter(exerciseNum, false);
-    }
-}
-
-function updateFillCounter(exerciseNum, success) {
-    const counterElement = document.getElementById(`command-counter-fill-${exerciseNum}`);
-    if (counterElement) {
-        const total = parseInt(counterElement.textContent.split('/')[1]);
-        let current = parseInt(counterElement.textContent.split(':')[1].split('/')[0]);
-        if (success && current < total) {
-            current = total; // Mark as completed when all correct
-        }
-        counterElement.textContent = `Completados: ${current}/${total}`;
-    }
-}
-
-// ========================================
-// CONSOLA INTERACTIVA DE PYTHON CON MONACO EDITOR
-// ========================================
-
-let pyodide = null;
-let pyodideReady = false;
 let currentInputResolver = null;
 window.monacoEditors = {}; // Store editor instances
 let monacoRequireConfigured = false;
 
-// Inicializar Pyodide
-async function initPyodide() {
-    if (pyodideReady) return;
-    
-    try {
-        console.log('🐍 Inicializando Pyodide...');
-        pyodide = await loadPyodide({
-            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
-        });
-        pyodideReady = true;
-        console.log(' Pyodide listo!');
-    } catch (error) {
-        console.error(' Error al cargar Pyodide:', error);
-    }
+// Inicializar Intérprete (Ruby en modo lectura)
+async function initInterpreter() {
+    console.log('💎 Iniciando recursos de Ruby...');
 }
 
 // Crear componente de consola interactiva con Monaco
@@ -3725,7 +2747,7 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
     }
 
     const consoleHTML = `
-        <div class="python-interactive-container grid grid-cols-1 lg:grid-cols-2 gap-4 h-[500px]">
+        <div class="ruby-interactive-container grid grid-cols-1 lg:grid-cols-2 gap-4 h-[500px]">
             <!-- Panel de Código (Monaco) -->
             <div class="code-display-panel flex flex-col h-full border-r border-gray-700/50">
                 <div class="code-display-header flex justify-between items-center p-2 bg-gray-900/50">
@@ -3735,7 +2757,7 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
                             <span class="dot w-3 h-3 rounded-full bg-yellow-500"></span>
                             <span class="dot w-3 h-3 rounded-full bg-green-500"></span>
                         </div>
-                        <span class="text-xs font-bold text-gray-400 ml-2">main.py</span>
+                        <span class="text-xs font-bold text-gray-400 ml-2">main.rb</span>
                     </div>
                     <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Read Only</span>
                 </div>
@@ -3751,9 +2773,9 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
                         Terminal
                     </div>
                     <div class="console-controls flex gap-2">
-                         <button class="console-btn console-btn-run flex items-center gap-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs transition-colors" onclick="runRubyCode('${containerId}')">
-                            <i data-lucide="play" class="w-3 h-3"></i>
-                            Ejecutar
+                        <button class="console-btn console-btn-run flex items-center gap-1 px-3 py-1 bg-accent/20 text-accent rounded text-xs transition-colors cursor-default" disabled>
+                            <i data-lucide="eye" class="w-3 h-3"></i>
+                            Vista Previa
                         </button>
                         <button class="console-btn console-btn-clear p-1 hover:bg-gray-700 rounded text-gray-400 transition-colors" onclick="clearConsole('${containerId}')" title="Limpiar">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -3774,35 +2796,6 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
     container.innerHTML = consoleHTML;
     
     if (window.lucide) lucide.createIcons();
-
-    // Setup input handler
-    const inputField = document.getElementById(`${containerId}-input`);
-    if (inputField) {
-        // Evitar duplicados usando flag en dataset en lugar de clonar
-        if (inputField.dataset.listenerAttached === 'true') {
-            return;
-        }
-        
-        inputField.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const value = inputField.value;
-                console.log(`[Python Console] Input submitted for ${containerId}: "${value}"`);
-                
-                // Usar resolver específico del contenedor
-                if (window.consoleInputResolvers && window.consoleInputResolvers[containerId]) {
-                    window.consoleInputResolvers[containerId](value);
-                    delete window.consoleInputResolvers[containerId];
-                } else {
-                    console.warn(`[Python Console] No resolver found for ${containerId}. Input ignored.`);
-                }
-                
-                inputField.value = '';
-                document.getElementById(`${containerId}-input-prompt`).classList.add('hidden');
-            }
-        });
-        
-        inputField.dataset.listenerAttached = 'true';
-    }
 
     // Inicializar Monaco Editor
     if (!monacoRequireConfigured) {
@@ -3838,7 +2831,6 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
     });
 }
 
-// Ejecutar código Python desde Monaco
 // Función para inicializar Monaco Editor en bloques de código estáticos (Ejemplos)
 // Convierte los .code-block en editores Monaco con tema Tokyo Night
 let codeBlockMonacoInstances = [];
@@ -3889,131 +2881,34 @@ function initializeCodeBlockMonaco() {
                 <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
                 <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
                 <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
-                <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'python' ? 'example.py' : language === 'html' ? 'index.html' : 'code.' + language}</span>
+                <span class="text-xs text-gray-400 ml-2 font-mono">${language === 'ruby' ? 'example.rb' : language === 'html' ? 'index.html' : 'code.' + language}</span>
             </div>
-            <div class="flex items-center gap-2">
-                <button 
-                    onclick="(function(btn){ const edId = btn.closest('.code-block-monaco-wrapper').querySelector('[id^=code-block-monaco]')?.id; const ed = monaco.editor.getEditors ? monaco.editor.getEditors().find(e => e.getContainerDomNode()?.id === edId || e.getContainerDomNode()?.parentElement?.id === edId) : null; const code = ed ? ed.getValue() : ''; const lang = btn.dataset.lang || 'ruby'; try{window.tryAwardSandboxExplorer?.()}catch(e){}; window.open('sandbox.html?lang=' + lang + '&code=' + btoa(unescape(encodeURIComponent(code))), '_blank'); })(this)" 
-                    data-lang="ruby"
-                    class="flex items-center gap-1 px-2 py-1 bg-accent/20 hover:bg-accent/40 text-accent text-xs rounded border border-accent/30 transition-all"
-                    title="Abrir en Sandbox">
-                    <i data-lucide="external-link" class="w-3 h-3"></i> Sandbox
-                </button>
-                <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">Preview</span>
-            </div>
-        `;
+            </div>`;
 
-        const monacoContainer = document.createElement('div');
-        monacoContainer.id = uniqueId;
-        monacoContainer.style.cssText = `width: 100%; height: ${height}px;`;
+        // Crear el contenedor para el editor
+        const editorDiv = document.createElement('div');
+        editorDiv.id = uniqueId;
+        editorDiv.style.height = `${height}px`;
+        editorDiv.style.width = '100%';
 
         container.appendChild(header);
-        container.appendChild(monacoContainer);
+        container.appendChild(editorDiv);
         block.appendChild(container);
 
-        const editor = monaco.editor.create(monacoContainer, {
+        // Inicializar la instancia de Monaco
+        window.monacoEditors[uniqueId] = monaco.editor.create(editorDiv, {
             value: codeText.trim(),
             language: language,
             theme: 'tokyo-night',
             readOnly: true,
-            domReadOnly: true,
+            automaticLayout: true,
             minimap: { enabled: false },
             fontSize: 14,
-            fontFamily: "'JetBrains Mono', monospace",
             lineNumbers: 'on',
             scrollBeyondLastLine: false,
             padding: { top: 10, bottom: 10 }
         });
-
-        codeBlockMonacoInstances.push(editor);
     });
-}
-
-// Re-inicializar los bloques de código cuando se cambia de paso
-const originalRenderLesson = typeof renderLesson === 'function' ? renderLesson : null;
-if (originalRenderLesson) {
-    window.renderLesson = function() {
-        // Limpiar instancias anteriores para liberar memoria
-        codeBlockMonacoInstances.forEach(editor => {
-            if (editor && typeof editor.dispose === 'function') editor.dispose();
-        });
-        codeBlockMonacoInstances = [];
-        
-        originalRenderLesson.apply(this, arguments);
-        setTimeout(initializeCodeBlockMonaco, 100);
-    };
-}
-
-async function runRubyCode(containerId) {
-    const outputDiv = document.getElementById(`${containerId}-output`);
-    const runBtn = document.querySelector(`#${containerId} .console-btn-run`);
-    
-    if (!outputDiv || !runBtn) return;
-
-    if (!pyodideReady) {
-        outputDiv.innerHTML = '<div class="console-loading"><div class="spinner"></div> Cargando...</div>';
-        runBtn.disabled = true;
-        // await initPyodide(); deshabilitado para curso no-python
-        runBtn.disabled = false;
-    }
-
-    const editor = window.monacoEditors[containerId];
-    if (!editor) return;
-    const code = editor.getValue();
-
-    outputDiv.innerHTML = '<div class="console-line info">🚀 Ejecutando...</div>';
-
-    try {
-        // Setup output redirect
-        pyodide.globals.set('print_output', (text, is_prompt = false) => {
-            const line = document.createElement('div');
-            line.className = `console-line ${is_prompt ? 'input' : 'output'}`;
-            line.textContent = text;
-            outputDiv.appendChild(line);
-            outputDiv.scrollTop = outputDiv.scrollHeight;
-        });
-
-        // Setup input resolver
-        pyodide.globals.set('js_get_input', (prompt) => {
-            return getUserInput(containerId, prompt);
-        });
-
-        // Pre-configure Python environment
-        await pyodide.runPythonAsync(`
-import sys
-import builtins
-
-class CustomStdout:
-    def write(self, text):
-        if text.strip(): print_output(text)
-    def flush(self): pass
-
-sys.stdout = CustomStdout()
-sys.stderr = CustomStdout()
-
-async def async_input(prompt=''):
-    if prompt: print_output(prompt, True)
-    return await js_get_input(prompt)
-
-builtins.input = async_input
-        `);
-
-        // Transform user code to be async-safe
-        // We wrap it in a function if it contains 'input' to allow top-level await behavior
-        await pyodide.runPythonAsync(code.replace(/\binput\s*\(/g, 'await input('));
-        
-        const doneLine = document.createElement('div');
-        doneLine.className = 'console-line info';
-        doneLine.textContent = ' Ejecución completada';
-        outputDiv.appendChild(doneLine);
-
-    } catch (error) {
-        const errorLine = document.createElement('div');
-        errorLine.className = 'console-line error';
-        errorLine.textContent = ` Error: ${error.message}`;
-        outputDiv.appendChild(errorLine);
-    }
-    outputDiv.scrollTop = outputDiv.scrollHeight;
 }
 
 // Obtener input del usuario
@@ -4056,5 +2951,6 @@ function getUserInput(containerId, prompt) {
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js"></script>
+
 </body>
 </html>

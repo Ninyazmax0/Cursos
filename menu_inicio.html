@@ -23,6 +23,7 @@
     <script type="module" src="assets/js/firebase-storage.js"></script>
     <script type="module" src="assets/js/data-cleanup.js"></script>
     <script type="module" src="assets/js/predefined-profiles.js"></script>
+    <script type="module" src="assets/js/ui-utils.js"></script>
 
     <!-- Background Manager -->
     <script src="assets/js/background-manager.js"></script>
@@ -634,7 +635,7 @@
                         if (!file) return;
                         
                         if (file.size > 5 * 1024 * 1024) {
-                            alert('La imagen es muy grande (Máx 5MB)');
+                            showGlobalToast('Error', 'La imagen es muy grande (Máx 5MB)', 'error');
                             return;
                         }
                         
@@ -647,10 +648,10 @@
                                 await syncUserToFirestore(freshUser);
                                 localStorage.setItem('currentUser', JSON.stringify(freshUser));
                                 document.getElementById('sidebar-user-avatar').src = newAvatar;
-                                alert('Avatar actualizado correctamente ✨');
+                                showGlobalToast('Éxito', 'Avatar actualizado correctamente', 'success');
                             } catch (err) {
                                 console.error('Error updating avatar:', err);
-                                alert('Error actualizando avatar.');
+                                showGlobalToast('Error', 'Error actualizando avatar', 'error');
                             }
                         };
                         reader.readAsDataURL(file);

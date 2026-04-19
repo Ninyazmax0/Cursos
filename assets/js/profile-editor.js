@@ -4,7 +4,7 @@
 // Sistema para editar bio, tags y redes sociales de usuarios
 
 import { db } from './firebase-config.js';
-import { doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
 
 // Mostrar modal de edición
 export function openEditProfileModal(userData) {

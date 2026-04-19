@@ -16,13 +16,18 @@ export const achievements = [
     
     // --- CURSOS ---
     { id: 'polyglot_starter', name: 'Políglota Curioso', desc: 'Inicia los 4 cursos.', hint: 'Python, Ruby, Web, DB... ¿por qué elegir?', rarity: 'common', icon: 'languages' },
+    { id: 'novice_dev', name: 'Principiante Prometedor', desc: 'Completa los primeros 5 niveles.', hint: 'Comienzas a entender tu primer lenguaje.', rarity: 'common', icon: 'star' },
     { id: 'half_way', name: 'A Medio Camino', desc: 'Alcanza el Nivel 10 de cualquier curso.', hint: 'Ya estás entendiendo la lógica de los lenguajes.', rarity: 'rare', icon: 'zap' },
     { id: 'bug_master', name: 'Maestro Cazador', desc: 'Completa 5 niveles de Bug Hunter.', hint: 'Encuentra los errores ocultos.', rarity: 'rare', icon: 'bug' },
+    { id: 'arcade_master', name: 'Rey del Arcade', desc: 'Completa un Desafío Arcade interactivo.', hint: 'Pon a prueba tus habilidades sin piedad.', rarity: 'epic', icon: 'gamepad-2' },
     
     // --- MAESTROS ---
+    { id: 'web_expert', name: 'Arquitecto Frontend', desc: 'Alcanza el Nivel 15 de Desarrollo Web.', hint: 'Maquillando el DOM a la perfección.', rarity: 'rare', icon: 'layout' },
     { id: 'web_master', name: 'Lord of the DOM', desc: 'Completa el curso de Desarrollo Web.', hint: 'Domina el HTML y CSS.', rarity: 'epic', icon: 'globe' },
     { id: 'python_master', name: 'Parsel Tongue', desc: 'Completa el curso de Python.', hint: 'Habla con las serpientes.', rarity: 'epic', icon: 'code-2' },
+    { id: 'ruby_expert', name: 'Diamante en Bruto', desc: 'Alcanza el Nivel 15 del curso Ruby.', hint: 'Pulido, pero aún con filo.', rarity: 'rare', icon: 'gem' },
     { id: 'ruby_master', name: 'Gem Collector', desc: 'Completa el curso de Ruby.', hint: 'Brilla como un rubí.', rarity: 'epic', icon: 'gem' },
+    { id: 'db_expert', name: 'Administrador', desc: 'Alcanza el Nivel 15 de Base de Datos.', hint: 'Controlando los registros y las tablas.', rarity: 'rare', icon: 'server' },
     { id: 'db_master', name: 'Query King', desc: 'Completa el curso de Bases de Datos.', hint: 'SELECT * FROM knowledge.', rarity: 'epic', icon: 'database' },
     
     // --- DESAFÍOS ---

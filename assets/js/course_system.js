@@ -33,9 +33,7 @@ async function saveQuizScore(score, total, courseId, levelNumber) {
 // ===== BOTÓN SIGUIENTE NIVEL =====
 // Muestra el botón "Siguiente Nivel" en el panel de resultados
 function showNextLevelButton(currentLevelIndex) {
-    // Ocultar el botón de challenge (ya no existe)
-    const challengeBtn = document.getElementById('code-challenge-btn');
-    if (challengeBtn) challengeBtn.style.display = 'none';
+
     
     const nextBtn = document.getElementById('next-level-btn');
     if (!nextBtn) return;
@@ -77,11 +75,17 @@ function showNextLevelButton(currentLevelIndex) {
         } catch(e){}
     }
     
-    // Logro de medio camino
+    // Logros de niveles intermedios
     try {
-        if (currentLevelIndex === 9) {
-            import('./achievements.js').then(m => m.checkAchievement('half_way'));
-        }
+        import('./achievements.js').then(m => {
+            if (currentLevelIndex === 4) m.checkAchievement('novice_dev');
+            if (currentLevelIndex === 9) m.checkAchievement('half_way');
+            if (currentLevelIndex === 14) {
+                if (window.COURSE_ID === 'ruby') m.checkAchievement('ruby_expert');
+                if (window.COURSE_ID === 'web') m.checkAchievement('web_expert');
+                if (window.COURSE_ID === 'database') m.checkAchievement('db_expert');
+            }
+        });
     } catch(e){}
 }
 

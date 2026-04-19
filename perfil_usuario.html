@@ -331,6 +331,11 @@
             renderProfile(user);
         }
 
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+
         function renderProfile(user) {
             // Apply Avatar Frames/Auras
             import('./assets/js/predefined-profiles.js').then(({ PROFILE_AURAS }) => {
@@ -360,7 +365,7 @@
             const tagsEl = document.getElementById('user-tags');
             if (user.tags && user.tags.length > 0) {
                 tagsEl.innerHTML = user.tags.map(tag => 
-                    `<span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm">${tag}</span>`
+                    `<span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm">${escapeHtml(tag)}</span>`
                 ).join('');
             } else {
                 tagsEl.innerHTML = '';

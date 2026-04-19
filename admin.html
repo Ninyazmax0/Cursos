@@ -16,6 +16,7 @@
 </head>
 
     <link rel="stylesheet" href="assets/css/theme.css">
+    <script type="module" src="assets/js/ui-utils.js"></script>
 
     /* --- CONTENEDOR PRINCIPAL MEJORADO --- */
     .content-box {
@@ -607,8 +608,12 @@
             document.getElementById('total-unlocked').textContent = totalUnlocked;
 
             renderUsersTable();
-            renderUsersTable();
             renderCodeEvaluations(); // Now this will actually work!
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
         function renderUsersTable() {
@@ -638,10 +643,10 @@
                                 <tr style="border-bottom: 1px solid var(--border);">
                                     <td class="p-3">
                                         <div class="flex items-center gap-3">
-                                            <img src="${user.avatar || 'https://via.placeholder.com/32'}" alt="${user.name}" class="w-8 h-8 rounded-full object-cover">
+                                            <img src="${escapeHtml(user.avatar) || 'https://via.placeholder.com/32'}" alt="${escapeHtml(user.name)}" class="w-8 h-8 rounded-full object-cover">
                                             <div>
-                                                <p class="font-semibold">${user.name}</p>
-                                                <p class="text-xs opacity-70">${user.rank || 'Student'}</p>
+                                                <p class="font-semibold">${escapeHtml(user.name)}</p>
+                                                <p class="text-xs opacity-70">${escapeHtml(user.rank || 'Student')}</p>
                                             </div>
                                         </div>
                                     </td>
@@ -658,11 +663,11 @@
                                     </td>
                                     <td class="p-3 text-center">
                                         <div class="flex gap-1 justify-center flex-wrap">
-                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleEditUser('${userId}')" style="background-color: var(--accent); color: white;">Editar</button>
-                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleUnlockAll('${userId}')" style="background-color: var(--green); color: white;" title="Desbloquear TODO">Unlock All</button>
-                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleUnlockLevel('${userId}')" style="background-color: var(--accent-dark); color: white;" title="Desbloquear Nivel Específico">Set Level</button>
-                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleResetProgress('${userId}')" style="background-color: var(--yellow); color: black;">Reset</button>
-                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleDeleteUser('${userId}')" style="background-color: var(--red); color: white;">Kill</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleEditUser('${escapeHtml(userId)}')" style="background-color: var(--accent); color: white;">Editar</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleUnlockAll('${escapeHtml(userId)}')" style="background-color: var(--green); color: white;" title="Desbloquear TODO">Unlock All</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleUnlockLevel('${escapeHtml(userId)}')" style="background-color: var(--accent-dark); color: white;" title="Desbloquear Nivel Específico">Set Level</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleResetProgress('${escapeHtml(userId)}')" style="background-color: var(--yellow); color: black;">Reset</button>
+                                            <button class="level-btn text-xs px-2 py-1" onclick="window.handleDeleteUser('${escapeHtml(userId)}')" style="background-color: var(--red); color: white;">Kill</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -750,12 +755,11 @@
 
             // Handle Review Actions
             document.getElementById('approve-btn').onclick = () => {
-                alert(`¡Nota ${document.getElementById('review-score').value} guardada! (Simulación: Esto actualizaría Firebase)`);
-                // Aquí iría la lógica para actualizar la nota en el usuario
+                showGlobalToast('Éxito', `¡Nota ${document.getElementById('review-score').value} guardada!`, 'success');
                 modal.classList.add('hidden');
             };
             document.getElementById('reject-btn').onclick = () => {
-                 alert('Rechazado. (Simulación)');
+                 showGlobalToast('Info', 'Código rechazado', 'warning');
                  modal.classList.add('hidden');
             };
         };
@@ -770,7 +774,7 @@
             if (index !== -1) {
                 openModal(index);
             } else {
-                alert('Usuario no encontrado');
+                showGlobalToast('Error', 'Usuario no encontrado', 'error');
             }
         };
 
@@ -785,7 +789,7 @@
                 showGlobalToast('Exito', 'Usuario eliminado correctamente', 'success');
             } catch (error) {
                 console.error('Error eliminando usuario:', error);
-                alert('Error al eliminar usuario: ' + error.message);
+                showGlobalToast('Error', 'Error al eliminar usuario', 'error');
             }
         };
 
@@ -798,13 +802,13 @@
                 const courses = ['webProgress', 'pythonProgress', 'rubyProgress', 'databaseProgress'];
                 courses.forEach(course => {
                     if (!user[course]) user[course] = {};
-                    user[course].unlockedLevel = 99; // Unlock all
+                    user[course].unlockedLevel = 99;
                 });
                 
                 await syncUserToFirestore(user);
-                alert('Niveles desbloqueados exitosamente.');
+                showGlobalToast('Éxito', 'Niveles desbloqueados', 'success');
              } catch(e) {
-                 alert('Error: ' + e.message);
+                 showGlobalToast('Error', e.message, 'error');
              }
          };
 
@@ -820,14 +824,14 @@
                         unlockedLevel: 1,
                         completedLevels: [],
                         quizScores: {},
-                        codeEvaluations: [] // if applicable
+                        codeEvaluations: []
                     };
                 });
                 
                 await syncUserToFirestore(user);
-                alert('Progreso reiniciado exitosamente.');
+                showGlobalToast('Éxito', 'Progreso reiniciado', 'success');
              } catch(e) {
-                 alert('Error: ' + e.message);
+                 showGlobalToast('Error', e.message, 'error');
              }
          };
 
@@ -838,7 +842,6 @@
         const userIndexInput = document.getElementById('user-index');
         const userNameInput = document.getElementById('user-name');
         const userAvatarInput = document.getElementById('user-avatar');
-        const userEmailInput = document.getElementById('user-email');
         const addUserBtn = document.getElementById('add-user-btn');
         const cancelBtn = document.getElementById('cancel-btn');
 
@@ -878,32 +881,30 @@
             const userId = userIndexInput.value;
             const name = userNameInput.value.trim();
             const avatar = userAvatarInput.value.trim();
-            // Email removed
 
             if (!name || !avatar) {
-                alert('Todos los campos son obligatorios');
+                showGlobalToast('Error', 'Todos los campos son obligatorios', 'error');
                 return;
             }
 
             const isNew = userId === "NEW";
-            // Generar ID para nuevo usuario si es necesario
             const finalId = isNew ? name.toLowerCase().replace(/\s+/g, '_') : userId;
 
-            // Datos base
             const userData = {
                 id: finalId,
                 name,
                 avatar,
-                isOnline: false, // Default
+                isOnline: false,
                 lastUpdated: new Date().toISOString()
             };
 
-            // Preservar datos existentes si es edición
             if (!isNew) {
                 const existing = users.find(u => u.id === finalId);
-                Object.assign(userData, existing, userData); // Merge safe
+                if (existing) {
+                    Object.assign(existing, userData);
+                    Object.assign(userData, existing);
+                }
             } else {
-                // Datos default para nuevos
                 userData.rank = 'Student';
                 userData.webProgress = { completedLevels: [], unlockedLevel: 1 };
                 userData.pythonProgress = { completedLevels: [], unlockedLevel: 1 };
@@ -913,10 +914,10 @@
 
             try {
                 await syncUserToFirestore(userData);
-                alert(isNew ? 'Usuario creado exitosamente' : 'Usuario actualizado exitosamente');
+                showGlobalToast('Éxito', isNew ? 'Usuario creado' : 'Usuario actualizado', 'success');
                 closeModal();
             } catch(e) {
-                alert('Error al guardar en Firebase: ' + e.message);
+                showGlobalToast('Error', 'Error al guardar: ' + e.message, 'error');
             }
         }
 

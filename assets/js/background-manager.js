@@ -32,9 +32,9 @@ class BackgroundManager {
     }
 
     initializeCSSVariables() {
-        // Establecer valores por defecto en las variables CSS
         document.documentElement.style.setProperty('--bg-day', `url('${DEFAULT_BACKGROUNDS.light}')`);
         document.documentElement.style.setProperty('--bg-night', `url('${DEFAULT_BACKGROUNDS.dark}')`);
+        document.documentElement.style.setProperty('--bg-fallback', '#1a1b26');
     }
 
     loadSettings() {

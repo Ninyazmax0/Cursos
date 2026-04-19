@@ -2353,83 +2353,65 @@ function ensureMonacoLoaded(callback) {
 }
 
 const keywordDocs = {
-   "print": { 
-        title: "Comando print()", 
-        desc: "<p>Es la función más fundamental y utilizada de Python. Su propósito exclusivo es expulsar y mostrar información gráfica en la terminal, para que el operador logre leer los resultados generados por el código.</p><p>Puedes imprimir textos, variables e incluso cálculos directamente separados por comas.</p>", 
-        example: "print('¡Hola Academia!')\nprint(5 + 10) # En consola saldrá 15\nprint('Total:', 200)",
-        ref: "Nivel 1" 
+   "SELECT": { 
+        title: "Cláusula SELECT", 
+        desc: "<p>Es la cláusula principal de toda consulta SQL. Indica qué columnas quieres recuperar. El asterisco (*) selecciona todas las columnas disponibles en la tabla.</p>", 
+        example: "SELECT nombre, email FROM usuarios;\nSELECT * FROM productos;",
+        ref: "Nivel 5" 
    },
-   "input": { 
-        title: "Comando input()", 
-        desc: "<p>Esta función representa la <strong>Pausa Suprema</strong>. Al activarse, detiene agresivamente el programa e inmoviliza la terminal a la espera de un humano.</p><p>Solo avanzará una vez que el espectador teclee algún texto y presione la tecla <code>ENTER</code>. Recuerda: cualquier tecla que presione el humano <strong>siempre</strong> se registrará pura y llanamente como Texto Crudo (String), nunca números nativos.</p>", 
-        example: "poder = input('Mide tu nivel: ')\n# Si tecleas 9000 será texto '9000'",
-        ref: "Nivel 1" 
+   "FROM": { 
+        title: "Cláusula FROM", 
+        desc: "<p>Especifica la tabla de donde se extraerán los datos. Es obligatoria en cualquier consulta SELECT. Define el origen de los datos.</p>", 
+        example: "SELECT * FROM usuarios;\nSELECT nombre FROM productos;",
+        ref: "Nivel 5" 
    },
-   "if": { 
-        title: "Bloque if (Si...)", 
-        desc: "<p>Es el guardia de seguridad central. Significa 'Solamente si pasa esto...'. Evalúa matemáticamente o de forma lógica una condición inmediata.</p><p>Si el sistema aprueba (sale <code>True</code>), las siguientes líneas indentadas (tabuladas) se ejecutarán obedientemente.</p>", 
-        example: "if energia < 20:\n    print('Tu batería se agota')",
+   "WHERE": { 
+        title: "Cláusula WHERE", 
+        desc: "<p>Filtra filas según condiciones booleanas. Solo devuelve registros que cumplan la condición especificada. Es como un guardián que decide qué datos pueden pasar.</p>", 
+        example: "SELECT * FROM usuarios WHERE edad >= 18;\nSELECT * FROM productos WHERE precio < 100;",
+        ref: "Nivel 6" 
+   },
+   "JOIN": { 
+        title: "INNER JOIN - Unir Tablas", 
+        desc: "<p>Une datos de múltiples tablas basándose en una relación común (Foreign Key). INNER JOIN devuelve solo los registros que tienen coincidencias en ambas tablas.</p>", 
+        example: "SELECT u.nombre, p.total\nFROM usuarios u\nINNER JOIN pedidos p ON u.id = p.usuario_id;",
+        ref: "Nivel 12" 
+   },
+   "setDoc": { 
+        title: "setDoc() - Firebase Firestore", 
+        desc: "<p>Crea o reemplaza completamente un documento en Firestore. Si el documento con ese ID ya existe, lo sobreescribe. Si no existe, lo crea de forma atomica.</p>", 
+        example: "await setDoc(doc(db, 'usuarios', 'id1'), {\n  nombre: 'Ana',\n  edad: 25\n});",
         ref: "Nivel 3" 
    },
-   "elif": { 
-        title: "Bloque elif (Sino, si...)", 
-        desc: "<p>Es un <code>if</code> secundario o de repuesto. Se ejecuta únicamente si el <code>if</code> o los <code>elif</code> situados arriba fallaron. Sirve para enlazar inmensas cadenas lógicas y atrapar un bloque específico uno detrás del otro.</p>", 
-        example: "if color == 'Rojo':\n    print('Peligro')\nelif color == 'Amarillo':\n    print('Precaución')\nelse:\n    print('Siga')",
-        ref: "Nivel 3" 
-   },
-   "else": { 
-        title: "Bloque else (De lo contrario...)", 
-        desc: "<p>El plan final de respaldo o la red de seguridad del código. El bloque <code>else</code> captura literalmente todo caso paralelo que rebotó de los <code>if</code>. Por naturaleza, <strong>jamás admite</strong> condiciones escritas frente a él.</p>", 
-        example: "if edad >= 18:\n    print('Acceso Total')\nelse:\n    print('Acceso Denegado')",
-        ref: "Nivel 3" 
-   },
-   "while": { 
-        title: "Estructura while (Mientras...)", 
-        desc: "<p>Un espiral cósmico o <strong>bucle de condición</strong> indefinido. Repetirá la secuencia una, y otra, y otra vez, hasta que milagrosamente la condición que evalúa termine convertida en Falsa.</p><p>¡Si olvidas cambiar la variable que le das como tope, el bucle será infinito y tu computadora morirá del pánico colapsando!</p>", 
-        example: "ciclos = 3\nwhile ciclos > 0:\n    print('Faltan:', ciclos)\n    ciclos = ciclos - 1",
+   "getDoc": { 
+        title: "getDoc() - Firebase Firestore", 
+        desc: "<p>Lee un documento de Firestore una sola vez (no es tiempo real). Devuelve un DocumentSnapshot. Usa .exists() para verificar si existe y .data() para obtener los campos.</p>", 
+        example: "const snap = await getDoc(doc(db, 'usuarios', 'id1'));\nif (snap.exists()) console.log(snap.data());",
         ref: "Nivel 4" 
    },
-   "for": { 
-        title: "Estructura for (Para cada...)", 
-        desc: "<p>El más controlado y elegante de los bucles en el desarrollo diario. A diferencia del inestable <code>while</code>, un ciclo <code>for</code> recorre quirúrgicamente listas completas o textos hasta el final, iterando un objeto y procesándolo uno por uno de forma finita y sin riesgo de cierre mortal continuo.</p>", 
-        example: "for persona in ['Steven', 'System']:\n    print('Te veo, ' + persona)",
-        ref: "Nivel 5" 
+   "GROUP": { 
+        title: "GROUP BY - Agrupar", 
+        desc: "<p>Agrupa filas con valores iguales en una misma columna. Se usa junto con funciones de agregación (COUNT, SUM, AVG) para calcular resultados por grupo.</p>", 
+        example: "SELECT ciudad, COUNT(*) AS total\nFROM usuarios\nGROUP BY ciudad;",
+        ref: "Nivel 9" 
    },
-   "range": { 
-        title: "Generador range()", 
-        desc: "<p>Un generador aritmético veloz que escupe enormes fábricas de números. Crea una ráfaga secuencial instantánea.</p><p>Suele ir incrustado dentro de los <code>for</code> para enumerar veces específicas y determinar paradas matemáticas.</p>", 
-        example: "for numero in range(3):\n    print(numero) # Arroja 0, 1, 2",
-        ref: "Nivel 5" 
+   "ORDER": { 
+        title: "ORDER BY - Ordenar", 
+        desc: "<p>Ordena los resultados de la consulta por una o más columnas. ASC = ascendente (menor a mayor, A-Z). DESC = descendente (mayor a menor, Z-A).</p>", 
+        example: "SELECT * FROM productos ORDER BY precio DESC;\nSELECT * FROM usuarios ORDER BY nombre ASC;",
+        ref: "Nivel 7" 
    },
-   "int": { 
-        title: "Casting int()", 
-        desc: "<p>Significa Integer (Número Entero). Corta radicalmente los textos con números que metes en inputs y decapitada fracciones si le introduces decimales, quedándose únicamente con un número redondo válido en las mates.</p>", 
-        example: "base = int('200') # De Texto a Número\nala = int(10.9) # Termina siendo 10",
-        ref: "Nivel 2" 
+   "COUNT": { 
+        title: "Función COUNT() - Contar", 
+        desc: "<p>Cuenta el número de filas en un resultado. COUNT(*) incluye filas con NULL. COUNT(columna) ignora los valores NULL en esa columna.</p>", 
+        example: "SELECT COUNT(*) FROM usuarios;\nSELECT COUNT(DISTINCT ciudad) FROM usuarios;",
+        ref: "Nivel 8" 
    },
-   "float": { 
-        title: "Casting float()", 
-        desc: "<p>Significa Número de Coma Flotante (Con decimales). Un conversor numérico preciso. Mantiene todo valor intacto para operar matemáticametne con exactitud microscópica, sin cercenar las fracciones.</p>", 
-        example: "peso = float('68.5') # Texto a Decimal matemático",
-        ref: "Nivel 2" 
-   },
-   "str": { 
-        title: "Casting str()", 
-        desc: "<p>Significa String (Cadena de Texto). Permite convertir números vivos o estados lógicos como True o False en simples letras pasivas, inhabilitadas para sumar y diseñadas exclusivamente para poder fundirlas con frases.</p>", 
-        example: "resultado = 500\nprint('Lograste ' + str(resultado))",
-        ref: "Nivel 2" 
-   },
-   "True": { 
-        title: "Booleano True (Verdadero)", 
-        desc: "<p>Absoluta Verdad en el procesador. Indica estado binario positivo. En una comparación, dictamina que el universo lógico ha cumplido tu afirmación.</p>", 
-        example: "es_mayor = True",
-        ref: "Nivel 3" 
-   },
-   "False": { 
-        title: "Booleano False (Falso)", 
-        desc: "<p>Negación bi-estado absoluta. Afirmación que falló miserablemente, o interruptor que está apagado temporalmente.</p>", 
-        example: "vivo = False",
-        ref: "Nivel 3" 
+   "INSERT": { 
+        title: "INSERT INTO - Agregar Datos", 
+        desc: "<p>Agrega nuevas filas a una tabla existente. Debes especificar las columnas y sus valores correspondientes con VALUES. Puede insertar múltiples filas a la vez.</p>", 
+        example: "INSERT INTO usuarios (nombre, edad)\nVALUES ('Carlos', 25);",
+        ref: "Nivel 10" 
    }
 };
 
@@ -2845,9 +2827,11 @@ function startQuiz() {
     score = 0;
     renderQuizQuestion();
     showPanel('quiz');
-    // Bloquear chat durante el quiz
-    document.getElementById('chat-modal').classList.add('hidden');
-    document.getElementById('chat-toggle-btn').style.display = 'none';
+    // Bloquear chat durante el quiz (si existe)
+    const chatModal = document.getElementById('chat-modal');
+    if (chatModal) chatModal.classList.add('hidden');
+    const chatBtn = document.getElementById('chat-toggle-btn');
+    if (chatBtn) chatBtn.style.display = 'none';
 }
 
 function renderQuizQuestion() {
