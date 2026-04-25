@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Patch: Logros Retroactivos</title>
+    <link rel="stylesheet" href="assets/css/tailwind.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #1a1b26; color: #a9b1d6; font-family: sans-serif; }
+        .glass-panel { background-color: rgba(36, 40, 59, 0.9); border: 1px solid #414868; border-radius: 12px; }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen">
+
+    <div class="glass-panel p-8 max-w-lg w-full text-center shadow-2xl relative overflow-hidden">
+        <i data-lucide="database-zap" class="w-16 h-16 mx-auto text-yellow-400 mb-4 animate-bounce"></i>
+        <h1 class="text-3xl font-bold text-white mb-2">Migración de Logros</h1>
+        <p class="text-gray-400 mb-6 text-sm">Este script analizará todos los usuarios de la base de datos y les entregará los logros (y monedas) que les correspondan basados en su progreso actual.</p>
+        
+        <button id="btn-patch" class="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg transition-colors flex justify-center items-center gap-2 mx-auto w-full">
+            <i data-lucide="play" class="w-5 h-5"></i> Ejecutar Migración Retroactiva
+        </button>
+
+        <div id="status-box" class="mt-6 p-4 rounded bg-black/30 border border-gray-700 h-40 overflow-y-auto text-left hidden">
+            <ul id="log-list" class="text-xs space-y-1 font-mono text-green-400"></ul>
+        </div>
+    </div>
+
+    <!-- Carga de Firebase -->
+    <script type="module">
+        import { doc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { db } from "./assets/js/firebase-config.js";
+
+        lucide.createIcons();
+
+        const btn = document.getElementById('btn-patch');
+        const statusBox = document.getElementById('status-box');
+        const logList = document.getElementById('log-list');
+
+        function logg(msg, color = 'text-green-400') {
+            const li = document.createElement('li');
+            li.className = color;
+            li.textContent = `> ${msg}`;
+            logList.appendChild(li);
+            statusBox.scrollTop = statusBox.scrollHeight;
+        }
+
+        btn.addEventListener('click', async () => {
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            statusBox.classList.remove('hidden');
+            logg('Iniciando conexión con Firestore...', 'text-blue-400');
+
+            try {
+                const snapshot = await getDocs(collection(db, 'users'));
+                logg(`Se encontraron ${snapshot.size} usuarios. Comenzando análisis...`, 'text-blue-400');
+
+                let countPatched = 0;
+
+                for (let userDoc of snapshot.docs) {
+                    const data = userDoc.data();
+                    let achs = new Set(data.achievements || []);
+                    let coins = data.coins || 0;
+                    let initialAchsCount = achs.size;
+
+                    // Función helper para otorgar recompensa
+                    const award = (id, rarity) => {
+                        if (!achs.has(id)) {
+                            achs.add(id);
+                            coins += (rarity === 'common' ? 100 : rarity === 'rare' ? 300 : rarity === 'epic' ? 500 : rarity === 'legendary' ? 1000 : 100);
+                        }
+                    };
+
+                    // ---- VERIFICACIONES DE PROGRESO ----
+
+                    const checkCourse = (progress, prefix) => {
+                        if (!progress || !progress.completedLevels || progress.completedLevels.length === 0) return;
+                        
+                        let maxLvlIndex = Math.max(...progress.completedLevels);
+                        
+                        // First Blood
+                        if (maxLvlIndex >= 0) award('first_blood', 'common');
+                        
+                        // Novice Dev
+                        if (maxLvlIndex >= 4) award('novice_dev', 'common');
+                        
+                        // Half Way
+                        if (maxLvlIndex >= 9) award('half_way', 'rare');
+                        
+                        // Expert 
+                        if (maxLvlIndex >= 14 && prefix !== 'python') {
+                            award(prefix + '_expert', 'rare');
+                        }
+
+                        // Master
+                        if (progress.completedLevels.length >= 20 || maxLvlIndex >= 19) {
+                            award(prefix + '_master', 'epic');
+                        }
+                    };
+
+                    // Cursos
+                    checkCourse(data.webProgress, 'web');
+                    checkCourse(data.pythonProgress, 'python');
+                    checkCourse(data.rubyProgress, 'ruby');
+                    checkCourse(data.databaseProgress, 'db');
+
+                    // Quiz Genius (Si alguna vez saco 10/10)
+                    if (data.quizHistory) {
+                        for (let q of data.quizHistory) {
+                            if (q.score >= 10 && q.total >= 10) award('quiz_genius', 'legendary');
+                        }
+                    }
+
+                    // Desafíos / Arcade
+                    if (data.challengeProgress) {
+                        const ch = data.challengeProgress;
+                        if (ch.bug_hunter >= 5) award('bug_master', 'rare');
+                        if (ch.db || ch.web || ch.ruby) award('arcade_master', 'epic');
+                    }
+
+                    // Actualizar solo si hubo cambios
+                    if (achs.size > initialAchsCount) {
+                        await updateDoc(userDoc.ref, {
+                            achievements: Array.from(achs),
+                            coins: coins
+                        });
+                        countPatched++;
+                        logg(`Usuario [${data.username || userDoc.id}] actualizado. Nvos logros: ${achs.size - initialAchsCount}`);
+                    }
+                }
+
+                logg(`=======================================`, 'text-yellow-400');
+                logg(`¡MIGRACIÓN EXITOSA! ${countPatched} usuarios modificados.`, 'text-yellow-400');
+
+            } catch(e) {
+                console.error(e);
+                logg(`ERROR FATAL: ${e.message}`, 'text-red-500');
+            }
+        });
+    </script>
+</body>
+</html>

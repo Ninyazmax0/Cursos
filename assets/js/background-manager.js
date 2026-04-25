@@ -4,13 +4,11 @@
  * No requiere Firebase, todo es local
  */
 
-// Configuración por defecto
 const DEFAULT_BACKGROUNDS = {
     dark: 'https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif',
     light: 'https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif'
 };
 
-// Clase principal del Background Manager
 class BackgroundManager {
     constructor() {
         this.customBackground = null;
@@ -18,17 +16,11 @@ class BackgroundManager {
     }
 
     init() {
-        // Inicializar variables CSS con valores por defecto antes de cargar
         this.initializeCSSVariables();
-
-        // Cargar configuración guardada
         this.loadSettings();
-
-        // Aplicar fondo actual
         this.applyBackground();
-
-        // Escuchar cambios de tema
         this.setupThemeListener();
+        this.applyToAllPages();
     }
 
     initializeCSSVariables() {
@@ -60,28 +52,30 @@ class BackgroundManager {
         const bgDay = document.querySelector('.background-day');
         const bgNight = document.querySelector('.background-night');
 
-        if (!bgDay || !bgNight) return;
+        let bgUrl = this.customBackground || DEFAULT_BACKGROUNDS.dark;
 
-        if (this.customBackground) {
-            // Aplicar fondo personalizado usando variables CSS
-            document.documentElement.style.setProperty('--bg-day', `url('${this.customBackground}')`);
-            document.documentElement.style.setProperty('--bg-night', `url('${this.customBackground}')`);
-        } else {
-            // Usar fondos por defecto
-            document.documentElement.style.setProperty('--bg-day', `url('${DEFAULT_BACKGROUNDS.light}')`);
-            document.documentElement.style.setProperty('--bg-night', `url('${DEFAULT_BACKGROUNDS.dark}')`);
+        if (bgDay) {
+            bgDay.style.backgroundImage = `url('${bgUrl}')`;
         }
+        if (bgNight) {
+            bgNight.style.backgroundImage = `url('${bgUrl}')`;
+        }
+
+        document.documentElement.style.setProperty('--bg-day', `url('${bgUrl}')`);
+        document.documentElement.style.setProperty('--bg-night', `url('${bgUrl}')`);
     }
 
     setCustomBackground(imageData) {
         this.customBackground = imageData;
         this.applyBackground();
+        this.applyToAllPages();
         this.saveSettings();
     }
 
     removeCustomBackground() {
         this.customBackground = null;
         this.applyBackground();
+        this.applyToAllPages();
         this.saveSettings();
     }
 
@@ -93,9 +87,13 @@ class BackgroundManager {
         return this.customBackground;
     }
 
+    applyToAllPages() {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('bgUpdate', Date.now().toString());
+        }
+    }
+
     setupThemeListener() {
-        // Escuchar cambios de tema para asegurar que el fondo correcto se muestre
-        // Usamos debounce para evitar múltiples actualizaciones rápidas
         let debounceTimer = null;
 
         const observer = new MutationObserver(() => {
@@ -112,10 +110,8 @@ class BackgroundManager {
     }
 }
 
-// Instancia global
 const backgroundManager = new BackgroundManager();
 
-// Exportar para uso en otros archivos
 window.BackgroundManager = BackgroundManager;
 window.backgroundManager = backgroundManager;
 window.DEFAULT_BACKGROUNDS = DEFAULT_BACKGROUNDS;

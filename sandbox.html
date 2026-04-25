@@ -246,6 +246,93 @@
             z-index: 50;
             display: none;
         }
+
+        .output-line.error { color: #f7768e; }
+        .output-line.input { color: #e0af68; }
+        
+        #input-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 16, 22, 0.9);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .input-dialog {
+            background: linear-gradient(145deg, #24283b, #1a1b26);
+            border: 1px solid #414868;
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .input-dialog input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #1a1b26;
+            border: 1px solid #414868;
+            border-radius: 8px;
+            color: #c0caf5;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            margin-top: 0.75rem;
+        }
+        .input-dialog input:focus {
+            outline: none;
+            border-color: #7aa2f7;
+            box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.2);
+        }
+        .input-submit {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            background: #7aa2f7;
+            border: none;
+            border-radius: 8px;
+            color: #1a1b26;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .input-submit:hover { background: #bb9af7; }
+        
+        #error-lens-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(145deg, rgba(247, 118, 142, 0.1), rgba(26, 27, 38, 0.95));
+            border-top: 1px solid rgba(247, 118, 142, 0.3);
+            padding: 0.75rem 1rem;
+            display: none;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        #error-lens-panel.visible { display: block; }
+        .error-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background: rgba(247, 118, 142, 0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .error-item:hover { background: rgba(247, 118, 142, 0.15); }
+        .error-icon { color: #f7768e; flex-shrink: 0; margin-top: 2px; }
+        .error-content { flex: 1; }
+        .error-message { color: #f7768e; word-break: break-word; }
+        .error-location { color: #565f89; font-size: 0.75rem; margin-top: 0.25rem; }
     </style>
 </head>
 <body>
@@ -356,35 +443,81 @@
         </div>
     </div>
 
+    <!-- Input Modal -->
+    <div id="input-modal">
+        <div class="input-dialog">
+            <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="terminal" class="w-5 h-5 text-yellow-500"></i>
+                <span class="text-sm text-gray-400">Input requerido</span>
+            </div>
+            <p id="input-prompt" class="text-white"></p>
+            <input type="text" id="input-field" placeholder="Escribe tu respuesta..." autocomplete="off">
+            <button class="input-submit" onclick="submitInput()">
+                <i data-lucide="corner-down-left" class="w-4 h-4 inline mr-1"></i> Enviar
+            </button>
+        </div>
+    </div>
+
+    <!-- Error Lens Panel -->
+    <div id="error-lens-panel">
+        <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i>
+            <span class="text-sm font-semibold text-red-400">Errores Detectados</span>
+        </div>
+        <div id="error-lens-list"></div>
+    </div>
+
     <script>
-        // --- Estado Global ---
         let editor;
         let currentLang = 'python';
         let pyodide = null;
         let rubyVM = null;
+        let inputResolve = null;
+        let pendingErrors = [];
         
-        // --- Configuraciones por Defecto ---
         const defaultCode = {
             python: `# Escribe tu codigo Python aqui\nprint("Hola Mundo!")\n\nfor i in range(3):\n    print(f"Contando: {i + 1}")`,
-            javascript: `<!-- Escribe HTML/JS aqui -->\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: sans-serif; padding: 20px; color: #333; }\n    h1 { color: #7aa2f7; }\n  </style>\n</head>\n<body>\n  <h1>Hola mundo!</h1>\n  <p id="demo">Soy una pagina web en vivo.</p>\n  <button onclick="saludar()">Haz clic</button>\n\n  <script>\n    function saludar() {\n      document.getElementById('demo').innerText = "Has hecho clic!";\n    }\n  <\/script>\n</body>\n</html>`,
-            ruby: `# Escribe tu codigo Ruby aqui\nputs "Hola desde Ruby!"\n\n3.times do |i|\n  puts "Iteracion: #{i + 1}"\nend`
+            javascript: `<!-- Escribe HTML/JS aqui -->
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: sans-serif; padding: 20px; color: #333; }
+    h1 { color: #7aa2f7; }
+  </style>
+</head>
+<body>
+  <h1>Hola mundo!</h1>
+  <p id="demo">Soy una pagina web en vivo.</p>
+  <button onclick="saludar()">Haz clic</button>
+
+  <script>
+    function saludar() {
+      document.getElementById('demo').innerText = "Has hecho clic!";
+    }
+  <\/script>
+</body>
+</html>`,
+            ruby: `# Escribe tu codigo Ruby aqui
+puts "Hola desde Ruby!"
+
+3.times do |i|
+  puts "Iteracion: #{i + 1}"
+end`
         };
 
-        // --- Inicializacion ---
         window.addEventListener('load', async () => {
              lucide.createIcons();
              await initMonaco();
              
-             // === AUTO-FILL FROM URL PARAMS (from course "Open in Sandbox" button) ===
              const urlParams = new URLSearchParams(window.location.search);
              const urlLang = urlParams.get('lang');
              const urlCode = urlParams.get('code');
              
-             // Map course language IDs to sandbox language IDs
              const langMap = { 
                  'python': 'python', 
                  'ruby': 'ruby', 
-                 'sql': 'javascript', // SQL runs as text/output only
+                 'sql': 'javascript',
                  'html': 'javascript', 
                  'javascript': 'javascript', 
                  'web': 'javascript',
@@ -396,11 +529,9 @@
              
              if (urlCode) {
                  try {
-                     // Decode Base64 code from URL
                      const decodedCode = decodeURIComponent(escape(atob(urlCode)));
                      if (editor) {
                          editor.setValue(decodedCode);
-                         // Show welcome notice
                          const notice = document.createElement('div');
                          notice.className = 'fixed top-4 right-4 bg-accent/90 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 text-sm font-semibold z-50 animate-pulse';
                          notice.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg> Código cargado desde el curso';
@@ -506,6 +637,7 @@
                 const model = editor.getModel();
                 monaco.editor.setModelLanguage(model, lang === 'javascript' ? 'html' : lang);
                 editor.setValue(defaultCode[lang]);
+                clearErrorLens();
             }
 
             document.getElementById('current-lang-display').textContent = 
@@ -526,6 +658,7 @@
         async function runCode() {
             const code = editor.getValue();
             clearOutput();
+            clearErrorLens();
 
             if (currentLang === 'python') {
                 if (!pyodide) {
@@ -533,8 +666,11 @@
                     return;
                 }
                 try {
+                    clearErrorLens();
                     await pyodide.runPythonAsync(code);
                 } catch (err) {
+                    const errorInfo = parsePythonError(err);
+                    showErrorLens(errorInfo);
                     appendOutput(err.toString(), true);
                 }
             } 
@@ -558,11 +694,139 @@
             }
         }
 
-        function appendOutput(text, isError = false) {
+        function parsePythonError(err) {
+            const errorText = err.toString();
+            const errors = [];
+            
+            const lineMatch = errorText.match(/line (\d+)/i);
+            const colMatch = errorText.match(/column (\d+)/i);
+            const charMatch = errorText.match(/char (\d+)/i);
+            
+            let line = lineMatch ? parseInt(lineMatch[1]) : null;
+            let column = colMatch ? parseInt(colMatch[1]) : (charMatch ? parseInt(charMatch[1]) : null);
+            
+            if (err instanceof SyntaxError || errorText.includes('SyntaxError')) {
+                if (!line) line = 1;
+                if (!column) column = 1;
+            }
+            
+            errors.push({
+                message: errorText,
+                line: line,
+                column: column,
+                type: errorText.includes('SyntaxError') ? 'syntax' : 
+                      errorText.includes('NameError') ? 'reference' :
+                      errorText.includes('TypeError') ? 'type' :
+                      errorText.includes('IndentationError') ? 'indentation' : 'runtime'
+            });
+            
+            return errors;
+        }
+
+        function showErrorLens(errors) {
+            if (!editor || !errors.length) return;
+            
+            pendingErrors = errors;
+            const panel = document.getElementById('error-lens-panel');
+            const list = document.getElementById('error-lens-list');
+            
+            if (errors.length === 0) {
+                panel.classList.remove('visible');
+                return;
+            }
+            
+            list.innerHTML = '';
+            
+            errors.forEach((err, idx) => {
+                const item = document.createElement('div');
+                item.className = 'error-item';
+                item.onclick = () => {
+                    if (err.line) {
+                        editor.revealLineInCenter(err.line);
+                        editor.setPosition({ lineNumber: err.line, column: err.column || 1 });
+                        editor.focus();
+                    }
+                };
+                
+                const typeIcon = err.type === 'syntax' ? 'type' :
+                                 err.type === 'reference' ? 'help-circle' :
+                                 err.type === 'type' ? 'hash' : 'alert-triangle';
+                
+                item.innerHTML = `
+                    <i data-lucide="${typeIcon}" class="w-4 h-4 error-icon"></i>
+                    <div class="error-content">
+                        <div class="error-message">${err.message.split('\n')[0]}</div>
+                        ${err.line ? `<div class="error-location">Línea ${err.line}${err.column ? `, Columna ${err.column}` : ''}</div>` : ''}
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+            
+            panel.classList.add('visible');
+            lucide.createIcons();
+            
+            if (errors[0].line) {
+                const model = editor.getModel();
+                const monacoErrors = errors.map(err => ({
+                    severity: monaco.MarkerSeverity.Error,
+                    startLineNumber: err.line,
+                    startColumn: err.column || 1,
+                    endLineNumber: err.line,
+                    endColumn: err.column ? err.column + 10 : model.getLineMaxColumn(err.line),
+                    message: err.message
+                }));
+                monaco.editor.setModelMarkers(model, 'python-error', monacoErrors);
+            }
+        }
+
+        function clearErrorLens() {
+            pendingErrors = [];
+            document.getElementById('error-lens-panel').classList.remove('visible');
+            if (editor) {
+                monaco.editor.setModelMarkers(editor.getModel(), 'python-error', []);
+            }
+        }
+
+        function showInputModal(promptText) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('input-modal');
+                const prompt = document.getElementById('input-prompt');
+                const input = document.getElementById('input-field');
+                
+                prompt.textContent = promptText || 'Ingresa un valor:';
+                input.value = '';
+                modal.style.display = 'flex';
+                input.focus();
+                
+                inputResolve = resolve;
+                
+                input.onkeydown = (e) => {
+                    if (e.key === 'Enter') {
+                        submitInput();
+                    }
+                };
+            });
+        }
+
+        window.submitInput = function() {
+            const modal = document.getElementById('input-modal');
+            const input = document.getElementById('input-field');
+            const value = input.value;
+            
+            modal.style.display = 'none';
+            input.value = '';
+            
+            if (inputResolve) {
+                inputResolve(value);
+                inputResolve = null;
+            }
+        };
+
+        function appendOutput(text, isError = false, isInput = false) {
             const output = document.getElementById('output-content');
             const line = document.createElement('div');
+            line.className = `output-line ${isError ? 'error' : ''} ${isInput ? 'input' : ''}`;
             line.textContent = text;
-            if (isError) line.classList.add('text-red-400');
             output.appendChild(line);
             output.scrollTop = output.scrollHeight;
         }

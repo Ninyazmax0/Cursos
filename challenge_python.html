@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="module" src="assets/js/firebase-secondary.js"></script>
+    <script src="assets/js/background-manager.js"></script>
 
     <style>
         :root {
@@ -57,8 +58,13 @@
             opacity: 0;
             transition: opacity 1s ease;
         }
-        .background-day { background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif'); }
-        .background-night { background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif'); }
+
+        .background-day { 
+            background-image: var(--bg-day, url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif')); 
+        }
+        .background-night { 
+            background-image: var(--bg-night, url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif')); 
+        }
         .dark .background-night { opacity: 1; }
         .background-day { opacity: 1; }
 
@@ -475,6 +481,12 @@
             background-clip: text;
         }
 
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .animate-slideInRight { animation: slideInRight 0.3s ease forwards; }
+
         /* ========== FIREBASE LOADER ========== */
         #firebase-loader {
             position: fixed;
@@ -869,21 +881,60 @@ print(dobles)`, options: ["[2, 4, 6]", "[1, 2, 3]", "[1, 4, 9]", "Error"], solut
             lucide.createIcons();
         };
 
+        function showToastGlobal(message, type = 'info') {
+            const toast = document.createElement('div');
+            const colors = {
+                success: 'bg-green-600 border-green-500',
+                error: 'bg-red-600 border-red-500', 
+                warning: 'bg-yellow-600 border-yellow-500',
+                info: 'bg-blue-600 border-blue-500'
+            };
+            toast.className = `fixed top-6 right-6 ${colors[type] || colors.info} text-white px-4 py-2 rounded-lg shadow-xl flex items-center gap-2 text-sm font-medium z-[9999] animate-slideInRight`;
+            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : type === 'warning' ? 'alert-triangle' : 'info'}" class="w-4 h-4"></i> ${message}`;
+            document.body.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
         window.selectTool = (tool) => {
-            if (!activeHole) return;
-            
-            document.querySelectorAll('.tool-btn').forEach(e => e.classList.remove('selected'));
-            event.target.classList.add('selected');
+            if (!activeHole) {
+                showToastGlobal('Selecciona un hueco primero', 'warning');
+                return;
+            }
             
             userState.holes[activeHole] = tool;
             
             const holeEl = document.querySelector(`.hole[data-hole="${activeHole}"]`);
-            holeEl.innerText = tool;
-            holeEl.classList.remove('active');
-            holeEl.classList.add('filled');
+            const toolBtn = document.querySelector(`.tool-btn[data-tool="${tool}"]`);
+            
+            if (holeEl) {
+                holeEl.innerText = tool;
+                holeEl.classList.remove('active');
+                holeEl.classList.add('filled');
+                
+                holeEl.style.transform = 'scale(1.1)';
+                holeEl.style.boxShadow = '0 0 20px rgba(158, 206, 106, 0.5)';
+                setTimeout(() => {
+                    holeEl.style.transform = '';
+                    holeEl.style.boxShadow = '';
+                }, 300);
+            }
+            
+            if (toolBtn) {
+                toolBtn.style.opacity = '0.4';
+                toolBtn.style.pointerEvents = 'none';
+                toolBtn.classList.add('used');
+            }
+            
             activeHole = null;
             
-            document.querySelectorAll('.tool-btn').forEach(e => e.classList.remove('selected'));
+            showToastGlobal(`"${tool}" agregado`, 'success');
+            lucide.createIcons();
         };
 
         window.evaluateGame = async () => {

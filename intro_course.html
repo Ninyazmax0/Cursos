@@ -1780,27 +1780,8 @@ function markLevelCompleted(levelIndex) {
     if (!userProgress.completedLevels.includes(levelIndex)) {
         userProgress.completedLevels.push(levelIndex);
         saveProgress();
-        showLevelUpNotification();
     }
     renderLevelSelection();
-}
-
-function showLevelUpNotification() {
-    const notification = document.createElement('div');
-    notification.id = 'level-up-notification';
-    notification.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50';
-    notification.innerHTML = `
-        <div class="bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl text-center animate-bounce">
-            <div class="text-4xl mb-2">🎉</div>
-            <div class="text-xl font-bold">¡Nivel Completado!</div>
-            <div class="text-lg">+1 Nivel</div>
-        </div>
-    `;
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        if (notification.parentNode) notification.parentNode.removeChild(notification);
-    }, 3000);
 }
 
 // ================= LÓGICA DEL TOUR EN LECCIONES =================
