@@ -320,7 +320,7 @@ const courseData = [
         "lesson": [
             {
                 "title": "Qué son los Bloques",
-                "dialogo": "<p>Un bloque es pedazo de código que puedes pasar a un método. Sedefine con {} o do...end.</p>",
+                "dialogo": "<p>Un bloque es un pedazo de código que puedes pasar a un método. Se define con {} o do...end.</p>",
                 "codigo": "# Con llaves:\n3.times { puts \"Hola\" }\n\n# Con do...end:\n3.times do\n  puts \"Chao\"\nend",
                 "tourSteps": [
                     { "text": "Las llaves {} definen un bloque.", "line": 2 },
@@ -339,9 +339,9 @@ const courseData = [
             {
                 "title": "Yield (Ejecutar bloque)",
                 "dialogo": "<p>Un método puede ejecutar el bloque que recibe con yield.</p>",
-                "codigo": "def repetir\n  yield\n  yield\nend\n\nrepetir { puts \"Bloque ejecutado!\" }",
+                "codigo": "def repetir\n  yield\n  yield\nend\n\n# Se ejecuta el bloque pasado:\nrepetir { puts \"Bloque ejecutado!\" }",
                 "tourSteps": [
-                    { "text": "yield ejecutael bloque recibido.", "line": 2 },
+                    { "text": "yield ejecuta el bloque recibido.", "line": 2 },
                     { "text": "Se ejecuta dos veces.", "line": 3 }
                 ]
             }
@@ -364,7 +364,7 @@ const courseData = [
         "lesson": [
             {
                 "title": "Definiendo Métodos",
-                "dialogo": "<p>En Ruby definimos funciones (métodos) con def. El código no se ejecutahasta que llames al método.</p>",
+                "dialogo": "<p>En Ruby definimos funciones (métodos) con def. El código no se ejecuta hasta que llames al método.</p>",
                 "codigo": "def saludar\n  puts \"¡Hola!\"\nend\n\n# Para ejecutarlo:\nsaludar\n\n# Con retorno:\ndef retorna_saludo\n  \"Hola amigo\"\nend\nputs retorna_saludo",
                 "tourSteps": [
                     { "text": "def define el método.", "line": 1 },
@@ -442,8 +442,8 @@ const courseData = [
             { "type": "multiple-choice", "question": "alias_method sirve para:", "options": ["Renombrar método", "Copiar método", "Borrar método", "Error"], "answer": "Renombrar método" },
             { "type": "multiple-choice", "question": "def self.metodo es:", "options": ["Método de clase", "Método privado", "Ningún método", "Error"], "answer": "Método de clase" },
             { "type": "multiple-choice", "question": "Métodos bang (!):", "options": ["Modifican el objeto", "No modifican", "Son privados", "Error"], "answer": "Modifican el objeto" },
-            { "type": "multiple-choice", "question": "?. métodos son seguros:", "options": ["nil", "No nil", "Booleanos", "Todos"], "answer": "nil" },
-            { "type": "multiple-choice", "question": "/block_method sirve para:", "options": ["Verificar bloque", "Crear bloque", "Ejecutar bloque", "Nada"], "answer": "Verificar bloque" }
+            { "type": "multiple-choice", "question": "&. método es seguro contra:", "options": ["nil", "No nil", "Booleanos", "Todos"], "answer": "nil" },
+            { "type": "multiple-choice", "question": "block_given? sirve para:", "options": ["Verificar bloque", "Crear bloque", "Ejecutar bloque", "Nada"], "answer": "Verificar bloque" }
         ]
     },
     {
@@ -484,7 +484,7 @@ const courseData = [
             { "type": "multiple-choice", "question": "\"Hola\".include?(\"ol\")?", "options": ["true", "false", "nil", "Error"], "answer": "true" },
             { "type": "multiple-choice", "question": "\"  hola  \".strip = ?", "options": ["hola", " hola ", "hola  ", "Error"], "answer": "hola" },
             { "type": "multiple-choice", "question": "\"Ruby\".gsub(\"R\", \"r\") = ?", "options": ["rUby", "Ruby", "ruby", "Error"], "answer": "ruby" },
-            { "type": "multiple-choice", "question": "[1,2][0] da:", "options": ["1", "2", "nil", "Error"], "answer": "Error" },
+            { "type": "multiple-choice", "question": "[1,2][0] da:", "options": ["1", "2", "nil", "Error"], "answer": "1" },
             { "type": "multiple-choice", "question": "slice Extrae:", "options": ["Parte del string", "Todo", "Nada", "Error"], "answer": "Parte del string" },
             { "type": "multiple-choice", "question": "reverse invierte:", "options": ["String", "Array", "Ambos", "Nada"], "answer": "String" },
             { "type": "multiple-choice", "question": "start_with? verifica:", "options": ["Inicio", "Final", "Contenido", "Nada"], "answer": "Inicio" }
@@ -755,7 +755,7 @@ const courseData = [
                 "dialogo": "<p>Para leer archivos usamos File.read o File.readlines.</p>",
                 "codigo": "# Leer archivo:\n contenido = File.read(\"datos.txt\")\nputs contenido\n\n# Línea por línea:\nFile.readlines(\"datos.txt\").each do |linea|\n  puts linea\nend",
                 "tourSteps": [
-                    { "text": "File.readlee todo.", "line": 2 },
+                    { "text": "File.read lee todo.", "line": 2 },
                     { "text": "readlines da array.", "line": 5 }
                 ]
             },
@@ -795,7 +795,7 @@ const courseData = [
         "lesson": [
             {
                 "title": "Qué son Lambdas",
-                "dialogo": "<p> lambdas son funciones anónimas (sin nombre). Se crean con -> o lambda.</p>",
+                "dialogo": "<p>lambdas son funciones anónimas (sin nombre). Se crean con -> o lambda.</p>",
                 "codigo": "mi_lambda = -> { puts \"Hola lambda\" }\nmi_lambda.call\n\n# Con parámetros:\nsuma = ->(a, b) { a + b }\nputs suma.call(2, 3)",
                 "tourSteps": [
                     { "text": "-> crea lambda.", "line": 1 },
@@ -828,9 +828,9 @@ const courseData = [
             { "type": "multiple-choice", "question": "lambda.call:", "options": ["Ejecuta", "null", "nil", "Error"], "answer": "Ejecuta" },
             { "type": "multiple-choice", "question": "Se asignan:", "options": ["A variables", "null", "nil", "Error"], "answer": "A variables" },
             { "type": "multiple-choice", "question": "Closure captura:", "options": ["Entorno", "null", "nil", "Error"], "answer": "Entorno" },
-            { "type": "multiple-choice", "question": " lambda { return }:", "options": ["Sale método", "null", "nil", "Error"], "answer": "Sale método" },
-            { "type": "multiple-choice", "question": " Proc { return }:", "options": ["Error", "null", "nil", "Sale"], "answer": "Error" },
-            { "type": "multiple-choice", "question": "&:proc:", "options": ["Convierte", "null", "nil", "Error"], "answer": "Convierte" }
+            { "type": "multiple-choice", "question": "lambda { return }:", "options": ["Retorna del bloque", "Sale del método", "nil", "Error"], "answer": "Retorna del bloque" },
+            { "type": "multiple-choice", "question": "Proc.new { return }:", "options": ["Error fuera de método", "Sale del método", "nil", "No hace nada"], "answer": "Sale del método" },
+            { "type": "multiple-choice", "question": "&:simbolo sirve para:", "options": ["Llamar método", "Crear variable", "nil", "Error"], "answer": "Llamar método" }
         ]
     },
     {

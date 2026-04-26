@@ -770,15 +770,20 @@
                 
                 let htmlTemplate = game.template;
                 Object.keys(game.holes).forEach(holeKey => {
-                    htmlTemplate = htmlTemplate.replace(`{${holeKey}}`, `<span class="hole" data-hole="${holeKey}">___</span>`);
+                    htmlTemplate = htmlTemplate.replaceAll(`{${holeKey}}`, `<span class="hole" data-hole="${holeKey}">___</span>`);
                 });
                 
                 htmlTemplate = htmlTemplate.replace(/\n/g, '<br>').replace(/    /g, '&nbsp;&nbsp;&nbsp;&nbsp;');
                 codeArea.innerHTML = htmlTemplate;
                 
-                toolsList.innerHTML = game.tools.map(tool => 
-                    `<button class="tool-btn" data-tool="${tool}" onclick="selectTool('${tool}')">${tool}</button>`
-                ).join('');
+                toolsList.innerHTML = game.tools.map(tool => {
+                    const safeTool = tool.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                    return `<button class="tool-btn" data-tool="${safeTool}">${tool}</button>`;
+                }).join('');
+                
+                document.querySelectorAll('.tool-btn').forEach(btn => {
+                    btn.onclick = () => selectTool(btn.getAttribute('data-tool'));
+                });
                 
                 document.querySelectorAll('.hole').forEach(el => {
                     el.onclick = () => {
@@ -826,25 +831,49 @@
         };
 
         window.selectTool = (tool) => {
-            if (!activeHole) return;
-            
-            document.querySelectorAll('.tool-btn').forEach(e => e.classList.remove('selected'));
-            event.target.classList.add('selected');
+            if (!activeHole) {
+                showToastGlobal('Selecciona un hueco primero', 'warning');
+                return;
+            }
             
             userState.holes[activeHole] = tool;
             
             const holeEl = document.querySelector(`.hole[data-hole="${activeHole}"]`);
-            holeEl.innerText = tool;
-            holeEl.classList.remove('active');
-            holeEl.classList.add('filled');
+            const toolBtn = Array.from(document.querySelectorAll('.tool-btn')).find(btn => btn.getAttribute('data-tool') === tool);
+            
+            if (holeEl) {
+                holeEl.innerText = tool;
+                holeEl.classList.remove('active');
+                holeEl.classList.add('filled');
+                
+                holeEl.style.transform = 'scale(1.1)';
+                holeEl.style.boxShadow = '0 0 20px rgba(158, 206, 106, 0.5)';
+                setTimeout(() => {
+                    holeEl.style.transform = '';
+                    holeEl.style.boxShadow = '';
+                }, 300);
+            }
+            
+            if (toolBtn) {
+                toolBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => toolBtn.style.transform = '', 150);
+            }
+            
             activeHole = null;
             
-            document.querySelectorAll('.tool-btn').forEach(e => e.classList.remove('selected'));
+            showToastGlobal(`"${tool}" agregado`, 'success');
+            lucide.createIcons();
         };
 
         window.evaluateGame = async () => {
-            if (currentLevel.type === 'bug_hunter' && userState.bug_line === null) return;
-            if (currentLevel.type === 'output' && userState.selected_option === undefined) return;
+            if (currentLevel.type === 'bug_hunter' && userState.bug_line === null) {
+                showToastGlobal('Selecciona una línea de código primero.', 'warning');
+                return;
+            }
+            if (currentLevel.type === 'output' && userState.selected_option === undefined) {
+                showToastGlobal('Selecciona una respuesta primero.', 'warning');
+                return;
+            }
             
             attempts++;
             document.getElementById('game-attempts').innerText = attempts;
@@ -863,13 +892,22 @@
                 isCorrect = (userState.selected_option === currentLevel.solution);
                 
                 document.querySelectorAll('.output-option').forEach((btn, idx) => {
-                    btn.disabled = true;
-                    if (idx === currentLevel.solution) {
-                        btn.classList.add('correct');
-                        btn.querySelector('span').textContent = '✓';
-                    } else if (idx === userState.selected_option && !isCorrect) {
-                        btn.classList.add('incorrect');
-                        btn.querySelector('span').textContent = '✗';
+                    if (isCorrect) {
+                        btn.disabled = true;
+                        if (idx === currentLevel.solution) {
+                            btn.classList.add('correct');
+                            btn.querySelector('span').textContent = '✓';
+                        }
+                    } else {
+                        if (idx === userState.selected_option) {
+                            btn.classList.add('incorrect');
+                            btn.querySelector('span').textContent = '✗';
+                            setTimeout(() => {
+                                btn.classList.remove('incorrect');
+                                btn.querySelector('span').textContent = '►';
+                                userState.selected_option = undefined;
+                            }, 1500);
+                        }
                     }
                 });
             }
