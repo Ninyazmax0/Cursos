@@ -606,9 +606,12 @@
                 document.getElementById('loading-overlay').style.display = 'none';
                 document.getElementById('app-container').classList.remove('hidden');
                 
-                // Achievements
+                // Achievements Audit
                 if (window.checkAchievement) {
                     setTimeout(() => window.checkAchievement('first_login'), 1000);
+                }
+                if (window.auditUserAchievements) {
+                    setTimeout(() => window.auditUserAchievements(), 1500);
                 }
 
                 // Logout

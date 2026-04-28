@@ -53,7 +53,7 @@ class CosmeticEffects {
     addParticle(x, y) {
         // Optimization: Throttle spawning
         const now = Date.now();
-        if (now - this.throttleTimer < 20) return; // Only spawn every 20ms
+        if (now - this.throttleTimer < 15) return; // More fluid spawn
         this.throttleTimer = now;
 
         const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -67,40 +67,63 @@ class CosmeticEffects {
         if (aura.includes('fire') || aura.includes('magma')) color = '#f7768e';
         if (aura.includes('nature')) color = '#9ece6a';
         if (aura.includes('gold') || aura.includes('time')) color = '#e0af68';
-        if (aura.includes('hacker')) color = '#0f0';
+        if (aura.includes('hacker')) color = '#00ff00';
 
         this.particles.push({
             x, y,
-            vx: (Math.random() - 0.5) * 1,
-            vy: (Math.random() - 0.5) * 1,
-            size: Math.random() * 2 + 1,
+            vx: (Math.random() - 0.5) * 2.5,
+            vy: (Math.random() - 0.5) * 2.5,
+            size: Math.random() * 3 + 1.5,
             life: 1.0,
-            color: color
+            color: color,
+            wobble: Math.random() * Math.PI * 2,
+            wobbleSpeed: (Math.random() - 0.5) * 0.2
         });
         
-        if (this.particles.length > 60) this.particles.shift(); // Reduce max particles
+        if (this.particles.length > 80) this.particles.shift(); // Reduce max particles but allow more than before
     }
 
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
+        // Add a magical global glow effect
+        this.ctx.globalCompositeOperation = 'lighter';
+        
         const len = this.particles.length;
         for (let i = len - 1; i >= 0; i--) {
             const p = this.particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life -= 0.03; // Fade slightly faster
             
-            if (p.life <= 0) {
+            // Add a sine-wave wobble to the movement for a "magic dust" feel
+            p.wobble += p.wobbleSpeed;
+            p.x += p.vx + Math.cos(p.wobble) * 0.5;
+            p.y += p.vy + Math.sin(p.wobble) * 0.5;
+            p.life -= 0.02; // Fade slightly slower
+            
+            // Shrink over time
+            p.size = Math.max(0, p.size * 0.98);
+
+            if (p.life <= 0 || p.size <= 0.1) {
                 this.particles.splice(i, 1);
                 continue;
             }
             
             this.ctx.beginPath();
             this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = p.color + Math.floor(p.life * 255).toString(16).padStart(2, '0');
+            
+            // Convert life to hex alpha
+            let alphaHex = Math.floor(Math.max(0, p.life) * 255).toString(16).padStart(2, '0');
+            this.ctx.fillStyle = p.color + alphaHex;
+            
+            // Glow shadow
+            this.ctx.shadowBlur = 15;
+            this.ctx.shadowColor = p.color;
+            
             this.ctx.fill();
         }
+        
+        // Reset composite operation to not break other draws (if any)
+        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.shadowBlur = 0;
         
         requestAnimationFrame(() => this.animate());
     }

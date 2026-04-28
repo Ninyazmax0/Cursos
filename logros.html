@@ -249,9 +249,10 @@
     </div>
 
     <script type="module">
-        import { achievements, syncAchievementsData } from './assets/js/achievements.js';
+        import { achievements, syncAchievementsData, auditUserAchievements } from './assets/js/achievements.js';
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (auditUserAchievements) await auditUserAchievements();
             loadAchievements();
         });
 

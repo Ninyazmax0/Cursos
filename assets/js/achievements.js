@@ -116,6 +116,59 @@ export async function checkAchievement(achievementId) {
     }
 }
 
+// AUTO-AUDIT LOGIC TO RETROACTIVELY GRANT ACHIEVEMENTS BASED ON REAL STATS
+export async function auditUserAchievements() {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) return;
+    
+    let checks = [];
+    
+    // Check Course Masters based on completedLevels array length (assuming 20 is max)
+    const webLevels = currentUser.webProgress?.completedLevels?.length || 0;
+    const pyLevels = currentUser.pythonProgress?.completedLevels?.length || 0;
+    const rubyLevels = currentUser.rubyProgress?.completedLevels?.length || 0;
+    const dbLevels = currentUser.databaseProgress?.completedLevels?.length || 0;
+    
+    if (webLevels >= 20) checks.push('web_master');
+    if (pyLevels >= 20) checks.push('python_master');
+    if (rubyLevels >= 20) checks.push('ruby_master');
+    if (dbLevels >= 20) checks.push('db_master');
+    
+    if (webLevels >= 10 || pyLevels >= 10 || rubyLevels >= 10 || dbLevels >= 10) checks.push('half_way');
+    if (webLevels >= 1 || pyLevels >= 1 || rubyLevels >= 1 || dbLevels >= 1) checks.push('novice_dev');
+
+    // Bug hunter
+    if (currentUser.challengeProgress?.bug_hunter >= 5) checks.push('bug_master');
+    
+    // Streaks
+    if (currentUser.streak >= 3) checks.push('streak_3');
+    if (currentUser.streak >= 7) checks.push('streak_7');
+    
+    // Inventory
+    const auraCount = currentUser.inventory?.auras?.length || 0;
+    if (auraCount >= 5) checks.push('collector');
+    
+    // Admin/Founder base logic
+    if (currentUser.id === 'steven' || currentUser.id === 'steven-founder') {
+        checks.push('pixel_perfect', 'dream_architect', 'coffee_overdose', 'bug_lord', 'frontend_god', 'steven_moon', 'marriage_contract');
+    }
+    if (currentUser.id === 'amelia' || currentUser.id === 'amelia-founder') {
+        checks.push('backend_queen', 'database_keeper', 'logic_master', 'server_whisperer', 'security_protocol');
+    }
+    
+    // Run checks silently
+    for (let achId of checks) {
+        if (!currentUser.achievements?.includes(achId)) {
+            await checkAchievement(achId);
+        }
+    }
+}
+
+// MAKE IT GLOBAL SO HTML INLINE SCRIPTS CAN CALL IT
+window.checkAchievement = checkAchievement;
+window.syncAchievementsData = syncAchievementsData;
+window.auditUserAchievements = auditUserAchievements;
+
 function showToast(achId, reward) {
     const ach = achievements.find(a => a.id === achId);
     if (!ach) return;
@@ -269,8 +322,14 @@ export function initAchievementListeners() {
 let konamiCode = ['w', 'a', 's', 'd', 'a', 'b', 'a', 'b'];
 let konamiIndex = 0;
 
+// Zafkiel Code Listener (Tokisaki Kurumi Theme)
+let zafkielCode = ['z', 'a', 'f', 'k', 'i', 'e', 'l'];
+let zafkielIndex = 0;
+
 document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
+    
+    // Konami Code Logic
     if (key === konamiCode[konamiIndex]) {
         konamiIndex++;
         if (konamiIndex === konamiCode.length) {
@@ -288,5 +347,52 @@ document.addEventListener('keydown', (e) => {
         }
     } else {
         konamiIndex = 0;
+    }
+
+    // Zafkiel Code Logic (Easter Egg)
+    if (key === zafkielCode[zafkielIndex]) {
+        zafkielIndex++;
+        if (zafkielIndex === zafkielCode.length) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                // Unlock and Equip Bride of Time
+                if (!currentUser.inventory) currentUser.inventory = { auras: [] };
+                if (!currentUser.inventory.auras.includes('aura-bride-time')) {
+                    currentUser.inventory.auras.push('aura-bride-time');
+                }
+                currentUser.equippedAura = 'aura-bride-time';
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Sync to Firestore to ensure it persists
+                try {
+                    const userRef = doc(db, 'users', currentUser.id);
+                    updateDoc(userRef, {
+                        inventory: currentUser.inventory,
+                        equippedAura: 'aura-bride-time'
+                    });
+                } catch(e) { console.error(e); }
+                
+                // Also give the achievement which saves coins and achievement data
+                window.checkAchievement('marriage_contract');
+                
+                // Change Background to Kurumi Theme
+                if (window.backgroundManager) {
+                    window.backgroundManager.setCustomBackground('https://i.pinimg.com/originals/3f/1f/27/3f1f274a2cc46f1cb6dc948b89410ea8.gif');
+                }
+
+                // Restart cosmetic effects to show new aura instantly
+                if (window.cosmeticEffects) {
+                    const event = new CustomEvent('auraChanged', { detail: { auraId: 'aura-bride-time' } });
+                    window.dispatchEvent(event);
+                }
+                
+                if(window.showGlobalToast) {
+                    window.showGlobalToast('Zafkiel: El Tiempo se Detiene', 'Ara ara... ¿así que invocaste mi nombre? El tiempo ahora nos pertenece.', 'success');
+                }
+            }
+            zafkielIndex = 0;
+        }
+    } else {
+        zafkielIndex = 0;
     }
 });

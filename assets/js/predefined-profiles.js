@@ -10,7 +10,7 @@ import { collection, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebas
 const STEVEN_PROFILE = {
     id: 'steven',
     name: 'Steven',
-    password: 'admin123',
+    password: 'admint123',
     email: 'steven@statuscode418.dev',
     avatar: 'https://i.ibb.co/9HGqpf0B/Captura-de-pantalla-2025-06-21-205156.png',
     bio: 'Frontend perfectionist. Si hay un píxel fuera de lugar, no duermo hasta arreglarlo. Fundador de Status Code 418. 💙',
@@ -40,8 +40,8 @@ const AMELIA_PROFILE = {
     email: 'amelia@statuscode418.dev',
     avatar: 'https://cdn.myanimelist.net/images/characters/8/239523.jpg',
     bio: 'Backend wizard. Drama queen con 5 copias de seguridad de tus copias de seguridad. Coffee addict. Co-fundadora de Status Code 418. 💜',
-    tags: ['Backend', 'Firebase', 'Architecture', 'Coffee', 'TypeScript'],
-    socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: '' },
+    tags: ['Backend', 'Firebase', 'Architecture', 'Coffee', 'TypeScript', 'react', 'monster'],
+    socialLinks: { github: '', instagram: '', twitter: '', linkedin: '', website: 'https://ninyazmax0.github.io/Cursos' },
     isAdmin: true,
     isOnline: false,
     rank: 'Co-Owner',
@@ -178,13 +178,13 @@ export function applyAdminPrivileges(userData, username) {
 
     if (idToCheck === 'steven' || idToCheck === 'steven-founder') {
         const base = STEVEN_PROFILE;
-        // Merge but keep user password if changed
-        return { ...userData, ...base, password: userData.password || base.password, equippedAura: 'aura-founder-steven' };
+        // Merge but keep user password if changed, and preserve their selected aura
+        return { ...userData, ...base, password: userData.password || base.password, equippedAura: userData.equippedAura || base.equippedAura };
     }
     
     if (idToCheck === 'amelia' || idToCheck === 'amelia-founder') {
         const base = AMELIA_PROFILE;
-        return { ...userData, ...base, password: userData.password || base.password, equippedAura: 'aura-founder-amelia' };
+        return { ...userData, ...base, password: userData.password || base.password, equippedAura: userData.equippedAura || base.equippedAura };
     }
 
     return userData;

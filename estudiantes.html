@@ -612,7 +612,9 @@
 
                         <button class="chat-btn"
                                 ${!isUnlocked ? 'disabled' : ''}
-                                onclick="${isUnlocked ? `openChat('${user.id}', '${user.name.replace(/'/g, "\\'")}')` : ''}">
+                                data-userid="${escapeHtml(user.id)}"
+                                data-username="${escapeHtml(user.name)}"
+                                onclick="${isUnlocked ? `openChat(this.dataset.userid, this.dataset.username)` : ''}">
                             <i data-lucide="message-circle" class="w-4 h-4 inline mr-1"></i>
                             ${isUnlocked ? 'Chatear' : 'Nivel 5 Requerido'}
                         </button>
