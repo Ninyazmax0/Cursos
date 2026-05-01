@@ -19,7 +19,7 @@
     <script src="assets/js/dictionaries.js"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     <!-- Monaco Editor Loader -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.min.js"></script>
     <!-- Theme Manager -->
     <script src="assets/js/theme-manager.js"></script>
     <style>
@@ -4233,7 +4233,7 @@ window.originalLessonHTML = ''; // Guardará el contenido original de la lecció
 function ensureMonacoLoaded(callback) {
     if (window.monaco) return callback();
     if (!window.monacoRequireConfigured) {
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' }});
         window.monacoRequireConfigured = true;
     }
     require(['vs/editor/editor.main'], function() {
@@ -5649,7 +5649,7 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
 
     // Inicializar Monaco Editor
     if (!monacoRequireConfigured) {
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' }});
         monacoRequireConfigured = true;
     }
     require(['vs/editor/editor.main'], function() {

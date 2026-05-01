@@ -19,7 +19,7 @@
     <script src="assets/js/dictionaries.js"></script>
     
     <!-- Monaco Editor Loader -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.min.js"></script>
     <!-- Theme Manager -->
     <script src="assets/js/theme-manager.js"></script>
     <style>
@@ -1734,7 +1734,7 @@ window.originalLessonHTML = ''; // Guardará el contenido original de la lecció
 function ensureMonacoLoaded(callback) {
     if (window.monaco) return callback();
     if (!window.monacoRequireConfigured) {
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' }});
         window.monacoRequireConfigured = true;
     }
     require(['vs/editor/editor.main'], function() {
@@ -2701,8 +2701,54 @@ function showResults() {
     }
     
     lucide.createIcons();
-    switchPanel('results-panel');
+    showPanel('results');
+
+    // Show Next Level Button via course_system.js
+    if (window.showNextLevelButton) showNextLevelButton(currentLevel);
 }
+
+// ================= EVENT LISTENERS DE NAVEGACIÓN =================
+document.getElementById('next-btn').addEventListener('click', () => {
+    if (currentLessonStep < courseData[currentLevel].lesson.length - 1) {
+        currentLessonStep++;
+        renderLesson();
+    } else {
+        startQuiz();
+    }
+});
+
+document.getElementById('prev-btn').addEventListener('click', () => {
+    if (currentLessonStep > 0) {
+        currentLessonStep--;
+        renderLesson();
+    }
+});
+
+document.getElementById('close-lesson-btn').addEventListener('click', () => {
+    renderLevelSelection();
+    showPanel('levelSelection');
+});
+
+document.getElementById('retry-lesson-btn').addEventListener('click', () => startLevel(currentLevel));
+
+document.getElementById('next-level-btn').addEventListener('click', () => {
+    if (currentLevel + 1 < courseData.length) {
+        startLevel(currentLevel + 1);
+    } else {
+        renderLevelSelection();
+        showPanel('levelSelection');
+    }
+});
+
+// Theme toggle
+document.getElementById('theme-toggle').addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const icon = document.querySelector('#theme-toggle i');
+    icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+    lucide.createIcons();
+});
+
 let currentInputResolver = null;
 window.monacoEditors = {}; // Store editor instances
 let monacoRequireConfigured = false;
@@ -2780,7 +2826,7 @@ function createInteractiveConsole(codeOrBase64, containerId, isBase64 = false) {
 
     // Inicializar Monaco Editor
     if (!monacoRequireConfigured) {
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' }});
         monacoRequireConfigured = true;
     }
     require(['vs/editor/editor.main'], function() {
@@ -2833,8 +2879,9 @@ function initializeCodeBlockMonaco() {
         block.setAttribute('data-monaco-initialized', 'true');
 
         // Detectar lenguaje
-        let language = 'python';
-        if (codeElement.className.includes('language-html')) language = 'html';
+        let language = 'ruby';
+        if (codeElement.className.includes('language-python')) language = 'python';
+        else if (codeElement.className.includes('language-html')) language = 'html';
         else if (codeElement.className.includes('language-css')) language = 'css';
         else if (codeElement.className.includes('language-javascript')) language = 'javascript';
 

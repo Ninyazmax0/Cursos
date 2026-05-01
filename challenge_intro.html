@@ -505,6 +505,16 @@
         @keyframes spin { 
             to { transform: rotate(360deg); } 
         }
+
+        @keyframes panelFade {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -829,6 +839,27 @@
             }
             lucide.createIcons();
         };
+
+        function showToastGlobal(message, type = 'info') {
+            const toast = document.createElement('div');
+            const colors = {
+                success: 'bg-green-600 border-green-500',
+                error: 'bg-red-600 border-red-500', 
+                warning: 'bg-yellow-600 border-yellow-500',
+                info: 'bg-blue-600 border-blue-500'
+            };
+            toast.className = `fixed top-6 right-6 ${colors[type] || colors.info} text-white px-4 py-2 rounded-lg shadow-xl flex items-center gap-2 text-sm font-medium z-[9999]`;
+            toast.style.animation = 'panelFade 0.3s ease forwards';
+            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : type === 'warning' ? 'alert-triangle' : 'info'}" class="w-4 h-4"></i> ${message}`;
+            document.body.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
 
         window.selectTool = (tool) => {
             if (!activeHole) {
